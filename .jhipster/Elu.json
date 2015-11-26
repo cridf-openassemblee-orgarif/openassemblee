@@ -1,0 +1,44 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "civilite",
+            "fieldType": "Civilite",
+            "fieldValues": "Monsieur,Madame"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "nom",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "prenom",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "nomJeuneFille",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "profession",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "dateNaissance",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "lieuNaissance",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20151126114337",
+    "dto": "no",
+    "pagination": "no"
+}

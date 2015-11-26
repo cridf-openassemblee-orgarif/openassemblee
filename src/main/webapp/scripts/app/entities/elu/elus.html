@@ -1,0 +1,69 @@
+<div>
+    <h2>Elus</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="elu.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new Elu</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Elu</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Civilite</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>NomJeuneFille</th>
+                    <th>Profession</th>
+                    <th>DateNaissance</th>
+                    <th>LieuNaissance</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="elu in elus track by elu.id">
+                    <td><a ui-sref="elu.detail({id:elu.id})">{{elu.id}}</a></td>
+                    <td translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</td>
+                    <td>{{elu.nom}}</td>
+                    <td>{{elu.prenom}}</td>
+                    <td>{{elu.nomJeuneFille}}</td>
+                    <td>{{elu.profession}}</td>
+                        <td>{{elu.dateNaissance | date:'mediumDate'}}</td>
+                    <td>{{elu.lieuNaissance}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="elu.detail({id:elu.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="elu.edit({id:elu.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="elu.delete({id:elu.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
