@@ -1,0 +1,22 @@
+{
+  "generator-jhipster": {
+    "baseName": "babylone14166",
+    "packageName": "fr.cridf.babylone14166",
+    "packageFolder": "fr/cridf/babylone14166",
+    "authenticationType": "session",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "useSass": true,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "enableTranslation": false,
+    "enableSocialSignIn": false,
+    "rememberMeKey": "27040d556c88acb821dd9f5c03f6474cf8aa43a2",
+    "testFrameworks": []
+  }
+}
