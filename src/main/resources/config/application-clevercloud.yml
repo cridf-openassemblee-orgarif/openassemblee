@@ -1,0 +1,17 @@
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://${POSTGRESQL_ADDON_HOST}:${POSTGRESQL_ADDON_PORT}/${POSTGRESQL_ADDON_DB}
+        username: ${POSTGRESQL_ADDON_USER}
+        password: ${POSTGRESQL_ADDON_PASSWORD}
+        maxActive: 2
+    data:
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
+server:
+    port: 8080
