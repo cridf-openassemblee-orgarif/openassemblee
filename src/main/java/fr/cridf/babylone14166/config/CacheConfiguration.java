@@ -1,23 +1,25 @@
 package fr.cridf.babylone14166.config;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ehcache.InstrumentedEhcache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.util.Assert;
-
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.function.Consumer;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
-import java.util.Set;
-import java.util.SortedSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.context.annotation.*;
+import org.springframework.util.Assert;
+
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.ehcache.InstrumentedEhcache;
 
 @Configuration
 @EnableCaching
@@ -39,7 +41,12 @@ public class CacheConfiguration {
     public void destroy() {
         log.info("Remove Cache Manager metrics");
         SortedSet<String> names = metricRegistry.getNames();
-        names.forEach(metricRegistry::remove);
+        names.forEach(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                metricRegistry.remove(s);
+            }
+        });
         log.info("Closing Cache Manager");
         cacheManager.shutdown();
     }

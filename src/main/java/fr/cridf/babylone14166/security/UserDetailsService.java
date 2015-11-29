@@ -1,8 +1,8 @@
 package fr.cridf.babylone14166.security;
 
-import fr.cridf.babylone14166.domain.Authority;
-import fr.cridf.babylone14166.domain.User;
-import fr.cridf.babylone14166.repository.UserRepository;
+import java.util.*;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.*;
-import java.util.stream.Collectors;
+import fr.cridf.babylone14166.domain.Authority;
+import fr.cridf.babylone14166.domain.User;
+import fr.cridf.babylone14166.repository.UserRepository;
 
 /**
  * Authenticate a user from the database.
@@ -33,17 +33,20 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase();
         Optional<User> userFromDatabase = userRepository.findOneByLogin(lowercaseLogin);
-        return userFromDatabase.map(user -> {
-            if (!user.getActivated()) {
-                throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
+        if (!userFromDatabase.isPresent()) {
+            throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
+                "database");
             }
-            List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                    .map(authority -> new SimpleGrantedAuthority(authority.getName()))
-                .collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(lowercaseLogin,
-                user.getPassword(),
-                grantedAuthorities);
-        }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
-        "database"));
+        User user = userFromDatabase.get();
+        if (!user.getActivated()) {
+            throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
+        }
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        for (Authority a : user.getAuthorities()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(a.getName()));
+        }
+        return new org.springframework.security.core.userdetails.User(lowercaseLogin,
+            user.getPassword(),
+            grantedAuthorities);
     }
 }

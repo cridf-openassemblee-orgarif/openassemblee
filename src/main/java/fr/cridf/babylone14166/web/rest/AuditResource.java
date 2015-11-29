@@ -1,17 +1,16 @@
 package fr.cridf.babylone14166.web.rest;
 
-import fr.cridf.babylone14166.service.AuditEventService;
-
 import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Function;
+import javax.inject.Inject;
+
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import javax.inject.Inject;
-import java.util.List;
+import fr.cridf.babylone14166.service.AuditEventService;
 
 /**
  * REST controller for getting the audit events.
@@ -45,7 +44,12 @@ public class AuditResource {
         method = RequestMethod.GET)
     public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
         return auditEventService.find(id)
-                .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map(new Function<AuditEvent, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(AuditEvent auditEvent) {
+                    return new ResponseEntity<>(auditEvent, HttpStatus.OK);
+                }
+            })
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

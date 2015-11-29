@@ -1,7 +1,22 @@
 package fr.cridf.babylone14166.web.rest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.*;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
-import fr.cridf.babylone14166.domain.Authority;
+
 import fr.cridf.babylone14166.domain.PersistentToken;
 import fr.cridf.babylone14166.domain.User;
 import fr.cridf.babylone14166.repository.PersistentTokenRepository;
@@ -11,21 +26,6 @@ import fr.cridf.babylone14166.service.MailService;
 import fr.cridf.babylone14166.service.UserService;
 import fr.cridf.babylone14166.web.rest.dto.KeyAndPasswordDTO;
 import fr.cridf.babylone14166.web.rest.dto.UserDTO;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
 
 /**
  * REST controller for managing the current user's account.
@@ -55,26 +55,36 @@ public class AccountResource {
         method = RequestMethod.POST,
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
+    public ResponseEntity<?> registerAccount(final @Valid @RequestBody UserDTO userDTO, final HttpServletRequest
+        request) {
         return userRepository.findOneByLogin(userDTO.getLogin())
-            .map(user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(userDTO.getEmail())
-                .map(user -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    return new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST);
+                }
+            })
+            .orElseGet(new Supplier<ResponseEntity>() {
+                @Override
+                public ResponseEntity get() {
+                    Optional<User> optionalUser = userRepository.findOneByEmail(userDTO.getEmail());
+                    if (optionalUser.isPresent()) {
+                        return new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST);
+                    }
                     User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
-                    userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-                    userDTO.getLangKey());
+                        userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
+                        userDTO.getLangKey());
                     String baseUrl = request.getScheme() + // "http"
-                    "://" +                                // "://"
-                    request.getServerName() +              // "myhost"
-                    ":" +                                  // ":"
-                    request.getServerPort() +              // "80"
-                    request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                        "://" +                                // "://"
+                        request.getServerName() +              // "myhost"
+                        ":" +                                  // ":"
+                        request.getServerPort() +              // "80"
+                        request.getContextPath();              // "/myContextPath" or "" if deployed in root context
 
                     mailService.sendActivationEmail(user, baseUrl);
                     return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-        );
+                }
+            });
     }
 
     /**
@@ -86,7 +96,12 @@ public class AccountResource {
     @Timed
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return Optional.ofNullable(userService.activateRegistration(key))
-            .map(user -> new ResponseEntity<String>(HttpStatus.OK))
+            .map(new Function<Optional<User>, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(Optional<User> user) {
+                    return new ResponseEntity<String>(HttpStatus.OK);
+                }
+            })
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
@@ -111,7 +126,12 @@ public class AccountResource {
     @Timed
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
-            .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+                }
+            })
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
@@ -122,15 +142,23 @@ public class AccountResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<String> saveAccount(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> saveAccount(final @RequestBody UserDTO userDTO) {
         return userRepository
             .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
-            .map(u -> {
-                userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-                    userDTO.getLangKey());
-                return new ResponseEntity<String>(HttpStatus.OK);
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+                        userDTO.getLangKey());
+                    return new ResponseEntity<String>(HttpStatus.OK);
+                }
             })
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .orElseGet(new Supplier<ResponseEntity>() {
+                @Override
+                public ResponseEntity get() {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            });
     }
 
     /**
@@ -157,9 +185,13 @@ public class AccountResource {
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
         return userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
-            .map(user -> new ResponseEntity<>(
-                persistentTokenRepository.findByUser(user),
-                HttpStatus.OK))
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    return new ResponseEntity(persistentTokenRepository.findByUser(user),
+                        HttpStatus.OK);
+                }
+            })
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
@@ -180,11 +212,24 @@ public class AccountResource {
         method = RequestMethod.DELETE)
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
-        String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
-            persistentTokenRepository.findByUser(u).stream()
-                .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
-                .findAny().ifPresent(t -> persistentTokenRepository.delete(decodedSeries));
+        final String decodedSeries = URLDecoder.decode(series, "UTF-8");
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                persistentTokenRepository.findByUser(user).stream()
+                    .filter(new Predicate<PersistentToken>() {
+                        @Override
+                        public boolean test(PersistentToken persistentToken) {
+                            return StringUtils.equals(persistentToken.getSeries(), decodedSeries);
+                        }
+                    })
+                    .findAny().ifPresent(new Consumer<PersistentToken>() {
+                    @Override
+                    public void accept(PersistentToken persistentToken) {
+                        persistentTokenRepository.delete(decodedSeries);
+                    }
+                });
+            }
         });
     }
 
@@ -192,17 +237,20 @@ public class AccountResource {
         method = RequestMethod.POST,
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public ResponseEntity<?> requestPasswordReset(@RequestBody String mail, HttpServletRequest request) {
+    public ResponseEntity<?> requestPasswordReset(@RequestBody String mail, final HttpServletRequest request) {
         return userService.requestPasswordReset(mail)
-            .map(user -> {
-                String baseUrl = request.getScheme() +
-                    "://" +
-                    request.getServerName() +
-                    ":" +
-                    request.getServerPort() +
-                    request.getContextPath();
-                mailService.sendPasswordResetMail(user, baseUrl);
-                return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    String baseUrl = request.getScheme() +
+                        "://" +
+                        request.getServerName() +
+                        ":" +
+                        request.getServerPort() +
+                        request.getContextPath();
+                    mailService.sendPasswordResetMail(user, baseUrl);
+                    return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
+                }
             }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
     }
 
@@ -215,7 +263,12 @@ public class AccountResource {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
-              .map(user -> new ResponseEntity<String>(HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    return new ResponseEntity<String>(HttpStatus.OK);
+                }
+            }).orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     private boolean checkPasswordLength(String password) {

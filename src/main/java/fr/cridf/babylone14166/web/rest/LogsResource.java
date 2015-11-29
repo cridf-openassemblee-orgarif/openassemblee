@@ -1,17 +1,17 @@
 package fr.cridf.babylone14166.web.rest;
 
-import fr.cridf.babylone14166.web.rest.dto.LoggerDTO;
+import java.util.ArrayList;
+import java.util.List;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import com.codahale.metrics.annotation.Timed;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.codahale.metrics.annotation.Timed;
+
+import ch.qos.logback.classic.*;
+import fr.cridf.babylone14166.web.rest.dto.LoggerDTO;
 
 /**
  * Controller for view and managing Log Level at runtime.
@@ -26,10 +26,11 @@ public class LogsResource {
     @Timed
     public List<LoggerDTO> getList() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        return context.getLoggerList()
-            .stream()
-            .map(LoggerDTO::new)
-            .collect(Collectors.toList());
+        List<LoggerDTO> list = new ArrayList<>();
+        for (Logger l : context.getLoggerList()) {
+            list.add(new LoggerDTO(l));
+        }
+        return list;
     }
 
     @RequestMapping(value = "/logs",

@@ -1,27 +1,24 @@
 package fr.cridf.babylone14166.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.function.Function;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Elu.
@@ -98,9 +95,14 @@ public class EluResource {
     public ResponseEntity<Elu> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);
         return Optional.ofNullable(eluRepository.findOne(id))
-            .map(elu -> new ResponseEntity<>(
-                elu,
-                HttpStatus.OK))
+            .map(new Function<Elu, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(Elu elu) {
+                    return new ResponseEntity<>(
+                        elu,
+                        HttpStatus.OK);
+                }
+            })
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -127,8 +129,11 @@ public class EluResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<Elu> searchElus(@PathVariable String query) {
-        return StreamSupport
-            .stream(eluSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        Iterable<Elu> result = eluSearchRepository.search(queryStringQuery(query));
+        List<Elu> list = new ArrayList<>();
+        for (Elu elu : result) {
+            list.add(elu);
+        }
+        return list;
     }
 }

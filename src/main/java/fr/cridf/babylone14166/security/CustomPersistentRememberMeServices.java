@@ -1,9 +1,14 @@
 package fr.cridf.babylone14166.security;
 
-import fr.cridf.babylone14166.domain.PersistentToken;
-import fr.cridf.babylone14166.domain.User;
-import fr.cridf.babylone14166.repository.PersistentTokenRepository;
-import fr.cridf.babylone14166.repository.UserRepository;
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -16,12 +21,10 @@ import org.springframework.security.web.authentication.rememberme.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.Arrays;
+import fr.cridf.babylone14166.domain.PersistentToken;
+import fr.cridf.babylone14166.domain.User;
+import fr.cridf.babylone14166.repository.PersistentTokenRepository;
+import fr.cridf.babylone14166.repository.UserRepository;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.
@@ -103,22 +106,30 @@ public class CustomPersistentRememberMeServices extends
     }
 
     @Override
-    protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication
+    protected void onLoginSuccess(final HttpServletRequest request, HttpServletResponse response, Authentication
         successfulAuthentication) {
 
-        String login = successfulAuthentication.getName();
+        final String login = successfulAuthentication.getName();
 
         log.debug("Creating new persistent login for user {}", login);
-        PersistentToken token = userRepository.findOneByLogin(login).map(u -> {
-            PersistentToken t = new PersistentToken();
-            t.setSeries(generateSeriesData());
-            t.setUser(u);
-            t.setTokenValue(generateTokenData());
-            t.setTokenDate(LocalDate.now());
-            t.setIpAddress(request.getRemoteAddr());
-            t.setUserAgent(request.getHeader("User-Agent"));
-            return t;
-        }).orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
+        PersistentToken token = userRepository.findOneByLogin(login).map(new Function<User, PersistentToken>() {
+            @Override
+            public PersistentToken apply(User user) {
+                PersistentToken t = new PersistentToken();
+                t.setSeries(generateSeriesData());
+                t.setUser(user);
+                t.setTokenValue(generateTokenData());
+                t.setTokenDate(LocalDate.now());
+                t.setIpAddress(request.getRemoteAddr());
+                t.setUserAgent(request.getHeader("User-Agent"));
+                return t;
+            }
+        }).orElseThrow(new Supplier<UsernameNotFoundException>() {
+            @Override
+            public UsernameNotFoundException get() {
+                return new UsernameNotFoundException("User " + login + " was not found in the database");
+            }
+        });
         try {
             persistentTokenRepository.saveAndFlush(token);
             addCookie(token, request, response);

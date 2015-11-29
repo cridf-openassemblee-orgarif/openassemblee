@@ -1,13 +1,13 @@
 package fr.cridf.babylone14166.web.rest.dto;
 
-import fr.cridf.babylone14166.domain.Authority;
-import fr.cridf.babylone14166.domain.User;
+import java.util.HashSet;
+import java.util.Set;
+import javax.validation.constraints.*;
 
 import org.hibernate.validator.constraints.Email;
 
-import javax.validation.constraints.*;
-import java.util.Set;
-import java.util.stream.Collectors;
+import fr.cridf.babylone14166.domain.Authority;
+import fr.cridf.babylone14166.domain.User;
 /**
  * A DTO representing a user, with his authorities.
  */
@@ -47,9 +47,11 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
+            user.getEmail(), user.getActivated(), user.getLangKey(), null);
+        authorities = new HashSet<>();
+        for (Authority a : user.getAuthorities()) {
+            authorities.add(a.getName());
+        }
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,

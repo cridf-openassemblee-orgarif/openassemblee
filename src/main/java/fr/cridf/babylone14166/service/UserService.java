@@ -1,16 +1,11 @@
 package fr.cridf.babylone14166.service;
 
-import fr.cridf.babylone14166.domain.Authority;
-import fr.cridf.babylone14166.domain.PersistentToken;
-import fr.cridf.babylone14166.domain.User;
-import fr.cridf.babylone14166.repository.AuthorityRepository;
-import fr.cridf.babylone14166.repository.PersistentTokenRepository;
-import fr.cridf.babylone14166.repository.UserRepository;
-import fr.cridf.babylone14166.repository.search.UserSearchRepository;
-import fr.cridf.babylone14166.security.SecurityUtils;
-import fr.cridf.babylone14166.service.util.RandomUtil;
-import java.time.ZonedDateTime;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.function.*;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,8 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.*;
+import fr.cridf.babylone14166.domain.*;
+import fr.cridf.babylone14166.repository.*;
+import fr.cridf.babylone14166.repository.search.UserSearchRepository;
+import fr.cridf.babylone14166.security.SecurityUtils;
+import fr.cridf.babylone14166.service.util.RandomUtil;
 
 /**
  * Service class for managing users.
@@ -47,44 +45,59 @@ public class UserService {
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
-        userRepository.findOneByActivationKey(key)
-            .map(user -> {
-                // activate given user for the registration key.
-                user.setActivated(true);
-                user.setActivationKey(null);
-                userRepository.save(user);
-                userSearchRepository.save(user);
-                log.debug("Activated user: {}", user);
-                return user;
-            });
+        Optional<User> optional = userRepository.findOneByActivationKey(key);
+        if (optional.isPresent()) {
+            User user = optional.get();
+            // activate given user for the registration key.
+            user.setActivated(true);
+            user.setActivationKey(null);
+            userRepository.save(user);
+            userSearchRepository.save(user);
+            log.debug("Activated user: {}", user);
+            return optional;
+        }
         return Optional.empty();
     }
 
-    public Optional<User> completePasswordReset(String newPassword, String key) {
+    public Optional<User> completePasswordReset(final String newPassword, String key) {
        log.debug("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
-            .filter(user -> {
-                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                return user.getResetDate().isAfter(oneDayAgo);
+           .filter(new Predicate<User>() {
+               @Override
+               public boolean test(User user) {
+                   ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
+                   return user.getResetDate().isAfter(oneDayAgo);
+               }
            })
-           .map(user -> {
-                user.setPassword(passwordEncoder.encode(newPassword));
-                user.setResetKey(null);
-                user.setResetDate(null);
-                userRepository.save(user);
-                return user;
+           .map(new Function<User, User>() {
+               @Override
+               public User apply(User user) {
+                   user.setPassword(passwordEncoder.encode(newPassword));
+                   user.setResetKey(null);
+                   user.setResetDate(null);
+                   userRepository.save(user);
+                   return user;
+               }
            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
-            .filter(User::getActivated)
-            .map(user -> {
-                user.setResetKey(RandomUtil.generateResetKey());
-                user.setResetDate(ZonedDateTime.now());
-                userRepository.save(user);
-                return user;
+            .filter(new Predicate<User>() {
+                @Override
+                public boolean test(User user) {
+                    return user.getActivated();
+                }
+            })
+            .map(new Function<User, User>() {
+                @Override
+                public User apply(User user) {
+                    user.setResetKey(RandomUtil.generateResetKey());
+                    user.setResetDate(ZonedDateTime.now());
+                    userRepository.save(user);
+                    return user;
+                }
             });
     }
 
@@ -114,32 +127,42 @@ public class UserService {
         return newUser;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
-            u.setFirstName(firstName);
-            u.setLastName(lastName);
-            u.setEmail(email);
-            u.setLangKey(langKey);
-            userRepository.save(u);
-            userSearchRepository.save(u);
-            log.debug("Changed Information for User: {}", u);
+    public void updateUserInformation(final String firstName, final String lastName, final String email,
+        final String langKey) {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
+            @Override
+            public void accept(User u) {
+                u.setFirstName(firstName);
+                u.setLastName(lastName);
+                u.setEmail(email);
+                u.setLangKey(langKey);
+                userRepository.save(u);
+                userSearchRepository.save(u);
+                log.debug("Changed Information for User: {}", u);
+            }
         });
     }
 
-    public void changePassword(String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
-            String encryptedPassword = passwordEncoder.encode(password);
-            u.setPassword(encryptedPassword);
-            userRepository.save(u);
-            log.debug("Changed password for User: {}", u);
+    public void changePassword(final String password) {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
+            @Override
+            public void accept(User u) {
+                String encryptedPassword = passwordEncoder.encode(password);
+                u.setPassword(encryptedPassword);
+                userRepository.save(u);
+                log.debug("Changed password for User: {}", u);
+            }
         });
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneByLogin(login).map(u -> {
-            u.getAuthorities().size();
-            return u;
+        return userRepository.findOneByLogin(login).map(new Function<User, User>() {
+            @Override
+            public User apply(User u) {
+                u.getAuthorities().size();
+                return u;
+            }
         });
     }
 
@@ -168,11 +191,15 @@ public class UserService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void removeOldPersistentTokens() {
         LocalDate now = LocalDate.now();
-        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(token -> {
-            log.debug("Deleting token {}", token.getSeries());
-            User user = token.getUser();
-            user.getPersistentTokens().remove(token);
-            persistentTokenRepository.delete(token);
+        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(new Consumer
+            <PersistentToken>() {
+            @Override
+            public void accept(PersistentToken token) {
+                log.debug("Deleting token {}", token.getSeries());
+                User user = token.getUser();
+                user.getPersistentTokens().remove(token);
+                persistentTokenRepository.delete(token);
+            }
         });
     }
 

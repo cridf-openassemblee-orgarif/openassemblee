@@ -1,6 +1,24 @@
 package fr.cridf.babylone14166.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.function.*;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
 import fr.cridf.babylone14166.domain.Authority;
 import fr.cridf.babylone14166.domain.User;
 import fr.cridf.babylone14166.repository.AuthorityRepository;
@@ -9,29 +27,8 @@ import fr.cridf.babylone14166.repository.search.UserSearchRepository;
 import fr.cridf.babylone14166.security.AuthoritiesConstants;
 import fr.cridf.babylone14166.service.UserService;
 import fr.cridf.babylone14166.web.rest.dto.ManagedUserDTO;
-import fr.cridf.babylone14166.web.rest.dto.UserDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing users.
@@ -103,28 +100,40 @@ public class UserResource {
     @Timed
     @Transactional
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ManagedUserDTO> updateUser(@RequestBody ManagedUserDTO managedUserDTO) throws URISyntaxException {
+    public ResponseEntity<ManagedUserDTO> updateUser(final @RequestBody ManagedUserDTO managedUserDTO) throws
+        URISyntaxException {
         log.debug("REST request to update User : {}", managedUserDTO);
         return userRepository
             .findOneById(managedUserDTO.getId())
-            .map(user -> {
-                user.setLogin(managedUserDTO.getLogin());
-                user.setFirstName(managedUserDTO.getFirstName());
-                user.setLastName(managedUserDTO.getLastName());
-                user.setEmail(managedUserDTO.getEmail());
-                user.setActivated(managedUserDTO.isActivated());
-                user.setLangKey(managedUserDTO.getLangKey());
-                Set<Authority> authorities = user.getAuthorities();
-                authorities.clear();
-                managedUserDTO.getAuthorities().stream().forEach(
-                    authority -> authorities.add(authorityRepository.findOne(authority))
-                );
-                return ResponseEntity.ok()
-                    .headers(HeaderUtil.createEntityUpdateAlert("user", managedUserDTO.getLogin()))
-                    .body(new ManagedUserDTO(userRepository
-                        .findOne(managedUserDTO.getId())));
+            .map(new Function<User, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(User user) {
+                    user.setLogin(managedUserDTO.getLogin());
+                    user.setFirstName(managedUserDTO.getFirstName());
+                    user.setLastName(managedUserDTO.getLastName());
+                    user.setEmail(managedUserDTO.getEmail());
+                    user.setActivated(managedUserDTO.isActivated());
+                    user.setLangKey(managedUserDTO.getLangKey());
+                    final Set<Authority> authorities = user.getAuthorities();
+                    authorities.clear();
+                    managedUserDTO.getAuthorities().stream().forEach(new Consumer<String>() {
+                        @Override
+                        public void accept(String authority) {
+                            authorities.add(authorityRepository.findOne(authority));
+                        }
+                    });
+                    return ResponseEntity.ok()
+                        .headers(HeaderUtil.createEntityUpdateAlert("user", managedUserDTO.getLogin()))
+                        .body(new ManagedUserDTO(userRepository
+                            .findOne(managedUserDTO.getId())));
+                }
             })
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .orElseGet(new Supplier<ResponseEntity>() {
+                @Override
+                public ResponseEntity get() {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            });
     }
 
     /**
@@ -138,9 +147,10 @@ public class UserResource {
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
         Page<User> page = userRepository.findAll(pageable);
-        List<ManagedUserDTO> managedUserDTOs = page.getContent().stream()
-            .map(user -> new ManagedUserDTO(user))
-            .collect(Collectors.toList());
+        List<ManagedUserDTO> managedUserDTOs = new ArrayList<>();
+        for (User u : page.getContent()) {
+            managedUserDTOs.add(new ManagedUserDTO(u));
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(managedUserDTOs, headers, HttpStatus.OK);
     }
@@ -155,8 +165,18 @@ public class UserResource {
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return userService.getUserWithAuthoritiesByLogin(login)
-                .map(ManagedUserDTO::new)
-                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
+            .map(new Function<User, ManagedUserDTO>() {
+                @Override
+                public ManagedUserDTO apply(User user) {
+                    return new ManagedUserDTO(user);
+                }
+            })
+            .map(new Function<ManagedUserDTO, ResponseEntity>() {
+                @Override
+                public ResponseEntity apply(ManagedUserDTO managedUserDTO) {
+                    return new ResponseEntity<>(managedUserDTO, HttpStatus.OK);
+                }
+            })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -169,8 +189,11 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<User> search(@PathVariable String query) {
-        return StreamSupport
-            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        Iterable<User> result = userSearchRepository.search(queryStringQuery(query));
+        List<User> users = new ArrayList<>();
+        for (User u : result) {
+            users.add(u);
+        }
+        return users;
     }
 }
