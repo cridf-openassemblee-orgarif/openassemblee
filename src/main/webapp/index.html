@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
@@ -25,6 +23,8 @@
     <link rel="stylesheet" href="assets/styles/main.css">
     <!-- endbuild -->
 
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -82,7 +82,9 @@
     <!-- =============================================== -->
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" ui-view="content" ng-cloak></div>
+    <div class="content-wrapper">
+        <div ui-view="content" ng-cloak></div>
+    </div>
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
