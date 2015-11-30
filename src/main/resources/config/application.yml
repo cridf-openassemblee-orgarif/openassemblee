@@ -51,11 +51,3 @@ jhipster:
         rememberme:
             # security key (this key should be unique for your application, and kept secret)
             key: 27040d556c88acb821dd9f5c03f6474cf8aa43a2
-    swagger:
-        title: babylone14166 API
-        description: babylone14166 API documentation
-        version: 0.0.1
-        termsOfServiceUrl:
-        contact:
-        license:
-        licenseUrl:
