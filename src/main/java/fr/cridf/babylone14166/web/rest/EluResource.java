@@ -17,7 +17,9 @@ import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.search.AdressePostaleSearchRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
+import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -33,7 +35,13 @@ public class EluResource {
     private EluRepository eluRepository;
 
     @Inject
+    private EluService eluService;
+
+    @Inject
     private EluSearchRepository eluSearchRepository;
+
+    @Inject
+    private AdressePostaleSearchRepository adressePostaleSearchRepository;
 
     /**
      * POST  /elus -> Create a new elu.
@@ -47,8 +55,11 @@ public class EluResource {
         if (elu.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new elu cannot already have an ID").body(null);
         }
-        Elu result = eluRepository.save(elu);
+        Elu result = eluService.save(elu);
         eluSearchRepository.save(result);
+        if (elu.getAdressesPostales() != null && elu.getAdressesPostales().size() > 0) {
+            adressePostaleSearchRepository.save(elu.getAdressesPostales());
+        }
         return ResponseEntity.created(new URI("/api/elus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", result.getId().toString()))
             .body(result);
@@ -57,6 +68,7 @@ public class EluResource {
     /**
      * PUT  /elus -> Updates an existing elu.
      */
+    // TODO if adresse n'a pas d'id...
     @RequestMapping(value = "/elus",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,7 +106,7 @@ public class EluResource {
     @Timed
     public ResponseEntity<Elu> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);
-        Elu elu = eluRepository.findOne(id);
+        Elu elu = eluService.get(id);
         if (elu != null) {
             return new ResponseEntity<>(elu, HttpStatus.OK);
         }

@@ -8,7 +8,8 @@ angular.module('babylone14166App')
                 url: '/elus',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'Elus'
+                    // TODO mlo keep ça en fait ?
+                    pageTitle: 'Élus'
                 },
                 views: {
                     'content@': {
@@ -18,12 +19,40 @@ angular.module('babylone14166App')
                 },
                 resolve: {}
             })
-            .state('elu.detail', {
+            .state('elus.new', {
+                parent: 'elus',
+                url: '/new',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: "Ajout d'un élu"
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/elus/elu-edit.html',
+                        controller: 'EluEditController'
+                    }
+                },
+                resolve: {
+                    entity: function () {
+                        return {
+                            civilite: null,
+                            nom: null,
+                            prenom: null,
+                            nomJeuneFille: null,
+                            profession: null,
+                            dateNaissance: null,
+                            lieuNaissance: null,
+                            id: null
+                        };
+                    }
+                }
+            })
+            .state('elus.elu', {
                 parent: 'site',
                 url: '/elu/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'Elu'
+                    pageTitle: 'Élu'
                 },
                 views: {
                     'content@': {
@@ -37,7 +66,7 @@ angular.module('babylone14166App')
                     }]
                 }
             })
-            .state('elu.delete', {
+            .state('elus.delete', {
                 parent: 'elus',
                 url: '/{id}/delete',
                 data: {

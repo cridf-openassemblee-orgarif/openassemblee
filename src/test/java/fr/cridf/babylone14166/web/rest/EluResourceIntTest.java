@@ -13,7 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -53,8 +54,8 @@ import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 @IntegrationTest
 public class EluResourceIntTest {
 
-    private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
-    private static final Civilite UPDATED_CIVILITE = Civilite.Madame;
+    private static final Civilite DEFAULT_CIVILITE = Civilite.MONSIEUR;
+    private static final Civilite UPDATED_CIVILITE = Civilite.MADAME;
     private static final String DEFAULT_NOM = "AAAAA";
     private static final String UPDATED_NOM = "BBBBB";
     private static final String DEFAULT_PRENOM = "AAAAA";
@@ -110,7 +111,7 @@ public class EluResourceIntTest {
         elu.setProfession(DEFAULT_PROFESSION);
         elu.setDateNaissance(DEFAULT_DATE_NAISSANCE);
         elu.setLieuNaissance(DEFAULT_LIEU_NAISSANCE);
-        Set<AdressePostale> adressesPostales = new HashSet<>();
+        List<AdressePostale> adressesPostales = new ArrayList<>();
         adressePostale = new AdressePostale();
         adressePostale = new AdressePostale();
         adressePostale.setNatureProPerso(DEFAULT_NATURE_PRO_PERSO);
@@ -190,7 +191,8 @@ public class EluResourceIntTest {
             .andExpect(jsonPath("$.nomJeuneFille").value(DEFAULT_NOM_JEUNE_FILLE.toString()))
             .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
             .andExpect(jsonPath("$.dateNaissance").value(DEFAULT_DATE_NAISSANCE.toString()))
-            .andExpect(jsonPath("$.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()));
+            .andExpect(jsonPath("$.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()))
+            .andExpect(jsonPath("$.adressesPostales[0].rue").value(DEFAULT_RUE));
         // TODO mlo test adresse + verifier ne vient pas avec les listes (?)
     }
 

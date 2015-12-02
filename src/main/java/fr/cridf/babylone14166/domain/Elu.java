@@ -46,12 +46,13 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
-    @OneToMany
+    // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
+    @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "elu_adresses_Postales",
         joinColumns = @JoinColumn(name = "elu_id"),
         inverseJoinColumns = @JoinColumn(name = "adresse_postale_id"))
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AdressePostale> adressesPostales = new HashSet<>();
+    private List<AdressePostale> adressesPostales = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -117,11 +118,11 @@ public class Elu implements Serializable {
         this.lieuNaissance = lieuNaissance;
     }
 
-    public Set<AdressePostale> getAdressesPostales() {
+    public List<AdressePostale> getAdressesPostales() {
         return adressesPostales;
     }
 
-    public void setAdressesPostales(Set<AdressePostale> adressesPostales) {
+    public void setAdressesPostales(List<AdressePostale> adressesPostales) {
         this.adressesPostales = adressesPostales;
     }
 

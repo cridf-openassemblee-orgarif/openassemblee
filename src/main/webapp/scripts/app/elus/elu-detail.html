@@ -1,78 +1,49 @@
-
 <div>
-    <h2><span>Elu</span> {{elu.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Civilité</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Nom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.nom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Prénom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.prenom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Nom de jeune fille</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.nomJeuneFille}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Profession</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.profession}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Date de naissance</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.dateNaissance | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>LieuNaissance</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.lieuNaissance}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{elu.civilite}} {{elu.nom}} {{elu.prenom}}
+        </h1>
+    </section>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container">
+            <h3>Coordonnées</h3>
+
+            <div class="row">
+                <div class="col-sm-2">Nom</div>
+                <div class="col-sm-10">{{elu.nom}}</div>
+                <div class="col-sm-2">Prénom</div>
+                <div class="col-sm-10">{{elu.prenom}}</div>
+                <div class="col-sm-2">Nom de jeune fille</div>
+                <div class="col-sm-10">{{elu.nomJeuneFille}}</div>
+                <div class="col-sm-2">Prénom</div>
+                <div class="col-sm-10">{{elu.prenom}}</div>
+                <div class="col-sm-2">Profession</div>
+                <div class="col-sm-10">{{elu.profession}}</div>
+                <div class="col-sm-2">Date de naissance</div>
+                <div class="col-sm-10">{{elu.dateNaissance | date:'mediumDate'}}</div>
+                <div class="col-sm-2">Lieu de naissance</div>
+                <div class="col-sm-10">{{elu.lieuNaissance}}</div>
+            </div>
+
+            <h3>Adresses postales</h3>
+
+            <div ng-repeat="adressePostale in elu.adressesPostales track by $index" class="row">
+                <div class="col-sm-2">Nature</div>
+                <div class="col-sm-10">{{adressePostale.natureProPerso}}</div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">{{adressePostale.rue}} {{adressePostale.codePostal}} {{adressePostale.ville}}
+                </div>
+                <div class="col-sm-2">Niveau de confidentialité</div>
+                <div class="col-sm-10">{{adressePostale.niveauConfidentialite | ouinon}}</div>
+                <div class="col-sm-2">Adresse de correspondance</div>
+                <div class="col-sm-10">{{adressePostale.adresseDeCorrespondance | ouinon}}</div>
+                <div class="col-sm-2">Publication dans l'annuaire</div>
+                <div class="col-sm-10">{{adressePostale.publicationAnnuaire | ouinon}}</div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
 </div>

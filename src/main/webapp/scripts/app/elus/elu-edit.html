@@ -1,0 +1,212 @@
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Ajouter ou modifier un élu
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container row">
+            <form name="editForm" role="form" novalidate ng-submit="save()" class="form-horizontal">
+                <div class="col-md-10">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Coordonnées</h3>
+                        </div>
+                        <div class="box-body">
+                            <jh-alert-error></jh-alert-error>
+                            <input type="hidden" class="form-control" id="id" name="id"
+                                   ng-model="elu.id" readonly/>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_civilite">Civilite</label>
+
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="civilite" ng-model="elu.civilite"
+                                            id="field_civilite">
+                                        <option value="MONSIEUR">Monsieur</option>
+                                        <option value="MADAME">Madame</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_nom">Nom</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nom" id="field_nom"
+                                           ng-model="elu.nom"
+                                        />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_prenom">Prénom</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="prenom" id="field_prenom"
+                                           ng-model="elu.prenom"
+                                        />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_nomJeuneFille">Nom de jeune
+                                    fille</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="nomJeuneFille"
+                                           id="field_nomJeuneFille"
+                                           ng-model="elu.nomJeuneFille"
+                                        />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_profession">Profession</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="profession" id="field_profession"
+                                           ng-model="elu.profession"
+                                        />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_dateNaissance">Date de
+                                    naissance</label>
+
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="dateNaissance"
+                                           id="field_dateNaissance"
+                                           ng-model="elu.dateNaissance"
+                                        />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="field_lieuNaissance">Lieu de
+                                    naissance</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="lieuNaissance"
+                                           id="field_lieuNaissance"
+                                           ng-model="elu.lieuNaissance"
+                                        />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Adresses postales</h3>
+                        </div>
+                        <div class="box-body">
+                            <button type="button" class="btn btn-sm btn-default" ng-click="addAdressePostale()">Ajouter
+                                une
+                                adresse postale
+                            </button>
+                            <div ng-repeat="adressePostale in elu.adressesPostales track by $index">
+                                <h3>Adresse n°{{$index + 1}}</h3>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_natureProPerso">
+                                        Nature : pro / perso</label>
+
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="natureProPerso"
+                                                ng-model="adressePostale.natureProPerso"
+                                                id="field_adressePostale_{{$index}}_natureProPerso">
+                                            <option value="PRO">PRO</option>
+                                            <option value="PERSO">PERSO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_rue">Rue</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="rue"
+                                               id="field_adressePostale_{{$index}}_rue"
+                                               ng-model="adressePostale.rue"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_codePostal">Code postal</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="codePostal"
+                                               id="field_adressePostale_{{$index}}_codePostal"
+                                               ng-model="adressePostale.codePostal"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="field_adressePostale_{{$index}}_ville">
+                                        Ville</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="ville"
+                                               id="field_adressePostale_{{$index}}_ville"
+                                               ng-model="adressePostale.ville"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_niveauConfidentialite">
+                                        Niveau de confidentialité</label>
+
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="niveauConfidentialite"
+                                                ng-model="adressePostale.niveauConfidentialite"
+                                                id="field_adressePostale_{{$index}}_niveauConfidentialite">
+                                            <option value="PUBLIABLE">Publiable</option>
+                                            <option value="CONFIDENTIEL">Confidentiel</option>
+                                            <option value="INTERNE">Interne</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_adresseDeCorrespondance">
+                                        Adresse de correspondance</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" name="adresseDeCorrespondance"
+                                               id="field_adressePostale_{{$index}}_adresseDeCorrespondance"
+                                               ng-model="adressePostale.adresseDeCorrespondance"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="field_adressePostale_{{$index}}_publicationAnnuaire">
+                                        Publication dans l'annuaire</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" name="publicationAnnuaire"
+                                               id="field_adressePostale_{{$index}}_publicationAnnuaire"
+                                               ng-model="adressePostale.publicationAnnuaire"
+                                            />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+                    </button>
+                    <button type="submit" ng-disabled="editForm.$invalid || isSaving"
+                            class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer le nouvel élu</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

@@ -20,8 +20,8 @@ spring:
             enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
         driver-class-name: org.h2.jdbcx.JdbcDataSource
-#        url: jdbc:h2:file:./target/h2db/db/babylone14166;DB_CLOSE_DELAY=-1
-        url: jdbc:h2:mem:babylone14166
+        url: jdbc:h2:file:./target/h2db/db/babylone14166;DB_CLOSE_DELAY=-1
+#        url: jdbc:h2:mem:babylone14166
         name:
         username:
         password:
