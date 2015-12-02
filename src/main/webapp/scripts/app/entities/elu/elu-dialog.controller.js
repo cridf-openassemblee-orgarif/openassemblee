@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('babylone14166App').controller('EluDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Elu',
-        function($scope, $stateParams, $modalInstance, entity, Elu) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Elu', 'AdressePostale',
+        function($scope, $stateParams, $modalInstance, entity, Elu, AdressePostale) {
 
         $scope.elu = entity;
+        $scope.adressepostales = AdressePostale.query();
         $scope.load = function(id) {
             Elu.get({id : id}, function(result) {
                 $scope.elu = result;

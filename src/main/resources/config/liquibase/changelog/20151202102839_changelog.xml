@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="1449052121082-3">
+        <createTable tableName="elu_adresses_postales">
+            <column name="elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adresse_postale_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="elu_id, adresse_postale_id" tableName="elu_adresses_postales"/>
+        <addUniqueConstraint columnNames="adresse_postale_id" tableName="elu_adresses_postales"/>
+        <addForeignKeyConstraint baseColumnNames="elu_id" baseTableName="elu_adresses_postales"
+                                 constraintName="FK_8gj8lnj7q8xqrvcd2fkvlwfc9" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="elu"/>
+        <addForeignKeyConstraint baseColumnNames="adresse_postale_id" baseTableName="elu_adresses_postales"
+                                 constraintName="FK_rirnhmr0tyohnpxwn8jw97p26" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="adresse_postale"/>
+    </changeSet>
+</databaseChangeLog>

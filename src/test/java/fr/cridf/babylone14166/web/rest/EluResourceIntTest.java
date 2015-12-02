@@ -1,38 +1,46 @@
 package fr.cridf.babylone14166.web.rest;
 
-import fr.cridf.babylone14166.Application;
-import fr.cridf.babylone14166.domain.Elu;
-import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.search.EluSearchRepository;
+import static fr.cridf.babylone14166.web.rest.AdressePostaleResourceIntTest.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import fr.cridf.babylone14166.Application;
+import fr.cridf.babylone14166.domain.AdressePostale;
+import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import fr.cridf.babylone14166.repository.AdressePostaleRepository;
+import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 
 /**
  * Test class for the EluResource REST controller.
@@ -45,9 +53,7 @@ import fr.cridf.babylone14166.domain.enumeration.Civilite;
 @IntegrationTest
 public class EluResourceIntTest {
 
-
-
-private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
+    private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     private static final Civilite UPDATED_CIVILITE = Civilite.Madame;
     private static final String DEFAULT_NOM = "AAAAA";
     private static final String UPDATED_NOM = "BBBBB";
@@ -70,6 +76,9 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     private EluSearchRepository eluSearchRepository;
 
     @Inject
+    private AdressePostaleRepository adressePostaleRepository;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -78,6 +87,7 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     private MockMvc restEluMockMvc;
 
     private Elu elu;
+    private AdressePostale adressePostale;
 
     @PostConstruct
     public void setup() {
@@ -100,6 +110,18 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
         elu.setProfession(DEFAULT_PROFESSION);
         elu.setDateNaissance(DEFAULT_DATE_NAISSANCE);
         elu.setLieuNaissance(DEFAULT_LIEU_NAISSANCE);
+        Set<AdressePostale> adressesPostales = new HashSet<>();
+        adressePostale = new AdressePostale();
+        adressePostale = new AdressePostale();
+        adressePostale.setNatureProPerso(DEFAULT_NATURE_PRO_PERSO);
+        adressePostale.setRue(DEFAULT_RUE);
+        adressePostale.setCodePostal(DEFAULT_CODE_POSTAL);
+        adressePostale.setVille(DEFAULT_VILLE);
+        adressePostale.setNiveauConfidentialite(DEFAULT_NIVEAU_CONFIDENTIALITE);
+        adressePostale.setAdresseDeCorrespondance(DEFAULT_ADRESSE_DE_CORRESPONDANCE);
+        adressePostale.setPublicationAnnuaire(DEFAULT_PUBLICATION_ANNUAIRE);
+        adressesPostales.add(adressePostale);
+        elu.setAdressesPostales(adressesPostales);
     }
 
     @Test
@@ -131,11 +153,13 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     @Transactional
     public void getAllElus() throws Exception {
         // Initialize the database
+        adressePostaleRepository.saveAndFlush(adressePostale);
         eluRepository.saveAndFlush(elu);
 
         // Get all the elus
         restEluMockMvc.perform(get("/api/elus"))
-                .andExpect(status().isOk())
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(elu.getId().intValue())))
                 .andExpect(jsonPath("$.[*].civilite").value(hasItem(DEFAULT_CIVILITE.toString())))
@@ -151,10 +175,12 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     @Transactional
     public void getElu() throws Exception {
         // Initialize the database
+        adressePostaleRepository.saveAndFlush(adressePostale);
         eluRepository.saveAndFlush(elu);
 
         // Get the elu
         restEluMockMvc.perform(get("/api/elus/{id}", elu.getId()))
+            //            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(elu.getId().intValue()))
@@ -165,6 +191,7 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
             .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
             .andExpect(jsonPath("$.dateNaissance").value(DEFAULT_DATE_NAISSANCE.toString()))
             .andExpect(jsonPath("$.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()));
+        // TODO mlo test adresse + verifier ne vient pas avec les listes (?)
     }
 
     @Test
@@ -179,6 +206,7 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     @Transactional
     public void updateElu() throws Exception {
         // Initialize the database
+        adressePostaleRepository.saveAndFlush(adressePostale);
         eluRepository.saveAndFlush(elu);
 
 		int databaseSizeBeforeUpdate = eluRepository.findAll().size();
@@ -214,6 +242,7 @@ private static final Civilite DEFAULT_CIVILITE = Civilite.Monsieur;
     @Transactional
     public void deleteElu() throws Exception {
         // Initialize the database
+        adressePostaleRepository.saveAndFlush(adressePostale);
         eluRepository.saveAndFlush(elu);
 
 		int databaseSizeBeforeDelete = eluRepository.findAll().size();

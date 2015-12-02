@@ -1,0 +1,44 @@
+{
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "natureProPerso",
+            "fieldType": "NatureProPerso",
+            "fieldValues": "PRO, PERSO"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "rue",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "codePostal",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "ville",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "niveauConfidentialite",
+            "fieldType": "NiveauConfidentialite",
+            "fieldValues": "PUBLIABLE, CONFIDENTIEL, INTERNE"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "adresseDeCorrespondance",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "publicationAnnuaire",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20151201164054",
+    "dto": "no",
+    "pagination": "no"
+}

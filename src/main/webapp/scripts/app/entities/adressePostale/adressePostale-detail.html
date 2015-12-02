@@ -1,0 +1,78 @@
+
+<div>
+    <h2><span>AdressePostale</span> {{adressePostale.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>NatureProPerso</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'babylone14166App.NatureProPerso.' + adressePostale.natureProPerso}}">{{adressePostale.natureProPerso}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Rue</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{adressePostale.rue}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CodePostal</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{adressePostale.codePostal}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Ville</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{adressePostale.ville}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>NiveauConfidentialite</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'babylone14166App.NiveauConfidentialite.' + adressePostale.niveauConfidentialite}}">{{adressePostale.niveauConfidentialite}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>AdresseDeCorrespondance</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{adressePostale.adresseDeCorrespondance}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>PublicationAnnuaire</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{adressePostale.publicationAnnuaire}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

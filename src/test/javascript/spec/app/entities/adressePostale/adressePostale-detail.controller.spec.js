@@ -1,15 +1,14 @@
 'use strict';
 
-describe('Elu Detail Controller', function() {
+describe('AdressePostale Detail Controller', function() {
     var $scope, $rootScope;
-    var MockEntity, MockElu, MockAdressePostale;
+    var MockEntity, MockAdressePostale;
     var createController;
 
     beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
         $scope = $rootScope.$new();
         MockEntity = jasmine.createSpy('MockEntity');
-        MockElu = jasmine.createSpy('MockElu');
         MockAdressePostale = jasmine.createSpy('MockAdressePostale');
         
 
@@ -17,18 +16,17 @@ describe('Elu Detail Controller', function() {
             '$scope': $scope,
             '$rootScope': $rootScope,
             'entity': MockEntity ,
-            'Elu': MockElu,
             'AdressePostale': MockAdressePostale
         };
         createController = function() {
-            $injector.get('$controller')("EluDetailController", locals);
+            $injector.get('$controller')("AdressePostaleDetailController", locals);
         };
     }));
 
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:eluUpdate';
+            var eventType = 'babylone14166App:adressePostaleUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

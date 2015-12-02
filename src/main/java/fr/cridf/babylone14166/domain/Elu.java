@@ -1,13 +1,13 @@
 package fr.cridf.babylone14166.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.*;
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
 
@@ -45,6 +45,13 @@ public class Elu implements Serializable {
 
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
+
+    @OneToMany
+    @JoinTable(name = "elu_adresses_Postales",
+        joinColumns = @JoinColumn(name = "elu_id"),
+        inverseJoinColumns = @JoinColumn(name = "adresse_postale_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<AdressePostale> adressesPostales = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -108,6 +115,14 @@ public class Elu implements Serializable {
 
     public void setLieuNaissance(String lieuNaissance) {
         this.lieuNaissance = lieuNaissance;
+    }
+
+    public Set<AdressePostale> getAdressesPostales() {
+        return adressesPostales;
+    }
+
+    public void setAdressesPostales(Set<AdressePostale> adressesPostales) {
+        this.adressesPostales = adressesPostales;
     }
 
     @Override

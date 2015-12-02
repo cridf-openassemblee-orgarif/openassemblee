@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity, Elu) {
+    .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity, Elu, AdressePostale) {
         $scope.elu = entity;
         $scope.load = function (id) {
             Elu.get({id: id}, function(result) {
