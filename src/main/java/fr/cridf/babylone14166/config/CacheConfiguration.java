@@ -2,7 +2,6 @@ package fr.cridf.babylone14166.config;
 
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.function.Consumer;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -41,12 +40,9 @@ public class CacheConfiguration {
     public void destroy() {
         log.info("Remove Cache Manager metrics");
         SortedSet<String> names = metricRegistry.getNames();
-        names.forEach(new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                metricRegistry.remove(s);
-            }
-        });
+        for (String name : names) {
+            metricRegistry.remove(name);
+        }
         log.info("Closing Cache Manager");
         cacheManager.shutdown();
     }

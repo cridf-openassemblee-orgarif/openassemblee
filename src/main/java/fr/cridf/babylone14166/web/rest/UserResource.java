@@ -5,7 +5,8 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.function.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -116,12 +117,10 @@ public class UserResource {
                     user.setLangKey(managedUserDTO.getLangKey());
                     final Set<Authority> authorities = user.getAuthorities();
                     authorities.clear();
-                    managedUserDTO.getAuthorities().stream().forEach(new Consumer<String>() {
-                        @Override
-                        public void accept(String authority) {
-                            authorities.add(authorityRepository.findOne(authority));
-                        }
-                    });
+                    Set<String> userAuthorities = managedUserDTO.getAuthorities();
+                    for (String userAuthority : userAuthorities) {
+                        authorities.add(authorityRepository.findOne(userAuthority));
+                    }
                     return ResponseEntity.ok()
                         .headers(HeaderUtil.createEntityUpdateAlert("user", managedUserDTO.getLogin()))
                         .body(new ManagedUserDTO(userRepository

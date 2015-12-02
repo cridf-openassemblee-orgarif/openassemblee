@@ -4,7 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -213,24 +214,15 @@ public class AccountResource {
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         final String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                persistentTokenRepository.findByUser(user).stream()
-                    .filter(new Predicate<PersistentToken>() {
-                        @Override
-                        public boolean test(PersistentToken persistentToken) {
-                            return StringUtils.equals(persistentToken.getSeries(), decodedSeries);
-                        }
-                    })
-                    .findAny().ifPresent(new Consumer<PersistentToken>() {
-                    @Override
-                    public void accept(PersistentToken persistentToken) {
-                        persistentTokenRepository.delete(decodedSeries);
-                    }
-                });
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
+        if (user.isPresent()) {
+            List<PersistentToken> tokens = persistentTokenRepository.findByUser(user.get());
+            for (PersistentToken token : tokens) {
+                if (StringUtils.equals(token.getSeries(), decodedSeries)) {
+                    persistentTokenRepository.delete(decodedSeries);
+                }
             }
-        });
+        }
     }
 
     @RequestMapping(value = "/account/reset_password/init",

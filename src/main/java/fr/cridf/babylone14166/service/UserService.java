@@ -3,7 +3,8 @@ package fr.cridf.babylone14166.service;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -129,30 +130,28 @@ public class UserService {
 
     public void updateUserInformation(final String firstName, final String lastName, final String email,
         final String langKey) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
-            @Override
-            public void accept(User u) {
-                u.setFirstName(firstName);
-                u.setLastName(lastName);
-                u.setEmail(email);
-                u.setLangKey(langKey);
-                userRepository.save(u);
-                userSearchRepository.save(u);
-                log.debug("Changed Information for User: {}", u);
-            }
-        });
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
+        if (user.isPresent()) {
+            User u = user.get();
+            u.setFirstName(firstName);
+            u.setLastName(lastName);
+            u.setEmail(email);
+            u.setLangKey(langKey);
+            userRepository.save(u);
+            userSearchRepository.save(u);
+            log.debug("Changed Information for User: {}", u);
+        }
     }
 
     public void changePassword(final String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(new Consumer<User>() {
-            @Override
-            public void accept(User u) {
-                String encryptedPassword = passwordEncoder.encode(password);
-                u.setPassword(encryptedPassword);
-                userRepository.save(u);
-                log.debug("Changed password for User: {}", u);
-            }
-        });
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
+        if (user.isPresent()) {
+            User u = user.get();
+            String encryptedPassword = passwordEncoder.encode(password);
+            u.setPassword(encryptedPassword);
+            userRepository.save(u);
+            log.debug("Changed password for User: {}", u);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -191,16 +190,14 @@ public class UserService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void removeOldPersistentTokens() {
         LocalDate now = LocalDate.now();
-        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(new Consumer
-            <PersistentToken>() {
-            @Override
-            public void accept(PersistentToken token) {
-                log.debug("Deleting token {}", token.getSeries());
-                User user = token.getUser();
-                user.getPersistentTokens().remove(token);
-                persistentTokenRepository.delete(token);
-            }
-        });
+        List<PersistentToken> tokens = persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1));
+        for (PersistentToken token : tokens) {
+            log.debug("Deleting token {}", token.getSeries());
+            User user = token.getUser();
+            user.getPersistentTokens().remove(token);
+            persistentTokenRepository.delete(token);
+
+        }
     }
 
     /**

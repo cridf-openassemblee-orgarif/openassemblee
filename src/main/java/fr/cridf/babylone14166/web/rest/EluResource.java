@@ -4,10 +4,10 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
-import java.util.function.Function;
+import java.util.List;
 import javax.inject.Inject;
 
+import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -94,17 +94,13 @@ public class EluResource {
     @Timed
     public ResponseEntity<Elu> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);
-        return Optional.ofNullable(eluRepository.findOne(id))
-            .map(new Function<Elu, ResponseEntity>() {
-                @Override
-                public ResponseEntity apply(Elu elu) {
-                    return new ResponseEntity<>(
-                        elu,
-                        HttpStatus.OK);
-                }
-            })
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Elu elu = eluRepository.findOne(id);
+        if (elu != null) {
+            return new ResponseEntity<>(elu, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
     /**
      * DELETE  /elus/:id -> delete the "id" elu.
@@ -129,11 +125,6 @@ public class EluResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<Elu> searchElus(@PathVariable String query) {
-        Iterable<Elu> result = eluSearchRepository.search(queryStringQuery(query));
-        List<Elu> list = new ArrayList<>();
-        for (Elu elu : result) {
-            list.add(elu);
-        }
-        return list;
+        return Lists.newArrayList(eluSearchRepository.search(queryStringQuery(query)));
     }
 }
