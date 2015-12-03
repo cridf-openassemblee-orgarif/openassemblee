@@ -548,17 +548,18 @@
                     <diffChangeLogFile>
                         src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
                     </diffChangeLogFile>
-                    <driver>org.h2.Driver</driver>
-                    <url>jdbc:h2:tcp://localhost:9092/./target/h2db/db/tmp</url>
-                    <defaultSchemaName/>
-                    <username/>
-                    <password/>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/babylone14166</url>
+                    <defaultSchemaName>babylone14166</defaultSchemaName>
+                    <username>root</username>
+                    <password></password>
                     <referenceUrl>
-                        hibernate:spring:fr.cridf.babylone14166.domain?dialect=org.hibernate.dialect.H2Dialect
+                        hibernate:spring:fr.cridf.babylone14166.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect
                     </referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
