@@ -28,20 +28,39 @@
                 <div class="col-sm-10">{{elu.lieuNaissance}}</div>
             </div>
 
-            <h3>Adresses postales</h3>
+            <h2>Adresses postales</h2>
 
             <div ng-repeat="adressePostale in elu.adressesPostales track by $index" class="row">
-                <div class="col-sm-2">Nature</div>
-                <div class="col-sm-10">{{adressePostale.natureProPerso}}</div>
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">{{adressePostale.rue}} {{adressePostale.codePostal}} {{adressePostale.ville}}
+                <h3>Adresse postale n°{{$index + 1}}</h3>
+
+                <div class="col-sm-4">Nature</div>
+                <div class="col-sm-8">{{adressePostale.natureProPerso}}</div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8">{{adressePostale.rue}} {{adressePostale.codePostal}} {{adressePostale.ville}}
                 </div>
-                <div class="col-sm-2">Niveau de confidentialité</div>
-                <div class="col-sm-10">{{adressePostale.niveauConfidentialite | ouinon}}</div>
-                <div class="col-sm-2">Adresse de correspondance</div>
-                <div class="col-sm-10">{{adressePostale.adresseDeCorrespondance | ouinon}}</div>
-                <div class="col-sm-2">Publication dans l'annuaire</div>
-                <div class="col-sm-10">{{adressePostale.publicationAnnuaire | ouinon}}</div>
+                <div class="col-sm-4">Niveau de confidentialité</div>
+                <div class="col-sm-8">{{adressePostale.niveauConfidentialite}}</div>
+                <div class="col-sm-4">Adresse de correspondance</div>
+                <div class="col-sm-8">{{adressePostale.adresseDeCorrespondance | ouinon}}</div>
+                <div class="col-sm-4">Publication dans l'annuaire</div>
+                <div class="col-sm-8">{{adressePostale.publicationAnnuaire | ouinon}}</div>
+            </div>
+
+            <h2>Numéros de téléphone</h2>
+
+            <div ng-repeat="numeroTelephone in elu.numerosTelephones track by $index" class="row">
+                <h3>Numéro de téléphone n°{{$index + 1}}</h3>
+
+                <div class="col-sm-4">Nature</div>
+                <div class="col-sm-8">{{numeroTelephone.natureProPerso}}</div>
+                <div class="col-sm-4">Fixe ou mobile</div>
+                <div class="col-sm-8">{{numeroTelephone.natureFixeMobile}}</div>
+                <div class="col-sm-4">Numéro</div>
+                <div class="col-sm-8">{{numeroTelephone.numero}}</div>
+                <div class="col-sm-4">Niveau de confidentialité</div>
+                <div class="col-sm-8">{{numeroTelephone.niveauConfidentialite}}</div>
+                <div class="col-sm-4">Publication dans l'annuaire</div>
+                <div class="col-sm-8">{{numeroTelephone.publicationAnnuaire | ouinon}}</div>
             </div>
         </div>
     </section>

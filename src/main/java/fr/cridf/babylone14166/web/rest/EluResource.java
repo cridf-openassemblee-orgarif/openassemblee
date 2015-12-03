@@ -17,7 +17,6 @@ import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.search.AdressePostaleSearchRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
@@ -40,9 +39,6 @@ public class EluResource {
     @Inject
     private EluSearchRepository eluSearchRepository;
 
-    @Inject
-    private AdressePostaleSearchRepository adressePostaleSearchRepository;
-
     /**
      * POST  /elus -> Create a new elu.
      */
@@ -56,10 +52,6 @@ public class EluResource {
             return ResponseEntity.badRequest().header("Failure", "A new elu cannot already have an ID").body(null);
         }
         Elu result = eluService.save(elu);
-        eluSearchRepository.save(result);
-        if (elu.getAdressesPostales() != null && elu.getAdressesPostales().size() > 0) {
-            adressePostaleSearchRepository.save(elu.getAdressesPostales());
-        }
         return ResponseEntity.created(new URI("/api/elus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", result.getId().toString()))
             .body(result);

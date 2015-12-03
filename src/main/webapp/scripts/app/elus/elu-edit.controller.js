@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('babylone14166App').controller('EluEditController',
-    ['$scope', '$stateParams', 'entity', 'Elu', 'AdressePostale',
-        function ($scope, $stateParams, entity, Elu, AdressePostale) {
+    ['$scope', '$stateParams', 'entity', 'Elu',
+        function ($scope, $stateParams, entity, Elu) {
 
             $scope.elu = entity;
-            $scope.adressepostales = AdressePostale.query();
             $scope.load = function (id) {
                 Elu.get({id: id}, function (result) {
                     $scope.elu = result;
@@ -39,5 +38,12 @@ angular.module('babylone14166App').controller('EluEditController',
                     $scope.elu.adressesPostales = [];
                 }
                 $scope.elu.adressesPostales.push({});
+            };
+
+            $scope.addNumeroTelephone = function () {
+                if ($scope.elu.numerosTelephones == null) {
+                    $scope.elu.numerosTelephones = [];
+                }
+                $scope.elu.numerosTelephones.push({});
             };
         }]);

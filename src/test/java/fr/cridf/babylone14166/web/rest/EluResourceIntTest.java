@@ -1,6 +1,5 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static fr.cridf.babylone14166.web.rest.AdressePostaleResourceIntTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -38,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cridf.babylone14166.Application;
 import fr.cridf.babylone14166.domain.AdressePostale;
 import fr.cridf.babylone14166.domain.Elu;
-import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import fr.cridf.babylone14166.domain.enumeration.*;
 import fr.cridf.babylone14166.repository.AdressePostaleRepository;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
@@ -69,6 +68,18 @@ public class EluResourceIntTest {
     private static final LocalDate UPDATED_DATE_NAISSANCE = LocalDate.now(ZoneId.systemDefault());
     private static final String DEFAULT_LIEU_NAISSANCE = "AAAAA";
     private static final String UPDATED_LIEU_NAISSANCE = "BBBBB";
+
+    private static final NatureProPerso DEFAULT_NATURE_PRO_PERSO = NatureProPerso.PRO;
+    private static final String DEFAULT_RUE = "AAAAA";
+    private static final String DEFAULT_CODE_POSTAL = "AAAAA";
+    private static final String DEFAULT_VILLE = "AAAAA";
+
+    private static final NiveauConfidentialite DEFAULT_NIVEAU_CONFIDENTIALITE = NiveauConfidentialite.PUBLIABLE;
+
+    private static final Boolean DEFAULT_ADRESSE_DE_CORRESPONDANCE = false;
+
+    private static final Boolean DEFAULT_PUBLICATION_ANNUAIRE = false;
+
 
     @Inject
     private EluRepository eluRepository;
@@ -165,7 +176,7 @@ public class EluResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(elu.getId().intValue())))
                 .andExpect(jsonPath("$.[*].civilite").value(hasItem(DEFAULT_CIVILITE.toString())))
                 .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM.toString())))
-                .andExpect(jsonPath("$.[*].prenom").value(hasItem(DEFAULT_PRENOM.toString())))
+            .andExpect(jsonPath("$.[*].prenom").value(hasItem(DEFAULT_PRENOM.toString())))
                 .andExpect(jsonPath("$.[*].nomJeuneFille").value(hasItem(DEFAULT_NOM_JEUNE_FILLE.toString())))
                 .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION.toString())))
                 .andExpect(jsonPath("$.[*].dateNaissance").value(hasItem(DEFAULT_DATE_NAISSANCE.toString())))

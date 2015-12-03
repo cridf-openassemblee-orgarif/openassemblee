@@ -48,11 +48,19 @@ public class Elu implements Serializable {
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "elu_adresses_Postales",
+    @JoinTable(name = "elu_adresses_postales",
         joinColumns = @JoinColumn(name = "elu_id"),
         inverseJoinColumns = @JoinColumn(name = "adresse_postale_id"))
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<AdressePostale> adressesPostales = new ArrayList<>();
+
+    // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
+    @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "elu_numero_telephone",
+        joinColumns = @JoinColumn(name = "elu_id"),
+        inverseJoinColumns = @JoinColumn(name = "numero_telephone_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<NumeroTelephone> numerosTelephones = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -124,6 +132,14 @@ public class Elu implements Serializable {
 
     public void setAdressesPostales(List<AdressePostale> adressesPostales) {
         this.adressesPostales = adressesPostales;
+    }
+
+    public List<NumeroTelephone> getNumerosTelephones() {
+        return numerosTelephones;
+    }
+
+    public void setNumerosTelephones(List<NumeroTelephone> numerosTelephones) {
+        this.numerosTelephones = numerosTelephones;
     }
 
     @Override

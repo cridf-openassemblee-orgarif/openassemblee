@@ -10,6 +10,9 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151201164054_added_entity_AdressePostale.xml"
              relativeToChangelogFile="false"/>
-    <!--JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20151202102839_changelog.xml"/>
+    <include file="classpath:config/liquibase/changelog/20151203080001_added_entity_NumeroTelephone.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151203081740_changelog.xml"/>
+    <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

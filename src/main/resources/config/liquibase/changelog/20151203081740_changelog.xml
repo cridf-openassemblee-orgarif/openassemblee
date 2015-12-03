@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="1449130662845-4">
+        <createTable tableName="elu_numero_telephone">
+            <column name="elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="numero_telephone_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="elu_id, numero_telephone_id" tableName="elu_numero_telephone"/>
+        <addUniqueConstraint columnNames="numero_telephone_id" tableName="elu_numero_telephone"/>
+        <addForeignKeyConstraint baseColumnNames="numero_telephone_id" baseTableName="elu_numero_telephone"
+                                 constraintName="FK_7njohjnjstyf9sf6e809ecvgf" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="numero_telephone"/>
+        <addForeignKeyConstraint baseColumnNames="elu_id" baseTableName="elu_numero_telephone"
+                                 constraintName="FK_r8x9fdsfka0nlw14dv42bt6lc" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="elu"/>
+    </changeSet>
+</databaseChangeLog>

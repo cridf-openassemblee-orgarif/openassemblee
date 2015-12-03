@@ -48,7 +48,7 @@ angular.module('babylone14166App')
                 }
             })
             .state('elus.elu', {
-                parent: 'site',
+                parent: 'elus',
                 url: '/elu/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
