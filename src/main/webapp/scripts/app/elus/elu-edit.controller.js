@@ -33,17 +33,10 @@ angular.module('babylone14166App').controller('EluEditController',
                 // TODO
             };
 
-            $scope.addAdressePostale = function () {
-                if ($scope.elu.adressesPostales == null) {
-                    $scope.elu.adressesPostales = [];
+            $scope.add = function (obj) {
+                if ($scope.elu[obj] == null) {
+                    $scope.elu[obj] = [];
                 }
-                $scope.elu.adressesPostales.push({});
-            };
-
-            $scope.addNumeroTelephone = function () {
-                if ($scope.elu.numerosTelephones == null) {
-                    $scope.elu.numerosTelephones = [];
-                }
-                $scope.elu.numerosTelephones.push({});
-            };
+                $scope.elu[obj].push({});
+            }
         }]);

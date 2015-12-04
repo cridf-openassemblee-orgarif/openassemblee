@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="1449170935133-1">
+        <createTable tableName="elu_adresse_mail">
+            <column name="elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adresse_mail_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="elu_identite_internet">
+            <column name="elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="identite_internet_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="elu_numero_fax">
+            <column name="elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="numero_fax_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="elu_id, adresse_mail_id" tableName="elu_adresse_mail"/>
+        <addPrimaryKey columnNames="elu_id, identite_internet_id" tableName="elu_identite_internet"/>
+        <addPrimaryKey columnNames="elu_id, numero_fax_id" tableName="elu_numero_fax"/>
+        <addUniqueConstraint columnNames="adresse_mail_id" tableName="elu_adresse_mail"/>
+        <addUniqueConstraint columnNames="identite_internet_id" tableName="elu_identite_internet"/>
+        <addUniqueConstraint columnNames="numero_fax_id" tableName="elu_numero_fax"/>
+        <addForeignKeyConstraint baseColumnNames="elu_id" baseTableName="elu_numero_fax"
+                                 constraintName="FK_21u86gay9ldwnjxe5b8i1donv" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="elu"/>
+        <addForeignKeyConstraint baseColumnNames="adresse_mail_id" baseTableName="elu_adresse_mail"
+                                 constraintName="FK_6a2h0aowx8r935qhw31qlpu5g" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="adresse_mail"/>
+        <addForeignKeyConstraint baseColumnNames="elu_id" baseTableName="elu_adresse_mail"
+                                 constraintName="FK_8nruuhhdnfhijy910pdha2u5d" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="elu"/>
+        <addForeignKeyConstraint baseColumnNames="elu_id" baseTableName="elu_identite_internet"
+                                 constraintName="FK_hu5fde7ow0ur80goqea28pmqa" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="elu"/>
+        <addForeignKeyConstraint baseColumnNames="numero_fax_id" baseTableName="elu_numero_fax"
+                                 constraintName="FK_j0orlfbves9aiqqg8vqjsbc5p" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="numero_fax"/>
+        <addForeignKeyConstraint baseColumnNames="identite_internet_id" baseTableName="elu_identite_internet"
+                                 constraintName="FK_r61mt7sen4tbx7wt43tunqw3y" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="identite_internet"/>
+    </changeSet>
+</databaseChangeLog>

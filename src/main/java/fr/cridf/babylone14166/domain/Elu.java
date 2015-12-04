@@ -54,13 +54,33 @@ public class Elu implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<AdressePostale> adressesPostales = new ArrayList<>();
 
-    // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
-    @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name = "elu_numero_telephone",
         joinColumns = @JoinColumn(name = "elu_id"),
         inverseJoinColumns = @JoinColumn(name = "numero_telephone_id"))
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<NumeroTelephone> numerosTelephones = new ArrayList<>();
+
+    @OneToMany
+    @JoinTable(name = "elu_numero_fax",
+        joinColumns = @JoinColumn(name = "elu_id"),
+        inverseJoinColumns = @JoinColumn(name = "numero_fax_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<NumeroFax> numerosFax = new ArrayList<>();
+
+    @OneToMany
+    @JoinTable(name = "elu_adresse_mail",
+        joinColumns = @JoinColumn(name = "elu_id"),
+        inverseJoinColumns = @JoinColumn(name = "adresse_mail_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<AdresseMail> adressesMail = new ArrayList<>();
+
+    @OneToMany
+    @JoinTable(name = "elu_identite_internet",
+        joinColumns = @JoinColumn(name = "elu_id"),
+        inverseJoinColumns = @JoinColumn(name = "identite_internet_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private List<IdentiteInternet> identitesInternet = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -140,6 +160,30 @@ public class Elu implements Serializable {
 
     public void setNumerosTelephones(List<NumeroTelephone> numerosTelephones) {
         this.numerosTelephones = numerosTelephones;
+    }
+
+    public List<NumeroFax> getNumerosFax() {
+        return numerosFax;
+    }
+
+    public void setNumerosFax(List<NumeroFax> numerosFax) {
+        this.numerosFax = numerosFax;
+    }
+
+    public List<AdresseMail> getAdressesMail() {
+        return adressesMail;
+    }
+
+    public void setAdressesMail(List<AdresseMail> adressesMail) {
+        this.adressesMail = adressesMail;
+    }
+
+    public List<IdentiteInternet> getIdentitesInternet() {
+        return identitesInternet;
+    }
+
+    public void setIdentitesInternet(List<IdentiteInternet> identitesInternet) {
+        this.identitesInternet = identitesInternet;
     }
 
     @Override

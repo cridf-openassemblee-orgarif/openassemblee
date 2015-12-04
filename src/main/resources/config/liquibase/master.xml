@@ -14,5 +14,12 @@
     <include file="classpath:config/liquibase/changelog/20151203080001_added_entity_NumeroTelephone.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151203081740_changelog.xml"/>
+    <include file="classpath:config/liquibase/changelog/20151203080001_added_entity_NumeroFax.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151203080001_added_entity_IdentiteInternet.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151203080001_added_entity_AdresseMail.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151203192830_changelog.xml"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

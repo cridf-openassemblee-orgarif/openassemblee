@@ -20,77 +20,7 @@
                             <input type="hidden" class="form-control" id="id" name="id"
                                    ng-model="elu.id" readonly/>
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_civilite">Civilite</label>
-
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="civilite" ng-model="elu.civilite"
-                                            id="field_civilite">
-                                        <option value="MONSIEUR">Monsieur</option>
-                                        <option value="MADAME">Madame</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_nom">Nom</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nom" id="field_nom"
-                                           ng-model="elu.nom"
-                                        />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_prenom">Prénom</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="prenom" id="field_prenom"
-                                           ng-model="elu.prenom"
-                                        />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_nomJeuneFille">Nom de jeune
-                                    fille</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomJeuneFille"
-                                           id="field_nomJeuneFille"
-                                           ng-model="elu.nomJeuneFille"
-                                        />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_profession">Profession</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="profession" id="field_profession"
-                                           ng-model="elu.profession"
-                                        />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_dateNaissance">Date de
-                                    naissance</label>
-
-                                <div class="col-sm-10">
-                                    <input type="date" class="form-control" name="dateNaissance"
-                                           id="field_dateNaissance"
-                                           ng-model="elu.dateNaissance"
-                                        />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="field_lieuNaissance">Lieu de
-                                    naissance</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="lieuNaissance"
-                                           id="field_lieuNaissance"
-                                           ng-model="elu.lieuNaissance"
-                                        />
-                                </div>
-                            </div>
+                            <coordonnees-edit></coordonnees-edit>
                         </div>
                     </div>
                 </div>
@@ -100,100 +30,14 @@
                             <h3 class="box-title">Adresses postales</h3>
                         </div>
                         <div class="box-body">
-                            <button type="button" class="btn btn-sm btn-default" ng-click="addAdressePostale()">Ajouter
-                                une
-                                adresse postale
-                            </button>
                             <div ng-repeat="adressePostale in elu.adressesPostales track by $index">
                                 <h3>Adresse n°{{$index + 1}}</h3>
 
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_natureProPerso">
-                                        Nature : pro / perso</label>
-
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="natureProPerso"
-                                                ng-model="adressePostale.natureProPerso"
-                                                id="field_adressePostale_{{$index}}_natureProPerso">
-                                            <option value="PRO">PRO</option>
-                                            <option value="PERSO">PERSO</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_rue">Rue</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="rue"
-                                               id="field_adressePostale_{{$index}}_rue"
-                                               ng-model="adressePostale.rue"
-                                            />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_codePostal">Code postal</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="codePostal"
-                                               id="field_adressePostale_{{$index}}_codePostal"
-                                               ng-model="adressePostale.codePostal"
-                                            />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="field_adressePostale_{{$index}}_ville">
-                                        Ville</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="ville"
-                                               id="field_adressePostale_{{$index}}_ville"
-                                               ng-model="adressePostale.ville"
-                                            />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_niveauConfidentialite">
-                                        Niveau de confidentialité</label>
-
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="niveauConfidentialite"
-                                                ng-model="adressePostale.niveauConfidentialite"
-                                                id="field_adressePostale_{{$index}}_niveauConfidentialite">
-                                            <option value="PUBLIABLE">Publiable</option>
-                                            <option value="CONFIDENTIEL">Confidentiel</option>
-                                            <option value="INTERNE">Interne</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_adresseDeCorrespondance">
-                                        Adresse de correspondance</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="checkbox" name="adresseDeCorrespondance"
-                                               id="field_adressePostale_{{$index}}_adresseDeCorrespondance"
-                                               ng-model="adressePostale.adresseDeCorrespondance"
-                                            />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_adressePostale_{{$index}}_publicationAnnuaire">
-                                        Publication dans l'annuaire</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="checkbox" name="publicationAnnuaire"
-                                               id="field_adressePostale_{{$index}}_publicationAnnuaire"
-                                               ng-model="adressePostale.publicationAnnuaire"
-                                            />
-                                    </div>
-                                </div>
+                                <adresse-postale-edit></adresse-postale-edit>
                             </div>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="add('adressesPostales')">
+                                Ajouter une adresse postale
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -203,72 +47,65 @@
                             <h3 class="box-title">Numéros de téléphone</h3>
                         </div>
                         <div class="box-body">
-                            <button type="button" class="btn btn-sm btn-default" ng-click="addNumeroTelephone()">
-                                Ajouter un numéro de téléphone
-                            </button>
                             <div ng-repeat="numeroTelephone in elu.numerosTelephones track by $index">
                                 <h3>Numéro téléphone n°{{$index + 1}}</h3>
 
-                                <div class="form-group">
-                                    <!-- TODO mlo consistence phrasing -->
-                                    <!-- TODO mlo labels -->
-                                    <label class="col-sm-2 control-label"
-                                           for="field_natureProPerso">Nature pro / perso</label>
-
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="natureProPerso"
-                                                ng-model="numeroTelephone.natureProPerso" id="field_natureProPerso">
-                                            <option value="PRO">Professionnel</option>
-                                            <option value="PERSO">Personnel</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"
-                                           for="field_natureFixeMobile">Fixe ou mobile</label>
-
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="natureFixeMobile"
-                                                ng-model="numeroTelephone.natureFixeMobile" id="field_natureFixeMobile">
-                                            <option value="FIXE">Fixe</option>
-                                            <option value="MOBILE">Mobile</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="field_numero">Numéro</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="numero" id="field_numero"
-                                               ng-model="numeroTelephone.numero"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="field_niveauConfidentialite">
-                                        Niveau de confidentialite</label>
-
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="niveauConfidentialite"
-                                                ng-model="numeroTelephone.niveauConfidentialite"
-                                                id="field_niveauConfidentialite">
-                                            <option value="PUBLIABLE">Publiable</option>
-                                            <option value="CONFIDENTIEL">Confidentiel</option>
-                                            <option value="INTERNE">Interne</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="field_publicationAnnuaire">
-                                        Publication dans l'annuaire</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="checkbox" name="publicationAnnuaire"
-                                               id="field_publicationAnnuaire"
-                                               ng-model="numeroTelephone.publicationAnnuaire"
-                                            />
-                                    </div>
-                                </div>
+                                <numero-telephone-edit></numero-telephone-edit>
                             </div>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="add('numerosTelephones')">
+                                Ajouter un numéro de téléphone
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Numéros de fax</h3>
+                        </div>
+                        <div class="box-body">
+                            <div ng-repeat="numeroFax in elu.numerosFax track by $index">
+                                <h3>Numéro fax n°{{$index + 1}}</h3>
+
+                                <numero-fax-edit></numero-fax-edit>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="add('numerosFax')">
+                                Ajouter un numéro de fax
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Adresses mail</h3>
+                        </div>
+                        <div class="box-body">
+                            <div ng-repeat="adresseMail in elu.adressesMail track by $index">
+                                <h3>Adresse mail n°{{$index + 1}}</h3>
+
+                                <adresse-mail-edit></adresse-mail-edit>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="add('adressesMail')">
+                                Ajouter une adresse mail
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Identités sur Internet</h3>
+                        </div>
+                        <div class="box-body">
+                            <div ng-repeat="identiteInternet in elu.identitesInternet track by $index">
+                                <h3>Identité sur Internet n°{{$index + 1}}</h3>
+
+                                <identite-internet-edit></identite-internet-edit>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="add('identitesInternet')">
+                                Ajouter une identité sur Internet
+                            </button>
                         </div>
                     </div>
                 </div>

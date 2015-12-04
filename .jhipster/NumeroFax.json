@@ -1,0 +1,30 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "natureProPerso",
+            "fieldType": "NatureProPerso",
+            "fieldValues": "PRO, PERSO"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "numero",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "niveauConfidentialite",
+            "fieldType": "NiveauConfidentialite",
+            "fieldValues": "PUBLIABLE, CONFIDENTIEL, INTERNE"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "publicationAnnuaire",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20151203080001",
+    "dto": "no",
+    "pagination": "no"
+}

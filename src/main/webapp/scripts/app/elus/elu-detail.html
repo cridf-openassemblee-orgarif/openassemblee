@@ -11,58 +11,315 @@
         <div class="container">
             <h3>Coordonnées</h3>
 
-            <div class="row">
-                <div class="col-sm-2">Nom</div>
-                <div class="col-sm-10">{{elu.nom}}</div>
-                <div class="col-sm-2">Prénom</div>
-                <div class="col-sm-10">{{elu.prenom}}</div>
-                <div class="col-sm-2">Nom de jeune fille</div>
-                <div class="col-sm-10">{{elu.nomJeuneFille}}</div>
-                <div class="col-sm-2">Prénom</div>
-                <div class="col-sm-10">{{elu.prenom}}</div>
-                <div class="col-sm-2">Profession</div>
-                <div class="col-sm-10">{{elu.profession}}</div>
-                <div class="col-sm-2">Date de naissance</div>
-                <div class="col-sm-10">{{elu.dateNaissance | date:'mediumDate'}}</div>
-                <div class="col-sm-2">Lieu de naissance</div>
-                <div class="col-sm-10">{{elu.lieuNaissance}}</div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>Civilite</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static"
+                                  translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Nom</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.nom}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Prenom</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.prenom}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NomJeuneFille</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.nomJeuneFille}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Profession</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.profession}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>DateNaissance</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.dateNaissance | date:'mediumDate'}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>LieuNaissance</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{elu.lieuNaissance}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h2>Adresses postales</h2>
 
-            <div ng-repeat="adressePostale in elu.adressesPostales track by $index" class="row">
+            <div class="table-responsive" ng-repeat="adressePostale in elu.adressesPostales track by $index">
                 <h3>Adresse postale n°{{$index + 1}}</h3>
-
-                <div class="col-sm-4">Nature</div>
-                <div class="col-sm-8">{{adressePostale.natureProPerso}}</div>
-                <div class="col-sm-4"></div>
-                <div class="col-sm-8">{{adressePostale.rue}} {{adressePostale.codePostal}} {{adressePostale.ville}}
-                </div>
-                <div class="col-sm-4">Niveau de confidentialité</div>
-                <div class="col-sm-8">{{adressePostale.niveauConfidentialite}}</div>
-                <div class="col-sm-4">Adresse de correspondance</div>
-                <div class="col-sm-8">{{adressePostale.adresseDeCorrespondance | ouinon}}</div>
-                <div class="col-sm-4">Publication dans l'annuaire</div>
-                <div class="col-sm-8">{{adressePostale.publicationAnnuaire | ouinon}}</div>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>NatureProPerso</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + adressePostale.natureProPerso}}">{{adressePostale.natureProPerso}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Rue</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adressePostale.rue}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>CodePostal</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adressePostale.codePostal}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Ville</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adressePostale.ville}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NiveauConfidentialite</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + adressePostale.niveauConfidentialite}}">{{adressePostale.niveauConfidentialite}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>AdresseDeCorrespondance</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adressePostale.adresseDeCorrespondance}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>PublicationAnnuaire</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adressePostale.publicationAnnuaire}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h2>Numéros de téléphone</h2>
 
-            <div ng-repeat="numeroTelephone in elu.numerosTelephones track by $index" class="row">
+            <div class="table-responsive" ng-repeat="numeroTelephone in elu.numerosTelephones track by $index">
                 <h3>Numéro de téléphone n°{{$index + 1}}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>NatureProPerso</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + numeroTelephone.natureProPerso}}">{{numeroTelephone.natureProPerso}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NatureFixeMobile</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureFixeMobile.' + numeroTelephone.natureFixeMobile}}">{{numeroTelephone.natureFixeMobile}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Numero</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{numeroTelephone.numero}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NiveauConfidentialite</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + numeroTelephone.niveauConfidentialite}}">{{numeroTelephone.niveauConfidentialite}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>PublicationAnnuaire</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{numeroTelephone.publicationAnnuaire}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="col-sm-4">Nature</div>
-                <div class="col-sm-8">{{numeroTelephone.natureProPerso}}</div>
-                <div class="col-sm-4">Fixe ou mobile</div>
-                <div class="col-sm-8">{{numeroTelephone.natureFixeMobile}}</div>
-                <div class="col-sm-4">Numéro</div>
-                <div class="col-sm-8">{{numeroTelephone.numero}}</div>
-                <div class="col-sm-4">Niveau de confidentialité</div>
-                <div class="col-sm-8">{{numeroTelephone.niveauConfidentialite}}</div>
-                <div class="col-sm-4">Publication dans l'annuaire</div>
-                <div class="col-sm-8">{{numeroTelephone.publicationAnnuaire | ouinon}}</div>
+            <h2>Numéros de fax</h2>
+
+            <div class="table-responsive" ng-repeat="numeroFax in elu.numerosFax track by $index">
+                <h3>Numéro de fax n°{{$index + 1}}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>NatureProPerso</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + numeroFax.natureProPerso}}">{{numeroFax.natureProPerso}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Numero</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{numeroFax.numero}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NiveauConfidentialite</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + numeroFax.niveauConfidentialite}}">{{numeroFax.niveauConfidentialite}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>PublicationAnnuaire</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{numeroFax.publicationAnnuaire}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Adresses mail</h2>
+
+            <div class="table-responsive" ng-repeat="adresseMail in elu.adressesMail track by $index">
+                <h3>Adresse mail n°{{$index + 1}}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>NatureProPerso</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + adresseMail.natureProPerso}}">{{adresseMail.natureProPerso}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Mail</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adresseMail.mail}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>NiveauConfidentialite</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + adresseMail.niveauConfidentialite}}">{{adresseMail.niveauConfidentialite}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>AdresseDeCorrespondance</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adresseMail.adresseDeCorrespondance}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>PublicationAnnuaire</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{adresseMail.publicationAnnuaire}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Identités sur Internet</h2>
+
+            <div class="table-responsive" ng-repeat="identiteInternet in elu.identitesInternet track by $index">
+                <h3>Identité sur Internet n°{{$index + 1}}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>TypeIdentiteInternet</span>
+                        </td>
+                        <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.TypeIdentiteInternet.' + identiteInternet.typeIdentiteInternet}}">{{identiteInternet.typeIdentiteInternet}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Url</span>
+                        </td>
+                        <td>
+                            <span class="form-control-static">{{identiteInternet.url}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
+
     <!-- /.content -->
 </div>

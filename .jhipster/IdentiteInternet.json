@@ -1,0 +1,19 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "typeIdentiteInternet",
+            "fieldType": "TypeIdentiteInternet",
+            "fieldValues": "Blog, Twitter, LinkedIn, Viadeo, Facebook, GooglePlus, Autre"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "url",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20151203080001",
+    "dto": "no",
+    "pagination": "no"
+}
