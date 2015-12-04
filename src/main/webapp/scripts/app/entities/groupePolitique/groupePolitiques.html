@@ -1,0 +1,65 @@
+<div>
+    <h2>GroupePolitiques</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="groupePolitique.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new GroupePolitique</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a GroupePolitique</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>NomCourt</th>
+                    <th>DateDebut</th>
+                    <th>DateFin</th>
+                    <th>MotifFin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="groupePolitique in groupePolitiques track by groupePolitique.id">
+                    <td><a ui-sref="groupePolitique.detail({id:groupePolitique.id})">{{groupePolitique.id}}</a></td>
+                    <td>{{groupePolitique.nom}}</td>
+                    <td>{{groupePolitique.nomCourt}}</td>
+                        <td>{{groupePolitique.dateDebut | date:'mediumDate'}}</td>
+                        <td>{{groupePolitique.dateFin | date:'mediumDate'}}</td>
+                    <td>{{groupePolitique.motifFin}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="groupePolitique.detail({id:groupePolitique.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="groupePolitique.edit({id:groupePolitique.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="groupePolitique.delete({id:groupePolitique.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myGroupePolitiqueLabel">Create or edit a GroupePolitique</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="groupePolitique.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nom">Nom</label>
+            <input type="text" class="form-control" name="nom" id="field_nom"
+                    ng-model="groupePolitique.nom"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nomCourt">NomCourt</label>
+            <input type="text" class="form-control" name="nomCourt" id="field_nomCourt"
+                    ng-model="groupePolitique.nomCourt"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateDebut">DateDebut</label>
+            <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
+                    ng-model="groupePolitique.dateDebut"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateFin">DateFin</label>
+            <input type="date" class="form-control" name="dateFin" id="field_dateFin"
+                    ng-model="groupePolitique.dateFin"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_motifFin">MotifFin</label>
+            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
+                    ng-model="groupePolitique.motifFin"
+                     />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
