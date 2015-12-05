@@ -40,8 +40,8 @@ spring:
             cluster-nodes:
             properties:
                 path:
-                  logs: target/elasticsearch/log
-                  data: target/elasticsearch/data
+                  logs: ${FS_BUCKET_PATH}/elasticsearch/log
+                  data: ${FS_BUCKET_PATH}/elasticsearch/data
     mail:
         host: localhost
         port: 25
