@@ -49,7 +49,7 @@ angular.module('babylone14166App')
             })
             .state('elus.elu', {
                 parent: 'elus',
-                url: '/elu/{id}',
+                url: '/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'Élu'
@@ -83,10 +83,10 @@ angular.module('babylone14166App')
                             }]
                         }
                     }).result.then(function (result) {
-                            $state.go('elu', null, {reload: true});
-                        }, function () {
-                            $state.go('^');
-                        })
+                        $state.go('elu', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
                 }]
             });
     });
