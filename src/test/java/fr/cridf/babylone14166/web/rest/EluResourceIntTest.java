@@ -41,6 +41,7 @@ import fr.cridf.babylone14166.domain.enumeration.*;
 import fr.cridf.babylone14166.repository.AdressePostaleRepository;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
+import fr.cridf.babylone14166.service.EluService;
 
 /**
  * Test class for the EluResource REST controller.
@@ -91,6 +92,9 @@ public class EluResourceIntTest {
     private AdressePostaleRepository adressePostaleRepository;
 
     @Inject
+    private EluService eluService;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -107,6 +111,7 @@ public class EluResourceIntTest {
         EluResource eluResource = new EluResource();
         ReflectionTestUtils.setField(eluResource, "eluRepository", eluRepository);
         ReflectionTestUtils.setField(eluResource, "eluSearchRepository", eluSearchRepository);
+        ReflectionTestUtils.setField(eluResource, "eluService", eluService);
         this.restEluMockMvc = MockMvcBuilders.standaloneSetup(eluResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
