@@ -24,45 +24,43 @@ angular.module('babylone14166App')
                 url: '/new',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: "Ajout d'un élu"
+                    pageTitle: "Ajout d'un groupe politique"
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/elus/elu-edit.html',
-                        controller: 'EluEditController'
+                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-edit.html',
+                        controller: 'GroupePolitiqueEditController'
                     }
                 },
                 resolve: {
                     entity: function () {
                         return {
-                            civilite: null,
                             nom: null,
-                            prenom: null,
-                            nomJeuneFille: null,
-                            profession: null,
-                            dateNaissance: null,
-                            lieuNaissance: null,
+                            nomCourt: null,
+                            dateDebut: null,
+                            dateFin: null,
+                            motifFin: null,
                             id: null
                         };
                     }
                 }
             })
-            .state('groupesPolitiques.elu', {
+            .state('groupesPolitiques.detail', {
                 parent: 'groupesPolitiques',
                 url: '/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'Élu'
+                    pageTitle: 'Groupe politique'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/elus/elu-detail.html',
-                        controller: 'EluDetailController'
+                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-detail.html',
+                        controller: 'GroupePolitiqueDetailController'
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'Elu', function ($stateParams, Elu) {
-                        return Elu.get({id: $stateParams.id});
+                    entity: ['$stateParams', 'GroupePolitique', function ($stateParams, GroupePolitique) {
+                        return GroupePolitique.get({id: $stateParams.id});
                     }]
                 }
             })
@@ -74,16 +72,16 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/elu-delete-dialog.html',
-                        controller: 'EluDeleteController',
+                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-delete-dialog.html',
+                        controller: 'GroupePolitiqueDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Elu', function (Elu) {
-                                return Elu.get({id: $stateParams.id});
+                            entity: ['GroupePolitique', function (GroupePolitique) {
+                                return GroupePolitique.get({id: $stateParams.id});
                             }]
                         }
                     }).result.then(function (result) {
-                        $state.go('elu', null, {reload: true});
+                        $state.go('groupePolitique', null, {reload: true});
                     }, function () {
                         $state.go('^');
                     })

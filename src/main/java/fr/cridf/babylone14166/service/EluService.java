@@ -65,8 +65,8 @@ public class EluService {
         }
         if (elu.getAdressesPostales() != null) {
             for (AdressePostale a : elu.getAdressesPostales()) {
-                adressePostaleSearchRepository.save(a);
                 adressePostaleRepository.save(a);
+                adressePostaleSearchRepository.save(a);
             }
         }
         if (elu.getNumerosFax() != null) {

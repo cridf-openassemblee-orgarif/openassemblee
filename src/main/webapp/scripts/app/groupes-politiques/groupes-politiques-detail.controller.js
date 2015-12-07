@@ -3,6 +3,7 @@
 angular.module('babylone14166App')
     .controller('GroupePolitiqueDetailController', function ($scope, $rootScope, $stateParams, entity, GroupePolitique) {
         $scope.groupePolitique = entity;
+        console.log(entity);
         $scope.load = function (id) {
             GroupePolitique.get({id: id}, function(result) {
                 $scope.groupePolitique = result;

@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <button class="btn btn-primary" ui-sref="groupePolitique.new">
+                        <button class="btn btn-primary" ui-sref="groupesPolitiques.new">
                             <span class="glyphicon glyphicon-plus"></span>
                             <span>Créer un nouveau groupe politique</span>
                         </button>
@@ -48,7 +48,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="groupePolitique in groupePolitiques track by groupePolitique.id">
+                    <tr ng-repeat="groupePolitique in groupesPolitiques track by groupePolitique.id">
                         <td><a ui-sref="groupePolitique.detail({id:groupePolitique.id})">{{groupePolitique.id}}</a></td>
                         <td>{{groupePolitique.nom}}</td>
                         <td>{{groupePolitique.nomCourt}}</td>
@@ -57,19 +57,9 @@
                         <td>{{groupePolitique.motifFin}}</td>
                         <td>
                             <button type="submit"
-                                    ui-sref="groupePolitique.detail({id:groupePolitique.id})"
+                                    ui-sref="groupesPolitiques.detail({id:groupePolitique.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Détail</span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="groupePolitique.edit({id:groupePolitique.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Modifier</span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="groupePolitique.delete({id:groupePolitique.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
                             </button>
                         </td>
                     </tr>

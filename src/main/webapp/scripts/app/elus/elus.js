@@ -47,7 +47,7 @@ angular.module('babylone14166App')
                     }
                 }
             })
-            .state('elus.elu', {
+            .state('elus.detail', {
                 parent: 'elus',
                 url: '/{id}',
                 data: {

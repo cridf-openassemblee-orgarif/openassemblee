@@ -49,7 +49,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="elu in elus track by elu.id">
-                        <td><a ui-sref="elus.elu({id:elu.id})">{{elu.id}}</a></td>
+                        <td><a ui-sref="elus.detail({id:elu.id})">{{elu.id}}</a></td>
                         <td translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</td>
                         <td>{{elu.nom}}</td>
                         <td>{{elu.prenom}}</td>
@@ -59,7 +59,7 @@
                         <td>{{elu.lieuNaissance}}</td>
                         <td>
                             <button type="submit"
-                                    ui-sref="elus.elu({id:elu.id})"
+                                    ui-sref="elus.detail({id:elu.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Détails</span>
                             </button>
