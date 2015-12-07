@@ -112,9 +112,67 @@ angular.module('babylone14166App')
                             }
                         }
                     }).result.then(function (result) {
-                        $state.go('elus');
+                        $state.go('^', null, {reload: true});
                     }, function () {
-                        $state.go('elus');
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.nouvelleFonctionCommissionPermanente', {
+                parent: 'elus.detail',
+                url: '/nouvelle-fonction-commission-permanente',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionCommissionPermanente-dialog.html',
+                        controller: 'FonctionCommissionPermanenteDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    fonction: null,
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.ajouterCommissionPermanente', {
+                parent: 'elus.detail',
+                url: '/ajouter-commission-permanente',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/appartenanceCommissionPermanente-dialog.html',
+                        controller: 'AppartenanceCommissionPermanenteDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    fonction: null,
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
                     })
                 }]
             })

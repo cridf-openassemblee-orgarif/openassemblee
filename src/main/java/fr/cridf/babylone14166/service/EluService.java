@@ -52,6 +52,8 @@ public class EluService {
             Hibernate.initialize(elu.getNumerosFax());
             Hibernate.initialize(elu.getAdressesMail());
             Hibernate.initialize(elu.getIdentitesInternet());
+            Hibernate.initialize(elu.getAppartenancesCommissionPermanente());
+            Hibernate.initialize(elu.getFonctionsCommissionPermanente());
             Hibernate.initialize(elu.getFonctionsExecutives());
         }
         return elu;

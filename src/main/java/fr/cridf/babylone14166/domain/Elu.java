@@ -85,6 +85,12 @@ public class Elu implements Serializable {
     @OneToMany(mappedBy = "elu")
     private List<FonctionExecutive> fonctionsExecutives = new ArrayList<>();
 
+    @OneToMany(mappedBy = "elu")
+    private List<FonctionCommissionPermanente> fonctionsCommissionPermanente = new ArrayList<>();
+
+    @OneToMany(mappedBy = "elu")
+    private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -195,6 +201,23 @@ public class Elu implements Serializable {
 
     public void setFonctionsExecutives(List<FonctionExecutive> fonctionsExecutives) {
         this.fonctionsExecutives = fonctionsExecutives;
+    }
+
+    public List<FonctionCommissionPermanente> getFonctionsCommissionPermanente() {
+        return fonctionsCommissionPermanente;
+    }
+
+    public void setFonctionsCommissionPermanente(List<FonctionCommissionPermanente> fonctionsCommissionPermanente) {
+        this.fonctionsCommissionPermanente = fonctionsCommissionPermanente;
+    }
+
+    public List<AppartenanceCommissionPermanente> getAppartenancesCommissionPermanente() {
+        return appartenancesCommissionPermanente;
+    }
+
+    public void setAppartenancesCommissionPermanente(List<AppartenanceCommissionPermanente>
+        appartenancesCommissionPermanente) {
+        this.appartenancesCommissionPermanente = appartenancesCommissionPermanente;
     }
 
     @Override

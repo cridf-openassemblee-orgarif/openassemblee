@@ -11,7 +11,17 @@
         <div class="container">
             <h3>Fonctions</h3>
 
-            <div ng-if="!elu.fonctionsExecutives.length">Aucune fonction</div>
+            <div ng-if="!elu.fonctionsExecutives.length
+                && !elu.appartenancesCommissionPermanente.length
+                && !elu.fonctionsCommissionPermanente">Aucune fonction
+            </div>
+
+            <div ng-repeat="appartenanceCommissionPermanente in elu.appartenancesCommissionPermanente">
+                Appartient à la commission permanente
+            </div>
+            <div ng-repeat="fonctionCommissionPermanente in elu.fonctionsCommissionPermanente">
+                Fonction à la commission permanente : {{fonctionCommissionPermanente.fonction}}
+            </div>
             <div ng-repeat="fonctionExecutive in elu.fonctionsExecutives">
                 Fonction exécutive : {{fonctionExecutive.fonction}}
             </div>

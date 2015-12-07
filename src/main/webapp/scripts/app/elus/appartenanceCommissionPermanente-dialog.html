@@ -8,35 +8,12 @@
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
+        <input type="hidden" class="form-control" id="id" name="id"
+               ng-model="appartenanceCommissionPermanente.id" readonly/>
         <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="appartenanceCommissionPermanente.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_dateDebut">DateDebut</label>
+            <label class="control-label" for="field_dateDebut">Date de début</label>
             <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
-                    ng-model="appartenanceCommissionPermanente.dateDebut"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_dateFin">DateFin</label>
-            <input type="date" class="form-control" name="dateFin" id="field_dateFin"
-                    ng-model="appartenanceCommissionPermanente.dateFin"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_motifFin">MotifFin</label>
-            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                    ng-model="appartenanceCommissionPermanente.motifFin"
-                     />
-        </div>
-
-        <div class="form-group">
-            <label for="field_elu">elu</label>
-            <select class="form-control" id="field_elu" name="elu" ng-model="appartenanceCommissionPermanente.elu" ng-options="elu as elu.id for elu in elus track by elu.id">
-                <option value=""></option>
-            </select>
+                   ng-model="appartenanceCommissionPermanente.dateDebut"/>
         </div>
     </div>
     <div class="modal-footer">
