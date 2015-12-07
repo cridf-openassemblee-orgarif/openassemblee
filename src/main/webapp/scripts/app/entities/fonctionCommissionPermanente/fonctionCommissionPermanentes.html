@@ -25,12 +25,24 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Fonction</th>
+                    <th>DateDebut</th>
+                    <th>DateFin</th>
+                    <th>MotifFin</th>
+                    <th>elu</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="fonctionCommissionPermanente in fonctionCommissionPermanentes track by fonctionCommissionPermanente.id">
                     <td><a ui-sref="fonctionCommissionPermanente.detail({id:fonctionCommissionPermanente.id})">{{fonctionCommissionPermanente.id}}</a></td>
+                    <td>{{fonctionCommissionPermanente.fonction}}</td>
+                        <td>{{fonctionCommissionPermanente.dateDebut | date:'mediumDate'}}</td>
+                        <td>{{fonctionCommissionPermanente.dateFin | date:'mediumDate'}}</td>
+                    <td>{{fonctionCommissionPermanente.motifFin}}</td>
+                    <td>
+                        <a ui-sref="elu.detail({id:fonctionCommissionPermanente.elu.id})">{{fonctionCommissionPermanente.elu.id}}</a>
+                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="fonctionCommissionPermanente.detail({id:fonctionCommissionPermanente.id})"

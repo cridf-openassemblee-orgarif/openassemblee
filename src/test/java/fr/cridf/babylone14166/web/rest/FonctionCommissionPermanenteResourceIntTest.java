@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +44,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class FonctionCommissionPermanenteResourceIntTest {
 
+    private static final String DEFAULT_FONCTION = "AAAAA";
+    private static final String UPDATED_FONCTION = "BBBBB";
+
+    private static final LocalDate DEFAULT_DATE_DEBUT = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE_DEBUT = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_DATE_FIN = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE_FIN = LocalDate.now(ZoneId.systemDefault());
+    private static final String DEFAULT_MOTIF_FIN = "AAAAA";
+    private static final String UPDATED_MOTIF_FIN = "BBBBB";
 
     @Inject
     private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
@@ -73,6 +85,10 @@ public class FonctionCommissionPermanenteResourceIntTest {
     @Before
     public void initTest() {
         fonctionCommissionPermanente = new FonctionCommissionPermanente();
+        fonctionCommissionPermanente.setFonction(DEFAULT_FONCTION);
+        fonctionCommissionPermanente.setDateDebut(DEFAULT_DATE_DEBUT);
+        fonctionCommissionPermanente.setDateFin(DEFAULT_DATE_FIN);
+        fonctionCommissionPermanente.setMotifFin(DEFAULT_MOTIF_FIN);
     }
 
     @Test
@@ -91,6 +107,10 @@ public class FonctionCommissionPermanenteResourceIntTest {
         List<FonctionCommissionPermanente> fonctionCommissionPermanentes = fonctionCommissionPermanenteRepository.findAll();
         assertThat(fonctionCommissionPermanentes).hasSize(databaseSizeBeforeCreate + 1);
         FonctionCommissionPermanente testFonctionCommissionPermanente = fonctionCommissionPermanentes.get(fonctionCommissionPermanentes.size() - 1);
+        assertThat(testFonctionCommissionPermanente.getFonction()).isEqualTo(DEFAULT_FONCTION);
+        assertThat(testFonctionCommissionPermanente.getDateDebut()).isEqualTo(DEFAULT_DATE_DEBUT);
+        assertThat(testFonctionCommissionPermanente.getDateFin()).isEqualTo(DEFAULT_DATE_FIN);
+        assertThat(testFonctionCommissionPermanente.getMotifFin()).isEqualTo(DEFAULT_MOTIF_FIN);
     }
 
     @Test
@@ -103,7 +123,11 @@ public class FonctionCommissionPermanenteResourceIntTest {
         restFonctionCommissionPermanenteMockMvc.perform(get("/api/fonctionCommissionPermanentes"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(fonctionCommissionPermanente.getId().intValue())));
+                .andExpect(jsonPath("$.[*].id").value(hasItem(fonctionCommissionPermanente.getId().intValue())))
+                .andExpect(jsonPath("$.[*].fonction").value(hasItem(DEFAULT_FONCTION.toString())))
+                .andExpect(jsonPath("$.[*].dateDebut").value(hasItem(DEFAULT_DATE_DEBUT.toString())))
+                .andExpect(jsonPath("$.[*].dateFin").value(hasItem(DEFAULT_DATE_FIN.toString())))
+                .andExpect(jsonPath("$.[*].motifFin").value(hasItem(DEFAULT_MOTIF_FIN.toString())));
     }
 
     @Test
@@ -116,7 +140,11 @@ public class FonctionCommissionPermanenteResourceIntTest {
         restFonctionCommissionPermanenteMockMvc.perform(get("/api/fonctionCommissionPermanentes/{id}", fonctionCommissionPermanente.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(fonctionCommissionPermanente.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(fonctionCommissionPermanente.getId().intValue()))
+            .andExpect(jsonPath("$.fonction").value(DEFAULT_FONCTION.toString()))
+            .andExpect(jsonPath("$.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
+            .andExpect(jsonPath("$.dateFin").value(DEFAULT_DATE_FIN.toString()))
+            .andExpect(jsonPath("$.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
     }
 
     @Test
@@ -136,6 +164,10 @@ public class FonctionCommissionPermanenteResourceIntTest {
 		int databaseSizeBeforeUpdate = fonctionCommissionPermanenteRepository.findAll().size();
 
         // Update the fonctionCommissionPermanente
+        fonctionCommissionPermanente.setFonction(UPDATED_FONCTION);
+        fonctionCommissionPermanente.setDateDebut(UPDATED_DATE_DEBUT);
+        fonctionCommissionPermanente.setDateFin(UPDATED_DATE_FIN);
+        fonctionCommissionPermanente.setMotifFin(UPDATED_MOTIF_FIN);
 
         restFonctionCommissionPermanenteMockMvc.perform(put("/api/fonctionCommissionPermanentes")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -146,6 +178,10 @@ public class FonctionCommissionPermanenteResourceIntTest {
         List<FonctionCommissionPermanente> fonctionCommissionPermanentes = fonctionCommissionPermanenteRepository.findAll();
         assertThat(fonctionCommissionPermanentes).hasSize(databaseSizeBeforeUpdate);
         FonctionCommissionPermanente testFonctionCommissionPermanente = fonctionCommissionPermanentes.get(fonctionCommissionPermanentes.size() - 1);
+        assertThat(testFonctionCommissionPermanente.getFonction()).isEqualTo(UPDATED_FONCTION);
+        assertThat(testFonctionCommissionPermanente.getDateDebut()).isEqualTo(UPDATED_DATE_DEBUT);
+        assertThat(testFonctionCommissionPermanente.getDateFin()).isEqualTo(UPDATED_DATE_FIN);
+        assertThat(testFonctionCommissionPermanente.getMotifFin()).isEqualTo(UPDATED_MOTIF_FIN);
     }
 
     @Test

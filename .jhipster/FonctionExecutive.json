@@ -1,6 +1,35 @@
 {
-    "relationships": [],
-    "fields": [],
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "fonction",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "dateFin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "motifFin",
+            "fieldType": "String"
+        }
+    ],
     "changelogDate": "20151207134300",
     "dto": "no",
     "pagination": "no"

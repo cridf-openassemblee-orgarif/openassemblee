@@ -52,6 +52,9 @@ angular.module('babylone14166App')
                         resolve: {
                             entity: function () {
                                 return {
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
                                     id: null
                                 };
                             }

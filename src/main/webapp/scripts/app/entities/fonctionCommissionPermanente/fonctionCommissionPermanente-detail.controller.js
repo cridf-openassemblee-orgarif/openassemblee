@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('FonctionCommissionPermanenteDetailController', function ($scope, $rootScope, $stateParams, entity, FonctionCommissionPermanente) {
+    .controller('FonctionCommissionPermanenteDetailController', function ($scope, $rootScope, $stateParams, entity, FonctionCommissionPermanente, Elu) {
         $scope.fonctionCommissionPermanente = entity;
         $scope.load = function (id) {
             FonctionCommissionPermanente.get({id: id}, function(result) {

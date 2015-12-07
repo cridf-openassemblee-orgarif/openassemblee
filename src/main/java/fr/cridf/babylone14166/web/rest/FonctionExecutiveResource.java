@@ -1,27 +1,24 @@
 package fr.cridf.babylone14166.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import javax.inject.Inject;
+
+import org.elasticsearch.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
 import fr.cridf.babylone14166.domain.FonctionExecutive;
 import fr.cridf.babylone14166.repository.FonctionExecutiveRepository;
 import fr.cridf.babylone14166.repository.search.FonctionExecutiveSearchRepository;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing FonctionExecutive.
@@ -97,11 +94,11 @@ public class FonctionExecutiveResource {
     @Timed
     public ResponseEntity<FonctionExecutive> getFonctionExecutive(@PathVariable Long id) {
         log.debug("REST request to get FonctionExecutive : {}", id);
-        return Optional.ofNullable(fonctionExecutiveRepository.findOne(id))
-            .map(fonctionExecutive -> new ResponseEntity<>(
-                fonctionExecutive,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        FonctionExecutive f = fonctionExecutiveRepository.findOne(id);
+        if (f != null) {
+            return new ResponseEntity<>(f, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -127,8 +124,6 @@ public class FonctionExecutiveResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<FonctionExecutive> searchFonctionExecutives(@PathVariable String query) {
-        return StreamSupport
-            .stream(fonctionExecutiveSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return Lists.newArrayList(fonctionExecutiveSearchRepository.search(queryStringQuery(query)));
     }
 }

@@ -29,6 +29,10 @@ angular.module('babylone14166App')
 
         $scope.clear = function () {
             $scope.fonctionCommissionPermanente = {
+                fonction: null,
+                dateDebut: null,
+                dateFin: null,
+                motifFin: null,
                 id: null
             };
         };

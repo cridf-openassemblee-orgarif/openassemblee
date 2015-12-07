@@ -2,7 +2,7 @@
 
 describe('FonctionCommissionPermanente Detail Controller', function() {
     var $scope, $rootScope;
-    var MockEntity, MockFonctionCommissionPermanente;
+    var MockEntity, MockFonctionCommissionPermanente, MockElu;
     var createController;
 
     beforeEach(inject(function($injector) {
@@ -10,13 +10,15 @@ describe('FonctionCommissionPermanente Detail Controller', function() {
         $scope = $rootScope.$new();
         MockEntity = jasmine.createSpy('MockEntity');
         MockFonctionCommissionPermanente = jasmine.createSpy('MockFonctionCommissionPermanente');
+        MockElu = jasmine.createSpy('MockElu');
         
 
         var locals = {
             '$scope': $scope,
             '$rootScope': $rootScope,
             'entity': MockEntity ,
-            'FonctionCommissionPermanente': MockFonctionCommissionPermanente
+            'FonctionCommissionPermanente': MockFonctionCommissionPermanente,
+            'Elu': MockElu
         };
         createController = function() {
             $injector.get('$controller')("FonctionCommissionPermanenteDetailController", locals);

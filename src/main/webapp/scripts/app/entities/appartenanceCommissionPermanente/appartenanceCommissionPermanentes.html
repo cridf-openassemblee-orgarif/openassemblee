@@ -25,12 +25,22 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>DateDebut</th>
+                    <th>DateFin</th>
+                    <th>MotifFin</th>
+                    <th>elu</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="appartenanceCommissionPermanente in appartenanceCommissionPermanentes track by appartenanceCommissionPermanente.id">
                     <td><a ui-sref="appartenanceCommissionPermanente.detail({id:appartenanceCommissionPermanente.id})">{{appartenanceCommissionPermanente.id}}</a></td>
+                        <td>{{appartenanceCommissionPermanente.dateDebut | date:'mediumDate'}}</td>
+                        <td>{{appartenanceCommissionPermanente.dateFin | date:'mediumDate'}}</td>
+                    <td>{{appartenanceCommissionPermanente.motifFin}}</td>
+                    <td>
+                        <a ui-sref="elu.detail({id:appartenanceCommissionPermanente.elu.id})">{{appartenanceCommissionPermanente.elu.id}}</a>
+                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="appartenanceCommissionPermanente.detail({id:appartenanceCommissionPermanente.id})"

@@ -10,6 +10,46 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span>Fonction</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionCommissionPermanente.fonction}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionCommissionPermanente.dateDebut | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionCommissionPermanente.dateFin | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>MotifFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionCommissionPermanente.motifFin}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>elu</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="elu.detail({id:fonctionCommissionPermanente.elu.id})">{{fonctionCommissionPermanente.elu.id}}</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

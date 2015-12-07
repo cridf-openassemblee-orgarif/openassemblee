@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('FonctionExecutiveDetailController', function ($scope, $rootScope, $stateParams, entity, FonctionExecutive) {
+    .controller('FonctionExecutiveDetailController', function ($scope, $rootScope, $stateParams, entity, FonctionExecutive, Elu) {
         $scope.fonctionExecutive = entity;
         $scope.load = function (id) {
             FonctionExecutive.get({id: id}, function(result) {

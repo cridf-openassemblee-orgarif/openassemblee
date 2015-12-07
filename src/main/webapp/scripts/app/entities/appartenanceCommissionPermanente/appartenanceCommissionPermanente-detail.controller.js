@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('AppartenanceCommissionPermanenteDetailController', function ($scope, $rootScope, $stateParams, entity, AppartenanceCommissionPermanente) {
+    .controller('AppartenanceCommissionPermanenteDetailController', function ($scope, $rootScope, $stateParams, entity, AppartenanceCommissionPermanente, Elu) {
         $scope.appartenanceCommissionPermanente = entity;
         $scope.load = function (id) {
             AppartenanceCommissionPermanente.get({id: id}, function(result) {

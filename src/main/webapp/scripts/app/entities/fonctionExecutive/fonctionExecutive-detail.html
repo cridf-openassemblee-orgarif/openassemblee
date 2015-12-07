@@ -10,6 +10,46 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span>Fonction</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionExecutive.fonction}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionExecutive.dateDebut | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionExecutive.dateFin | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>MotifFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{fonctionExecutive.motifFin}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>elu</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="elu.detail({id:fonctionExecutive.elu.id})">{{fonctionExecutive.elu.id}}</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

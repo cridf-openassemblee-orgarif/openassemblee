@@ -1,27 +1,24 @@
 package fr.cridf.babylone14166.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import javax.inject.Inject;
+
+import org.elasticsearch.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
 import fr.cridf.babylone14166.domain.FonctionCommissionPermanente;
 import fr.cridf.babylone14166.repository.FonctionCommissionPermanenteRepository;
 import fr.cridf.babylone14166.repository.search.FonctionCommissionPermanenteSearchRepository;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing FonctionCommissionPermanente.
@@ -97,11 +94,11 @@ public class FonctionCommissionPermanenteResource {
     @Timed
     public ResponseEntity<FonctionCommissionPermanente> getFonctionCommissionPermanente(@PathVariable Long id) {
         log.debug("REST request to get FonctionCommissionPermanente : {}", id);
-        return Optional.ofNullable(fonctionCommissionPermanenteRepository.findOne(id))
-            .map(fonctionCommissionPermanente -> new ResponseEntity<>(
-                fonctionCommissionPermanente,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        FonctionCommissionPermanente fonctionCommissionPermanente = fonctionCommissionPermanenteRepository.findOne(id);
+        if (fonctionCommissionPermanente != null) {
+            return new ResponseEntity<>(fonctionCommissionPermanente, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -127,8 +124,6 @@ public class FonctionCommissionPermanenteResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<FonctionCommissionPermanente> searchFonctionCommissionPermanentes(@PathVariable String query) {
-        return StreamSupport
-            .stream(fonctionCommissionPermanenteSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return Lists.newArrayList(fonctionCommissionPermanenteSearchRepository.search(queryStringQuery(query)));
     }
 }

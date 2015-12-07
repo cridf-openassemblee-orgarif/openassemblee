@@ -21,7 +21,17 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="date_debut" type="date"/>
+            <column name="date_fin" type="date"/>
+            <column name="motif_fin" type="varchar(255)"/>
+            <column name="elu_id" type="bigint"/>
         </createTable>
         
+        <addForeignKeyConstraint baseColumnNames="elu_id"
+                                 baseTableName="appartenance_commission_permanente"
+                                 constraintName="fk_appartenancecommissionpermanente_elu_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="elu"/>
+
     </changeSet>
 </databaseChangeLog>
