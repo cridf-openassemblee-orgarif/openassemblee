@@ -88,5 +88,34 @@ angular.module('babylone14166App')
                         $state.go('^');
                     })
                 }]
-            });
+            })
+            .state('elus.detail.nouvelleFonctionExecutive', {
+                parent: 'elus.detail',
+                url: '/nouvelle-fonction-executive',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionExecutive-dialog.html',
+                        controller: 'FonctionExecutiveDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    fonction: null,
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('elus');
+                    }, function () {
+                        $state.go('elus');
+                    })
+                }]
+            })
     });

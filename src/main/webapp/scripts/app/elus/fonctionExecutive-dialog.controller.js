@@ -24,6 +24,7 @@ angular.module('babylone14166App').controller('FonctionExecutiveDialogController
 
         $scope.save = function () {
             $scope.isSaving = true;
+            $scope.fonctionExecutive.elu = {id: $stateParams.id};
             if ($scope.fonctionExecutive.id != null) {
                 FonctionExecutive.update($scope.fonctionExecutive, onSaveSuccess, onSaveError);
             } else {

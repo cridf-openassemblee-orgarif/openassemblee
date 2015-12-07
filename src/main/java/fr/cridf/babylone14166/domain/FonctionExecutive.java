@@ -1,15 +1,16 @@
 package fr.cridf.babylone14166.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A FonctionExecutive.
@@ -80,10 +81,12 @@ public class FonctionExecutive implements Serializable {
         this.motifFin = motifFin;
     }
 
+    @JsonIgnore
     public Elu getElu() {
         return elu;
     }
 
+    @JsonProperty
     public void setElu(Elu elu) {
         this.elu = elu;
     }

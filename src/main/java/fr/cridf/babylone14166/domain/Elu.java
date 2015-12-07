@@ -82,6 +82,9 @@ public class Elu implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<IdentiteInternet> identitesInternet = new ArrayList<>();
 
+    @OneToMany(mappedBy = "elu")
+    private List<FonctionExecutive> fonctionsExecutives = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -184,6 +187,14 @@ public class Elu implements Serializable {
 
     public void setIdentitesInternet(List<IdentiteInternet> identitesInternet) {
         this.identitesInternet = identitesInternet;
+    }
+
+    public List<FonctionExecutive> getFonctionsExecutives() {
+        return fonctionsExecutives;
+    }
+
+    public void setFonctionsExecutives(List<FonctionExecutive> fonctionsExecutives) {
+        this.fonctionsExecutives = fonctionsExecutives;
     }
 
     @Override

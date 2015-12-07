@@ -11,11 +11,17 @@
         <div class="container">
             <h3>Fonctions</h3>
 
-            <div> Aucune fonction</div>
-            <button class="btn btn-sm btn-primary" ng-click="addCommissionPermanente()">
+            <div ng-if="!elu.fonctionsExecutives.length">Aucune fonction</div>
+            <div ng-repeat="fonctionExecutive in elu.fonctionsExecutives">
+                Fonction exécutive : {{fonctionExecutive.fonction}}
+            </div>
+            <button class="btn btn-sm btn-primary" ui-sref="elus.detail.ajouterCommissionPermanente">
                 Ajouter à la commission permanente
             </button>
-            <button class="btn btn-sm btn-primary" ng-click="addFonctionExecutive()">
+            <button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionCommissionPermanente">
+                Ajouter une fonction à la commission permanente
+            </button>
+            <button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionExecutive">
                 Ajouter une fonction exécutive
             </button>
 
