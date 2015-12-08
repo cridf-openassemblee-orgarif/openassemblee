@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('EluEditController',
-    ['$scope', '$stateParams', 'entity', 'Elu',
-        function ($scope, $stateParams, entity, Elu) {
+    ['$scope', '$state', '$stateParams', 'entity', 'Elu',
+        function ($scope, $state, $stateParams, entity, Elu) {
 
             $scope.elu = entity;
             $scope.load = function (id) {
@@ -14,6 +14,7 @@ angular.module('babylone14166App').controller('EluEditController',
             var onSaveSuccess = function (result) {
                 $scope.$emit('babylone14166App:eluUpdate', result);
                 $scope.isSaving = false;
+                $state.go('elus.detail', {id: result.id}, {reload: true});
             };
 
             var onSaveError = function (result) {
