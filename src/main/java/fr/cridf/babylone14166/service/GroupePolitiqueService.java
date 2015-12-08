@@ -39,8 +39,9 @@ public class GroupePolitiqueService {
             adressePostaleRepository.save(groupePolitique.getAdressePostale());
             adressePostaleSearchRepository.save(groupePolitique.getAdressePostale());
         }
+        groupePolitiqueRepository.save(groupePolitique);
         groupePolitiqueSearchRepository.save(groupePolitique);
-        return groupePolitiqueRepository.save(groupePolitique);
+        return groupePolitique;
     }
 
 }

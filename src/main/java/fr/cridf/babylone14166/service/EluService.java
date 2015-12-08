@@ -90,7 +90,8 @@ public class EluService {
                 identiteInternetSearchRepository.save(identiteInternet);
             }
         }
+        eluRepository.save(elu);
         eluSearchRepository.save(elu);
-        return eluRepository.save(elu);
+        return elu;
     }
 }
