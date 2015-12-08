@@ -5,7 +5,7 @@
             "fieldId": 1,
             "fieldName": "typeIdentiteInternet",
             "fieldType": "TypeIdentiteInternet",
-            "fieldValues": "Blog, Twitter, LinkedIn, Viadeo, Facebook, GooglePlus, Autre"
+            "fieldValues": "SiteInternet, Blog, Twitter, LinkedIn, Viadeo, Facebook, GooglePlus, Autre"
         },
         {
             "fieldId": 2,
