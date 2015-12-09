@@ -2,11 +2,12 @@
     <!-- TODO mlo consistence phrasing -->
     <!-- TODO mlo labels -->
     <label class="col-sm-2 control-label"
-           for="field_natureProPerso">Nature pro / perso</label>
+           for="field_numeroTelephone_{{$index}}_natureProPerso">Nature pro / perso</label>
 
     <div class="col-sm-10">
         <select class="form-control" name="natureProPerso"
-                ng-model="numeroTelephone.natureProPerso" id="field_natureProPerso">
+                ng-model="numeroTelephone.natureProPerso"
+                id="field_numeroTelephone_{{$index}}_natureProPerso">
             <option value="PRO">Professionnel</option>
             <option value="PERSO">Personnel</option>
         </select>
@@ -14,32 +15,32 @@
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label"
-           for="field_natureFixeMobile">Fixe ou mobile</label>
+           for="field_numeroTelephone_{{$index}}_natureFixeMobile">Fixe ou mobile</label>
 
     <div class="col-sm-10">
         <select class="form-control" name="natureFixeMobile"
-                ng-model="numeroTelephone.natureFixeMobile" id="field_natureFixeMobile">
+                ng-model="numeroTelephone.natureFixeMobile" id="field_numeroTelephone_{{$index}}_natureFixeMobile">
             <option value="FIXE">Fixe</option>
             <option value="MOBILE">Mobile</option>
         </select>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="field_numero">Numéro</label>
+    <label class="col-sm-2 control-label" for="field_numeroTelephone_{{$index}}_numero">Numéro</label>
 
     <div class="col-sm-10">
-        <input type="text" class="form-control" name="numero" id="field_numero"
+        <input type="text" class="form-control" name="numero" id="field_numeroTelephone_{{$index}}_numero"
                ng-model="numeroTelephone.numero"/>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="field_niveauConfidentialite">
+    <label class="col-sm-2 control-label" for="field_numeroTelephone_{{$index}}_niveauConfidentialite">
         Niveau de confidentialité</label>
 
     <div class="col-sm-10">
         <select class="form-control" name="niveauConfidentialite"
                 ng-model="numeroTelephone.niveauConfidentialite"
-                id="field_niveauConfidentialite">
+                id="field_numeroTelephone_{{$index}}_niveauConfidentialite">
             <option value="PUBLIABLE">Publiable</option>
             <option value="CONFIDENTIEL">Confidentiel</option>
             <option value="INTERNE">Interne</option>
@@ -47,12 +48,12 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label" for="field_publicationAnnuaire">
+    <label class="col-sm-2 control-label" for="field_numeroTelephone_{{$index}}_publicationAnnuaire">
         Publication dans l'annuaire</label>
 
     <div class="col-sm-10">
         <input type="checkbox" name="publicationAnnuaire"
-               id="field_publicationAnnuaire"
+               id="field_numeroTelephone_{{$index}}_publicationAnnuaire"
                ng-model="numeroTelephone.publicationAnnuaire"
         />
     </div>
