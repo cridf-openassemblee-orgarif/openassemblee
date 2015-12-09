@@ -14,12 +14,14 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import fr.cridf.babylone14166.web.rest.views.Views;
 
 /**
  * REST controller for managing Elu.
@@ -95,6 +97,8 @@ public class EluResource {
     @RequestMapping(value = "/elus/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
+    // TODO tester jsonview annotations + doc
+    @JsonView(Views.RelationsSansElu.class)
     @Timed
     public ResponseEntity<Elu> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);

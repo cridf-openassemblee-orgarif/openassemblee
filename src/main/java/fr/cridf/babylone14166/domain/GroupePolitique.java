@@ -29,6 +29,7 @@ public class GroupePolitique implements Serializable {
     private String nomCourt;
 
     @OneToOne
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private AdressePostale adressePostale;
 
     @Column(name = "date_debut")

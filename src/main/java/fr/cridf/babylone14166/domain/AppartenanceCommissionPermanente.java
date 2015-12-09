@@ -9,8 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * A AppartenanceCommissionPermanente.
@@ -36,6 +35,8 @@ public class AppartenanceCommissionPermanente implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonBackReference
     private Elu elu;
 
     public Long getId() {
@@ -70,12 +71,10 @@ public class AppartenanceCommissionPermanente implements Serializable {
         this.motifFin = motifFin;
     }
 
-    @JsonIgnore
     public Elu getElu() {
         return elu;
     }
 
-    @JsonProperty
     public void setElu(Elu elu) {
         this.elu = elu;
     }
