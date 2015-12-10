@@ -14,9 +14,14 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/vie-politique-component.html',
             link: function ($scope) {
                 $scope.eluEnCommissionPermanente = false;
-                if ($scope.elu.appartenancesCommissionPermanente.length > 1) {
-                    // TODO est faux ! vérifier les dates
-                    $scope.eluEnCommissionPermanente = true;
+                if ($scope.elu.appartenancesCommissionPermanente &&
+                    $scope.elu.appartenancesCommissionPermanente.length > 0) {
+                    angular.forEach($scope.elu.appartenancesCommissionPermanente, function (a) {
+                        if (a.dateFin == null) {
+                            // TODO est faux ! vérifier les dates
+                            $scope.eluEnCommissionPermanente = true;
+                        }
+                    });
                 }
             },
         }

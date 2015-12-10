@@ -118,6 +118,29 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elus.detail.finFonctionExecutive', {
+                parent: 'elus.detail',
+                url: '/fin-fonction-executive/{fonctionId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionExecutive-fin-dialog.html',
+                        controller: 'FonctionExecutiveDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['FonctionExecutive', function (FonctionExecutive) {
+                                return FonctionExecutive.get({id: $stateParams.fonctionId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elus.detail.nouvelleFonctionCommissionPermanente', {
                 parent: 'elus.detail',
                 url: '/nouvelle-fonction-commission-permanente',
@@ -139,6 +162,29 @@ angular.module('babylone14166App')
                                     id: null
                                 };
                             }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finFonctionCommissionPermanente', {
+                parent: 'elus.detail',
+                url: '/fin-fonction-commission-permanente/{fonctionId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionCommissionPermanente-fin-dialog.html',
+                        controller: 'FonctionCommissionPermanenteDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['FonctionCommissionPermanente', function (FonctionCommissionPermanente) {
+                                return FonctionCommissionPermanente.get({id: $stateParams.fonctionId});
+                            }]
                         }
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
@@ -178,7 +224,7 @@ angular.module('babylone14166App')
             })
             .state('elus.detail.finAppartenanceCommissionPermanente', {
                 parent: 'elus.detail',
-                url: '/appartenance-commission-permanente/{appartenanceId}',
+                url: '/fin-appartenance-commission-permanente/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },

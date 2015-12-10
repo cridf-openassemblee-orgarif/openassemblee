@@ -3,24 +3,27 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myAppartenanceCommissionPermanenteLabel">
-            Fixer une date et un motif de départ de la commission permanente</h4>
+        <h4 class="modal-title" id="myFonctionExecutiveLabel">
+            Fixer une date et un motif de départ de la fonction exécutive
+        </h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
         <input type="hidden" class="form-control" id="id" name="id"
-               ng-model="appartenanceCommissionPermanente.id" readonly/>
+               ng-model="fonctionExecutive.id" readonly/>
+        <input type="hidden" class="form-control" name="fonction" id="field_fonction"
+               ng-model="fonctionExecutive.fonction"/>
         <input type="hidden" class="form-control" name="dateDebut" id="field_dateDebut"
-               ng-model="appartenanceCommissionPermanente.dateDebut"/>
+               ng-model="fonctionExecutive.dateDebut"/>
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="date" class="form-control" name="dateFin" id="field_dateFin"
-                   ng-model="appartenanceCommissionPermanente.dateFin"/>
+                   ng-model="fonctionExecutive.dateFin"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                   ng-model="appartenanceCommissionPermanente.motifFin"/>
+                   ng-model="fonctionExecutive.motifFin"/>
         </div>
     </div>
     <div class="modal-footer">
