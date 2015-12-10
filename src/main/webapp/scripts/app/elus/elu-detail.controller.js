@@ -12,8 +12,4 @@ angular.module('babylone14166App')
             $scope.elu = result;
         });
         $scope.$on('$destroy', unsubscribe);
-
-        $scope.addCommissionExecutive = function () {
-
-        }
     });

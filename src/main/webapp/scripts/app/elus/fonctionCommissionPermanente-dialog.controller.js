@@ -24,7 +24,7 @@ angular.module('babylone14166App').controller('FonctionCommissionPermanenteDialo
 
         $scope.save = function () {
             $scope.isSaving = true;
-            $scope.fonctionCommissionPermanente.elu = {id: $stateParams.id};
+            $scope.fonctionCommissionPermanente.elu = $stateParams.id;
             if ($scope.fonctionCommissionPermanente.id != null) {
                 FonctionCommissionPermanente.update($scope.fonctionCommissionPermanente, onSaveSuccess, onSaveError);
             } else {
