@@ -64,6 +64,29 @@ angular.module('babylone14166App')
                     }]
                 }
             })
+            .state('groupesPolitiques.detail.fin', {
+                parent: 'groupesPolitiques.detail',
+                url: '/fin',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-fin-dialog.html',
+                        controller: 'GroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['GroupePolitique', function (GroupePolitique) {
+                                return GroupePolitique.get({id: $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('groupesPolitiques.delete', {
                 parent: 'groupesPolitiques',
                 url: '/{id}/delete',

@@ -1,4 +1,3 @@
-
 <div>
     <h2><span>GroupePolitique</span> {{groupePolitique.id}}</h2>
     <div class="table-responsive">
@@ -54,9 +53,10 @@
         </table>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+    <div ng-if="groupePolitique.dateFin==undefined">
+        <button class="btn btn-sm btn-primary"
+                ui-sref="groupesPolitiques.detail.fin">
+            Fixer une date et un motif de fin du groupe
+        </button>
+    </div>
 </div>
