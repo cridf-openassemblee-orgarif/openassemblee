@@ -40,4 +40,8 @@ angular.module('babylone14166App').controller('EluEditController',
                 }
                 $scope.elu[obj].push({});
             }
+
+            $scope.remove = function (obj, index) {
+                $scope.elu[obj].splice(index, 1);
+            }
         }]);

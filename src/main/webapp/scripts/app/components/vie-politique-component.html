@@ -1,0 +1,23 @@
+<div ng-if="!elu.fonctionsExecutives.length
+                && !elu.appartenancesCommissionPermanente.length
+                && !elu.fonctionsCommissionPermanente.length">Aucune fonction
+</div>
+
+<div ng-repeat="appartenanceCommissionPermanente in elu.appartenancesCommissionPermanente">
+    Appartient à la commission permanente
+</div>
+<div ng-repeat="fonctionCommissionPermanente in elu.fonctionsCommissionPermanente">
+    Fonction à la commission permanente : {{fonctionCommissionPermanente.fonction}}
+</div>
+<div ng-repeat="fonctionExecutive in elu.fonctionsExecutives">
+    Fonction exécutive : {{fonctionExecutive.fonction}}
+</div>
+<button class="btn btn-sm btn-primary" ui-sref="elus.detail.ajouterCommissionPermanente">
+    Ajouter à la commission permanente
+</button>
+<button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionCommissionPermanente">
+    Ajouter une fonction à la commission permanente
+</button>
+<button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionExecutive">
+    Ajouter une fonction exécutive
+</button>

@@ -7,6 +7,12 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/elu-list-item-component.html'
         }
     })
+    .directive('viePolitique', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/vie-politique-component.html'
+        }
+    })
     .directive('coordonneesEdit', function () {
         return {
             restrict: 'E',

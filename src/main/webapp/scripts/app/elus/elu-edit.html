@@ -34,6 +34,10 @@
                                 <h3>Adresse n°{{$index + 1}}</h3>
 
                                 <adresse-postale-edit></adresse-postale-edit>
+                                <button type="button" class="btn btn-xs btn-danger"
+                                        ng-click="remove('adressesPostales', $index)">
+                                    Enlever cette adresse postale
+                                </button>
                             </div>
                             <button type="button" class="btn btn-sm btn-default" ng-click="add('adressesPostales')">
                                 Ajouter une adresse postale
@@ -51,6 +55,10 @@
                                 <h3>Numéro téléphone n°{{$index + 1}}</h3>
 
                                 <numero-telephone-edit></numero-telephone-edit>
+                                <button type="button" class="btn btn-xs btn-danger"
+                                        ng-click="remove('numerosTelephones', $index)">
+                                    Enlever cette adresse postale
+                                </button>
                             </div>
                             <button type="button" class="btn btn-sm btn-default" ng-click="add('numerosTelephones')">
                                 Ajouter un numéro de téléphone
@@ -68,6 +76,10 @@
                                 <h3>Numéro fax n°{{$index + 1}}</h3>
 
                                 <numero-fax-edit></numero-fax-edit>
+                                <button type="button" class="btn btn-xs btn-danger"
+                                        ng-click="remove('numerosFax', $index)">
+                                    Enlever cette adresse postale
+                                </button>
                             </div>
                             <button type="button" class="btn btn-sm btn-default" ng-click="add('numerosFax')">
                                 Ajouter un numéro de fax
@@ -85,6 +97,10 @@
                                 <h3>Adresse mail n°{{$index + 1}}</h3>
 
                                 <adresse-mail-edit></adresse-mail-edit>
+                                <button type="button" class="btn btn-xs btn-danger"
+                                        ng-click="remove('adressesMail', $index)">
+                                    Enlever cette adresse postale
+                                </button>
                             </div>
                             <button type="button" class="btn btn-sm btn-default" ng-click="add('adressesMail')">
                                 Ajouter une adresse mail
@@ -102,6 +118,10 @@
                                 <h3>Identité sur Internet n°{{$index + 1}}</h3>
 
                                 <identite-internet-edit></identite-internet-edit>
+                                <button type="button" class="btn btn-xs btn-danger"
+                                        ng-click="remove('identitesInternet', $index)">
+                                    Enlever cette adresse postale
+                                </button>
                             </div>
                             <button type="button" class="btn btn-sm btn-default" ng-click="add('identitesInternet')">
                                 Ajouter une identité sur Internet
