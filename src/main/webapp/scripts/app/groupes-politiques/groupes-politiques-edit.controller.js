@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('GroupePolitiqueEditController',
-    ['$scope', '$stateParams', 'entity', 'GroupePolitique',
-        function ($scope, $stateParams, entity, GroupePolitique) {
+    ['$scope', '$stateParams', 'entity', 'GroupePolitique', '$state',
+        function ($scope, $stateParams, entity, GroupePolitique, $state) {
 
         $scope.groupePolitique = entity;
         $scope.load = function(id) {
@@ -14,6 +14,7 @@ angular.module('babylone14166App').controller('GroupePolitiqueEditController',
         var onSaveSuccess = function (result) {
             $scope.$emit('babylone14166App:groupePolitiqueUpdate', result);
             $scope.isSaving = false;
+            $state.go('groupesPolitiques.detail', {id: result.id});
         };
 
         var onSaveError = function (result) {
