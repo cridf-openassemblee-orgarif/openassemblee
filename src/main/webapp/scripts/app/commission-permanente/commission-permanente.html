@@ -11,19 +11,20 @@
         <div class="container">
             <h2>Les membres de la commission</h2>
 
-            <div ng-repeat="a in comm.appartenances">
-                Depuis le {{a.dateDebut}}
+            <div ng-repeat="a in comm.appartenances" class="well">
                 <elu-list-item ng-init="elu = comm.elus[a.elu.id]"></elu-list-item>
+                Depuis le {{a.dateDebut}}
+                <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant : {{a.motifFin}}</div>
             </div>
 
             <h2>Les élus ayant une fonction à la commission</h2>
-            <div ng-repeat="f in comm.fonctions">
+            <div ng-repeat="f in comm.fonctions" class="well">
                 {{f.fonction}} depuis le {{f.dateDebut}}
                 <elu-list-item ng-init="elu = comm.elus[f.elu.id]"></elu-list-item>
             </div>
 
             <h2>Les élus ayant une fonction exécutive</h2>
-            <div ng-repeat="f in comm.fonctionsExecutives">
+            <div ng-repeat="f in comm.fonctionsExecutives" class="well">
                 {{f.fonction}} depuis le {{f.dateDebut}}
                 <elu-list-item ng-init="elu = comm.elus[f.elu.id]"></elu-list-item>
             </div>

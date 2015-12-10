@@ -10,7 +10,15 @@ angular.module('babylone14166App')
     .directive('viePolitique', function () {
         return {
             restrict: 'E',
-            templateUrl: 'scripts/app/components/vie-politique-component.html'
+            scope: true,
+            templateUrl: 'scripts/app/components/vie-politique-component.html',
+            link: function ($scope) {
+                $scope.eluEnCommissionPermanente = false;
+                if ($scope.elu.appartenancesCommissionPermanente.length > 1) {
+                    // TODO est faux ! vérifier les dates
+                    $scope.eluEnCommissionPermanente = true;
+                }
+            },
         }
     })
     .directive('coordonneesEdit', function () {

@@ -176,4 +176,27 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-    });
+            .state('elus.detail.finAppartenanceCommissionPermanente', {
+                parent: 'elus.detail',
+                url: '/appartenance-commission-permanente/{appartenanceId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/appartenanceCommissionPermanente-fin-dialog.html',
+                        controller: 'AppartenanceCommissionPermanenteDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AppartenanceCommissionPermanente', function (AppartenanceCommissionPermanente) {
+                                return AppartenanceCommissionPermanente.get({id: $stateParams.appartenanceId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+    })

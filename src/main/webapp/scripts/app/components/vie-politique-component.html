@@ -3,21 +3,42 @@
                 && !elu.fonctionsCommissionPermanente.length">Aucune fonction
 </div>
 
-<div ng-repeat="appartenanceCommissionPermanente in elu.appartenancesCommissionPermanente">
-    Appartient à la commission permanente
+<h3 ng-if="elu.appartenancesCommissionPermanente.length">Commission permanente</h3>
+<div ng-repeat="a in elu.appartenancesCommissionPermanente" class="well">
+    Appartient à la commission depuis le {{a.dateDebut}}
+    <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant : {{a.motifFin}}</div>
+    <div ng-if="a.dateFin==undefined">
+        <button class="btn btn-sm btn-primary"
+                ui-sref="elus.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
+        Fixer une date et un motif de départ
+        </button>
+    </div>
 </div>
-<div ng-repeat="fonctionCommissionPermanente in elu.fonctionsCommissionPermanente">
-    Fonction à la commission permanente : {{fonctionCommissionPermanente.fonction}}
-</div>
-<div ng-repeat="fonctionExecutive in elu.fonctionsExecutives">
-    Fonction exécutive : {{fonctionExecutive.fonction}}
-</div>
-<button class="btn btn-sm btn-primary" ui-sref="elus.detail.ajouterCommissionPermanente">
+<button ng-if="eluEnCommissionPermanente === false" class="btn btn-sm btn-primary"
+        ui-sref="elus.detail.ajouterCommissionPermanente">
     Ajouter à la commission permanente
 </button>
+
+<h3 ng-if="elu.fonctionsCommissionPermanente.length">Fonctions à la commission permanente</h3>
+<div ng-repeat="f in elu.fonctionsCommissionPermanente" class="well">
+    Fonction à la commission : {{f.fonction}} depuis le {{f.dateDebut}}
+    <br/>
+    <button class="btn btn-sm btn-primary" ui-sref="elus.detail.finFonctionCommissionPermanente">
+        Fixer une date et un motif de départ
+    </button>
+</div>
 <button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionCommissionPermanente">
     Ajouter une fonction à la commission permanente
 </button>
+
+<h3 ng-if="elu.fonctionsExecutives.length">Fonctions exécutives</h3>
+<div ng-repeat="f in elu.fonctionsExecutives" class="well">
+    Fonction : {{f.fonction}} depuis le {{f.dateDebut}}
+    <br/>
+    <button class="btn btn-sm btn-primary" ui-sref="elus.detail.finAppartenanceCommissionPermanente">
+        Fixer une date et un motif de départ
+    </button>
+</div>
 <button class="btn btn-sm btn-primary" ui-sref="elus.detail.nouvelleFonctionExecutive">
     Ajouter une fonction exécutive
 </button>
