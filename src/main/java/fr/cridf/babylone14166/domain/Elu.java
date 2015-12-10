@@ -46,6 +46,13 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
+    public Elu() {
+    }
+
+    public Elu(Long id) {
+        this.id = id;
+    }
+
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "elu_adresses_postales",

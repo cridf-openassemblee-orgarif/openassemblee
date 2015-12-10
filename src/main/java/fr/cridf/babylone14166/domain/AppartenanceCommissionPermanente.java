@@ -9,10 +9,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import fr.cridf.babylone14166.web.rest.jackson.JacksonEluDeserializer;
+import fr.cridf.babylone14166.web.rest.jackson.JacksonEluIdSerializer;
 
 /**
  * A AppartenanceCommissionPermanente.
@@ -39,9 +38,11 @@ public class AppartenanceCommissionPermanente implements Serializable {
     @ManyToOne
     @JoinColumn(name = "elu_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonDeserialize(using = JacksonEluDeserializer.class)
+    //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    //    @JsonIdentityReference(alwaysAsId = true)
+    //    @JsonDeserialize(using = JacksonEluDeserializer.class)
+    @JsonSerialize(using = JacksonEluIdSerializer.class)
+    //    @org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.annotation.JsonTypeInfo
     private Elu elu;
 
     public Long getId() {
