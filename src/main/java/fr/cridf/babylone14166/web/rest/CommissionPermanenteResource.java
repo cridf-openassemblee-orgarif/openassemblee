@@ -5,11 +5,9 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import fr.cridf.babylone14166.service.CommissionPermanenteService;
 import fr.cridf.babylone14166.web.rest.dto.CommissionPermanenteDTO;
-import fr.cridf.babylone14166.web.rest.views.Views;
 
 @RestController
 @RequestMapping("/api")
@@ -23,7 +21,6 @@ public class CommissionPermanenteResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @JsonView(Views.RelationsAvecElu.class)
     public ResponseEntity<CommissionPermanenteDTO> getCommissionPermanente() {
         return new ResponseEntity<>(commissionPermanenteService.getCommissionPermanente(), HttpStatus.OK);
     }

@@ -9,15 +9,17 @@ public class CommissionPermanenteDTO {
     private List<AppartenanceCommissionPermanente> appartenances;
     private List<FonctionCommissionPermanente> fonctions;
     private List<FonctionExecutive> fonctionsExecutives;
+    private List<Elu> elus;
 
     public CommissionPermanenteDTO() {
     }
 
     public CommissionPermanenteDTO(List<AppartenanceCommissionPermanente> appartenances,
-        List<FonctionCommissionPermanente> fonctions, List<FonctionExecutive> fonctionsExecutives) {
+        List<FonctionCommissionPermanente> fonctions, List<FonctionExecutive> fonctionsExecutives, List<Elu> elus) {
         this.appartenances = appartenances;
         this.fonctions = fonctions;
         this.fonctionsExecutives = fonctionsExecutives;
+        this.elus = elus;
     }
 
     public List<AppartenanceCommissionPermanente> getAppartenances() {
@@ -44,4 +46,11 @@ public class CommissionPermanenteDTO {
         this.fonctionsExecutives = fonctionsExecutives;
     }
 
+    public List<Elu> getElus() {
+        return elus;
+    }
+
+    public void setElus(List<Elu> elus) {
+        this.elus = elus;
+    }
 }

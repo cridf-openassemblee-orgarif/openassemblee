@@ -1,6 +1,7 @@
 package fr.cridf.babylone14166.service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,11 @@ public class CommissionPermanenteService {
         List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll();
         List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll();
         List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll();
-        return new CommissionPermanenteDTO(acp, fcp, fe);
+        Set<Long> elusIds = new HashSet<>();
+        elusIds.addAll(acp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
+        elusIds.addAll(fcp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
+        elusIds.addAll(fe.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
+        return new CommissionPermanenteDTO(acp, fcp, fe, eluRepository.findAll(elusIds));
     }
 
 }

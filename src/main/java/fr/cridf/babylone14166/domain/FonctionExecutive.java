@@ -9,9 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import fr.cridf.babylone14166.web.rest.views.Views;
+import com.fasterxml.jackson.annotation.*;
 
 /**
  * A FonctionExecutive.
@@ -41,7 +39,8 @@ public class FonctionExecutive implements Serializable {
     @ManyToOne
     @JoinColumn(name = "elu_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonView(Views.RelationsAvecElu.class)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Elu elu;
 
     public Long getId() {

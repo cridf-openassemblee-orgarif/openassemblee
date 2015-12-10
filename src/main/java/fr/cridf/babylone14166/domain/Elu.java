@@ -9,10 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
-import fr.cridf.babylone14166.web.rest.views.Views;
 
 /**
  * A Elu.
@@ -87,17 +84,14 @@ public class Elu implements Serializable {
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonView(Views.RelationsSansElu.class)
     private List<FonctionExecutive> fonctionsExecutives = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonView(Views.RelationsSansElu.class)
     private List<FonctionCommissionPermanente> fonctionsCommissionPermanente = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonView(Views.RelationsSansElu.class)
     private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
 
     public Long getId() {
