@@ -90,6 +90,14 @@ angular.module('babylone14166App', ['LocalStorageModule',
             pattern: /bool|true|0|1/
         });
     }])
+    // TODO good pr pb de cache ?
+    .config(['$httpProvider', function ($httpProvider) {
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+    }])
     // TODO mlo reprendre
     .filter('ouinon', [function () {
         return function (value) {
