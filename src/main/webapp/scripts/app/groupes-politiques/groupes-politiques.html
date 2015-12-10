@@ -49,7 +49,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="groupePolitique in groupesPolitiques track by groupePolitique.id">
-                        <td><a ui-sref="groupePolitique.detail({id:groupePolitique.id})">{{groupePolitique.id}}</a></td>
+                        <td><a ui-sref="groupesPolitiques.detail({id:groupePolitique.id})">{{groupePolitique.id}}</a>
+                        </td>
                         <td>{{groupePolitique.nom}}</td>
                         <td>{{groupePolitique.nomCourt}}</td>
                         <td>{{groupePolitique.dateDebut | date:'mediumDate'}}</td>
