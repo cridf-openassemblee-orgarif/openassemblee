@@ -13,19 +13,19 @@
 
             <div ng-repeat="a in comm.appartenances">
                 Depuis le {{a.dateDebut}}
-                <elu-list-item ng-init="elu = comm.elus[a.elu]"></elu-list-item>
+                <elu-list-item ng-init="elu = comm.elus[a.elu.id]"></elu-list-item>
             </div>
 
             <h2>Les élus ayant une fonction à la commission</h2>
             <div ng-repeat="f in comm.fonctions">
                 {{f.fonction}} depuis le {{f.dateDebut}}
-                <elu-list-item ng-init="elu = comm.elus[f.elu]"></elu-list-item>
+                <elu-list-item ng-init="elu = comm.elus[f.elu.id]"></elu-list-item>
             </div>
 
             <h2>Les élus ayant une fonction exécutive</h2>
             <div ng-repeat="f in comm.fonctionsExecutives">
                 {{f.fonction}} depuis le {{f.dateDebut}}
-                <elu-list-item ng-init="elu = comm.elus[f.elu]"></elu-list-item>
+                <elu-list-item ng-init="elu = comm.elus[f.elu.id]"></elu-list-item>
             </div>
         </div>
     </section>

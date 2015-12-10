@@ -9,7 +9,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import fr.cridf.babylone14166.web.rest.jackson.JacksonEluIdSerializer;
 
 /**
  * A FonctionExecutive.
@@ -39,8 +41,7 @@ public class FonctionExecutive implements Serializable {
     @ManyToOne
     @JoinColumn(name = "elu_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
     public Long getId() {

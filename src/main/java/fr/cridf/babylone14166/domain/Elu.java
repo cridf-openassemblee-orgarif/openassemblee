@@ -90,15 +90,15 @@ public class Elu implements Serializable {
     private List<IdentiteInternet> identitesInternet = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<FonctionExecutive> fonctionsExecutives = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<FonctionCommissionPermanente> fonctionsCommissionPermanente = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
 
     public Long getId() {

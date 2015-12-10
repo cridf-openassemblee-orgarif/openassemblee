@@ -25,7 +25,6 @@ angular.module('babylone14166App').controller('AppartenanceCommissionPermanenteD
         $scope.save = function () {
             $scope.isSaving = true;
             $scope.appartenanceCommissionPermanente.elu = {id: $stateParams.id};
-            //$scope.appartenanceCommissionPermanente.elu = $stateParams.id;
             if ($scope.appartenanceCommissionPermanente.id != null) {
                 AppartenanceCommissionPermanente.update($scope.appartenanceCommissionPermanente, onSaveSuccess, onSaveError);
             } else {
