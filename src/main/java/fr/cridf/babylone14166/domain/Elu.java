@@ -9,9 +9,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import fr.cridf.babylone14166.web.rest.views.Views;
 
 /**
  * A Elu.
@@ -20,7 +21,6 @@ import fr.cridf.babylone14166.domain.enumeration.Civilite;
 @Table(name = "elu")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "elu")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Elu implements Serializable {
 
     @Id
@@ -87,17 +87,17 @@ public class Elu implements Serializable {
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonManagedReference
+    @JsonView(Views.RelationsSansElu.class)
     private List<FonctionExecutive> fonctionsExecutives = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonManagedReference
+    @JsonView(Views.RelationsSansElu.class)
     private List<FonctionCommissionPermanente> fonctionsCommissionPermanente = new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonManagedReference
+    @JsonView(Views.RelationsSansElu.class)
     private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
 
     public Long getId() {

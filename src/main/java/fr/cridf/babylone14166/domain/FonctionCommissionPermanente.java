@@ -9,7 +9,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import fr.cridf.babylone14166.web.rest.views.Views;
 
 /**
  * A FonctionCommissionPermanente.
@@ -39,7 +41,7 @@ public class FonctionCommissionPermanente implements Serializable {
     @ManyToOne
     @JoinColumn(name = "elu_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JsonBackReference
+    @JsonView(Views.RelationsAvecElu.class)
     private Elu elu;
 
     public Long getId() {

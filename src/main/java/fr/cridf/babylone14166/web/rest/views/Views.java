@@ -4,6 +4,6 @@ public class Views {
 
     public interface RelationsSansElu {}
 
-    public interface RelationsAvecElu extends RelationsSansElu {}
+    public interface RelationsAvecElu {}
 
 }
