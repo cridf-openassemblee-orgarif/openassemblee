@@ -1,6 +1,12 @@
 'use strict';
 
 angular.module('babylone14166App')
+    .directive('eluListItem', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/elu-list-item-component.html'
+        }
+    })
     .directive('coordonneesEdit', function () {
         return {
             restrict: 'E',

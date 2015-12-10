@@ -9,6 +9,24 @@
     <!-- Main content -->
     <section class="content">
         <div class="container">
+            <h2>Les membres de la commission</h2>
+
+            <div ng-repeat="a in comm.appartenances">
+                {{a.dateDebut}}
+                <elu-list-item ng-init="elu = comm.elus[a.elu]"></elu-list-item>
+            </div>
+
+            <h2>Les membres ayant une fonction à la commission</h2>
+            <div ng-repeat="f in comm.fonctions">
+                {{f.dateDebut}}
+                <elu-list-item ng-init="elu = comm.elus[f.elu]"></elu-list-item>
+            </div>
+
+            <h2>Les élus ayant une fonction exécutive</h2>
+            <div ng-repeat="f in comm.fonctionsExecutives">
+                {{f.dateDebut}}
+                <elu-list-item ng-init="elu = comm.elus[f.elu]"></elu-list-item>
+            </div>
         </div>
     </section>
 </div>

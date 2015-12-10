@@ -15,6 +15,10 @@ angular.module('babylone14166App')
                         controller: 'CommissionPermanenteController'
                     }
                 },
-                resolve: {}
+                resolve: {
+                    entity: ['CommissionPermanente', function (CommissionPermanente) {
+                        return CommissionPermanente.get();
+                    }]
+                }
             })
     });
