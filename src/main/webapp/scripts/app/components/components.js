@@ -26,10 +26,10 @@ angular.module('babylone14166App')
             },
         }
     })
-    .directive('coordonneesEdit', function () {
+    .directive('identiteEdit', function () {
         return {
             restrict: 'E',
-            templateUrl: 'scripts/app/components/coordonnees-edit-component.html'
+            templateUrl: 'scripts/app/components/identite-edit-component.html'
         }
     })
     .directive('adressePostaleEdit', function () {
