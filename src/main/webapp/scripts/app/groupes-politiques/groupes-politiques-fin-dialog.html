@@ -15,8 +15,10 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_motifFin">Motif de fin</label>
-            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                   ng-model="groupePolitique.motifFin"/>
+            <input type="text" class="typeahead form-control" name="motifFin" id="field_motifFin"
+                   options="typeaheadOptionsZeroChar" datasets="finsGroupePolitiqueAutocomplete"
+                   ng-model="groupePolitique.motifFin"
+                   sf-typeahead autocomplete="off"/>
         </div>
     </div>
     <div class="modal-footer">

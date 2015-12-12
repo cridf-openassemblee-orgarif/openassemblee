@@ -57,17 +57,27 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
         };
 
         var autocomplete = function (data) {
+            var b = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: data
+            });
             return {
                 limit: 10,
-                source: new Bloodhound({
-                    datumTokenizer: Bloodhound.tokenizers.whitespace,
-                    queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    local: darta
-                })
-            };
+                source: function (q, sync) {
+                    if (q === '') {
+                        sync(b.get(data));
+                    }
+                    else {
+                        b.search(q, sync);
+                    }
+                }
+            }
         };
 
-        $rootScope.professions = autocomplete(professions);
+        $rootScope.professionsAutocomplete = autocomplete(professions);
+        $rootScope.finsDeMandatAutocomplete = autocomplete(finsDeMandat);
+        $rootScope.finsGroupePolitiqueAutocomplete = autocomplete(finsGroupePolitique);
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
