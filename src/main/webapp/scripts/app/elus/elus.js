@@ -61,8 +61,8 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'Elu', function ($stateParams, Elu) {
-                        return Elu.get({id: $stateParams.id});
+                    entity: ['$stateParams', 'EluComplet', function ($stateParams, EluComplet) {
+                        return EluComplet.get({id: $stateParams.id});
                     }]
                 }
             })
@@ -207,7 +207,6 @@ angular.module('babylone14166App')
                         resolve: {
                             entity: function () {
                                 return {
-                                    fonction: null,
                                     dateDebut: null,
                                     dateFin: null,
                                     motifFin: null,
@@ -236,6 +235,109 @@ angular.module('babylone14166App')
                         resolve: {
                             entity: ['AppartenanceCommissionPermanente', function (AppartenanceCommissionPermanente) {
                                 return AppartenanceCommissionPermanente.get({id: $stateParams.appartenanceId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.ajouterGroupePolitique', {
+                parent: 'elus.detail',
+                url: '/ajouter-groupe-politique',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/appartenanceGroupePolitique-dialog.html',
+                        controller: 'AppartenanceGroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finAppartenanceGroupePolitique', {
+                parent: 'elus.detail',
+                url: '/fin-appartenance-groupe-politique/{appartenanceId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/appartenanceGroupePolitique-fin-dialog.html',
+                        controller: 'AppartenanceGroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AppartenanceGroupePolitique', function (AppartenanceGroupePolitique) {
+                                return AppartenanceGroupePolitique.get({id: $stateParams.appartenanceId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.nouvelleFonctionGroupePolitique', {
+                parent: 'elus.detail',
+                url: '/nouvelle-fonction-groupe-politique',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionGroupePolitique-dialog.html',
+                        controller: 'FonctionGroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    fonction: null,
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finFonctionGroupePolitique', {
+                parent: 'elus.detail',
+                url: '/fin-fonction-groupe-politique/{fonctionId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/fonctionGroupePolitique-fin-dialog.html',
+                        controller: 'FonctionGroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['FonctionGroupePolitique', function (FonctionGroupePolitique) {
+                                return FonctionGroupePolitique.get({id: $stateParams.fonctionId});
                             }]
                         }
                     }).result.then(function (result) {

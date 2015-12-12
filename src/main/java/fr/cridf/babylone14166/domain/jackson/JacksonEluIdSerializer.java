@@ -1,4 +1,4 @@
-package fr.cridf.babylone14166.web.rest.jackson;
+package fr.cridf.babylone14166.domain.jackson;
 
 import java.io.IOException;
 

@@ -1,5 +1,8 @@
 package fr.cridf.babylone14166.service;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.hibernate.Hibernate;
@@ -9,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.*;
+import fr.cridf.babylone14166.service.dto.EluCompletDTO;
 
 @Service
 @Transactional
@@ -55,8 +59,26 @@ public class EluService {
             Hibernate.initialize(elu.getAppartenancesCommissionPermanente());
             Hibernate.initialize(elu.getFonctionsCommissionPermanente());
             Hibernate.initialize(elu.getFonctionsExecutives());
+            Hibernate.initialize(elu.getAppartenancesGroupePolitique());
+            Hibernate.initialize(elu.getFonctionsGroupePolitique());
         }
         return elu;
+    }
+
+    public EluCompletDTO getEluComplet(Long id) {
+        Elu elu = get(id);
+        if (elu == null) {
+            return null;
+        }
+        Map<Long, GroupePolitique> groupePolitiques = elu.getAppartenancesGroupePolitique().stream()
+            .map(a -> a.getGroupePolitique())
+            .collect(Collectors.toSet())
+            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity()));
+        groupePolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
+            .map(a -> a.getGroupePolitique())
+            .collect(Collectors.toSet())
+            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
+        return new EluCompletDTO(elu, groupePolitiques);
     }
 
     public Elu save(Elu elu) {

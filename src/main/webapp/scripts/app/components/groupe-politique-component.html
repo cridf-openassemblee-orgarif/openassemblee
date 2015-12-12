@@ -1,0 +1,35 @@
+<h3 ng-if="elu.appartenancesGroupePolitique.length">Groupe politique</h3>
+<div ng-repeat="a in elu.appartenancesGroupePolitique" class="well">
+    Appartient au groupe {{groupesPolitiques[a.groupePolitique.id].nom}} depuis le {{a.dateDebut}}
+    <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant : {{a.motifFin}}</div>
+    <div ng-if="a.dateFin==undefined">
+        <button class="btn btn-sm btn-primary"
+                ui-sref="elus.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
+            Fixer une date et un motif de départ
+        </button>
+    </div>
+</div>
+<div>
+    <button class="btn btn-sm btn-primary"
+            ui-sref="elus.detail.ajouterGroupePolitique">
+        Ajouter à un groupe politique
+    </button>
+</div>
+<h3 ng-if="elu.fonctionsGroupePolitique.length">Fonction dans un groupe politique</h3>
+<div ng-repeat="f in elu.fonctionsGroupePolitique" class="well">
+    A la fonction suivante {{f.fonction}} au sein du groupe {{groupesPolitiques[f.groupePolitique.id].nom}}
+    depuis le {{f.dateDebut}}
+    <div ng-if="f.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant : {{f.motifFin}}</div>
+    <div ng-if="f.dateFin==undefined">
+        <button class="btn btn-sm btn-primary"
+                ui-sref="elus.detail.finFonctionGroupePolitique({fonctionId: f.id})">
+            Fixer une date et un motif de fin
+        </button>
+    </div>
+</div>
+<div>
+    <button class="btn btn-sm btn-primary"
+            ui-sref="elus.detail.nouvelleFonctionGroupePolitique">
+        Ajouter une fonction à un groupe politique
+    </button>
+</div>

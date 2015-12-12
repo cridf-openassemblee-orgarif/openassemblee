@@ -12,22 +12,20 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
+import fr.cridf.babylone14166.domain.jackson.JacksonGroupePolitiqueIdSerializer;
 
 /**
- * A FonctionExecutive.
+ * A AppartenanceGroupePolitique.
  */
 @Entity
-@Table(name = "fonction_executive")
+@Table(name = "appartenance_groupe_politique")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "fonctionexecutive")
-public class FonctionExecutive implements Serializable {
+@Document(indexName = "appartenancegroupepolitique")
+public class AppartenanceGroupePolitique implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "fonction")
-    private String fonction;
 
     @Column(name = "date_debut")
     private LocalDate dateDebut;
@@ -40,9 +38,13 @@ public class FonctionExecutive implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
+
+    @ManyToOne
+    @JoinColumn(name = "groupe_politique_id")
+    @JsonSerialize(using = JacksonGroupePolitiqueIdSerializer.class)
+    private GroupePolitique groupePolitique;
 
     public Long getId() {
         return id;
@@ -50,14 +52,6 @@ public class FonctionExecutive implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFonction() {
-        return fonction;
-    }
-
-    public void setFonction(String fonction) {
-        this.fonction = fonction;
     }
 
     public LocalDate getDateDebut() {
@@ -92,6 +86,14 @@ public class FonctionExecutive implements Serializable {
         this.elu = elu;
     }
 
+    public GroupePolitique getGroupePolitique() {
+        return groupePolitique;
+    }
+
+    public void setGroupePolitique(GroupePolitique groupePolitique) {
+        this.groupePolitique = groupePolitique;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,8 +102,8 @@ public class FonctionExecutive implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        FonctionExecutive fonctionExecutive = (FonctionExecutive) o;
-        return Objects.equals(id, fonctionExecutive.id);
+        AppartenanceGroupePolitique appartenanceGroupePolitique = (AppartenanceGroupePolitique) o;
+        return Objects.equals(id, appartenanceGroupePolitique.id);
     }
 
     @Override
@@ -111,9 +113,8 @@ public class FonctionExecutive implements Serializable {
 
     @Override
     public String toString() {
-        return "FonctionExecutive{" +
+        return "AppartenanceGroupePolitique{" +
             "id=" + id +
-            ", fonction='" + fonction + "'" +
             ", dateDebut='" + dateDebut + "'" +
             ", dateFin='" + dateFin + "'" +
             ", motifFin='" + motifFin + "'" +

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.service.CommissionPermanenteService;
-import fr.cridf.babylone14166.web.rest.dto.CommissionPermanenteDTO;
+import fr.cridf.babylone14166.service.dto.CommissionPermanenteDTO;
 
 @RestController
 @RequestMapping("/api")

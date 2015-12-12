@@ -92,6 +92,19 @@ public class GroupePolitiqueResource {
     }
 
     /**
+     * GET  /groupePolitiques -> get all the groupePolitiques.
+     */
+    @RequestMapping(value = "/groupePolitiques/by-user/{userId}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<GroupePolitique> getGroupesPolitiquesByUser(@PathVariable Long userId) {
+        log.debug("REST request to get GroupePolitiques by user");
+
+        return groupePolitiqueRepository.findAll();
+    }
+
+    /**
      * GET  /groupePolitiques/:id -> get the "id" groupePolitique.
      */
     @RequestMapping(value = "/groupePolitiques/{id}",

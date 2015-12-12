@@ -10,20 +10,7 @@ angular.module('babylone14166App')
     .directive('viePolitique', function () {
         return {
             restrict: 'E',
-            scope: true,
             templateUrl: 'scripts/app/components/vie-politique-component.html',
-            link: function ($scope) {
-                $scope.eluEnCommissionPermanente = false;
-                if ($scope.elu.appartenancesCommissionPermanente &&
-                    $scope.elu.appartenancesCommissionPermanente.length > 0) {
-                    angular.forEach($scope.elu.appartenancesCommissionPermanente, function (a) {
-                        if (a.dateFin == null) {
-                            // TODO est faux ! vérifier les dates
-                            $scope.eluEnCommissionPermanente = true;
-                        }
-                    });
-                }
-            },
         }
     })
     .directive('identiteEdit', function () {
@@ -60,6 +47,12 @@ angular.module('babylone14166App')
         return {
             restrict: 'E',
             templateUrl: 'scripts/app/components/identite-internet-edit-component.html'
+        }
+    })
+    .directive('groupePolitique', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/groupe-politique-component.html'
         }
     })
 

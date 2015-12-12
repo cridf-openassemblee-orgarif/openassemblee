@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.web.rest.dto.CommissionPermanenteDTO;
+import fr.cridf.babylone14166.service.dto.CommissionPermanenteDTO;
 
 @Service
 @Transactional

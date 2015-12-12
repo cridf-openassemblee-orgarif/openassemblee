@@ -106,7 +106,6 @@ public class EluResource {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
     /**
      * DELETE  /elus/:id -> delete the "id" elu.
      */

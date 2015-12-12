@@ -2,7 +2,7 @@ package fr.cridf.babylone14166.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.*;
 import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
@@ -40,6 +40,14 @@ public class GroupePolitique implements Serializable {
 
     @Column(name = "motif_fin")
     private String motifFin;
+
+    @OneToMany(mappedBy = "groupePolitique")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
+
+    @OneToMany(mappedBy = "groupePolitique")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private List<FonctionGroupePolitique> fonctionsGroupePolitique = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -95,6 +103,22 @@ public class GroupePolitique implements Serializable {
 
     public void setMotifFin(String motifFin) {
         this.motifFin = motifFin;
+    }
+
+    public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {
+        return appartenancesGroupePolitique;
+    }
+
+    public void setAppartenancesGroupePolitique(List<AppartenanceGroupePolitique> appartenancesGroupePolitique) {
+        this.appartenancesGroupePolitique = appartenancesGroupePolitique;
+    }
+
+    public List<FonctionGroupePolitique> getFonctionsGroupePolitique() {
+        return fonctionsGroupePolitique;
+    }
+
+    public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
+        this.fonctionsGroupePolitique = fonctionsGroupePolitique;
     }
 
     @Override

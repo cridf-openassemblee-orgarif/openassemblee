@@ -9,7 +9,7 @@ angular.module('babylone14166App')
                 $scope.elus = result;
             });
         };
-            $scope.loadAll();
+        $scope.loadAll();
 
         $scope.search = function () {
             EluSearch.query({query: $scope.searchQuery}, function (result) {
@@ -19,7 +19,7 @@ angular.module('babylone14166App')
                     $scope.loadAll();
                 }
             });
-            };
+        };
 
         $scope.refresh = function () {
             $scope.loadAll();

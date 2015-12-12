@@ -1,4 +1,4 @@
-package fr.cridf.babylone14166.web.rest.dto;
+package fr.cridf.babylone14166.service.dto;
 
 import java.util.List;
 import java.util.Map;

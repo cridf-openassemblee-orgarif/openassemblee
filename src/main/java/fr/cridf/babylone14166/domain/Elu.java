@@ -46,15 +46,9 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
-    public Elu() {
-    }
-
-    public Elu(Long id) {
-        this.id = id;
-    }
-
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // TODO et sans la joinTable ?
     @JoinTable(name = "elu_adresses_postales",
         joinColumns = @JoinColumn(name = "elu_id"),
         inverseJoinColumns = @JoinColumn(name = "adresse_postale_id"))
@@ -100,6 +94,21 @@ public class Elu implements Serializable {
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
+
+    @OneToMany(mappedBy = "elu")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
+
+    @OneToMany(mappedBy = "elu")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private List<FonctionGroupePolitique> fonctionsGroupePolitique = new ArrayList<>();
+
+    public Elu() {
+    }
+
+    public Elu(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -228,6 +237,22 @@ public class Elu implements Serializable {
     public void setAppartenancesCommissionPermanente(List<AppartenanceCommissionPermanente>
         appartenancesCommissionPermanente) {
         this.appartenancesCommissionPermanente = appartenancesCommissionPermanente;
+    }
+
+    public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {
+        return appartenancesGroupePolitique;
+    }
+
+    public void setAppartenancesGroupePolitique(List<AppartenanceGroupePolitique> appartenancesGroupePolitique) {
+        this.appartenancesGroupePolitique = appartenancesGroupePolitique;
+    }
+
+    public List<FonctionGroupePolitique> getFonctionsGroupePolitique() {
+        return fonctionsGroupePolitique;
+    }
+
+    public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
+        this.fonctionsGroupePolitique = fonctionsGroupePolitique;
     }
 
     @Override

@@ -1,15 +1,28 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity, Elu) {
-        $scope.elu = entity;
-        $scope.load = function (id) {
-            Elu.get({id: id}, function (result) {
-                $scope.elu = result;
-            });
-        };
-        var unsubscribe = $rootScope.$on('babylone14166App:eluUpdate', function (event, result) {
-            $scope.elu = result;
+    .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity) {
+        $scope.r = entity;
+        $scope.eluEnCommissionPermanente = false;
+        $scope.$watch('r', function () {
+            if ($scope.r.$promise) {
+                $scope.r.$promise.then(function () {
+                    updateScope();
+                });
+            } else if ($scope.r.elu) {
+                updateScope();
+            }
         });
-        $scope.$on('$destroy', unsubscribe);
+        var updateScope = function () {
+            $scope.elu = $scope.r.elu;
+            $scope.groupesPolitiques = $scope.r.groupesPolitiques;
+            if ($scope.elu.appartenancesCommissionPermanente &&
+                $scope.elu.appartenancesCommissionPermanente.length > 0) {
+                angular.forEach($scope.elu.appartenancesCommissionPermanente, function (a) {
+                    if (a.dateFin == null) {
+                        $scope.eluEnCommissionPermanente = true;
+                    }
+                });
+            }
+        }
     });

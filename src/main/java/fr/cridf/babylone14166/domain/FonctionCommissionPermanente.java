@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import fr.cridf.babylone14166.web.rest.jackson.JacksonEluIdSerializer;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 
 /**
  * A FonctionCommissionPermanente.

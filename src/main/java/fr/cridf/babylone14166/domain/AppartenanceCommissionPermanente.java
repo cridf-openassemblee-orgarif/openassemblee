@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import fr.cridf.babylone14166.web.rest.jackson.JacksonEluIdSerializer;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 
 /**
  * A AppartenanceCommissionPermanente.
@@ -37,7 +37,6 @@ public class AppartenanceCommissionPermanente implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
