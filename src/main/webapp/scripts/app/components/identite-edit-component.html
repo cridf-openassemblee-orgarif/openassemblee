@@ -14,8 +14,7 @@
 
     <div class="col-sm-10">
         <input type="text" class="form-control" name="nom" id="field_nom"
-               ng-model="elu.nom"
-        />
+               ng-model="elu.nom"/>
     </div>
 </div>
 <div class="form-group">
@@ -23,8 +22,7 @@
 
     <div class="col-sm-10">
         <input type="text" class="form-control" name="prenom" id="field_prenom"
-               ng-model="elu.prenom"
-        />
+               ng-model="elu.prenom"/>
     </div>
 </div>
 <div class="form-group">
@@ -33,18 +31,16 @@
 
     <div class="col-sm-10">
         <input type="text" class="form-control" name="nomJeuneFille"
-               id="field_nomJeuneFille"
-               ng-model="elu.nomJeuneFille"
-        />
+               id="field_nomJeuneFille" ng-model="elu.nomJeuneFille"/>
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label" for="field_profession">Profession</label>
 
     <div class="col-sm-10">
-        <input type="text" class="form-control" name="profession" id="field_profession"
-               ng-model="elu.profession"
-        />
+        <input type="text" class="typeahead form-control" name="profession" id="field_profession"
+               options="typeaheadOptions" datasets="professions" ng-model="elu.profession" sf-typeahead
+               autocomplete="off"/>
     </div>
 </div>
 <div class="form-group">
@@ -53,9 +49,7 @@
 
     <div class="col-sm-10">
         <input type="date" class="form-control" name="dateNaissance"
-               id="field_dateNaissance"
-               ng-model="elu.dateNaissance"
-        />
+               id="field_dateNaissance" ng-model="elu.dateNaissance"/>
     </div>
 </div>
 <div class="form-group">
@@ -64,8 +58,6 @@
 
     <div class="col-sm-10">
         <input type="text" class="form-control" name="lieuNaissance"
-               id="field_lieuNaissance"
-               ng-model="elu.lieuNaissance"
-        />
+               id="field_lieuNaissance" ng-model="elu.lieuNaissance"/>
     </div>
 </div>

@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('babylone14166App', ['LocalStorageModule',
-    'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
-    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar'])
+angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
+        'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
 
@@ -45,6 +44,30 @@ angular.module('babylone14166App', ['LocalStorageModule',
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
         };
+
+        $rootScope.typeaheadOptionsZeroChar = {
+            minLength: 0,
+            hint: false,
+            highlight: true
+        };
+        $rootScope.typeaheadOptionsThreeChars = {
+            minLength: 3,
+            hint: false,
+            highlight: true
+        };
+
+        var autocomplete = function (data) {
+            return {
+                limit: 10,
+                source: new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.whitespace,
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: darta
+                })
+            };
+        };
+
+        $rootScope.professions = autocomplete(professions);
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
