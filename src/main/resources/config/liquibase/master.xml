@@ -37,5 +37,7 @@
     <include file="classpath:config/liquibase/changelog/20151204111818_added_entity_CommissionThematique.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151211134351_added_entity_AppartenanceCommissionThematique.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151211132440_added_entity_FonctionCommissionThematique.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151213134351_added_images.xml"
+             relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

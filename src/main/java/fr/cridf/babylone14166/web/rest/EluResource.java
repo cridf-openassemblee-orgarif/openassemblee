@@ -2,8 +2,10 @@ package fr.cridf.babylone14166.web.rest;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -12,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.ImageRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
@@ -39,6 +43,9 @@ public class EluResource {
     @Inject
     private EluSearchRepository eluSearchRepository;
 
+    @Inject
+    private ImageRepository imageRepository;
+
     /**
      * POST  /elus -> Create a new elu.
      */
@@ -55,6 +62,25 @@ public class EluResource {
         return ResponseEntity.created(new URI("/api/elus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * POST  /elus/:id/photo -> Upload une photo
+     */
+    @RequestMapping(value = "/elus/{id}/photo", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Long> uploadPhoto(@RequestParam("file") MultipartFile file) throws URISyntaxException {
+        log.debug("REST upload photo");
+        if (file.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Long id = imageRepository.saveImage(file.getBytes());
+            return ResponseEntity.ok().body(id);
+        } catch (IOException | SQLException e) {
+            log.error("Unable to write uploaded image", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
