@@ -29,6 +29,9 @@ security:
     basic:
         enabled: false
 
+multipart:
+    maxFileSize: 3Mb
+    maxRequestSize: 20Mb
 # ===================================================================
 # JHipster specific properties
 # ===================================================================

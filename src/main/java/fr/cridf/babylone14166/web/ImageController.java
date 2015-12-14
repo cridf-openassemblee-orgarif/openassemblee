@@ -22,11 +22,19 @@ public class ImageController {
     @Autowired
     private ImageRepository imageRepository;
 
-    @RequestMapping(value = "/:id", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public HttpEntity<byte[]> createElu(@RequestParam Long id) throws URISyntaxException {
+    public HttpEntity<String> createElu() throws URISyntaxException {
+        return new HttpEntity<>("hello");
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<byte[]> getImage(@PathVariable Long id) throws URISyntaxException {
         try {
-            return new HttpEntity<>(imageRepository.getImage(id));
+            final HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(imageRepository.getImage(id), headers, HttpStatus.OK);
         } catch (SQLException | IOException e) {
             log.error("Unable to get image", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

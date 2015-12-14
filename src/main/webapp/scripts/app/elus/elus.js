@@ -370,6 +370,31 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elus.detail.uploadImage', {
+                parent: 'elus.detail',
+                url: '/upload-image',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/upload-image-dialog.html',
+                        controller: 'UploadImageDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    // TODO
+                                    image: 'test'
+                                };
+                            }
+                        }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elus.detail.finAppartenanceCommissionThematique', {
                 parent: 'elus.detail',
                 url: '/fin-appartenance-commission-thematique/{appartenanceId}',

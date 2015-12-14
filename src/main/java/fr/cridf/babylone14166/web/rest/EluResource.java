@@ -67,10 +67,11 @@ public class EluResource {
     /**
      * POST  /elus/:id/photo -> Upload une photo
      */
-    @RequestMapping(value = "/elus/{id}/photo", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Long> uploadPhoto(@RequestParam("file") MultipartFile file) throws URISyntaxException {
-        log.debug("REST upload photo");
+    public ResponseEntity<Long> uploadImage(@RequestBody MultipartFile file) throws URISyntaxException {
+        //HttpServletRequest req
+        log.debug("REST upload image");
         if (file.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

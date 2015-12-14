@@ -46,6 +46,9 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
+    @Column(name = "image")
+    private String image;
+
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // TODO et sans la joinTable ?
@@ -280,6 +283,14 @@ public class Elu implements Serializable {
         this.fonctionsCommissionsThematiques = fonctionsCommissionsThematiques;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -305,9 +316,6 @@ public class Elu implements Serializable {
             ", nom='" + nom + "'" +
             ", prenom='" + prenom + "'" +
             ", nomJeuneFille='" + nomJeuneFille + "'" +
-            ", profession='" + profession + "'" +
-            ", dateNaissance='" + dateNaissance + "'" +
-            ", lieuNaissance='" + lieuNaissance + "'" +
             '}';
     }
 }
