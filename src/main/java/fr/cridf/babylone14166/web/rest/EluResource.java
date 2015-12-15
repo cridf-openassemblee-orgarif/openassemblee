@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.ImageRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
@@ -67,16 +68,15 @@ public class EluResource {
     /**
      * POST  /elus/:id/photo -> Upload une photo
      */
-    @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST, consumes = "multipart/form-data")
     @Timed
     public ResponseEntity<Long> uploadImage(@RequestBody MultipartFile file) throws URISyntaxException {
-        //HttpServletRequest req
         log.debug("REST upload image");
         if (file.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            Long id = imageRepository.saveImage(file.getBytes());
+            Long id = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
             return ResponseEntity.ok().body(id);
         } catch (IOException | SQLException e) {
             log.error("Unable to write uploaded image", e);

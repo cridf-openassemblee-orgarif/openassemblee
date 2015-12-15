@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('UploadImageDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Upload',
-        function ($scope, $stateParams, $modalInstance, entity, Upload) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Upload', '$state',
+        function ($scope, $stateParams, $modalInstance, entity, Upload, $state) {
 
             $scope.submit = function () {
                 //if (form.file.$valid && $scope.file) {
@@ -12,10 +12,8 @@ angular.module('babylone14166App').controller('UploadImageDialogController',
 
             // upload on file select or drop
             $scope.upload = function (file) {
-                console.log(file)
                 Upload.upload({
                     url: 'api/elus/' + $stateParams.id + '/image',
-                    data: {'name': 'test'},
                     file: file
                 }).then(function (resp) {
                     $state.go('^', null, {reload: true});

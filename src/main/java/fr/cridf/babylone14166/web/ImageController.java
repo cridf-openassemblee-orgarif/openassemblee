@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.ImageRepository;
 
 @Controller
@@ -32,9 +33,10 @@ public class ImageController {
     @ResponseBody
     public HttpEntity<byte[]> getImage(@PathVariable Long id) throws URISyntaxException {
         try {
+            Image image = imageRepository.getImage(id);
             final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            return new ResponseEntity<>(imageRepository.getImage(id), headers, HttpStatus.OK);
+            headers.setContentType(MediaType.parseMediaType(image.getContentType()));
+            return new ResponseEntity<>(image.getData(), headers, HttpStatus.OK);
         } catch (SQLException | IOException e) {
             log.error("Unable to get image", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
