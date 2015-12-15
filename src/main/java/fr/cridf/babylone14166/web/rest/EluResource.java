@@ -70,14 +70,19 @@ public class EluResource {
      */
     @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST, consumes = "multipart/form-data")
     @Timed
-    public ResponseEntity<Long> uploadImage(@RequestBody MultipartFile file) throws URISyntaxException {
+    public ResponseEntity<Long> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
+        URISyntaxException {
         log.debug("REST upload image");
         if (file.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            Long id = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
-            return ResponseEntity.ok().body(id);
+            Long imageId = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
+            // TODO un truc plus clean...
+            Elu elu = eluRepository.findOne(id);
+            elu.setImage(String.valueOf(imageId));
+            eluRepository.save(elu);
+            return ResponseEntity.ok().body(imageId);
         } catch (IOException | SQLException e) {
             log.error("Unable to write uploaded image", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
