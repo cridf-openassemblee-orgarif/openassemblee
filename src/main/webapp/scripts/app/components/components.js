@@ -55,4 +55,10 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/groupe-politique-component.html'
         }
     })
+    .directive('commissionsThematiques', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/commissions-thematiques-component.html'
+        }
+    })
 

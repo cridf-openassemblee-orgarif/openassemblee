@@ -1,5 +1,6 @@
 package fr.cridf.babylone14166.service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -61,6 +62,7 @@ public class EluService {
             Hibernate.initialize(elu.getFonctionsExecutives());
             Hibernate.initialize(elu.getAppartenancesGroupePolitique());
             Hibernate.initialize(elu.getFonctionsGroupePolitique());
+            Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
         }
         return elu;
     }
@@ -70,15 +72,21 @@ public class EluService {
         if (elu == null) {
             return null;
         }
-        Map<Long, GroupePolitique> groupePolitiques = elu.getAppartenancesGroupePolitique().stream()
-            .map(a -> a.getGroupePolitique())
-            .collect(Collectors.toSet())
-            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity()));
-        groupePolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
+        Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
+        groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
             .collect(Collectors.toSet())
             .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
-        return new EluCompletDTO(elu, groupePolitiques);
+        groupesPolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
+            .map(a -> a.getGroupePolitique())
+            .collect(Collectors.toSet())
+            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
+        Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
+        commissionsThematiques.putAll(elu.getAppartenancesCommissionsThematiques().stream()
+            .map(a -> a.getCommissionThematique())
+            .collect(Collectors.toSet())
+            .stream().collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
+        return new EluCompletDTO(elu, groupesPolitiques, commissionsThematiques);
     }
 
     public Elu save(Elu elu) {

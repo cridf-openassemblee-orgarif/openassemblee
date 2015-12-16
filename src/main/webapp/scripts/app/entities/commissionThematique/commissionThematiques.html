@@ -1,5 +1,5 @@
 <div>
-    <h2>Commissions thématiques</h2>
+    <h2>Les commissions thématiques</h2>
     <jh-alert></jh-alert>
     <div class="container">
         <div class="row">
@@ -32,23 +32,6 @@
                         <td>{{commissionThematique.dateDebut | date:'mediumDate'}}</td>
                         <td>{{commissionThematique.dateFin | date:'mediumDate'}}</td>
                     <td>{{commissionThematique.motifFin}}</td>
-                    <td>
-                        <button type="submit"
-                                ui-sref="commissionThematique.detail({id:commissionThematique.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="commissionThematique.edit({id:commissionThematique.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="commissionThematique.delete({id:commissionThematique.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
-                        </button>
-                    </td>
                 </tr>
             </tbody>
         </table>

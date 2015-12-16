@@ -16,6 +16,7 @@ angular.module('babylone14166App')
         var updateScope = function () {
             $scope.elu = $scope.r.elu;
             $scope.groupesPolitiques = $scope.r.groupesPolitiques;
+            $scope.commissionsThematiques = $scope.r.commissionsThematiques;
             if ($scope.elu.appartenancesCommissionPermanente &&
                 $scope.elu.appartenancesCommissionPermanente.length > 0) {
                 angular.forEach($scope.elu.appartenancesCommissionPermanente, function (a) {

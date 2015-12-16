@@ -347,4 +347,50 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elus.detail.ajouterCommissionThematique', {
+                parent: 'elus.detail',
+                url: '/ajouter-commission-thematique',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionThematique/appartenanceCommissionThematique-dialog.html',
+                        controller: 'AppartenanceCommissionThematiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finAppartenanceCommissionThematique', {
+                parent: 'elus.detail',
+                url: '/fin-appartenance-commission-thematique/{appartenanceId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionThematique/appartenanceCommissionThematique-fin-dialog.html',
+                        controller: 'AppartenanceCommissionThematiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AppartenanceCommissionThematique', function (AppartenanceCommissionThematique) {
+                                return AppartenanceCommissionThematique.get({id: $stateParams.appartenanceId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            });
     })
