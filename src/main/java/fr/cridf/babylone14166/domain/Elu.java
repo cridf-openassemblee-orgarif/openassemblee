@@ -47,7 +47,7 @@ public class Elu implements Serializable {
     private String lieuNaissance;
 
     @Column(name = "image")
-    private String image;
+    private Long image;
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -283,11 +283,11 @@ public class Elu implements Serializable {
         this.fonctionsCommissionsThematiques = fonctionsCommissionsThematiques;
     }
 
-    public String getImage() {
+    public Long getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Long image) {
         this.image = image;
     }
 

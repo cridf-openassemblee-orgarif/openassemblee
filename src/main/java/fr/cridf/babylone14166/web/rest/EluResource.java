@@ -80,7 +80,7 @@ public class EluResource {
             Long imageId = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
             // TODO un truc plus clean...
             Elu elu = eluRepository.findOne(id);
-            elu.setImage(String.valueOf(imageId));
+            elu.setImage(imageId);
             eluRepository.save(elu);
             return ResponseEntity.ok().body(imageId);
         } catch (IOException | SQLException e) {

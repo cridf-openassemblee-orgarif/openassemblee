@@ -24,5 +24,9 @@
             <column name="content_type" type="varchar(255)"/>
             <column name="data" type="longblob"/>
         </createTable>
+        <addForeignKeyConstraint baseColumnNames="image" baseTableName="elu"
+                                 constraintName="FK_rirnhmr0tyohnpxwn8jwfgn26" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="images"/>
     </changeSet>
 </databaseChangeLog>
