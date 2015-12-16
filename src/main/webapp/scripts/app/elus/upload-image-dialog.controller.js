@@ -16,6 +16,7 @@ angular.module('babylone14166App').controller('UploadImageDialogController',
                     url: 'api/elus/' + $stateParams.id + '/image',
                     file: file
                 }).then(function (resp) {
+                    $modalInstance.close(resp);
                     $state.go('^', null, {reload: true});
                 }, function (resp) {
                     // TODO notif

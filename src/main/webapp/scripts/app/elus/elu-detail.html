@@ -74,7 +74,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <img style="max-height: 100px; max-width: 100px" ng-src="images/{{elu.image}}"/>
+                <img ng-if="elu.image" class="profile-image" ng-src="images/{{elu.image}}"/>
                 <button class="btn btn-sm btn-primary"
                         ui-sref="elus.detail.uploadImage">
                     Ajouter une image
