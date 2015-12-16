@@ -34,5 +34,6 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151211134351_added_entity_AppartenanceGroupePolitique.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151204111818_added_entity_CommissionThematique.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

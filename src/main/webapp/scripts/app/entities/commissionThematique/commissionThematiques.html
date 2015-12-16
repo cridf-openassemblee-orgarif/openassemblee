@@ -1,0 +1,56 @@
+<div>
+    <h2>Commissions thématiques</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="commissionThematique.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Créer une commission thématique</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Nom court</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Motif de fin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="commissionThematique in commissionThematiques track by commissionThematique.id">
+                    <td><a ui-sref="commissionThematique.detail({id:commissionThematique.id})">{{commissionThematique.id}}</a></td>
+                    <td>{{commissionThematique.nom}}</td>
+                    <td>{{commissionThematique.nomCourt}}</td>
+                        <td>{{commissionThematique.dateDebut | date:'mediumDate'}}</td>
+                        <td>{{commissionThematique.dateFin | date:'mediumDate'}}</td>
+                    <td>{{commissionThematique.motifFin}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="commissionThematique.detail({id:commissionThematique.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="commissionThematique.edit({id:commissionThematique.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="commissionThematique.delete({id:commissionThematique.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

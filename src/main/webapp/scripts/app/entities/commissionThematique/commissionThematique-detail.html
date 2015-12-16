@@ -1,0 +1,63 @@
+
+<div>
+    <h2><span>CommissionThematique</span> {{commissionThematique.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Nom</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{commissionThematique.nom}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>NomCourt</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{commissionThematique.nomCourt}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{commissionThematique.dateDebut | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{commissionThematique.dateFin | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>MotifFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{commissionThematique.motifFin}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-if="commissionThematique.dateFin==undefined">
+        <button class="btn btn-sm btn-primary"
+                ui-sref="commissionThematique.detail.fin">
+            Fixer une date et un motif de fin de la commission
+        </button>
+    </div>
+</div>
