@@ -1,4 +1,4 @@
-<h3>Commissions thématiques</h3>
+<h3 ng-if="elu.appartenancesCommissionsThematiques.length">Commissions thématiques</h3>
 <div ng-repeat="a in elu.appartenancesCommissionsThematiques" class="well">
     Appartient à la commission thématique {{commissionsThematiques[a.commissionThematique.id].nom}} depuis le
     {{a.dateDebut}}
@@ -16,21 +16,22 @@
         Ajouter à une commission thématique
     </button>
 </div>
-<h3 ng-if="elu.fonctionsGroupePolitique.length">Fonction dans une commission thématique</h3>
-<div ng-repeat="f in elu.fonctionsGroupePolitique" class="well">
-    A la fonction suivante {{f.fonction}} au sein du groupe {{groupesPolitiques[f.groupePolitique.id].nom}}
+<h3 ng-if="elu.fonctionsCommissionsThematiques.length">Fonction dans les commissions thématiques</h3>
+<div ng-repeat="f in elu.fonctionsCommissionsThematiques" class="well">
+    A la fonction {{f.fonction}} au sein du groupe
+    {{commissionsThematiques[f.commissionThematique.id].nom}}
     depuis le {{f.dateDebut}}
     <div ng-if="f.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant : {{f.motifFin}}</div>
     <div ng-if="f.dateFin==undefined">
         <button class="btn btn-sm btn-primary"
-                ui-sref="elus.detail.finFonctionGroupePolitique({fonctionId: f.id})">
+                ui-sref="elus.detail.finFonctionCommissionThematique({fonctionId: f.id})">
             Fixer une date et un motif de fin
         </button>
     </div>
 </div>
 <div>
     <button class="btn btn-sm btn-primary"
-            ui-sref="elus.detail.nouvelleFonctionGroupePolitique">
-        Ajouter une fonction à un groupe politique
+            ui-sref="elus.detail.nouvelleFonctionCommissionThematique">
+        Ajouter une fonction à une commission thématique
     </button>
 </div>

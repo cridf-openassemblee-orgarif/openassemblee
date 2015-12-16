@@ -63,6 +63,7 @@ public class EluService {
             Hibernate.initialize(elu.getAppartenancesGroupePolitique());
             Hibernate.initialize(elu.getFonctionsGroupePolitique());
             Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
+            Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
         }
         return elu;
     }
@@ -83,6 +84,10 @@ public class EluService {
             .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
         commissionsThematiques.putAll(elu.getAppartenancesCommissionsThematiques().stream()
+            .map(a -> a.getCommissionThematique())
+            .collect(Collectors.toSet())
+            .stream().collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
+        commissionsThematiques.putAll(elu.getFonctionsCommissionsThematiques().stream()
             .map(a -> a.getCommissionThematique())
             .collect(Collectors.toSet())
             .stream().collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));

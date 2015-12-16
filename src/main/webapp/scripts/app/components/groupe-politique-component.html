@@ -17,7 +17,7 @@
 </div>
 <h3 ng-if="elu.fonctionsGroupePolitique.length">Fonction dans un groupe politique</h3>
 <div ng-repeat="f in elu.fonctionsGroupePolitique" class="well">
-    A la fonction suivante {{f.fonction}} au sein du groupe {{groupesPolitiques[f.groupePolitique.id].nom}}
+    A la fonction {{f.fonction}} au sein du groupe {{groupesPolitiques[f.groupePolitique.id].nom}}
     depuis le {{f.dateDebut}}
     <div ng-if="f.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant : {{f.motifFin}}</div>
     <div ng-if="f.dateFin==undefined">

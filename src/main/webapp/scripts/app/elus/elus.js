@@ -392,5 +392,51 @@ angular.module('babylone14166App')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('elus.detail.nouvelleFonctionCommissionThematique', {
+                parent: 'elus.detail',
+                url: '/nouvelle-fonction-commission-thematique',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionCommissionThematique/fonctionCommissionThematique-dialog.html',
+                        controller: 'FonctionCommissionThematiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finFonctionCommissionThematique', {
+                parent: 'elus.detail',
+                url: '/fin-fonction-commission-thematique/{fonctionId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionCommissionThematique/fonctionCommissionThematique-fin-dialog.html',
+                        controller: 'FonctionCommissionThematiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['FonctionCommissionThematique', function (FonctionCommissionThematique) {
+                                return FonctionCommissionThematique.get({id: $stateParams.fonctionId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
             });
     })

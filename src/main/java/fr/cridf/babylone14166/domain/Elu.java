@@ -107,6 +107,10 @@ public class Elu implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<AppartenanceCommissionThematique> appartenancesCommissionsThematiques = new HashSet<>();
 
+    @OneToMany(mappedBy = "elu")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private Set<FonctionCommissionThematique> fonctionsCommissionsThematiques = new HashSet<>();
+
     public Elu() {
     }
 
@@ -266,6 +270,14 @@ public class Elu implements Serializable {
     public void setAppartenancesCommissionsThematiques(Set<AppartenanceCommissionThematique>
         appartenancesCommissionsThematiques) {
         this.appartenancesCommissionsThematiques = appartenancesCommissionsThematiques;
+    }
+
+    public Set<FonctionCommissionThematique> getFonctionsCommissionsThematiques() {
+        return fonctionsCommissionsThematiques;
+    }
+
+    public void setFonctionsCommissionsThematiques(Set<FonctionCommissionThematique> fonctionsCommissionsThematiques) {
+        this.fonctionsCommissionsThematiques = fonctionsCommissionsThematiques;
     }
 
     @Override
