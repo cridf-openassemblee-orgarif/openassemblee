@@ -385,10 +385,11 @@ angular.module('babylone14166App')
                             entity: function () {
                                 return {
                                     // TODO
-                                    image: 'test'
+                                    //image: 'test'
                                 };
                             }
-                        }).result.then(function (result) {
+                        }
+                    }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
                         $state.go('^');
