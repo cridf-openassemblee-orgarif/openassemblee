@@ -23,12 +23,6 @@ public class ImageController {
     @Autowired
     private ImageRepository imageRepository;
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public HttpEntity<String> createElu() throws URISyntaxException {
-        return new HttpEntity<>("hello");
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<byte[]> getImage(@PathVariable Long id) throws URISyntaxException {
