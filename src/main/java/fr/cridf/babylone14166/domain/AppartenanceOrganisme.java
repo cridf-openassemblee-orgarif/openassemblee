@@ -9,6 +9,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
+
 /**
  * A AppartenanceOrganisme.
  */
@@ -51,6 +55,7 @@ public class AppartenanceOrganisme implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
+    @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
     public Long getId() {
