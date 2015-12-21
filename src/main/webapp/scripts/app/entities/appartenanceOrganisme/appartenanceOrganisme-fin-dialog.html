@@ -9,13 +9,13 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label class="control-label" for="field_dateFin">DateFin</label>
+            <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="date" class="form-control" name="dateFin" id="field_dateFin"
                    ng-model="appartenanceOrganisme.dateFin"
             />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifFin">MotifFin</label>
+            <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="form-control" name="motifFin" id="field_motifFin"
                    ng-model="appartenanceOrganisme.motifFin"
             />
@@ -23,10 +23,10 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
         </button>
         <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
         </button>
     </div>
 </form>
