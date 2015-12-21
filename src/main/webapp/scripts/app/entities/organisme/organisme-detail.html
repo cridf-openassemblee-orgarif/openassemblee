@@ -1,0 +1,94 @@
+
+<div>
+    <h2><span>Organisme</span> {{organisme.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Nom</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.nom}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CodeRNE</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.codeRNE}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Siret</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.siret}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Sigle</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.sigle}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Type</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.type}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Secteur</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.secteur}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.dateDebut | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.dateFin | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>MotifFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{organisme.motifFin}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

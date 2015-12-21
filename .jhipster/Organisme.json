@@ -1,0 +1,61 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "adressePostale",
+            "otherEntityName": "AdressePostale",
+            "relationshipType": "one-to-one",
+            "ownerSide": "organisme"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "nom",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "codeRNE",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "siret",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "sigle",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "secteur",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "dateFin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "motifFin",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20151204111818",
+    "dto": "no",
+    "pagination": "no"
+}

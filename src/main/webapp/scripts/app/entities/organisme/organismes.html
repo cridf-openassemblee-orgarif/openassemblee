@@ -1,0 +1,73 @@
+<div>
+    <h2>Organismes</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="organisme.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new Organisme</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Organisme</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>CodeRNE</th>
+                    <th>Siret</th>
+                    <th>Sigle</th>
+                    <th>Type</th>
+                    <th>Secteur</th>
+                    <th>DateDebut</th>
+                    <th>DateFin</th>
+                    <th>MotifFin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="organisme in organismes track by organisme.id">
+                    <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.id}}</a></td>
+                    <td>{{organisme.nom}}</td>
+                    <td>{{organisme.codeRNE}}</td>
+                    <td>{{organisme.siret}}</td>
+                    <td>{{organisme.sigle}}</td>
+                    <td>{{organisme.type}}</td>
+                    <td>{{organisme.secteur}}</td>
+                        <td>{{organisme.dateDebut | date:'mediumDate'}}</td>
+                        <td>{{organisme.dateFin | date:'mediumDate'}}</td>
+                    <td>{{organisme.motifFin}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="organisme.detail({id:organisme.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="organisme.edit({id:organisme.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="organisme.delete({id:organisme.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
