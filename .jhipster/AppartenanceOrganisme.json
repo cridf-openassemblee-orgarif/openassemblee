@@ -1,0 +1,61 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "statut",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "codeRNE",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "dateFin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "motifFin",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "dateNomination",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "reference",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "lienPiece",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20151211134351",
+    "dto": "no",
+    "pagination": "no"
+}
