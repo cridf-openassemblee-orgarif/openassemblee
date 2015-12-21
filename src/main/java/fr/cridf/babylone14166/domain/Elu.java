@@ -116,7 +116,7 @@ public class Elu implements Serializable {
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private Set<AppartenanceOrganisme> appartenancesOrganisme = new HashSet<>();
+    private Set<AppartenanceOrganisme> appartenancesOrganismes = new HashSet<>();
 
     public Elu() {
     }
@@ -295,12 +295,12 @@ public class Elu implements Serializable {
         this.image = image;
     }
 
-    public Set<AppartenanceOrganisme> getAppartenancesOrganisme() {
-        return appartenancesOrganisme;
+    public Set<AppartenanceOrganisme> getAppartenancesOrganismes() {
+        return appartenancesOrganismes;
     }
 
-    public void setAppartenancesOrganisme(Set<AppartenanceOrganisme> appartenancesOrganisme) {
-        this.appartenancesOrganisme = appartenancesOrganisme;
+    public void setAppartenancesOrganismes(Set<AppartenanceOrganisme> appartenancesOrganismes) {
+        this.appartenancesOrganismes = appartenancesOrganismes;
     }
 
     @Override

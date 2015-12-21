@@ -49,6 +49,9 @@ public class EluService {
     @Inject
     private IdentiteInternetSearchRepository identiteInternetSearchRepository;
 
+    @Inject
+    private OrganismeRepository organismeRepository;
+
     public Elu get(Long id) {
         Elu elu = eluRepository.findOne(id);
         if (elu != null) {
@@ -64,6 +67,7 @@ public class EluService {
             Hibernate.initialize(elu.getFonctionsGroupePolitique());
             Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
             Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
+            Hibernate.initialize(elu.getAppartenancesOrganismes());
         }
         return elu;
     }
@@ -76,22 +80,26 @@ public class EluService {
         Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
         groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
-            .collect(Collectors.toSet())
-            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
+            .distinct()
+            .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         groupesPolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
-            .collect(Collectors.toSet())
-            .stream().collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
+            .distinct()
+            .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
         commissionsThematiques.putAll(elu.getAppartenancesCommissionsThematiques().stream()
             .map(a -> a.getCommissionThematique())
-            .collect(Collectors.toSet())
-            .stream().collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
+            .distinct()
+            .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
         commissionsThematiques.putAll(elu.getFonctionsCommissionsThematiques().stream()
             .map(a -> a.getCommissionThematique())
-            .collect(Collectors.toSet())
-            .stream().collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
-        return new EluCompletDTO(elu, groupesPolitiques, commissionsThematiques);
+            .distinct()
+            .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
+        Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
+            .map(a -> a.getCodeRNE())
+            .distinct()
+            .collect(Collectors.toMap(Function.identity(), organismeRepository::findOneByCodeRNE));
+        return new EluCompletDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
     public Elu save(Elu elu) {

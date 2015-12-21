@@ -61,4 +61,10 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/commissions-thematiques-component.html'
         }
     })
+    .directive('organismes', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/organismes-component.html'
+        }
+    })
 

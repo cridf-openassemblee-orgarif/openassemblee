@@ -9,12 +9,15 @@ public class EluCompletDTO {
     private Elu elu;
     private Map<Long, GroupePolitique> groupesPolitiques;
     private Map<Long, CommissionThematique> commissionsThematiques;
+    private Map<String, Organisme> organismes;
 
     public EluCompletDTO(Elu elu, Map<Long, GroupePolitique> groupesPolitiques,
-        Map<Long, CommissionThematique> commissionsThematiques) {
+        Map<Long, CommissionThematique> commissionsThematiques,
+        Map<String, Organisme> organismes) {
         this.elu = elu;
         this.groupesPolitiques = groupesPolitiques;
         this.commissionsThematiques = commissionsThematiques;
+        this.organismes = organismes;
     }
 
     public Elu getElu() {
@@ -39,5 +42,13 @@ public class EluCompletDTO {
 
     public void setCommissionsThematiques(Map<Long, CommissionThematique> commissionsThematiques) {
         this.commissionsThematiques = commissionsThematiques;
+    }
+
+    public Map<String, Organisme> getOrganismes() {
+        return organismes;
+    }
+
+    public void setOrganismes(Map<String, Organisme> organismes) {
+        this.organismes = organismes;
     }
 }

@@ -295,6 +295,52 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elus.detail.ajouterOrganisme', {
+                parent: 'elus.detail',
+                url: '/ajouter-organisme',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceOrganisme/appartenanceOrganisme-dialog.html',
+                        controller: 'AppartenanceOrganismeDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.finAppartenanceOrganisme', {
+                parent: 'elus.detail',
+                url: '/fin-appartenance-organisme/{appartenanceId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceOrganisme/appartenanceOrganisme-fin-dialog.html',
+                        controller: 'AppartenanceOrganismeDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AppartenanceOrganisme', function (AppartenanceOrganisme) {
+                                return AppartenanceOrganisme.get({id: $stateParams.appartenanceId});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elus.detail.nouvelleFonctionGroupePolitique', {
                 parent: 'elus.detail',
                 url: '/nouvelle-fonction-groupe-politique',
@@ -370,32 +416,6 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.uploadImage', {
-                parent: 'elus.detail',
-                url: '/upload-image',
-                data: {
-                    authorities: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/elus/upload-image-dialog.html',
-                        controller: 'UploadImageDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: function () {
-                                return {
-                                    // TODO
-                                    //image: 'test'
-                                };
-                            }
-                        }
-                    }).result.then(function (result) {
-                        $state.go('^', null, {reload: true});
-                    }, function () {
-                        $state.go('^');
-                    })
-                }]
-            })
             .state('elus.detail.finAppartenanceCommissionThematique', {
                 parent: 'elus.detail',
                 url: '/fin-appartenance-commission-thematique/{appartenanceId}',
@@ -457,6 +477,32 @@ angular.module('babylone14166App')
                             entity: ['FonctionCommissionThematique', function (FonctionCommissionThematique) {
                                 return FonctionCommissionThematique.get({id: $stateParams.fonctionId});
                             }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elus.detail.uploadImage', {
+                parent: 'elus.detail',
+                url: '/upload-image',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/elus/upload-image-dialog.html',
+                        controller: 'UploadImageDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    // TODO
+                                    //image: 'test'
+                                };
+                            }
                         }
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
