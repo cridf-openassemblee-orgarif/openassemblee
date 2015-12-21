@@ -1,0 +1,86 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myAppartenanceOrganismeLabel">Create or edit a AppartenanceOrganisme</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="appartenanceOrganisme.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_statut">Statut</label>
+            <input type="text" class="form-control" name="statut" id="field_statut"
+                    ng-model="appartenanceOrganisme.statut"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_codeRNE">CodeRNE</label>
+            <input type="text" class="form-control" name="codeRNE" id="field_codeRNE"
+                    ng-model="appartenanceOrganisme.codeRNE"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateDebut">DateDebut</label>
+            <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
+                    ng-model="appartenanceOrganisme.dateDebut"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateFin">DateFin</label>
+            <input type="date" class="form-control" name="dateFin" id="field_dateFin"
+                    ng-model="appartenanceOrganisme.dateFin"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_motifFin">MotifFin</label>
+            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
+                    ng-model="appartenanceOrganisme.motifFin"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateNomination">DateNomination</label>
+            <input type="date" class="form-control" name="dateNomination" id="field_dateNomination"
+                    ng-model="appartenanceOrganisme.dateNomination"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_reference">Reference</label>
+            <input type="text" class="form-control" name="reference" id="field_reference"
+                    ng-model="appartenanceOrganisme.reference"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_type">Type</label>
+            <input type="text" class="form-control" name="type" id="field_type"
+                    ng-model="appartenanceOrganisme.type"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_lienPiece">LienPiece</label>
+            <input type="text" class="form-control" name="lienPiece" id="field_lienPiece"
+                    ng-model="appartenanceOrganisme.lienPiece"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label for="field_elu">elu</label>
+            <select class="form-control" id="field_elu" name="elu" ng-model="appartenanceOrganisme.elu" ng-options="elu as elu.id for elu in elus track by elu.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

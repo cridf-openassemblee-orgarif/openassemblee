@@ -1,0 +1,102 @@
+
+<div>
+    <h2><span>AppartenanceOrganisme</span> {{appartenanceOrganisme.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Statut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.statut}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>CodeRNE</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.codeRNE}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.dateDebut | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.dateFin | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>MotifFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.motifFin}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>DateNomination</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.dateNomination | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Reference</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.reference}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Type</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.type}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>LienPiece</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{appartenanceOrganisme.lienPiece}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>elu</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="elu.detail({id:appartenanceOrganisme.elu.id})">{{appartenanceOrganisme.elu.id}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>
