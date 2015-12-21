@@ -77,6 +77,7 @@ public class EluResource {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
+            // TODO faire tout ça dans une transaction PTUAIN
             Long imageId = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
             // TODO un truc plus clean...
             Elu elu = eluRepository.findOne(id);
