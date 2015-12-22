@@ -1,0 +1,23 @@
+<div class="col-md-4 col-sm-6 col-xs-12">
+    <div class="info-box entity-component" ui-sref="elus.detail({id:elu.id})">
+        <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
+        <span class="info-box-photo">
+          <img ng-if="elu.image" class="profile-image" ng-src="images/{{elu.image}}"/>
+        </span>
+
+        <div class="info-box-content">
+            <span class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
+            <span class="info-box-info" ng-if="elu.nomJeuneFille">
+                <!-- TODO née ? ou 'Nom de jeune fille' ? -->
+                <span class="lg">Née</span> {{elu.nomJeuneFille}}
+            </span>
+            <!--<span class="info-box-info">-->
+            <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
+            <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
+            <!--</span>-->
+            <!--<span class="info-box-info"><span class="lg">Profession :</span> {{elu.profession}}</span>-->
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>

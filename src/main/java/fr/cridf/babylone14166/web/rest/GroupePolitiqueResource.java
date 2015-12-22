@@ -2,8 +2,10 @@ package fr.cridf.babylone14166.web.rest;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -12,13 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.domain.GroupePolitique;
+import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
 import fr.cridf.babylone14166.service.GroupePolitiqueService;
+import fr.cridf.babylone14166.service.ImageService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -39,6 +44,9 @@ public class GroupePolitiqueResource {
     @Inject
     private GroupePolitiqueService groupePolitiqueService;
 
+    @Inject
+    private ImageService imageService;
+
     /**
      * POST  /groupePolitiques -> Create a new groupePolitique.
      */
@@ -57,6 +65,30 @@ public class GroupePolitiqueResource {
         return ResponseEntity.created(new URI("/api/groupePolitiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("groupePolitique", result.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * POST  /elus/:id/photo -> Upload une photo
+     */
+    @RequestMapping(value = "/groupePolitiques/{id}/image", method = RequestMethod.POST, consumes =
+        "multipart/form-data")
+    @Timed
+    public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
+        URISyntaxException {
+        log.debug("REST upload image");
+        if (file.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            imageService.saveImagePourGroupePolitique(id, new Image(file.getContentType(), file.getBytes()));
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            log.error("Unable to read uploaded image", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
+            log.error("Unable to write uploaded image", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

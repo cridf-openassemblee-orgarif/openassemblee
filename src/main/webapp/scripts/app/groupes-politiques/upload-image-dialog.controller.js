@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('UploadImageEluDialogController',
+angular.module('babylone14166App').controller('UploadImageGroupePolitiqueDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'Upload', '$state',
         function ($scope, $stateParams, $modalInstance, Upload, $state) {
 
@@ -13,7 +13,7 @@ angular.module('babylone14166App').controller('UploadImageEluDialogController',
             // upload on file select or drop
             $scope.upload = function (file) {
                 Upload.upload({
-                    url: 'api/elus/' + $stateParams.id + '/image',
+                    url: 'api/groupePolitiques/' + $stateParams.id + '/image',
                     file: file
                 }).then(function (resp) {
                     $modalInstance.close(resp);

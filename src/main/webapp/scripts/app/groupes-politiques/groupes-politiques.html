@@ -7,10 +7,8 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <div class="content">
         <div class="container">
-
-            <jh-alert></jh-alert>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
@@ -34,39 +32,34 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>NomCourt</th>
-                        <th>DateDebut</th>
-                        <th>DateFin</th>
-                        <th>MotifFin</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="groupePolitique in groupesPolitiques track by groupePolitique.id">
-                        <td><a ui-sref="groupesPolitiques.detail({id:groupePolitique.id})">{{groupePolitique.id}}</a>
-                        </td>
-                        <td>{{groupePolitique.nom}}</td>
-                        <td>{{groupePolitique.nomCourt}}</td>
-                        <td>{{groupePolitique.dateDebut | date:'mediumDate'}}</td>
-                        <td>{{groupePolitique.dateFin | date:'mediumDate'}}</td>
-                        <td>{{groupePolitique.motifFin}}</td>
-                        <td>
-                            <button type="submit"
-                                    ui-sref="groupesPolitiques.detail({id:groupePolitique.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Détail</span>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="groupePolitique in groupesPolitiques">
+                        <div class="info-box entity-component"
+                             ui-sref="groupesPolitiques.detail({id:groupePolitique.id})">
+                            <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
+                            <span class="info-box-photo bg-white">
+                              <img ng-if="groupePolitique.image" class="profile-image"
+                                   ng-src="images/{{groupePolitique.image}}"/>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-titre">{{groupePolitique.nom}}</span>
+                                <span class="info-box-info">
+                                    <span class="lg">{{groupePolitique.nomCourt}}</span>
+                                </span>
+                                <!--<span class="info-box-info">-->
+                                <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
+                                <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
+                                <!--</span>-->
+                                <!--<span class="info-box-info"><span class="lg">Profession :</span> {{elu.profession}}</span>-->
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>

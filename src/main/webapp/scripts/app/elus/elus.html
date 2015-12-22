@@ -10,7 +10,6 @@
     <section class="content">
         <div class="container">
 
-            <jh-alert></jh-alert>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
@@ -32,53 +31,11 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Civilité</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Nom de jeune fille</th>
-                        <th>Profession</th>
-                        <th>Date de naissance</th>
-                        <th>Lieu de naissance</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="elu in elus track by elu.id">
-                        <td><a ui-sref="elus.detail({id:elu.id})">{{elu.id}}</a></td>
-                        <td translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</td>
-                        <td>{{elu.nom}}</td>
-                        <td>{{elu.prenom}}</td>
-                        <td>{{elu.nomJeuneFille}}</td>
-                        <td>{{elu.profession}}</td>
-                        <td>{{elu.dateNaissance | date:'mediumDate'}}</td>
-                        <td>{{elu.lieuNaissance}}</td>
-                        <td>
-                            <button type="submit"
-                                    ui-sref="elus.detail({id:elu.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Détails</span>
-                            </button>
-                            <!--<button type="submit"-->
-                            <!--ui-sref="elu.edit({id:elu.id})"-->
-                            <!--class="btn btn-primary btn-sm">-->
-                            <!--<span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                            <!--ui-sref="elu.delete({id:elu.id})"-->
-                            <!--class="btn btn-danger btn-sm">-->
-                            <!--<span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>-->
-                            <!--</button>-->
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="container">
+                <div class="row">
+                    <elu ng-repeat="elu in elus"/>
+                </div>
             </div>
-
         </div>
     </section>
     <!-- /.content -->

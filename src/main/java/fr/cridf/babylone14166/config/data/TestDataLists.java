@@ -1,10 +1,13 @@
 package fr.cridf.babylone14166.config.data;
 
-public class FakeDataLists {
+public class TestDataLists {
 
     public static String[] VILLES = new String[] {
         "Paris", "Grenoble", "Toulouse", "Nantes", "Brest", "Nancy", "Lille", "Aix-en-Provence", "Thonon-les-bains",
         "Marcq-en-Baroeul", "Marseille", "Lyon" };
+
+    public static String[] PHOTOS = new String[] { "ANDROUET_Mathilde-BD.jpg", "BARJOU_Dominique-BD.jpg",
+        "REDA_Robin-BD.jpg" };
 
     public static String[] PROFESSIONS = new String[] { "Abbé", "Accessoiriste", "Accompagnateur de voyage",
         "Accordeur",

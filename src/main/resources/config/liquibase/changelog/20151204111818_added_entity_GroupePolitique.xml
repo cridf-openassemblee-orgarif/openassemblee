@@ -27,6 +27,7 @@
             <column name="date_fin" type="date"/>
             <column name="motif_fin" type="varchar(255)"/>
             <column name="adresse_postale_id" type="BIGINT"/>
+            <column name="image" type="bigint"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="adresse_postale_id" baseTableName="groupe_politique"
                                  constraintName="FK_grlgx614prmrh9u08c10mmie2" deferrable="false"

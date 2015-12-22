@@ -1,12 +1,13 @@
 package fr.cridf.babylone14166.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.hibernate.Hibernate;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,38 +104,23 @@ public class EluService {
     }
 
     public Elu save(Elu elu) {
-        if (elu.getNumerosTelephones() != null) {
-            for (NumeroTelephone t : elu.getNumerosTelephones()) {
-                numeroTelephoneRepository.save(t);
-                numeroTelephoneSearchRepository.save(t);
-            }
-        }
-        if (elu.getAdressesPostales() != null) {
-            for (AdressePostale a : elu.getAdressesPostales()) {
-                adressePostaleRepository.save(a);
-                adressePostaleSearchRepository.save(a);
-            }
-        }
-        if (elu.getNumerosFax() != null) {
-            for (NumeroFax numeroFax : elu.getNumerosFax()) {
-                numeroFaxRepository.save(numeroFax);
-                numeroFaxSearchRepository.save(numeroFax);
-            }
-        }
-        if (elu.getAdressesMail() != null) {
-            for (AdresseMail adresseMail : elu.getAdressesMail()) {
-                adresseMailRepository.save(adresseMail);
-                adresseMailSearchRepository.save(adresseMail);
-            }
-        }
-        if (elu.getIdentitesInternet() != null) {
-            for (IdentiteInternet identiteInternet : elu.getIdentitesInternet()) {
-                identiteInternetRepository.save(identiteInternet);
-                identiteInternetSearchRepository.save(identiteInternet);
-            }
-        }
+        save(elu.getNumerosTelephones(), numeroTelephoneRepository, numeroTelephoneSearchRepository);
+        save(elu.getAdressesPostales(), adressePostaleRepository, adressePostaleSearchRepository);
+        save(elu.getNumerosFax(), numeroFaxRepository, numeroFaxSearchRepository);
+        save(elu.getAdressesMail(), adresseMailRepository, adresseMailSearchRepository);
+        save(elu.getIdentitesInternet(), identiteInternetRepository, identiteInternetSearchRepository);
         eluRepository.save(elu);
         eluSearchRepository.save(elu);
         return elu;
+    }
+
+    private <T> void save(List<T> entities, JpaRepository<T, Long> repository,
+        ElasticsearchRepository<T, Long> searchRepository) {
+        if (entities != null) {
+            repository.save(entities);
+            for (T t : entities) {
+                searchRepository.save(t);
+            }
+        }
     }
 }

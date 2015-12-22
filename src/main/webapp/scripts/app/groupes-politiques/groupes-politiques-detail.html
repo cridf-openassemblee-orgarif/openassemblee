@@ -53,6 +53,14 @@
         </table>
     </div>
 
+    <div>
+        <img ng-if="groupePolitique.image" class="profile-image" ng-src="images/{{groupePolitique.image}}"/>
+        <button class="btn btn-sm btn-primary"
+                ui-sref="groupesPolitiques.detail.uploadImage">
+            Ajouter une image
+        </button>
+    </div>
+
     <div ng-if="groupePolitique.dateFin==undefined">
         <button class="btn btn-sm btn-primary"
                 ui-sref="groupesPolitiques.detail.fin">

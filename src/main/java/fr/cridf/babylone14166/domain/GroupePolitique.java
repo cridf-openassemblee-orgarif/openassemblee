@@ -41,6 +41,9 @@ public class GroupePolitique implements Serializable {
     @Column(name = "motif_fin")
     private String motifFin;
 
+    @Column(name = "image")
+    private Long image;
+
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
@@ -103,6 +106,14 @@ public class GroupePolitique implements Serializable {
 
     public void setMotifFin(String motifFin) {
         this.motifFin = motifFin;
+    }
+
+    public Long getImage() {
+        return image;
+    }
+
+    public void setImage(Long image) {
+        this.image = image;
     }
 
     public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {

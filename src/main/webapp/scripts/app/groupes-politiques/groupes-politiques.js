@@ -109,5 +109,23 @@ angular.module('babylone14166App')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('groupesPolitiques.detail.uploadImage', {
+                parent: 'groupesPolitiques.detail',
+                url: '/upload-image',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/groupes-politiques/upload-image-dialog.html',
+                        controller: 'UploadImageGroupePolitiqueDialogController',
+                        size: 'lg'
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
             });
     });

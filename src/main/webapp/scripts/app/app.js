@@ -139,4 +139,12 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
             return 'non';
         };
+    }])
+    .filter('civilite', [function () {
+        return function (value) {
+            if (value == 'MADAME') {
+                return 'Mme.';
+            }
+            return 'M.';
+        };
     }]);

@@ -21,9 +21,9 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.ImageRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
+import fr.cridf.babylone14166.service.ImageService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -45,7 +45,7 @@ public class EluResource {
     private EluSearchRepository eluSearchRepository;
 
     @Inject
-    private ImageRepository imageRepository;
+    private ImageService imageService;
 
     /**
      * POST  /elus -> Create a new elu.
@@ -70,21 +70,19 @@ public class EluResource {
      */
     @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST, consumes = "multipart/form-data")
     @Timed
-    public ResponseEntity<Long> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
+    public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
         URISyntaxException {
         log.debug("REST upload image");
         if (file.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            // TODO faire tout ça dans une transaction PTUAIN
-            Long imageId = imageRepository.saveImage(new Image(file.getContentType(), file.getBytes()));
-            // TODO un truc plus clean...
-            Elu elu = eluRepository.findOne(id);
-            elu.setImage(imageId);
-            eluRepository.save(elu);
-            return ResponseEntity.ok().body(imageId);
-        } catch (IOException | SQLException e) {
+            imageService.saveImagePourElu(id, new Image(file.getContentType(), file.getBytes()));
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            log.error("Unable to read uploaded image", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
             log.error("Unable to write uploaded image", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

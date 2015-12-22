@@ -42,6 +42,7 @@
                             </div>
                         </div>
                     </div>
+                    <img ng-if="groupePolitique.image" class="profile-image" ng-src="images/{{groupePolitique.image}}"/>
                 </div>
                 <div>
                     <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">

@@ -494,16 +494,8 @@ angular.module('babylone14166App')
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/elus/upload-image-dialog.html',
-                        controller: 'UploadImageDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: function () {
-                                return {
-                                    // TODO
-                                    //image: 'test'
-                                };
-                            }
-                        }
+                        controller: 'UploadImageEluDialogController',
+                        size: 'lg'
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
