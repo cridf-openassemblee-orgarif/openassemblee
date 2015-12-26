@@ -25,6 +25,7 @@ import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
 import fr.cridf.babylone14166.service.GroupePolitiqueService;
 import fr.cridf.babylone14166.service.ImageService;
 import fr.cridf.babylone14166.service.dto.GroupePolitiqueDTO;
+import fr.cridf.babylone14166.service.dto.GroupePolitiqueListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -119,7 +120,7 @@ public class GroupePolitiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GroupePolitiqueDTO> getAllGroupePolitiques() {
+    public List<GroupePolitiqueListDTO> getAllGroupePolitiques() {
         log.debug("REST request to get all GroupePolitiques");
         return groupePolitiqueService.getAll();
     }

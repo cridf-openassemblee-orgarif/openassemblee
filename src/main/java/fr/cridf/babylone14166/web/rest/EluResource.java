@@ -25,6 +25,7 @@ import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.service.ImageService;
 import fr.cridf.babylone14166.service.dto.EluDTO;
+import fr.cridf.babylone14166.service.dto.EluListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -116,9 +117,9 @@ public class EluResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Elu> getAllElus() {
+    public List<EluListDTO> getAllElus() {
         log.debug("REST request to get all Elus");
-        return eluRepository.findAll();
+        return eluService.getAll();
     }
 
     /**
@@ -131,7 +132,7 @@ public class EluResource {
     @Timed
     public ResponseEntity<EluDTO> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);
-        EluDTO eluDTO = eluService.getEluComplet(id);
+        EluDTO eluDTO = eluService.get(id);
         if (eluDTO != null) {
             return new ResponseEntity<>(eluDTO, HttpStatus.OK);
         }

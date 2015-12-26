@@ -3,17 +3,17 @@
 angular.module('babylone14166App')
     .controller('ElusController', function ($scope, $state, $modal, Elu, EluSearch) {
 
-        $scope.elus = [];
+        $scope.dtos = [];
         $scope.loadAll = function () {
-            Elu.query(function (result) {
-                $scope.elus = result;
+            Elu.query(function (dtos) {
+                $scope.dtos = dtos;
             });
         };
         $scope.loadAll();
 
         $scope.search = function () {
             EluSearch.query({query: $scope.searchQuery}, function (result) {
-                $scope.elus = result;
+                $scope.dtos = result;
             }, function (response) {
                 if (response.status === 404) {
                     $scope.loadAll();
