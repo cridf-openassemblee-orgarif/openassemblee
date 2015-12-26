@@ -61,6 +61,12 @@ public class AdressePostale implements Serializable {
         this.publicationAnnuaire = publicationAnnuaire;
     }
 
+    public AdressePostale(String voie, String codePostal, String ville) {
+        this.voie = voie;
+        this.codePostal = codePostal;
+        this.ville = ville;
+    }
+
     public Long getId() {
         return id;
     }

@@ -26,8 +26,10 @@ import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.service.IndexService;
+import liquibase.util.csv.opencsv.CSVReader;
 
 @Component
+@Transactional
 public class TestDataInjector {
 
     private final Logger logger = LoggerFactory.getLogger(TestDataInjector.class);
@@ -47,11 +49,15 @@ public class TestDataInjector {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private AdressePostaleRepository adressePostaleRepository;
+
+    @Autowired
+    private OrganismeRepository organismeRepository;
+
     private Random random;
 
-    //    @PostConstruct
-    @Transactional
-    public void init() {
+    public void injectTestData() {
         if (eluRepository.count() == 0) {
             random = new Random();
             List<GroupePolitique> gps = initGroupesPolitiques();
@@ -64,7 +70,35 @@ public class TestDataInjector {
         }
     }
 
-    public List<GroupePolitique> initGroupesPolitiques() {
+    public void injectOrganismes() {
+        if (organismeRepository.count() == 0) {
+            CSVReader reader = new CSVReader(
+                new InputStreamReader(
+                    getClass().getClassLoader().getResourceAsStream("test-data-images/organismes.csv")), ';');
+            List<Organisme> organismes = new ArrayList<>();
+            try {
+                String[] line = reader.readNext();
+                while (line != null) {
+                    Organisme o = new Organisme();
+                    o.setCodeRNE(line[0].trim());
+                    o.setNom(line[2].trim());
+                    o.setSecteur(line[5].trim());
+                    o.setType(line[1].trim());
+                    o.setAdressePostale(new AdressePostale(line[6].trim(), line[7].trim(), line[8].trim()));
+                    organismes.add(o);
+                    adressePostaleRepository.save(o.getAdressePostale());
+                    line = reader.readNext();
+                }
+                organismeRepository.save(organismes);
+                reader.close();
+            } catch (IOException e) {
+                logger.debug("Can't read organismes CSV file", e);
+            }
+            indexService.resetIndex();
+        }
+    }
+
+    private List<GroupePolitique> initGroupesPolitiques() {
         List<GroupePolitique> gps = new ArrayList<>();
         gps.add(initGroupePolitique("LR", "Les Républicains", "logo-des-Republicains.jpg"));
         gps.add(initGroupePolitique("PSR et app", "Socialistes et Républicains et apparentés", "logops.jpg"));
@@ -104,7 +138,7 @@ public class TestDataInjector {
         return gp;
     }
 
-    public List<Elu> initElus(List<GroupePolitique> gps) {
+    private List<Elu> initElus(List<GroupePolitique> gps) {
         List<Elu> elus = new ArrayList<>();
         elus.add(initElu(MONSIEUR, "ABSCHEN", "Jean"));
         elus.add(initElu(MONSIEUR, "ADAMO", "Stéphane"));

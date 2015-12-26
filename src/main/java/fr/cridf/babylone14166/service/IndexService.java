@@ -12,10 +12,8 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
-import fr.cridf.babylone14166.repository.search.EluSearchRepository;
-import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
+import fr.cridf.babylone14166.repository.*;
+import fr.cridf.babylone14166.repository.search.*;
 
 @Service
 public class IndexService {
@@ -32,10 +30,16 @@ public class IndexService {
     @Autowired
     protected GroupePolitiqueSearchRepository groupePolitiqueSearchRepository;
 
+    @Autowired
+    protected OrganismeRepository organismeRepository;
+    @Autowired
+    protected OrganismeSearchRepository organismeSearchRepository;
+
     public void resetIndex() {
         logger.debug("Reset search index");
         resetRepository(eluRepository, eluSearchRepository);
         resetRepository(groupePolitiqueRepository, groupePolitiqueSearchRepository);
+        resetRepository(organismeRepository, organismeSearchRepository);
     }
 
     private <T> void resetRepository(JpaRepository<T, Long> jpaRepository,
