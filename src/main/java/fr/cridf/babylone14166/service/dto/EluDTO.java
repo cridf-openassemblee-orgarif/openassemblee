@@ -4,14 +4,14 @@ import java.util.Map;
 
 import fr.cridf.babylone14166.domain.*;
 
-public class EluCompletDTO {
+public class EluDTO {
 
     private Elu elu;
     private Map<Long, GroupePolitique> groupesPolitiques;
     private Map<Long, CommissionThematique> commissionsThematiques;
     private Map<String, Organisme> organismes;
 
-    public EluCompletDTO(Elu elu, Map<Long, GroupePolitique> groupesPolitiques,
+    public EluDTO(Elu elu, Map<Long, GroupePolitique> groupesPolitiques,
         Map<Long, CommissionThematique> commissionsThematiques,
         Map<String, Organisme> organismes) {
         this.elu = elu;

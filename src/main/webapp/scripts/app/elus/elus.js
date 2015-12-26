@@ -61,8 +61,8 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'EluComplet', function ($stateParams, EluComplet) {
-                        return EluComplet.get({id: $stateParams.id});
+                    entity: ['$stateParams', 'Elu', function ($stateParams, Elu) {
+                        return Elu.get({id: $stateParams.id});
                     }]
                 }
             })

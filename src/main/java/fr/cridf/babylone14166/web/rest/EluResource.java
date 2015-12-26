@@ -24,6 +24,7 @@ import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
 import fr.cridf.babylone14166.service.ImageService;
+import fr.cridf.babylone14166.service.dto.EluDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -128,11 +129,11 @@ public class EluResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     // TODO tester jsonview annotations + doc
     @Timed
-    public ResponseEntity<Elu> getElu(@PathVariable Long id) {
+    public ResponseEntity<EluDTO> getElu(@PathVariable Long id) {
         log.debug("REST request to get Elu : {}", id);
-        Elu elu = eluService.get(id);
-        if (elu != null) {
-            return new ResponseEntity<>(elu, HttpStatus.OK);
+        EluDTO eluDTO = eluService.getEluComplet(id);
+        if (eluDTO != null) {
+            return new ResponseEntity<>(eluDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

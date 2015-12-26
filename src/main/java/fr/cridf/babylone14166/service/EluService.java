@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.*;
-import fr.cridf.babylone14166.service.dto.EluCompletDTO;
+import fr.cridf.babylone14166.service.dto.EluDTO;
 
 @Service
 @Transactional
@@ -73,7 +73,7 @@ public class EluService {
         return elu;
     }
 
-    public EluCompletDTO getEluComplet(Long id) {
+    public EluDTO getEluComplet(Long id) {
         Elu elu = get(id);
         if (elu == null) {
             return null;
@@ -100,7 +100,7 @@ public class EluService {
             .map(a -> a.getCodeRNE())
             .distinct()
             .collect(Collectors.toMap(Function.identity(), organismeRepository::findOneByCodeRNE));
-        return new EluCompletDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
+        return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
     public Elu save(Elu elu) {
