@@ -2,11 +2,11 @@
 
 angular.module('babylone14166App')
     .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity) {
-        $scope.r = entity;
+        $scope.dto = entity;
         $scope.eluEnCommissionPermanente = false;
-        $scope.$watch('r', function () {
-            if ($scope.r.$promise) {
-                $scope.r.$promise.then(function () {
+        $scope.$watch('dto', function () {
+            if ($scope.dto.$promise) {
+                $scope.dto.$promise.then(function () {
                     updateScope();
                 });
             } else if ($scope.r.elu) {
@@ -14,13 +14,9 @@ angular.module('babylone14166App')
             }
         });
         var updateScope = function () {
-            $scope.elu = $scope.r.elu;
-            $scope.groupesPolitiques = $scope.r.groupesPolitiques;
-            $scope.commissionsThematiques = $scope.r.commissionsThematiques;
-            $scope.organismes = $scope.r.organismes;
-            if ($scope.elu.appartenancesCommissionPermanente &&
-                $scope.elu.appartenancesCommissionPermanente.length > 0) {
-                angular.forEach($scope.elu.appartenancesCommissionPermanente, function (a) {
+            if ($scope.dto.elu.appartenancesCommissionPermanente &&
+                $scope.dto.elu.appartenancesCommissionPermanente.length > 0) {
+                angular.forEach($scope.dto.elu.appartenancesCommissionPermanente, function (a) {
                     if (a.dateFin == null) {
                         $scope.eluEnCommissionPermanente = true;
                     }

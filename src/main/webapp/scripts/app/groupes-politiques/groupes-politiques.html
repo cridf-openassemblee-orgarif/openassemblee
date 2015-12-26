@@ -34,18 +34,21 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="groupePolitique in groupesPolitiques">
+                    <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
                         <div class="info-box entity-component"
-                             ui-sref="groupesPolitiques.detail({id:groupePolitique.id})">
+                             ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})">
                             <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
                             <span class="info-box-photo bg-white">
-                              <img ng-if="groupePolitique.image" ng-src="images/{{groupePolitique.image}}"/>
+                              <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"/>
                             </span>
 
                             <div class="info-box-content">
-                                <span class="info-box-titre">{{groupePolitique.nom}}</span>
+                                <span class="info-box-titre">
+                                    {{dto.groupePolitique.nom}}
+                                    <span class="lg">({{dto.groupePolitique.nomCourt}})</span>
+                                </span>
                                 <span class="info-box-info">
-                                    <span class="lg">{{groupePolitique.nomCourt}}</span>
+                                    {{dto.count}} élus
                                 </span>
                                 <!--<span class="info-box-info">-->
                                 <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->

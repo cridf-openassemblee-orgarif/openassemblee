@@ -12,9 +12,6 @@ public class CommissionPermanenteDTO {
     private List<FonctionExecutive> fonctionsExecutives;
     private Map<Long, Elu> elus;
 
-    public CommissionPermanenteDTO() {
-    }
-
     public CommissionPermanenteDTO(List<AppartenanceCommissionPermanente> appartenances,
         List<FonctionCommissionPermanente> fonctions, List<FonctionExecutive> fonctionsExecutives, Map<Long, Elu>
         elus) {

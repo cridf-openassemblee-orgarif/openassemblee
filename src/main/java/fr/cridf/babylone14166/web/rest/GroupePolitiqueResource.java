@@ -24,6 +24,7 @@ import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
 import fr.cridf.babylone14166.service.GroupePolitiqueService;
 import fr.cridf.babylone14166.service.ImageService;
+import fr.cridf.babylone14166.service.dto.GroupePolitiqueDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -118,9 +119,9 @@ public class GroupePolitiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GroupePolitique> getAllGroupePolitiques() {
+    public List<GroupePolitiqueDTO> getAllGroupePolitiques() {
         log.debug("REST request to get all GroupePolitiques");
-        return groupePolitiqueRepository.findAll();
+        return groupePolitiqueService.getAll();
     }
 
     /**
@@ -143,11 +144,11 @@ public class GroupePolitiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<GroupePolitique> getGroupePolitique(@PathVariable Long id) {
+    public ResponseEntity<GroupePolitiqueDTO> getGroupePolitique(@PathVariable Long id) {
         log.debug("REST request to get GroupePolitique : {}", id);
-        GroupePolitique groupePolitique = groupePolitiqueService.get(id);
-        if (groupePolitique != null) {
-            return new ResponseEntity<>(groupePolitique, HttpStatus.OK);
+        GroupePolitiqueDTO dto = groupePolitiqueService.get(id);
+        if (dto != null) {
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
