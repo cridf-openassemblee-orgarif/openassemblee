@@ -71,7 +71,7 @@ public class EluResourceIntTest {
     private static final String UPDATED_LIEU_NAISSANCE = "BBBBB";
 
     private static final NatureProPerso DEFAULT_NATURE_PRO_PERSO = NatureProPerso.PRO;
-    private static final String DEFAULT_RUE = "AAAAA";
+    private static final String DEFAULT_VOIE = "AAAAA";
     private static final String DEFAULT_CODE_POSTAL = "AAAAA";
     private static final String DEFAULT_VILLE = "AAAAA";
 
@@ -131,7 +131,7 @@ public class EluResourceIntTest {
         adressePostale = new AdressePostale();
         adressePostale = new AdressePostale();
         adressePostale.setNatureProPerso(DEFAULT_NATURE_PRO_PERSO);
-        adressePostale.setRue(DEFAULT_RUE);
+        adressePostale.setVoie(DEFAULT_VOIE);
         adressePostale.setCodePostal(DEFAULT_CODE_POSTAL);
         adressePostale.setVille(DEFAULT_VILLE);
         adressePostale.setNiveauConfidentialite(DEFAULT_NIVEAU_CONFIDENTIALITE);
@@ -208,7 +208,7 @@ public class EluResourceIntTest {
             .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
             .andExpect(jsonPath("$.dateNaissance").value(DEFAULT_DATE_NAISSANCE.toString()))
             .andExpect(jsonPath("$.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()))
-            .andExpect(jsonPath("$.adressesPostales[0].rue").value(DEFAULT_RUE));
+            .andExpect(jsonPath("$.adressesPostales[0].rue").value(DEFAULT_VOIE));
         // TODO mlo test adresse + verifier ne vient pas avec les listes (?)
     }
 

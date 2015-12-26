@@ -22,13 +22,13 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="nature_pro_perso" type="varchar(255)"/>
-            <column name="rue" type="varchar(255)"/>
+            <column name="voie" type="varchar(255)"/>
             <column name="code_postal" type="varchar(255)"/>
             <column name="ville" type="varchar(255)"/>
             <column name="niveau_confidentialite" type="varchar(255)"/>
             <column name="adresse_de_correspondance" type="bit"/>
             <column name="publication_annuaire" type="bit"/>
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

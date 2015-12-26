@@ -28,8 +28,8 @@ public class AdressePostale implements Serializable {
     @Column(name = "nature_pro_perso")
     private NatureProPerso natureProPerso;
 
-    @Column(name = "rue")
-    private String rue;
+    @Column(name = "voie")
+    private String voie;
 
     @Column(name = "code_postal")
     private String codePostal;
@@ -50,10 +50,10 @@ public class AdressePostale implements Serializable {
     public AdressePostale() {
     }
 
-    public AdressePostale(NatureProPerso natureProPerso, String rue, String codePostal, String ville,
+    public AdressePostale(NatureProPerso natureProPerso, String voie, String codePostal, String ville,
         NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
         this.natureProPerso = natureProPerso;
-        this.rue = rue;
+        this.voie = voie;
         this.codePostal = codePostal;
         this.ville = ville;
         this.niveauConfidentialite = niveauConfidentialite;
@@ -77,12 +77,12 @@ public class AdressePostale implements Serializable {
         this.natureProPerso = natureProPerso;
     }
 
-    public String getRue() {
-        return rue;
+    public String getVoie() {
+        return voie;
     }
 
-    public void setRue(String rue) {
-        this.rue = rue;
+    public void setVoie(String voie) {
+        this.voie = voie;
     }
 
     public String getCodePostal() {
@@ -147,7 +147,7 @@ public class AdressePostale implements Serializable {
         return "AdressePostale{" +
             "id=" + id +
             ", natureProPerso='" + natureProPerso + "'" +
-            ", rue='" + rue + "'" +
+            ", voie='" + voie + "'" +
             ", codePostal='" + codePostal + "'" +
             ", ville='" + ville + "'" +
             ", niveauConfidentialite='" + niveauConfidentialite + "'" +
