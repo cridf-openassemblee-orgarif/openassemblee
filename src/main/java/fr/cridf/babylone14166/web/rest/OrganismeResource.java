@@ -12,6 +12,8 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ import fr.cridf.babylone14166.domain.Organisme;
 import fr.cridf.babylone14166.repository.OrganismeRepository;
 import fr.cridf.babylone14166.repository.search.OrganismeSearchRepository;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 
 /**
  * REST controller for managing Organisme.
@@ -82,9 +85,10 @@ public class OrganismeResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Organisme> getAllOrganismes() {
-        log.debug("REST request to get all Organismes");
-        return organismeRepository.findAll();
+    public ResponseEntity<List<Organisme>> getAllOrganismes(Pageable pageable) throws URISyntaxException {
+        Page<Organisme> page = organismeRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/organismes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

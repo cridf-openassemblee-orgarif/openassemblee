@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('OrganismeController', function ($scope, $state, $modal, Organisme, OrganismeSearch) {
+    .controller('OrganismeController', function ($scope, $state, $modal, Organisme, OrganismeSearch, ParseLinks) {
       
         $scope.organismes = [];
+        $scope.page = 0;
         $scope.loadAll = function() {
-            Organisme.query(function(result) {
-               $scope.organismes = result;
+            Organisme.query({page: $scope.page, size: 20}, function(result, headers) {
+                $scope.links = ParseLinks.parse(headers('link'));
+                $scope.organismes = result;
             });
+        };
+        $scope.loadPage = function(page) {
+            $scope.page = page;
+            $scope.loadAll();
         };
         $scope.loadAll();
 
