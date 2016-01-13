@@ -109,7 +109,11 @@ public class EluService {
         Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
             .map(a -> a.getCodeRNE())
             .distinct()
-            .collect(Collectors.toMap(Function.identity(), organismeRepository::findOneByCodeRNE));
+            .map(rne -> {
+                return new Object[] { rne, organismeRepository.findOneByCodeRNE(rne) };
+            })
+            .filter(o -> o[1] != null)
+            .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
