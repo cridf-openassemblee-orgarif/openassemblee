@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.common.collect.Lists;
+import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -22,8 +24,7 @@ import fr.cridf.babylone14166.domain.GroupePolitique;
 import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
-import fr.cridf.babylone14166.service.GroupePolitiqueService;
-import fr.cridf.babylone14166.service.ImageService;
+import fr.cridf.babylone14166.service.*;
 import fr.cridf.babylone14166.service.dto.GroupePolitiqueDTO;
 import fr.cridf.babylone14166.service.dto.GroupePolitiqueListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
@@ -48,6 +49,9 @@ public class GroupePolitiqueResource {
 
     @Inject
     private ImageService imageService;
+
+    @Inject
+    private ExportService exportService;
 
     /**
      * POST  /groupePolitiques -> Create a new groupePolitique.
@@ -125,17 +129,28 @@ public class GroupePolitiqueResource {
         return groupePolitiqueService.getAll();
     }
 
-    /**
-     * GET  /groupePolitiques -> get all the groupePolitiques.
-     */
-    @RequestMapping(value = "/groupePolitiques/by-user/{userId}",
+    @RequestMapping(value = "/groupePolitiques/export",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GroupePolitique> getGroupesPolitiquesByUser(@PathVariable Long userId) {
-        log.debug("REST request to get GroupePolitiques by user");
+    public void getAllGroupePolitiquesExport(HttpServletResponse response) {
+        log.debug("REST request to get all GroupePolitiques");
+        try {
+            List<GroupePolitiqueListDTO> gps = groupePolitiqueService.getAll();
+            List<List<String>> lines = new ArrayList<>();
+            for (GroupePolitiqueListDTO gpDto : gps) {
+                GroupePolitique gp = gpDto.getGroupePolitique();
+                lines.add(Arrays.asList(gp.getNom(), gp.getNomCourt()));
+            }
+            byte[] export = exportService.exportToExcel(lines);
 
-        return groupePolitiqueRepository.findAll();
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-disposition", "attachment; filename=groupes-politiques.xlsx");
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
     }
 
     /**
