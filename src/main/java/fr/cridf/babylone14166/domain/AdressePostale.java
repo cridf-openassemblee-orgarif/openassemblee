@@ -143,6 +143,16 @@ public class AdressePostale implements Serializable {
         return Objects.equals(id, adressePostale.id);
     }
 
+    // TODO tester
+    public String getOneline() {
+        String adresse = "";
+        adresse += voie != null ? voie : "";
+        adresse += codePostal != null ? (adresse.equals("") ? "" : " ") + codePostal : "";
+        adresse += " ";
+        adresse += ville != null ? ville : (adresse.equals("") ? "Adresse inconnue" : "Ville inconnue");
+        return adresse;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(id);

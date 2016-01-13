@@ -140,7 +140,8 @@ public class GroupePolitiqueResource {
             List<List<String>> lines = new ArrayList<>();
             for (GroupePolitiqueListDTO gpDto : gps) {
                 GroupePolitique gp = gpDto.getGroupePolitique();
-                lines.add(Arrays.asList(gp.getNom(), gp.getNomCourt()));
+                String adresse = gp.getAdressePostale() != null ? gp.getAdressePostale().getOneline() : "Pas d'adresse";
+                lines.add(Arrays.asList(gp.getNom(), gp.getNomCourt(), gpDto.getCount() + " membres", adresse));
             }
             byte[] export = exportService.exportToExcel(lines);
 
