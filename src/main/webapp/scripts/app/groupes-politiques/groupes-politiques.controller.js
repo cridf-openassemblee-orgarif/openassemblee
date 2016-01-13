@@ -11,17 +11,6 @@ angular.module('babylone14166App')
         };
         $scope.loadAll();
 
-
-        $scope.search = function () {
-            GroupePolitiqueSearch.query({query: $scope.searchQuery}, function (result) {
-                $scope.dto = result;
-            }, function (response) {
-                if (response.status === 404) {
-                    $scope.loadAll();
-                }
-            });
-        };
-
         $scope.refresh = function () {
             $scope.loadAll();
             $scope.clear();

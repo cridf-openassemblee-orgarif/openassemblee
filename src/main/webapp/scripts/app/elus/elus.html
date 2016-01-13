@@ -8,38 +8,19 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="container">
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <button class="btn btn-primary" ui-sref="elus.new">
-                            <span class="glyphicon glyphicon-plus"></span> <span>Ajouter un élu</span>
-                        </button>
-                    </div>
-                    <div class="col-md-8">
-                        <form name="searchForm" class="form-inline">
-                            <div class="form-group">
-                                <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery"
-                                       placeholder="Recherche">
-                            </div>
-                            <button class="btn btn-info" ng-click="search()"><span
-                                class="glyphicon glyphicon-search"></span> <span>Chercher un élu</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>{{dtos.length}} élus</h2>
             </div>
-
-            <div class="container">
-                {{dtos.length}} élus
+            <div class="col-md-8 align-right">
+                <button class="btn btn-sm btn-primary" ui-sref="elus.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Ajouter un élu</span>
+                </button>
             </div>
-
-            <div class="container">
-                <div class="row">
-                    <elu ng-repeat="dto in dtos"/>
-                </div>
-            </div>
+        </div>
+        <div class="row">
+            <elu ng-repeat="dto in dtos"/>
         </div>
     </section>
     <!-- /.content -->

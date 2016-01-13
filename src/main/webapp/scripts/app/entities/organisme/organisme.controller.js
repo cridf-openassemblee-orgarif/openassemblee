@@ -2,11 +2,11 @@
 
 angular.module('babylone14166App')
     .controller('OrganismeController', function ($scope, $state, $modal, Organisme, OrganismeSearch, ParseLinks) {
-      
+
         $scope.organismes = [];
         $scope.page = 0;
         $scope.loadAll = function() {
-            Organisme.query({page: $scope.page, size: 20}, function(result, headers) {
+            Organisme.query({page: $scope.page, size: 10}, function (result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 $scope.organismes = result;
             });

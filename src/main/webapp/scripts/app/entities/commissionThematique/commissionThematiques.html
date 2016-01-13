@@ -1,39 +1,44 @@
 <div>
-    <h2>Les commissions thématiques</h2>
-    <jh-alert></jh-alert>
-    <div class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Les commissions thématiques
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <div class="content">
         <div class="row">
-            <div class="col-md-4">
-                <button class="btn btn-primary" ui-sref="commissionThematique.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Créer une commission thématique</span>
+            <div class="col-lg-4">
+                <h2>{{dtos.length}} commissions thématiques</h2>
+            </div>
+
+            <div class="col-lg-8 align-right">
+                <button class="btn btn-sm btn-primary" ui-sref="commissionThematique.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Créer une nouvelle commission thématique</span>
                 </button>
+                <a class="btn btn-sm btn-primary" href="api/commissionThematiques/export">
+                    <span class="fa fa-table"></span>
+                    <span>Export Excel</span>
+                </a>
             </div>
         </div>
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Nom court</th>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
-                    <th>Motif de fin</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="commissionThematique in commissionThematiques track by commissionThematique.id">
-                    <td><a ui-sref="commissionThematique.detail({id:commissionThematique.id})">{{commissionThematique.id}}</a></td>
-                    <td>{{commissionThematique.nom}}</td>
-                    <td>{{commissionThematique.nomCourt}}</td>
-                        <td>{{commissionThematique.dateDebut | date:'mediumDate'}}</td>
-                        <td>{{commissionThematique.dateFin | date:'mediumDate'}}</td>
-                    <td>{{commissionThematique.motifFin}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
+                <div class="info-box entity-component"
+                     ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})">
+                    <div class="info-box-content-ct">
+                        <span class="info-box-titre">
+                            {{dto.commissionThematique.nom}}
+                            <span class="lg">({{dto.commissionThematique.nomCourt}})</span>
+                        </span>
+                        <span class="info-box-info">
+                            {{dto.count}} membres
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

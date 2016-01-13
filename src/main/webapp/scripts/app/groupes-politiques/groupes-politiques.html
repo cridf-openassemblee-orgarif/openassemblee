@@ -8,49 +8,32 @@
 
     <!-- Main content -->
     <div class="content">
-        <div class="container">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <button class="btn btn-primary" ui-sref="groupesPolitiques.new">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            <span>Créer un nouveau groupe politique</span>
-                        </button>
-                        <a class="btn btn-primary" href="api/groupePolitiques/export">
-                            <span class="fa fa-table"></span>
-                            <span>Export Excel</span>
-                        </a>
-                    </div>
-                    <div class="col-md-8">
-                        <form name="searchForm" class="form-inline">
-                            <div class="form-group">
-                                <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery"
-                                       placeholder="query">
-                            </div>
-                            <button class="btn btn-info" ng-click="search()"><span
-                                class="glyphicon glyphicon-search"></span>
-                                <span>Chercher un groupe politique</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>{{dtos.length}} groupes politiques</h2>
             </div>
 
-            <div class="container">
-                {{dtos.length}} groupes politiques
+            <div class="col-lg-8 align-right">
+                <button class="btn btn-sm btn-primary" ui-sref="groupesPolitiques.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Créer un nouveau groupe politique</span>
+                </button>
+                <a class="btn btn-sm btn-primary" href="api/groupePolitiques/export">
+                    <span class="fa fa-table"></span>
+                    <span>Export Excel</span>
+                </a>
             </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
-                        <div class="info-box entity-component"
-                             ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})">
-                            <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
+                <div class="info-box entity-component"
+                     ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})">
+                    <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
                             <span class="info-box-photo bg-white">
                               <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"/>
                             </span>
 
-                            <div class="info-box-content">
+                    <div class="info-box-content">
                                 <span class="info-box-titre">
                                     {{dto.groupePolitique.nom}}
                                     <span class="lg">({{dto.groupePolitique.nomCourt}})</span>
@@ -58,17 +41,15 @@
                                 <span class="info-box-info">
                                     {{dto.count}} membres
                                 </span>
-                                <!--<span class="info-box-info">-->
-                                <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
-                                <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
-                                <!--</span>-->
-                                <!--<span class="info-box-info"><span class="lg">Profession :</span> {{elu.profession}}</span>-->
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
+                        <!--<span class="info-box-info">-->
+                        <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
+                        <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
+                        <!--</span>-->
+                        <!--<span class="info-box-info"><span class="lg">Profession :</span> {{elu.profession}}</span>-->
                     </div>
+                    <!-- /.info-box-content -->
                 </div>
+                <!-- /.info-box -->
             </div>
         </div>
     </div>
