@@ -30,6 +30,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/typeahead.js/dist/typeahead.bundle.js',
             'main/webapp/bower_components/angular-typeahead/angular-typeahead.js',
+            'main/webapp/bower_components/moment/moment.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
