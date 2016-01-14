@@ -8,6 +8,10 @@ public class EluListDTO {
     private Elu elu;
     private GroupePolitique groupePolitique;
 
+    public EluListDTO(Elu elu) {
+        this.elu = elu;
+    }
+
     public EluListDTO(Elu elu, GroupePolitique groupePolitique) {
         this.elu = elu;
         this.groupePolitique = groupePolitique;
@@ -17,15 +21,7 @@ public class EluListDTO {
         return elu;
     }
 
-    public void setElu(Elu elu) {
-        this.elu = elu;
-    }
-
     public GroupePolitique getGroupePolitique() {
         return groupePolitique;
-    }
-
-    public void setGroupePolitique(GroupePolitique groupePolitique) {
-        this.groupePolitique = groupePolitique;
     }
 }

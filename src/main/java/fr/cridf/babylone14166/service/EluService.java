@@ -66,7 +66,11 @@ public class EluService {
                 .filter(GroupePolitiqueService::isAppartenanceCourante)
                 .map(AppartenanceGroupePolitique::getGroupePolitique)
                 .findFirst();
-            return new EluListDTO(e, groupePolitique.get());
+            if (groupePolitique.isPresent()) {
+                return new EluListDTO(e, groupePolitique.get());
+            } else {
+                return new EluListDTO(e);
+            }
         }).collect(Collectors.toList());
     }
 
