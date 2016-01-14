@@ -11,13 +11,13 @@
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="date" class="form-control" name="dateFin" id="field_dateFin"
-                   ng-model="groupePolitique.dateFin"/>
+                   ng-model="dto.groupePolitique.dateFin"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="typeahead form-control" name="motifFin" id="field_motifFin"
                    options="typeaheadOptionsZeroChar" datasets="finsGroupePolitiqueAutocomplete"
-                   ng-model="groupePolitique.motifFin"
+                   ng-model="dto.groupePolitique.motifFin"
                    sf-typeahead autocomplete="off"/>
         </div>
     </div>

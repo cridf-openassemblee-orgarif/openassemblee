@@ -1,5 +1,5 @@
 <div>
-    <h2><span>GroupePolitique</span> {{groupePolitique.id}}</h2>
+    <h2><span>GroupePolitique</span> {{dto.groupePolitique.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -14,7 +14,7 @@
                     <span>Nom</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{groupePolitique.nom}}</span>
+                    <span class="form-control-static">{{dto.groupePolitique.nom}}</span>
                 </td>
             </tr>
             <tr>
@@ -22,7 +22,7 @@
                     <span>NomCourt</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{groupePolitique.nomCourt}}</span>
+                    <span class="form-control-static">{{dto.groupePolitique.nomCourt}}</span>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                     <span>DateDebut</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{groupePolitique.dateDebut | date:'mediumDate'}}</span>
+                    <span class="form-control-static">{{dto.groupePolitique.dateDebut | date:'mediumDate'}}</span>
                 </td>
             </tr>
             <tr>
@@ -38,7 +38,7 @@
                     <span>DateFin</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{groupePolitique.dateFin | date:'mediumDate'}}</span>
+                    <span class="form-control-static">{{dto.groupePolitique.dateFin | date:'mediumDate'}}</span>
                 </td>
             </tr>
             <tr>
@@ -46,7 +46,7 @@
                     <span>MotifFin</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{groupePolitique.motifFin}}</span>
+                    <span class="form-control-static">{{dto.groupePolitique.motifFin}}</span>
                 </td>
             </tr>
             </tbody>
@@ -54,14 +54,14 @@
     </div>
 
     <div>
-        <img ng-if="groupePolitique.image" class="profile-image" ng-src="images/{{groupePolitique.image}}"/>
+        <img ng-if="dto.groupePolitique.image" class="profile-image" ng-src="images/{{dto.groupePolitique.image}}"/>
         <button class="btn btn-sm btn-primary"
                 ui-sref="groupesPolitiques.detail.uploadImage">
             Ajouter une image
         </button>
     </div>
 
-    <div ng-if="groupePolitique.dateFin==undefined">
+    <div ng-if="dto.groupePolitique.dateFin==undefined">
         <button class="btn btn-sm btn-primary"
                 ui-sref="groupesPolitiques.detail.fin">
             Fixer une date et un motif de fin du groupe
