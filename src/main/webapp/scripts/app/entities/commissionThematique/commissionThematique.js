@@ -19,7 +19,7 @@ angular.module('babylone14166App')
                 resolve: {}
             })
             .state('commissionThematique.detail', {
-                parent: 'entity',
+                parent: 'commissionThematique',
                 url: '/commission-thematique/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
