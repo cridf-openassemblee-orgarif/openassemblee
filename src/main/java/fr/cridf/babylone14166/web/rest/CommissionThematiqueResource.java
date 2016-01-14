@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.cridf.babylone14166.domain.AppartenanceCommissionThematique;
 import fr.cridf.babylone14166.domain.CommissionThematique;
 import fr.cridf.babylone14166.repository.CommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
 import fr.cridf.babylone14166.service.CommissionThematiqueService;
 import fr.cridf.babylone14166.service.ExportService;
+import fr.cridf.babylone14166.service.dto.CommissionThematiqueDTO;
 import fr.cridf.babylone14166.service.dto.CommissionThematiqueListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
@@ -136,6 +138,35 @@ public class CommissionThematiqueResource {
                 commissionThematique,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /commissionThematiques/:id -> get the "id" commissionThematique.
+     */
+    @RequestMapping(value = "/commissionThematiques/{id}/export",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void getCommissionThematiqueExport(@PathVariable Long id,
+        HttpServletResponse response) {
+        try {
+            CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
+            List<List<String>> lines = new ArrayList<>();
+            CommissionThematique ct = dto.getCommissionThematique();
+            lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
+            lines.add(new ArrayList<>());
+            for (AppartenanceCommissionThematique act : dto.getAppartenanceCommissionThematiqueList()) {
+                lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
+            }
+            byte[] export = exportService.exportToExcel(lines);
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-disposition", "attachment; filename=commission-thematique-" + id + ".xlsx");
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
     }
 
     /**
