@@ -95,8 +95,20 @@ public class CommissionThematiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<CommissionThematiqueListDTO> getAllCommissionThematiques() {
+    public List<CommissionThematique> getAllCommissionThematiques() {
         log.debug("REST request to get all CommissionThematiques");
+        return commissionThematiqueRepository.findAll();
+    }
+
+    /**
+     * GET  /commissionThematiques -> get all the commissionThematiques.
+     */
+    @RequestMapping(value = "/commissionThematiques-dtos",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<CommissionThematiqueListDTO> getAllCommissionThematiquesDtos() {
+        log.debug("REST request to get all CommissionThematiques dtos");
         return commissionThematiqueService.getAll();
     }
 

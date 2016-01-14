@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('GroupesPolitiquesController', function ($scope, $state, $modal, GroupePolitique, GroupePolitiqueSearch) {
+    .controller('GroupesPolitiquesController', function ($scope, $state, $modal, $http,
+                                                         GroupePolitique, GroupePolitiqueSearch) {
 
         $scope.dtos = [];
         $scope.loadAll = function () {
-            GroupePolitique.query(function (result) {
-                $scope.dtos = result;
+            $http({
+                method: 'GET',
+                url: 'api/groupePolitiques-dtos'
+            }).then(function successCallback(result) {
+                $scope.dtos = result.data;
+            }, function errorCallback(response) {
             });
         };
         $scope.loadAll();

@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('CommissionThematiqueController', function ($scope, $state, $modal, CommissionThematique, CommissionThematiqueSearch) {
+    .controller('CommissionThematiqueController', function ($scope, $state, $modal, $http,
+                                                            CommissionThematique, CommissionThematiqueSearch) {
 
         $scope.commissionThematiques = [];
         $scope.loadAll = function() {
-            CommissionThematique.query(function(result) {
-                $scope.dtos = result;
+            $http({
+                method: 'GET',
+                url: 'api/commissionThematiques-dtos'
+            }).then(function successCallback(result) {
+                $scope.dtos = result.data;
+            }, function errorCallback(response) {
             });
         };
         $scope.loadAll();

@@ -124,8 +124,20 @@ public class GroupePolitiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GroupePolitiqueListDTO> getAllGroupePolitiques() {
+    public List<GroupePolitique> getAllGroupePolitiques() {
         log.debug("REST request to get all GroupePolitiques");
+        return groupePolitiqueRepository.findAll();
+    }
+
+    /**
+     * GET  /groupePolitiques -> get all the groupePolitiques.
+     */
+    @RequestMapping(value = "/groupePolitiques-dtos",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<GroupePolitiqueListDTO> getAllGroupePolitiquesDtos() {
+        log.debug("REST request to get all GroupePolitiques dtos");
         return groupePolitiqueService.getAll();
     }
 
