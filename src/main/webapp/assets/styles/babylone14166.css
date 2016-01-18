@@ -59,3 +59,20 @@ a:visited, a:hover, a:focus {
 h2 {
     font-size: 16px;
 }
+
+.datepicker button {
+    background-color: #fff;
+    border: 0;
+    color: #333;
+    padding: 11px 12px;
+    font-size: 14px;
+}
+
+.datepicker button.btn-primary {
+    background-color: #1b8dbb;
+    color: white;
+}
+
+.datepicker button.btn-today {
+    background-color: #ddd;
+}
