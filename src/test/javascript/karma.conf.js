@@ -31,6 +31,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/typeahead.js/dist/typeahead.bundle.js',
             'main/webapp/bower_components/angular-typeahead/angular-typeahead.js',
             'main/webapp/bower_components/moment/moment.js',
+            'main/webapp/bower_components/angular-strap/dist/angular-strap.js',
+            'main/webapp/bower_components/angular-strap/dist/angular-strap.tpl.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
