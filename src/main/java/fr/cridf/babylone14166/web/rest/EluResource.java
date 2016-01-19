@@ -61,10 +61,11 @@ public class EluResource {
         if (elu.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new elu cannot already have an ID").body(null);
         }
-        Elu result = eluService.save(elu);
-        return ResponseEntity.created(new URI("/api/elus/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("elu", result.getId().toString()))
-            .body(result);
+        eluRepository.save(elu);
+        eluSearchRepository.save(elu);
+        return ResponseEntity.created(new URI("/api/elus/" + elu.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("elu", elu.getId().toString()))
+            .body(elu);
     }
 
     /**

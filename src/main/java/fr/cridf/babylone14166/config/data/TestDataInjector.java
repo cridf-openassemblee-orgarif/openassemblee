@@ -7,9 +7,6 @@ import static fr.cridf.babylone14166.domain.enumeration.Civilite.MADAME;
 import static fr.cridf.babylone14166.domain.enumeration.Civilite.MONSIEUR;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -66,6 +63,7 @@ public class TestDataInjector {
             eluRepository.save(elus);
             List<AppartenanceGroupePolitique> agps = initAppartenanceGroupePolitiques(elus, gps);
             appartenanceGroupePolitiqueRepository.save(agps);
+            List<CommissionThematique> cts = initCommissionsThematiques();
             indexService.resetIndex();
         }
     }
@@ -113,29 +111,7 @@ public class TestDataInjector {
     }
 
     private GroupePolitique initGroupePolitique(String nomCourt, String nom, String image) {
-        GroupePolitique gp = new GroupePolitique();
-        gp.setNomCourt(nomCourt);
-        gp.setNom(nom);
-        gp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
-        if (image != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try {
-                Path filePath = Paths.get(getClass().getClassLoader().getResource("test-data-images/" + image).toURI());
-                String contentType = "image/jpeg";
-                Streams.copy(new FileInputStream(filePath.toFile()), baos);
-                Long imageId = imageRepository.saveImage(new Image(contentType, baos.toByteArray()));
-                gp.setImage(imageId);
-            } catch (URISyntaxException e) {
-                logger.error("Error in URI for file : '" + image + "'", e);
-            } catch (FileNotFoundException e) {
-                logger.error("File not found : '" + image + "'", e);
-            } catch (IOException e) {
-                logger.error("Error while copying file : " + image + "'", e);
-            } catch (SQLException e) {
-                logger.error("Error while saving image : " + image + "'", e);
-            }
-        }
-        return gp;
+        return null;
     }
 
     private List<Elu> initElus(List<GroupePolitique> gps) {
@@ -286,6 +262,22 @@ public class TestDataInjector {
             agp.setDateDebut(randomDate(gp.getDateDebut(), LocalDate.now()));
             return agp;
         }).collect(Collectors.toList());
+    }
+
+    private List<CommissionThematique> initCommissionsThematiques() {
+        List<CommissionThematique> cts = new ArrayList<>();
+        cts.add(initCommissionThematique("Commission du Règlement", "CR"));
+        cts.add(initCommissionThematique("Commission des Finances", "CF"));
+        cts.add(initCommissionThematique("Commission des Transports", "CT"));
+        return cts;
+    }
+
+    private CommissionThematique initCommissionThematique(String nom, String nomCourt) {
+        CommissionThematique ct = new CommissionThematique();
+        ct.setNom(nom);
+        ct.setNomCourt(nomCourt);
+        ct.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
+        return ct;
     }
 
     private LocalDate randomDate(LocalDate minDay, LocalDate maxDay) {

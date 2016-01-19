@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.hibernate.Hibernate;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -121,24 +119,4 @@ public class EluService {
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
-    public Elu save(Elu elu) {
-        save(elu.getNumerosTelephones(), numeroTelephoneRepository, numeroTelephoneSearchRepository);
-        save(elu.getAdressesPostales(), adressePostaleRepository, adressePostaleSearchRepository);
-        save(elu.getNumerosFax(), numeroFaxRepository, numeroFaxSearchRepository);
-        save(elu.getAdressesMail(), adresseMailRepository, adresseMailSearchRepository);
-        save(elu.getIdentitesInternet(), identiteInternetRepository, identiteInternetSearchRepository);
-        eluRepository.save(elu);
-        eluSearchRepository.save(elu);
-        return elu;
-    }
-
-    private <T> void save(List<T> entities, JpaRepository<T, Long> repository,
-        ElasticsearchRepository<T, Long> searchRepository) {
-        if (entities != null) {
-            repository.save(entities);
-            for (T t : entities) {
-                searchRepository.save(t);
-            }
-        }
-    }
 }
