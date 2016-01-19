@@ -33,14 +33,16 @@ angular.module('babylone14166App')
                         resolve: {
                             entity: function () {
                                 return {
-                                    civilite: null,
-                                    nom: null,
-                                    prenom: null,
-                                    nomJeuneFille: null,
-                                    profession: null,
-                                    dateNaissance: null,
-                                    lieuNaissance: null,
-                                    id: null
+                                    elu: {
+                                        civilite: null,
+                                        nom: null,
+                                        prenom: null,
+                                        nomJeuneFille: null,
+                                        profession: null,
+                                        dateNaissance: null,
+                                        lieuNaissance: null,
+                                        id: null
+                                    }
                                 };
                             }
                         }
@@ -70,6 +72,29 @@ angular.module('babylone14166App')
                         return Elu.get({id: $stateParams.id});
                     }]
                 }
+            })
+            .state('elu.edit', {
+                parent: 'elu.detail',
+                url: '/edit',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/elu/elu-dialog.html',
+                        controller: 'EluDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['Elu', function (Elu) {
+                                return Elu.get({id: $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
             })
             .state('elu.delete', {
                 parent: 'elu',

@@ -1,6 +1,4 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
@@ -9,45 +7,45 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_civilite">Civilite</label>
-            <select class="form-control" name="civilite" ng-model="elu.civilite" id="field_civilite">
-                <option value="Monsieur">Monsieur</option>
-                <option value="Madame">Madame</option>
+            <select class="form-control" name="civilite" ng-model="dto.elu.civilite" id="field_civilite">
+                <option value="MONSIEUR">Monsieur</option>
+                <option value="MADAME">Madame</option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_nom">Nom</label>
             <input type="text" class="form-control" name="nom" id="field_nom"
-                    ng-model="elu.nom"
+                   ng-model="dto.elu.nom"
                      />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_prenom">Prénom</label>
             <input type="text" class="form-control" name="prenom" id="field_prenom"
-                    ng-model="elu.prenom"
+                   ng-model="dto.elu.prenom"
                      />
         </div>
-        <div class="form-group" ng-if="elu.civilite != null && elu.civilite == 'Madame'">
+        <div class="form-group" ng-if="dto.elu.civilite != null && dto.elu.civilite == 'Madame'">
             <label class="control-label" for="field_nomJeuneFille">Nom de jeune fille</label>
             <input type="text" class="form-control" name="nomJeuneFille" id="field_nomJeuneFille"
-                    ng-model="elu.nomJeuneFille"
+                   ng-model="dto.elu.nomJeuneFille"
                      />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_profession">Profession</label>
             <input type="text" class="typeahead form-control" name="profession" id="field_profession"
                    options="typeaheadOptionsThreeChars" datasets="professionsAutocomplete"
-                   ng-model="elu.profession" sf-typeahead autocomplete="off"/>
+                   ng-model="dto.elu.profession" sf-typeahead autocomplete="off"/>
 
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateNaissance">Date de naissance</label>
             <input type="text" bs-datepicker class="form-control" name="dateNaissance"
-                   id="field_dateNaissance" ng-model="elu.dateNaissance">
+                   id="field_dateNaissance" ng-model="dto.elu.dateNaissance">
         </div>
         <div class="form-group">
             <label class="control-label" for="field_lieuNaissance">Lieu de naissance</label>
             <input type="text" class="form-control" name="lieuNaissance" id="field_lieuNaissance"
-                    ng-model="elu.lieuNaissance"
+                   ng-model="dto.elu.lieuNaissance"
                      />
         </div>
 
