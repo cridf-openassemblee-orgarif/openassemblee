@@ -1,62 +1,148 @@
 <div>
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            {{dto.elu.civilite}} {{dto.elu.nom}} {{dto.elu.prenom}}
-        </h1>
-    </section>
-
-    <!-- Main content -->
     <section class="content">
         <div class="container">
-
-            <h2>Identité</h2>
-
-            <elu/>
-
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <tbody>
-                    <tr ng-if="dto.elu.nomJeuneFille">
-                        <td>
-                            <span>Nom de jeune fille</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.elu.nomJeuneFille}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Profession</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.elu.profession}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Date de naissance</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.elu.dateNaissance | date:'mediumDate'}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Lieu de naissance</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.elu.lieuNaissance}}</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <!--<img ng-if="dto.elu.image" class="profile-image" ng-src="images/{{dto.elu.image}}"/>-->
-                <button class="btn btn-sm btn-primary"
-                        ui-sref="elus.detail.uploadImage">
-                    Ajouter une image
-                </button>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="info-box title-box">
+                    <div class="info-box-content-elu">
+                        <h1>
+                            {{dto.elu.civilite | civilite}} {{dto.elu.prenom}} {{dto.elu.nom}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-content-elu">
+                        <span class="info-box-info-elu">
+                            <div>
+                                <span class="lg">Née le</span> {{dto.elu.dateNaissance}}
+                                <span class="lg">à</span> {{dto.elu.lieuNaissance}}
+                            </div>
+                            <div ng-if="dto.elu.nomJeuneFille">
+                                <span class="lg">Nom de jeune fille</span> {{dto.elu.nomJeuneFille}}
+                            </div>
+                            <div>
+                                <span class="lg">Profession</span> {{dto.elu.profession}}
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Groupe politique</h3>
+                    </div>
+                    <div class="box-body" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                         ng-if="a.dateFin == null">
+                        {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">fct 1</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="info-box">
+                    <div class="info-box-photo-big">
+                        <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}" ui-sref="elus.detail.uploadImage"/>
+                        <button ng-if="dto.elu.image == null" class="btn btn-sm btn-primary"
+                                ui-sref="elus.detail.uploadImage">
+                            Ajouter une image
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Commission permanente</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+                             ng-if="a.dateFin == null">
+                            <div class="unit-bloc">
+                                <span class="grey">Membre de la commission depuis le</span> {{a.dateDebut}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Commissions thématiques</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                              ng-if="a.dateFin == null">
+                            <div class="unit-bloc">
+                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                                <br/>
+                                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">fct 1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu-sec box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Adresses</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                             ng-if="a.dateFin == null">
+                            <div>
+                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">fct 1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Vie politique passée</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        The body of the box
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
             <h2>Vie politique</h2>
 

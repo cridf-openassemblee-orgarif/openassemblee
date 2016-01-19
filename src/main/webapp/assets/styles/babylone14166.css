@@ -4,10 +4,17 @@ a:visited, a:hover, a:focus {
 
 .entity-component {
     cursor: pointer;
+    position: relative;
+    border-top: 2px;
 }
 
 .align-right {
     text-align: right;
+}
+
+.title-box {
+    background: #69acd3;
+    color: white;
 }
 
 .info-box-photo {
@@ -33,6 +40,30 @@ a:visited, a:hover, a:focus {
     max-height: 100%;
 }
 
+.info-box-photo-big {
+    text-align: center;
+}
+
+.info-box-photo-big img {
+    margin: 10px;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.info-box-photo-big button {
+    margin: 100px 0;
+}
+
+.info-box-content-elu {
+    padding: 20px;
+    margin-left: 20px;
+}
+
+.info-box-content-elu h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .info-box-titre {
     display: block;
     font-size: 18px;
@@ -48,8 +79,81 @@ a:visited, a:hover, a:focus {
     font-size: 12px;
 }
 
-.info-box-content .lg {
+/*TODO remove  ?*/
+.info-box-info-elu {
+    display: block;
+    font-size: 14px;
+    /*min-height: 156px;*/
+}
+
+.info-box-content-elu h2 {
+    margin: 0 0 16px 0;
+}
+
+.info-box-content .lg, .box-body .lg {
+    font-size: 12px;
+}
+
+.info-box-content .grey, .box-body .grey {
     color: #777;
+}
+
+.info-box-content-elu .lg {
+    color: #777;
+}
+
+.unit-bloc {
+    margin: 12px;
+}
+
+.elu-action {
+    position: absolute;
+    font-size: 10px;
+    top: 2px;
+    right: 2px;
+}
+
+.elu-action button {
+    padding: 4px;
+    line-height: 10px;
+}
+
+.box.box-elu {
+    border-top-color: #69acd3;
+}
+
+.box.box-solid.box-elu {
+    border: 1px solid #69acd3;
+}
+
+.box.box-solid.box-elu > .box-header {
+    color: #ffffff;
+    background: #69acd3;
+    background-color: #69acd3;
+}
+
+.box.box-solid.box-elu > .box-header a,
+.box.box-solid.box-elu > .box-header .btn {
+    color: #ffffff;
+}
+
+.box.box-elu-sec {
+    border-top-color: #99a7af;
+}
+
+.box.box-solid.box-elu-sec {
+    border: 1px solid #99a7af;
+}
+
+.box.box-solid.box-elu-sec > .box-header {
+    color: #ffffff;
+    background: #99a7af;
+    background-color: #99a7af;
+}
+
+.box.box-solid.box-elu-sec > .box-header a,
+.box.box-solid.box-elu-sec > .box-header .btn {
+    color: #ffffff;
 }
 
 .bg-white {
