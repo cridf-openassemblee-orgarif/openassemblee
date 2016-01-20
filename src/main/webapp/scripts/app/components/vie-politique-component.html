@@ -9,14 +9,14 @@
     <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant : {{a.motifFin}}</div>
     <div ng-if="a.dateFin==undefined">
         <button class="btn btn-sm btn-primary"
-                ui-sref="elus.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
+                ui-sref="elu.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
             Fixer une date et un motif de départ
         </button>
     </div>
 </div>
 <div ng-if="!eluEnCommissionPermanente">
     <button class="btn btn-sm btn-primary"
-            ui-sref="elus.detail.ajouterCommissionPermanente">
+            ui-sref="elu.detail.ajouterCommissionPermanente">
         Ajouter à la commission permanente
     </button>
 </div>

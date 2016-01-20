@@ -63,7 +63,7 @@ angular.module('babylone14166App')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/elus/elu-detail.html',
+                        templateUrl: 'scripts/app/entities/elu/elu-detail.html',
                         controller: 'EluDetailController'
                     }
                 },
@@ -325,8 +325,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.ajouterOrganisme', {
-                parent: 'elus.detail',
+            .state('elu.detail.ajouterOrganisme', {
+                parent: 'elu.detail',
                 url: '/ajouter-organisme',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -348,8 +348,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.finAppartenanceOrganisme', {
-                parent: 'elus.detail',
+            .state('elu.detail.finAppartenanceOrganisme', {
+                parent: 'elu.detail',
                 url: '/fin-appartenance-organisme/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -371,8 +371,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.nouvelleFonctionGroupePolitique', {
-                parent: 'elus.detail',
+            .state('elu.detail.nouvelleFonctionGroupePolitique', {
+                parent: 'elu.detail',
                 url: '/nouvelle-fonction-groupe-politique',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -400,8 +400,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.finFonctionGroupePolitique', {
-                parent: 'elus.detail',
+            .state('elu.detail.finFonctionGroupePolitique', {
+                parent: 'elu.detail',
                 url: '/fin-fonction-groupe-politique/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -423,8 +423,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.ajouterCommissionThematique', {
-                parent: 'elus.detail',
+            .state('elu.detail.ajouterCommissionThematique', {
+                parent: 'elu.detail',
                 url: '/ajouter-commission-thematique',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -446,8 +446,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.finAppartenanceCommissionThematique', {
-                parent: 'elus.detail',
+            .state('elu.detail.finAppartenanceCommissionThematique', {
+                parent: 'elu.detail',
                 url: '/fin-appartenance-commission-thematique/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -469,8 +469,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.nouvelleFonctionCommissionThematique', {
-                parent: 'elus.detail',
+            .state('elu.detail.nouvelleFonctionCommissionThematique', {
+                parent: 'elu.detail',
                 url: '/nouvelle-fonction-commission-thematique',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -492,8 +492,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.finFonctionCommissionThematique', {
-                parent: 'elus.detail',
+            .state('elu.detail.finFonctionCommissionThematique', {
+                parent: 'elu.detail',
                 url: '/fin-fonction-commission-thematique/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -515,8 +515,8 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elus.detail.uploadImage', {
-                parent: 'elus.detail',
+            .state('elu.detail.uploadImage', {
+                parent: 'elu.detail',
                 url: '/upload-image',
                 data: {
                     authorities: ['ROLE_USER'],

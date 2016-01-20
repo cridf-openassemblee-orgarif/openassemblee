@@ -15,6 +15,7 @@ a:visited, a:hover, a:focus {
 .title-box {
     background: #69acd3;
     color: white;
+    word-break: break-all;
 }
 
 .info-box-photo {

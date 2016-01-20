@@ -1,78 +1,416 @@
-
 <div>
-    <h2><span>Elu</span> {{elu.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Civilite</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'babylone14166App.Civilite.' + elu.civilite}}">{{elu.civilite}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Nom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.nom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Prenom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.prenom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>NomJeuneFille</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.nomJeuneFille}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Profession</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.profession}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateNaissance</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.dateNaissance | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>LieuNaissance</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{elu.lieuNaissance}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <section class="content">
+        <div class="container">
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="info-box title-box">
+                    <div class="info-box-content-elu">
+                        <h1>
+                            {{dto.elu.civilite | civilite}} {{dto.elu.prenom}} {{dto.elu.nom}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-content-elu">
+                        <span class="info-box-info-elu">
+                            <div>
+                                <span class="lg">Née le</span> {{dto.elu.dateNaissance}}
+                                <span class="lg">à</span> {{dto.elu.lieuNaissance}}
+                            </div>
+                            <div ng-if="dto.elu.nomJeuneFille">
+                                <span class="lg">Nom de jeune fille</span> {{dto.elu.nomJeuneFille}}
+                            </div>
+                            <div>
+                                <span class="lg">Profession</span> {{dto.elu.profession}}
+                            </div>
+                        </span>
+                        <div class="btn-group elu-action">
+                            <button type="button" class="btn btn-default" ui-sref="elu.edit({id:dto.elu.id})">
+                                <span class="fa fa-pencil"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Groupe politique</h3>
+                    </div>
+                    <div class="box-body" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                         ng-if="a.dateFin == null">
+                        {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                    </div>
+                </div>
+            </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="info-box">
+                    <div class="info-box-photo-big">
+                        <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}" ui-sref="elu.detail.uploadImage"/>
+                        <button ng-if="dto.elu.image == null" class="btn btn-sm btn-primary"
+                                ui-sref="elu.detail.uploadImage">
+                            Ajouter une image
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Commission permanente</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+                             ng-if="a.dateFin == null">
+                            <div class="unit-bloc">
+                                <span class="grey">Membre de la commission depuis le</span> {{a.dateDebut}}
+                            </div>
+                        </div>
+                        <div class="unit-bloc" ng-if="!eluEnCommissionPermanente">
+                            Non membre de la commission
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Commissions thématiques</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                             ng-if="a.dateFin == null">
+                            <div class="unit-bloc">
+                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                                <br/>
+                                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                            </div>
+                        </div>
+                        <div class="unit-bloc" ng-if="!eluACommissionThematique">
+                            Aucune commission thématique
+                        </div>
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                                ng-if="a.dateFin == null">
+                                <a href="#">Fixer une date et un motif de départ du groupe
+                                    {{dto.commissionsThematiques[a.commissionThematique.id].nomCourt}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box box-elu-sec box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Adresses</h3>
+                    </div>
+                    <div class="box-body">
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                             ng-if="a.dateFin == null">
+                            <div>
+                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">fct 1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Vie politique passée</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        The body of the box
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h2>Vie politique</h2>
+
+        <vie-politique></vie-politique>
+
+        <h2>Groupe politique</h2>
+
+        <groupe-politique></groupe-politique>
+
+        <h2>Commissions thématiques</h2>
+
+        <commissions-thematiques></commissions-thematiques>
+
+        <h2>Organismes</h2>
+
+        <organismes></organismes>
+
+        <h2>Adresses postales</h2>
+
+        <div class="table-responsive" ng-repeat="adressePostale in dto.elu.adressesPostales track by $index">
+            <h3>Adresse postale n°{{$index + 1}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>NatureProPerso</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + adressePostale.natureProPerso}}">{{adressePostale.natureProPerso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Rue</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adressePostale.rue}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>CodePostal</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adressePostale.codePostal}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Ville</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adressePostale.ville}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>NiveauConfidentialite</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + adressePostale.niveauConfidentialite}}">{{adressePostale.niveauConfidentialite}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>AdresseDeCorrespondance</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adressePostale.adresseDeCorrespondance}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>PublicationAnnuaire</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adressePostale.publicationAnnuaire}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Numéros de téléphone</h2>
+
+        <div class="table-responsive" ng-repeat="numeroTelephone in dto.elu.numerosTelephones track by $index">
+            <h3>Numéro de téléphone n°{{$index + 1}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>NatureProPerso</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + numeroTelephone.natureProPerso}}">{{numeroTelephone.natureProPerso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>NatureFixeMobile</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureFixeMobile.' + numeroTelephone.natureFixeMobile}}">{{numeroTelephone.natureFixeMobile}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Numero</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{numeroTelephone.numero}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>NiveauConfidentialite</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + numeroTelephone.niveauConfidentialite}}">{{numeroTelephone.niveauConfidentialite}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>PublicationAnnuaire</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{numeroTelephone.publicationAnnuaire}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Numéros de fax</h2>
+
+        <div class="table-responsive" ng-repeat="numeroFax in dto.elu.numerosFax track by $index">
+            <h3>Numéro de fax n°{{$index + 1}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>NatureProPerso</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + numeroFax.natureProPerso}}">{{numeroFax.natureProPerso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Numero</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{numeroFax.numero}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>NiveauConfidentialite</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + numeroFax.niveauConfidentialite}}">{{numeroFax.niveauConfidentialite}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>PublicationAnnuaire</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{numeroFax.publicationAnnuaire}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Adresses mail</h2>
+
+        <div class="table-responsive" ng-repeat="adresseMail in dto.elu.adressesMail track by $index">
+            <h3>Adresse mail n°{{$index + 1}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>NatureProPerso</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NatureProPerso.' + adresseMail.natureProPerso}}">{{adresseMail.natureProPerso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Mail</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adresseMail.mail}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>NiveauConfidentialite</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.NiveauConfidentialite.' + adresseMail.niveauConfidentialite}}">{{adresseMail.niveauConfidentialite}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>AdresseDeCorrespondance</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adresseMail.adresseDeCorrespondance}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>PublicationAnnuaire</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{adresseMail.publicationAnnuaire}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Identités sur Internet</h2>
+
+        <div class="table-responsive" ng-repeat="identiteInternet in dto.elu.identitesInternet track by $index">
+            <h3>Identité sur Internet n°{{$index + 1}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>TypeIdentiteInternet</span>
+                    </td>
+                    <td>
+                    <span class="form-control-static"
+                          translate="{{'babylone14166App.TypeIdentiteInternet.' + identiteInternet.typeIdentiteInternet}}">{{identiteInternet.typeIdentiteInternet}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Url</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static">{{identiteInternet.url}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+</section>
+
+<!-- /.content -->
 </div>

@@ -1,5 +1,5 @@
-<h3 ng-if="elu.appartenancesGroupePolitique.length">Groupe politique</h3>
-<div ng-repeat="a in elu.appartenancesGroupePolitique" class="well">
+<h3 ng-if="dto.elu.appartenancesGroupePolitique.length">Groupe politique</h3>
+<div ng-repeat="a in dto.elu.appartenancesGroupePolitique" class="well">
     Appartient au groupe {{groupesPolitiques[a.groupePolitique.id].nom}} depuis le {{a.dateDebut}}
     <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant : {{a.motifFin}}</div>
     <div ng-if="a.dateFin==undefined">
@@ -15,8 +15,8 @@
         Ajouter à un groupe politique
     </button>
 </div>
-<h3 ng-if="elu.fonctionsGroupePolitique.length">Fonction dans un groupe politique</h3>
-<div ng-repeat="f in elu.fonctionsGroupePolitique" class="well">
+<h3 ng-if="dto.elu.fonctionsGroupePolitique.length">Fonction dans un groupe politique</h3>
+<div ng-repeat="f in dto.elu.fonctionsGroupePolitique" class="well">
     A la fonction {{f.fonction}} au sein du groupe {{groupesPolitiques[f.groupePolitique.id].nom}}
     depuis le {{f.dateDebut}}
     <div ng-if="f.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant : {{f.motifFin}}</div>
