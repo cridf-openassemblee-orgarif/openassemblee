@@ -93,20 +93,27 @@ public class EluService {
         Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
         groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
+            // anti-NPE mais ne devrait pas arriver
+            .filter(o -> o != null)
             .distinct()
             .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         groupesPolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
+            // anti-NPE mais ne devrait pas arriver
             .filter(o -> o != null)
             .distinct()
             .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
         commissionsThematiques.putAll(elu.getAppartenancesCommissionsThematiques().stream()
             .map(a -> a.getCommissionThematique())
+            // anti-NPE mais ne devrait pas arriver
+            .filter(o -> o != null)
             .distinct()
             .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
         commissionsThematiques.putAll(elu.getFonctionsCommissionsThematiques().stream()
             .map(a -> a.getCommissionThematique())
+            // anti-NPE mais ne devrait pas arriver
+            .filter(o -> o != null)
             .distinct()
             .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
         Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
