@@ -145,7 +145,31 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
         return function (value) {
             if (value == 'MADAME') {
                 return 'Mme.';
+            } else if (value == 'MONSIEUR') {
+                return 'M.';
             }
-            return 'M.';
+            return 'Inconnu';
+        };
+    }])
+    .filter('properso', [function () {
+        return function (value) {
+            if (value == 'PRO') {
+                return 'Professionnelle';
+            } else if (value == "PERSO") {
+                return 'Personnelle';
+            }
+            return 'Inconnu';
+        };
+    }])
+    .filter('confidentialite', [function () {
+        return function (value) {
+            if (value == 'PUBLIABLE') {
+                return 'Publiable';
+            } else if (value == 'CONFIDENTIEL') {
+                return 'Confidentiel';
+            } else if (value == 'INTERNE') {
+                return 'Interne';
+            }
+            return 'Inconnu';
         };
     }]);
