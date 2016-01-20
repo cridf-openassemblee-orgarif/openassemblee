@@ -37,7 +37,7 @@
                     <div class="box-body">
                         <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
                              ng-if="a.dateFin == null"
-                             ui-sref="elu.detail.finAppartenanceGroupePolitique({fonctionId: a.id})">
+                             ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
                             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
                             <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
                             <i class="fa fa-pencil"></i>
