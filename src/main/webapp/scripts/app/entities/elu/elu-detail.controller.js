@@ -3,12 +3,6 @@
 angular.module('babylone14166App')
     .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity) {
         $scope.dto = entity;
-        $scope.eluEnCommissionPermanente = false;
-        $scope.eluEnCommissionPermanenteOuFonction = false;
-        $scope.eluAGroupePolitique = false;
-        $scope.eluAGroupePolitiqueOuFonction = false;
-        $scope.groupePolitiqueId;
-        $scope.eluACommissionThematique = false;
         $scope.$watch('dto', function () {
             if ($scope.dto.$promise) {
                 $scope.dto.$promise.then(function () {

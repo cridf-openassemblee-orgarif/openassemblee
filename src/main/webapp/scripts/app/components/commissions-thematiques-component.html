@@ -1,0 +1,50 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="box box-elu box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-quote-left"></i> Commissions thématiques</h3>
+        </div>
+        <div class="box-body">
+            <div class="unit-bloc action-bloc"
+                 ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                 ng-if="a.dateFin == null"
+                 ui-sref="elu.detail.finAppartenanceCommissionThematique({appartenanceId: a.id})">
+                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                <i class="fa fa-pencil"></i>
+                <br/>
+                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+            </div>
+            <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
+                 ng-if="f.dateFin == null"
+                 ui-sref="elu.detail.finFonctionCommissionThematique({fonctionId: f.id})">
+                <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
+                {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
+                <i class="fa fa-pencil"></i>
+                <br/>
+                <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+            </div>
+            <div class="unit-bloc" ng-if="!eluACommissionThematiqueOuFonction">
+                Aucune commission thématique
+            </div>
+        </div>
+        <div class="btn-group elu-action">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-expanded="false">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <a href="#"
+                       ui-sref="elu.detail.ajouterCommissionThematique">
+                        Ajouter à une commission thématique
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                       ui-sref="elu.detail.nouvelleFonctionCommissionThematique">
+                        Ajouter une fonction à une commission thématique
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

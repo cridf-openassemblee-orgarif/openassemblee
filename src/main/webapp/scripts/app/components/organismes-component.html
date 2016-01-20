@@ -1,0 +1,34 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="box box-elu box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-book"></i> Organismes</h3>
+        </div>
+        <div class="box-body">
+            <div class="unit-bloc action-bloc"
+                 ng-repeat="a in dto.elu.appartenancesOrganismes"
+                 ng-if="a.dateFin == null"
+                 ui-sref="elu.detail.finAppartenanceOrganisme({appartenanceId: a.id})">
+                {{dto.organismes[a.codeRNE].nom}}
+                <span ng-if="!dto.organismes[a.organisme.id]">Organisme inconnu</span>
+                <i class="fa fa-pencil"></i>
+                <br/>
+                <span class="lg"><span class="grey">Statut :</span> {{a.statut}}</span>
+                <br/>
+                <span class="lg"><span class="grey">Code RNE :</span> {{a.codeRNE}}</span>
+                <br/>
+                <span class="lg">
+                    <span class="grey">Depuis le</span> {{a.dateDebut}}<span class="grey">,
+                    nomination le</span> {{a.dateNomination}}
+                </span>
+            </div>
+            <div class="unit-bloc" ng-if="!eluAOrganismes">
+                Aucun organisme
+            </div>
+        </div>
+        <div class="btn-group elu-action">
+            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterOrganisme">
+                <span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+</div>
