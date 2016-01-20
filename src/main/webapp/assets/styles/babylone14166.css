@@ -142,6 +142,13 @@ a:visited, a:hover, a:focus {
     line-height: 10px;
 }
 
+.elu-action .fa-plus {
+    font-size: 10px;
+    line-height: 8px;
+    position: relative;
+    top: -1px;
+}
+
 .box.box-elu {
     border-top-color: #69acd3;
 }

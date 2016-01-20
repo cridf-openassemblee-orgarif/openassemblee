@@ -24,7 +24,7 @@ angular.module('babylone14166App')
                 'fonctionsCommissionPermanente');
             $scope.eluAGroupePolitique = check('appartenancesGroupePolitique');
             $scope.eluAGroupePolitiqueOuFonction = check('appartenancesGroupePolitique', 'fonctionsGroupePolitique');
-            $scope.eluACommissionThematique = check('appartenancesCommissionsThematiques',
+            $scope.eluACommissionThematiqueOuFonction = check('appartenancesCommissionsThematiques',
                 'fonctionsCommissionsThematiques');
             $scope.eluAOrganismes = check('appartenancesOrganismes');
             angular.forEach($scope.dto.elu.appartenancesGroupePolitique, function (a) {
