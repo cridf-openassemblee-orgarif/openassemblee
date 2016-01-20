@@ -32,13 +32,27 @@
                 </div>
                 <div class="box box-elu box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Groupe politique</h3>
+                        <h3 class="box-title"><i class="fa fa-bookmark"></i> Groupe politique</h3>
                     </div>
-                    <div class="box-body unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
-                         ng-if="a.dateFin == null"
-                         ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
-                        {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
-                        <i class="fa fa-pencil"></i>
+                    <div class="box-body">
+                        <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                             ng-if="a.dateFin == null"
+                             ui-sref="elu.detail.finAppartenanceGroupePolitique({fonctionId: a.id})">
+                            {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                            <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
+                            <i class="fa fa-pencil"></i>
+                            <br/>
+                            <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                        </div>
+                        <div class="unit-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+                             ng-if="f.dateFin == null"
+                             ui-sref="elu.detail.finFonctionGroupePolitique({fonctionId: f.id})">
+                            <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
+                            {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
+                            <i class="fa fa-pencil"></i>
+                            <br/>
+                            <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+                        </div>
                     </div>
                     <div class="unit-bloc" ng-if="!eluAGroupePolitique">
                         Aucun groupe politique
@@ -80,7 +94,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="box box-elu box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Commission permanente</h3>
+                        <h3 class="box-title"><i class="fa fa-users"></i> Commission permanente</h3>
                     </div>
                     <div class="box-body">
                         <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
@@ -99,16 +113,14 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="box box-elu box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Commissions thématiques</h3>
+                        <h3 class="box-title"><i class="fa fa-quote-left"></i> Commissions thématiques</h3>
                     </div>
                     <div class="box-body">
-                        <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                        <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
                              ng-if="a.dateFin == null">
-                            <div class="unit-bloc">
-                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
-                                <br/>
-                                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
-                            </div>
+                            {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                            <br/>
+                            <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
                         </div>
                         <div class="unit-bloc" ng-if="!eluACommissionThematique">
                             Aucune commission thématique

@@ -76,6 +76,10 @@ a:visited, a:hover, a:focus {
     padding-top: 12px;
 }
 
+.box-title i {
+    padding: 0 10px 0 4px;
+}
+
 .info-box-info {
     display: block;
     font-size: 12px;

@@ -97,6 +97,7 @@ public class EluService {
             .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         groupesPolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
+            .filter(o -> o != null)
             .distinct()
             .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
         Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
@@ -111,9 +112,8 @@ public class EluService {
         Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
             .map(a -> a.getCodeRNE())
             .distinct()
-            .map(rne -> {
-                return new Object[] { rne, organismeRepository.findOneByCodeRNE(rne) };
-            })
+            // anti-NPE
+            .map(rne -> new Object[] { rne, organismeRepository.findOneByCodeRNE(rne) })
             .filter(o -> o[1] != null)
             .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
