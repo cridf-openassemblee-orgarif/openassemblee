@@ -4,7 +4,9 @@ angular.module('babylone14166App')
     .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity) {
         $scope.dto = entity;
         $scope.eluEnCommissionPermanente = false;
+        $scope.eluEnCommissionPermanenteOuFonction = false;
         $scope.eluAGroupePolitique = false;
+        $scope.eluAGroupePolitiqueOuFonction = false;
         $scope.groupePolitiqueId;
         $scope.eluACommissionThematique = false;
         $scope.$watch('dto', function () {
@@ -17,18 +19,20 @@ angular.module('babylone14166App')
             }
         });
         var updateScope = function () {
-            $scope.eluEnCommissionPermanente = check('appartenancesCommissionPermanente', 'fonctionsExecutives',
+            $scope.eluEnCommissionPermanente = check('appartenancesCommissionPermanente');
+            $scope.eluEnCommissionPermanenteOuFonction = check('appartenancesCommissionPermanente', 'fonctionsExecutives',
                 'fonctionsCommissionPermanente');
-            $scope.eluAGroupePolitique = check('appartenancesGroupePolitique', 'fonctionsGroupePolitique');
+            $scope.eluAGroupePolitique = check('appartenancesGroupePolitique');
+            $scope.eluAGroupePolitiqueOuFonction = check('appartenancesGroupePolitique', 'fonctionsGroupePolitique');
+            $scope.eluACommissionThematique = check('appartenancesCommissionsThematiques',
+                'fonctionsCommissionsThematiques');
+            $scope.eluAOrganismes = check('appartenancesOrganismes');
             angular.forEach($scope.dto.elu.appartenancesGroupePolitique, function (a) {
                 if (a.dateFin == null) {
                     $scope.groupePolitiqueId = a.groupePolitique.id;
                     return;
                 }
             });
-            $scope.eluACommissionThematique = check('appartenancesCommissionsThematiques',
-                'fonctionsCommissionsThematiques');
-            $scope.eluAOrganismes = check('appartenancesOrganismes');
         }
         var check = function () {
             var result = false;

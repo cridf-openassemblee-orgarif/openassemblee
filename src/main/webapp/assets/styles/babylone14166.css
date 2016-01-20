@@ -96,6 +96,10 @@ a:visited, a:hover, a:focus {
     margin: 0 0 16px 0;
 }
 
+.box-body h2 {
+    margin: 8px 0 8px 16px;
+}
+
 .info-box-content .lg, .box-body .lg {
     font-size: 12px;
 }
@@ -110,16 +114,19 @@ a:visited, a:hover, a:focus {
 
 .unit-bloc {
     margin: 12px;
+}
+
+.action-bloc {
     cursor: pointer;
 }
 
-.unit-bloc i {
+.action-bloc i {
     display: none;
     color: #777;
     padding-left: 10px;
 }
 
-.unit-bloc:hover i {
+.action-bloc:hover i {
     display: inline;
 }
 

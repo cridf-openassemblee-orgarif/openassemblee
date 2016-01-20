@@ -1,6 +1,71 @@
 <div>
     <section class="content">
         <div class="container">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-default box-solid ">
+                    <!--collapsed-box-->
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Vie politique passée</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <!--style="display: none;"-->
+                        <h2>Groupes politiques</h2>
+                        <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                             ng-if="a.dateFin != null">
+                            {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                            <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
+                            <br/>
+                            <span class="lg"><span class="grey">Du</span> {{a.dateDebut}}
+                            <span class="grey">au</span> {{a.dateFin}}<span class="grey">, motif de fin :</span>
+                                {{a.motifFin}}</span>
+                        </div>
+                        <div class="unit-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+                             ng-if="f.dateFin != null">
+                            <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
+                            {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
+                            <span class="lg"><span class="grey">Du</span> {{f.dateDebut}}</span>
+                            <span class="grey">au</span> {{a.dateFin}}<span class="grey">, motif de fin :</span>
+                            {{a.motifFin}}</span>
+                        </div>
+                        <h2>Commission permanente</h2>
+                        <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+                             ng-if="a.dateFin != null">
+                            <div class="unit-bloc">
+                                <span class="grey">Membre de la commission du</span> {{a.dateDebut}}
+                                <span class="grey">au</span> {{a.dateFin}}<span class="grey">, motif de fin :</span>
+                                {{a.motifFin}}</span>
+                            </div>
+                        </div>
+                        <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+                             ng-if="f.dateFin != null">
+                            <div class="unit-bloc">
+                                <span class="grey">Fonction :</span> {{f.fonction}}
+                                <span class="grey">du</span> {{f.dateDebut}}
+                                <span class="grey">au</span> {{f.dateFin}}<span class="grey">, motif de fin :</span>
+                                {{f.motifFin}}</span>
+                            </div>
+                        </div>
+                        <div ng-repeat="f in dto.elu.fonctionsExecutives"
+                             ng-if="f.dateFin != null">
+                            <div class="unit-bloc">
+                                <span class="grey">Fonction exécutive :</span> {{f.fonction}}
+                                <span class="grey">du</span> {{f.dateDebut}}
+                                <span class="grey">au</span> {{f.dateFin}}<span class="grey">, motif de fin :</span>
+                                {{f.motifFin}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="info-box title-box">
                     <div class="info-box-content-elu">
@@ -35,7 +100,7 @@
                         <h3 class="box-title"><i class="fa fa-bookmark"></i> Groupe politique</h3>
                     </div>
                     <div class="box-body">
-                        <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                        <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
                              ng-if="a.dateFin == null"
                              ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
                             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
@@ -44,7 +109,7 @@
                             <br/>
                             <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
                         </div>
-                        <div class="unit-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+                        <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
                              ng-if="f.dateFin == null"
                              ui-sref="elu.detail.finFonctionGroupePolitique({fonctionId: f.id})">
                             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
@@ -53,9 +118,9 @@
                             <br/>
                             <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
                         </div>
-                    </div>
-                    <div class="unit-bloc" ng-if="!eluAGroupePolitique">
-                        Aucun groupe politique
+                        <div class="unit-bloc" ng-if="!eluAGroupePolitiqueOuFonction">
+                            Aucun groupe politique
+                        </div>
                     </div>
                     <div class="btn-group elu-action">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -91,6 +156,7 @@
                 </div>
             </div>
 
+            <div class="col-md-12 row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="box box-elu box-solid">
                     <div class="box-header with-border">
@@ -99,16 +165,61 @@
                     <div class="box-body">
                         <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
                              ng-if="a.dateFin == null">
-                            <div class="unit-bloc">
-                                <span class="grey">Membre de la commission depuis le</span> {{a.dateDebut}}
+                            <div class="unit-bloc action-bloc"
+                                 ui-sref="elu.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
+                                <span class="grey">Membre depuis le</span> {{a.dateDebut}}
+                                <i class="fa fa-pencil"></i>
                             </div>
                         </div>
-                        <div class="unit-bloc" ng-if="!eluEnCommissionPermanente">
+                        <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+                             ng-if="f.dateFin == null">
+                            <div class="unit-bloc action-bloc"
+                                 ui-sref="elu.detail.finFonctionCommissionPermanente({fonctionId: f.id})">
+                                <span class="grey">Fonction :</span> {{f.fonction}}
+                                <span class="grey">depuis le</span> {{f.dateDebut}}
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                        <div ng-repeat="f in dto.elu.fonctionsExecutives"
+                             ng-if="f.dateFin == null">
+                            <div class="unit-bloc action-bloc"
+                                 ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
+                                <span class="grey">Fonction exécutive :</span> {{f.fonction}}
+                                <span class="grey">depuis le</span> {{f.dateDebut}}
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                        <div class="unit-bloc" ng-if="!eluEnCommissionPermanenteOuFonction">
                             Non membre de la commission
                         </div>
                     </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li ng-if="!eluAGroupePolitique">
+                                <a href="#" ui-sref="elu.detail.ajouterCommissionPermanente">
+                                    Ajouter à la commission permanente
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                   ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
+                                    Ajouter une fonction à la commission permanente
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                   ui-sref="elu.detail.nouvelleFonctionExecutive">
+                                    Ajouter une fonction exécutive
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+                </div>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="box box-elu box-solid">
@@ -140,6 +251,7 @@
                         </ul>
                     </div>
                 </div>
+                </div>
             </div>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -163,23 +275,6 @@
                         <ul class="dropdown-menu pull-right">
                             <li><a href="#">fct 1</a></li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="box box-default box-solid collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Vie politique passée</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body" style="display: none;">
-                        The body of the box
                     </div>
                 </div>
             </div>
