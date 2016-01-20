@@ -92,118 +92,119 @@
             </div>
 
             <div class="col-md-12 row">
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="box box-elu box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-users"></i> Commission permanente</h3>
-                    </div>
-                    <div class="box-body">
-                        <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
-                             ng-if="a.dateFin == null">
-                            <div class="unit-bloc action-bloc"
-                                 ui-sref="elu.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
-                                <span class="grey">Membre depuis le</span> {{a.dateDebut}}
-                                <i class="fa fa-pencil"></i>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="box box-elu box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> Commission permanente</h3>
+                        </div>
+                        <div class="box-body">
+                            <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+                                 ng-if="a.dateFin == null">
+                                <div class="unit-bloc action-bloc"
+                                     ui-sref="elu.detail.finAppartenanceCommissionPermanente({appartenanceId: a.id})">
+                                    <span class="grey">Membre depuis le</span> {{a.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
+                            <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+                                 ng-if="f.dateFin == null">
+                                <div class="unit-bloc action-bloc"
+                                     ui-sref="elu.detail.finFonctionCommissionPermanente({fonctionId: f.id})">
+                                    <span class="grey">Fonction :</span> {{f.fonction}}
+                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
+                            <div ng-repeat="f in dto.elu.fonctionsExecutives"
+                                 ng-if="f.dateFin == null">
+                                <div class="unit-bloc action-bloc"
+                                     ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
+                                    <span class="grey">Fonction exécutive :</span> {{f.fonction}}
+                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
+                            <div class="unit-bloc" ng-if="!eluEnCommissionPermanenteOuFonction">
+                                Non membre de la commission
                             </div>
                         </div>
-                        <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
-                             ng-if="f.dateFin == null">
-                            <div class="unit-bloc action-bloc"
-                                 ui-sref="elu.detail.finFonctionCommissionPermanente({fonctionId: f.id})">
-                                <span class="grey">Fonction :</span> {{f.fonction}}
-                                <span class="grey">depuis le</span> {{f.dateDebut}}
-                                <i class="fa fa-pencil"></i>
-                            </div>
-                        </div>
-                        <div ng-repeat="f in dto.elu.fonctionsExecutives"
-                             ng-if="f.dateFin == null">
-                            <div class="unit-bloc action-bloc"
-                                 ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
-                                <span class="grey">Fonction exécutive :</span> {{f.fonction}}
-                                <span class="grey">depuis le</span> {{f.dateDebut}}
-                                <i class="fa fa-pencil"></i>
-                            </div>
-                        </div>
-                        <div class="unit-bloc" ng-if="!eluEnCommissionPermanenteOuFonction">
-                            Non membre de la commission
+                        <div class="btn-group elu-action">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li ng-if="!eluAGroupePolitique">
+                                    <a href="#" ui-sref="elu.detail.ajouterCommissionPermanente">
+                                        Ajouter à la commission permanente
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
+                                        Ajouter une fonction à la commission permanente
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.nouvelleFonctionExecutive">
+                                        Ajouter une fonction exécutive
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="btn-group elu-action">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li ng-if="!eluAGroupePolitique">
-                                <a href="#" ui-sref="elu.detail.ajouterCommissionPermanente">
-                                    Ajouter à la commission permanente
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
-                                    Ajouter une fonction à la commission permanente
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   ui-sref="elu.detail.nouvelleFonctionExecutive">
-                                    Ajouter une fonction exécutive
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 </div>
 
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="box box-elu box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-quote-left"></i> Commissions thématiques</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
-                             ng-if="a.dateFin == null"
-                             ui-sref="elu.detail.finAppartenanceCommissionThematique({appartenanceId: a.id})">
-                            {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
-                            <i class="fa fa-pencil"></i>
-                            <br/>
-                            <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="box box-elu box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-quote-left"></i> Commissions thématiques</h3>
                         </div>
-                        <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
-                             ng-if="f.dateFin == null"
-                             ui-sref="elu.detail.finFonctionCommissionThematique({fonctionId: f.id})">
-                            <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
-                            {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
-                            <i class="fa fa-pencil"></i>
-                            <br/>
-                            <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+                        <div class="box-body">
+                            <div class="unit-bloc action-bloc"
+                                 ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+                                 ng-if="a.dateFin == null"
+                                 ui-sref="elu.detail.finAppartenanceCommissionThematique({appartenanceId: a.id})">
+                                {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
+                                <i class="fa fa-pencil"></i>
+                                <br/>
+                                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                            </div>
+                            <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
+                                 ng-if="f.dateFin == null"
+                                 ui-sref="elu.detail.finFonctionCommissionThematique({fonctionId: f.id})">
+                                <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
+                                {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
+                                <i class="fa fa-pencil"></i>
+                                <br/>
+                                <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+                            </div>
+                            <div class="unit-bloc" ng-if="!eluACommissionThematiqueOuFonction">
+                                Aucune commission thématique
+                            </div>
                         </div>
-                        <div class="unit-bloc" ng-if="!eluACommissionThematiqueOuFonction">
-                            Aucune commission thématique
+                        <div class="btn-group elu-action">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.ajouterCommissionThematique">
+                                        Ajouter à une commission thématique
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.nouvelleFonctionCommissionThematique">
+                                        Ajouter une fonction à une commission thématique
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="btn-group elu-action">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="#"
-                                   ui-sref="elu.detail.ajouterCommissionThematique">
-                                    Ajouter à une commission thématique
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   ui-sref="elu.detail.nouvelleFonctionCommissionThematique">
-                                    Ajouter une fonction à une commission thématique
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 </div>
             </div>
 
@@ -214,15 +215,27 @@
                             <h3 class="box-title"><i class="fa fa-home"></i> Adresses</h3>
                         </div>
                         <div class="box-body">
-                            <div ng-repeat="a in dto.elu.adresses">
-                                <div>
-                                    {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
-                                </div>
+                            <div class="unit-bloc" ng-repeat="a in dto.elu.adressesPostales">
+                                {{a.oneline}}
+                                <br/>
+                                <span class="lg">
+                                    <span class="grey">Nature :</span>
+                                    {{a.natureProPerso | properso}}
+                                    <br/>
+                                    <span class="grey">Niveau de confidentialité :</span>
+                                    {{a.niveauConfidentialite | confidentialite}}
+                                    <br/>
+                                    <span class="grey">Adresse de correspondance :</span>
+                                    {{a.adresseDeCorrespondance | ouinon}}
+                                    <br/>
+                                    <span class="grey">Publication dans l'annuaire :</span>
+                                    {{a.publicationAnnuaire | ouinon}}
+                                </span>
                             </div>
-                            <div ng-hide="dto.elu.adresses.length">Aucune adresse connue</div>
+                            <div ng-hide="dto.elu.adressesPostales.length">Aucune adresse connue</div>
                         </div>
                         <div class="btn-group elu-action">
-                            <button type="button" class="btn btn-default" ui-sref="elus.detail.ajouterAdresse">
+                            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterAdresse">
                                 <span class="fa fa-plus"></span>
                             </button>
                         </div>
@@ -343,10 +356,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>Rue</span>
+                        <span>Voie</span>
                     </td>
                     <td>
-                        <span class="form-control-static">{{adressePostale.rue}}</span>
+                        <span class="form-control-static">{{adressePostale.voie}}</span>
                     </td>
                 </tr>
                 <tr>

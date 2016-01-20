@@ -126,4 +126,11 @@ public class EluService {
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
+    public void saveAdresse(long eluId, AdressePostale adressePostale) {
+        adressePostaleRepository.save(adressePostale);
+        Elu elu = eluRepository.getOne(eluId);
+        elu.getAdressesPostales().add(adressePostale);
+        eluRepository.save(elu);
+    }
+
 }

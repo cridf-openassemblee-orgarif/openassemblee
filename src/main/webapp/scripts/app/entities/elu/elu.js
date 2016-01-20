@@ -533,5 +533,28 @@ angular.module('babylone14166App')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('elu.detail.ajouterAdresse', {
+                parent: 'elu.detail',
+                url: '/adresse',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/adressePostale/adressePostale-dialog.html',
+                        controller: 'AdressePostaleDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
             });
     })

@@ -25,6 +25,13 @@ angular.module('babylone14166App')
                     data.dateNaissance = DateUtils.convertLocaleDateToServer(data.dateNaissance);
                     return angular.toJson(data);
                 }
+            },
+            'saveAdresse': {
+                method: 'POST',
+                url: '/api/elus/:id/adresse',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
             }
         });
     });

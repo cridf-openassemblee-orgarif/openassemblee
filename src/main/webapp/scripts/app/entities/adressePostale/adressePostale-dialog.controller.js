@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('AdressePostaleDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'AdressePostale',
-        function($scope, $stateParams, $modalInstance, entity, AdressePostale) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'AdressePostale', 'Elu',
+        function ($scope, $stateParams, $modalInstance, entity, AdressePostale, Elu) {
 
         $scope.adressePostale = entity;
         $scope.load = function(id) {
@@ -23,11 +23,7 @@ angular.module('babylone14166App').controller('AdressePostaleDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.adressePostale.id != null) {
-                AdressePostale.update($scope.adressePostale, onSaveSuccess, onSaveError);
-            } else {
-                AdressePostale.save($scope.adressePostale, onSaveSuccess, onSaveError);
-            }
+            Elu.saveAdresse({id: $stateParams.id}, $scope.adressePostale, onSaveSuccess, onSaveError);
         };
 
         $scope.clear = function() {

@@ -18,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 
-import fr.cridf.babylone14166.domain.Elu;
-import fr.cridf.babylone14166.domain.Image;
+import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.search.EluSearchRepository;
 import fr.cridf.babylone14166.service.EluService;
@@ -66,6 +65,14 @@ public class EluResource {
         return ResponseEntity.created(new URI("/api/elus/" + elu.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", elu.getId().toString()))
             .body(elu);
+    }
+
+    @RequestMapping(value = "/elus/{id}/adresse", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createAdresse(@PathVariable Long id, @RequestBody AdressePostale adressePostale)
+        throws URISyntaxException {
+        eluService.saveAdresse(id, adressePostale);
+        return ResponseEntity.ok().build();
     }
 
     /**
