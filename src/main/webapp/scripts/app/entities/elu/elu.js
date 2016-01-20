@@ -373,7 +373,7 @@ angular.module('babylone14166App')
             })
             .state('elu.detail.nouvelleFonctionGroupePolitique', {
                 parent: 'elu.detail',
-                url: '/nouvelle-fonction-groupe-politique',
+                url: '/nouvelle-fonction-groupe-politique/{groupePolitiqueId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
@@ -385,6 +385,7 @@ angular.module('babylone14166App')
                         resolve: {
                             entity: function () {
                                 return {
+                                    groupePolitique: {id: $stateParams.groupePolitiqueId},
                                     fonction: null,
                                     dateDebut: null,
                                     dateFin: null,

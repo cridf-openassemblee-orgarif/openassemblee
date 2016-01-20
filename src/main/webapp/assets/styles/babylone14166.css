@@ -106,6 +106,17 @@ a:visited, a:hover, a:focus {
 
 .unit-bloc {
     margin: 12px;
+    cursor: pointer;
+}
+
+.unit-bloc i {
+    display: none;
+    color: #777;
+    padding-left: 10px;
+}
+
+.unit-bloc:hover i {
+    display: inline;
 }
 
 .elu-action {

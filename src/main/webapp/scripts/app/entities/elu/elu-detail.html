@@ -34,9 +34,33 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Groupe politique</h3>
                     </div>
-                    <div class="box-body" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
-                         ng-if="a.dateFin == null">
+                    <div class="box-body unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                         ng-if="a.dateFin == null"
+                         ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
                         {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                    <div class="unit-bloc" ng-if="!eluAGroupePolitique">
+                        Aucun groupe politique
+                    </div>
+                    <div class="btn-group elu-action">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li ng-if="!eluAGroupePolitique">
+                                <a href="#" ui-sref="elu.detail.ajouterGroupePolitique">
+                                    Ajouter à un groupe politique
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                   ui-sref="elu.detail.nouvelleFonctionGroupePolitique({groupePolitiqueId: groupePolitiqueId})">
+                                    Ajouter une fonction à un groupe politique
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

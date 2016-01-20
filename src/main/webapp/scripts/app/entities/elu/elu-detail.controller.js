@@ -5,6 +5,7 @@ angular.module('babylone14166App')
         $scope.dto = entity;
         $scope.eluEnCommissionPermanente = false;
         $scope.eluAGroupePolitique = false;
+        $scope.groupePolitiqueId;
         $scope.eluACommissionThematique = false;
         $scope.$watch('dto', function () {
             if ($scope.dto.$promise) {
@@ -19,6 +20,12 @@ angular.module('babylone14166App')
             $scope.eluEnCommissionPermanente = check('appartenancesCommissionPermanente', 'fonctionsExecutives',
                 'fonctionsCommissionPermanente');
             $scope.eluAGroupePolitique = check('appartenancesGroupePolitique', 'fonctionsGroupePolitique');
+            angular.forEach($scope.dto.elu.appartenancesGroupePolitique, function (a) {
+                if (a.dateFin == null) {
+                    $scope.groupePolitiqueId = a.groupePolitique.id;
+                    return;
+                }
+            });
             $scope.eluACommissionThematique = check('appartenancesCommissionsThematiques',
                 'fonctionsCommissionsThematiques');
             $scope.eluAOrganismes = check('appartenancesOrganismes');
