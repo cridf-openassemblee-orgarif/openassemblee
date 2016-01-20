@@ -211,15 +211,15 @@
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="box box-elu-sec box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Adresses</h3>
+                            <h3 class="box-title"><i class="fa fa-home"></i> Adresses</h3>
                         </div>
                         <div class="box-body">
-                            <div ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
-                                 ng-if="a.dateFin == null">
+                            <div ng-repeat="a in dto.elu.adresses">
                                 <div>
                                     {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
                                 </div>
                             </div>
+                            <div ng-hide="dto.elu.adresses.length">Aucune adresse connue</div>
                         </div>
                         <div class="btn-group elu-action">
                             <button type="button" class="btn btn-default" ui-sref="elus.detail.ajouterAdresse">
@@ -229,7 +229,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="box box-default box-solid collapsed-box">
                     <div class="box-header with-border">
