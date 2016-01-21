@@ -24,8 +24,8 @@
             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
             {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
             <span class="lg"><span class="grey">Du</span> {{f.dateDebut}}
-            <span class="grey">au</span> {{a.dateFin}}<span class="grey">, motif de fin :</span>
-            {{a.motifFin}}</span>
+            <span class="grey">au</span> {{f.dateFin}}<span class="grey">, motif de fin :</span>
+            {{f.motifFin}}</span>
         </div>
         <h2>Commission permanente</h2>
         <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
