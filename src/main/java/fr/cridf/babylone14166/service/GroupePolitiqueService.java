@@ -1,6 +1,5 @@
 package fr.cridf.babylone14166.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -62,7 +61,8 @@ public class GroupePolitiqueService {
     // TODO va mériter un super test et une verif pour les dates
     // s'optimise ou... ?
     public static boolean isAppartenanceCourante(AppartenanceGroupePolitique a) {
-        return a.getDateFin() == null || a.getDateFin().isAfter(LocalDate.now());
+        // plus tard : || a.getDateFin().isAfter(LocalDate.now())
+        return a.getDateFin() == null;
     }
 
     public GroupePolitique save(GroupePolitique groupePolitique) {
