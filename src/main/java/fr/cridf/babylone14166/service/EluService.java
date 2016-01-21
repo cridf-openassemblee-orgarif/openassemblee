@@ -126,11 +126,43 @@ public class EluService {
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
-    public void saveAdresse(long eluId, AdressePostale adressePostale) {
+    public void saveAdresseMail(Long id, AdresseMail adresseMail) {
+        adresseMailRepository.save(adresseMail);
+        adresseMailSearchRepository.save(adresseMail);
+        Elu elu = eluRepository.getOne(id);
+        elu.getAdressesMail().add(adresseMail);
+        eluRepository.save(elu);
+    }
+
+    public void saveAdressePostale(long id, AdressePostale adressePostale) {
         adressePostaleRepository.save(adressePostale);
-        Elu elu = eluRepository.getOne(eluId);
+        adressePostaleSearchRepository.save(adressePostale);
+        Elu elu = eluRepository.getOne(id);
         elu.getAdressesPostales().add(adressePostale);
         eluRepository.save(elu);
     }
 
+    public void saveIdentiteInternet(Long id, IdentiteInternet identiteInternet) {
+        identiteInternetRepository.save(identiteInternet);
+        identiteInternetSearchRepository.save(identiteInternet);
+        Elu elu = eluRepository.getOne(id);
+        elu.getIdentitesInternet().add(identiteInternet);
+        eluRepository.save(elu);
+    }
+
+    public void saveNumeroFax(Long id, NumeroFax numeroFax) {
+        numeroFaxRepository.save(numeroFax);
+        numeroFaxSearchRepository.save(numeroFax);
+        Elu elu = eluRepository.getOne(id);
+        elu.getNumerosFax().add(numeroFax);
+        eluRepository.save(elu);
+    }
+
+    public void saveNumeroTelephone(Long id, NumeroTelephone numeroTelephone) {
+        numeroTelephoneRepository.save(numeroTelephone);
+        numeroTelephoneSearchRepository.save(numeroTelephone);
+        Elu elu = eluRepository.getOne(id);
+        elu.getNumerosTelephones().add(numeroTelephone);
+        eluRepository.save(elu);
+    }
 }

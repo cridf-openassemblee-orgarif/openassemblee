@@ -1,0 +1,21 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="box box-elu-sec box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-home"></i> Identités Internet</h3>
+        </div>
+        <div class="box-body">
+            <div class="unit-bloc" ng-repeat="a in dto.elu.identitesInternet">
+                {{a.url}}
+                <span ng-bind-html="a.typeIdentiteInternet | typeIdentiteInternet"></span>
+                <br/>
+                {{a.typeIdentiteInternet}}
+            </div>
+            <div ng-hide="dto.elu.identitesInternet.length">Aucune identité connue</div>
+        </div>
+        <div class="btn-group elu-action">
+            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterIdentiteInternet">
+                <span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+</div>

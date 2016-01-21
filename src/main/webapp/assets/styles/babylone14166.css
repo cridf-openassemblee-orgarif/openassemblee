@@ -108,6 +108,10 @@ a:visited, a:hover, a:focus {
     color: #777;
 }
 
+.grey.icon {
+    margin-left: 10px;
+}
+
 .info-box-content-elu .lg {
     color: #777;
 }

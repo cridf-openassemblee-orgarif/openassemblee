@@ -26,9 +26,37 @@ angular.module('babylone14166App')
                     return angular.toJson(data);
                 }
             },
-            'saveAdresse': {
+            'saveAdressePostale': {
                 method: 'POST',
-                url: '/api/elus/:id/adresse',
+                url: '/api/elus/:id/adressePostale',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'saveAdresseMail': {
+                method: 'POST',
+                url: '/api/elus/:id/adresseMail',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'saveIdentiteInternet': {
+                method: 'POST',
+                url: '/api/elus/:id/identiteInternet',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'saveNumeroFax': {
+                method: 'POST',
+                url: '/api/elus/:id/numeroFax',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'saveNumeroTelephone': {
+                method: 'POST',
+                url: '/api/elus/:id/numeroTelephone',
                 transformRequest: function (data) {
                     return angular.toJson(data);
                 }

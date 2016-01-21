@@ -7,12 +7,6 @@
         <h4 class="modal-title" id="myNumeroTelephoneLabel">Create or edit a NumeroTelephone</h4>
     </div>
     <div class="modal-body">
-        <jh-alert-error></jh-alert-error>
-        <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="numeroTelephone.id" readonly />
-        </div>
         <div class="form-group">
             <label class="control-label" for="field_natureProPerso">NatureProPerso</label>
             <select class="form-control" name="natureProPerso" ng-model="numeroTelephone.natureProPerso" id="field_natureProPerso">
@@ -42,10 +36,9 @@
             </select>
         </div>
         <div class="form-group">
+            <input type="checkbox" name="publicationAnnuaire" id="field_publicationAnnuaire"
+                   ng-model="numeroTelephone.publicationAnnuaire"/>
             <label class="control-label" for="field_publicationAnnuaire">PublicationAnnuaire</label>
-            <input type="checkbox" class="form-control" name="publicationAnnuaire" id="field_publicationAnnuaire"
-                    ng-model="numeroTelephone.publicationAnnuaire"
-                     />
         </div>
 
     </div>

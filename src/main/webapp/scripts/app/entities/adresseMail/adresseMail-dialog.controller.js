@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('AdresseMailDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'AdresseMail',
-        function($scope, $stateParams, $modalInstance, entity, AdresseMail) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'AdresseMail', 'Elu',
+        function ($scope, $stateParams, $modalInstance, entity, AdresseMail, Elu) {
 
         $scope.adresseMail = entity;
         $scope.load = function(id) {
@@ -23,11 +23,7 @@ angular.module('babylone14166App').controller('AdresseMailDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.adresseMail.id != null) {
-                AdresseMail.update($scope.adresseMail, onSaveSuccess, onSaveError);
-            } else {
-                AdresseMail.save($scope.adresseMail, onSaveSuccess, onSaveError);
-            }
+            Elu.saveAdresseMail({id: $stateParams.id}, $scope.adresseMail, onSaveSuccess, onSaveError);
         };
 
         $scope.clear = function() {

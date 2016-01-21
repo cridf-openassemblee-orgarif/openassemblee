@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('IdentiteInternetDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'IdentiteInternet',
-        function($scope, $stateParams, $modalInstance, entity, IdentiteInternet) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'IdentiteInternet', 'Elu',
+        function ($scope, $stateParams, $modalInstance, entity, IdentiteInternet, Elu) {
 
         $scope.identiteInternet = entity;
         $scope.load = function(id) {
@@ -23,11 +23,7 @@ angular.module('babylone14166App').controller('IdentiteInternetDialogController'
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.identiteInternet.id != null) {
-                IdentiteInternet.update($scope.identiteInternet, onSaveSuccess, onSaveError);
-            } else {
-                IdentiteInternet.save($scope.identiteInternet, onSaveSuccess, onSaveError);
-            }
+            Elu.saveIdentiteInternet({id: $stateParams.id}, $scope.identiteInternet, onSaveSuccess, onSaveError);
         };
 
         $scope.clear = function() {

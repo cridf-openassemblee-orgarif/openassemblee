@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .directive('adresses', function () {
+    .directive('adressesPostales', function () {
         return {
             restrict: 'E',
-            templateUrl: 'scripts/app/components/adresses-component.html'
+            templateUrl: 'scripts/app/components/adresses-postales-component.html'
         }
     })
     .directive('groupesPolitiques', function () {
@@ -35,5 +35,29 @@ angular.module('babylone14166App')
         return {
             restrict: 'E',
             templateUrl: 'scripts/app/components/vie-politique-passee-component.html'
+        }
+    })
+    .directive('adressesMail', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/adresses-mail-component.html'
+        }
+    })
+    .directive('identitesInternet', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/identites-internet-component.html'
+        }
+    })
+    .directive('numerosFax', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/numeros-fax-component.html'
+        }
+    })
+    .directive('numerosTelephone', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/numeros-telephone-component.html'
         }
     })

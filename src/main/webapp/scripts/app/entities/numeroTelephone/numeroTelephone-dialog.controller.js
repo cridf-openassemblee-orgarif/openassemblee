@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('NumeroTelephoneDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroTelephone',
-        function($scope, $stateParams, $modalInstance, entity, NumeroTelephone) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroTelephone', 'Elu',
+        function ($scope, $stateParams, $modalInstance, entity, NumeroTelephone, Elu) {
 
         $scope.numeroTelephone = entity;
         $scope.load = function(id) {
@@ -23,11 +23,7 @@ angular.module('babylone14166App').controller('NumeroTelephoneDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.numeroTelephone.id != null) {
-                NumeroTelephone.update($scope.numeroTelephone, onSaveSuccess, onSaveError);
-            } else {
-                NumeroTelephone.save($scope.numeroTelephone, onSaveSuccess, onSaveError);
-            }
+            Elu.saveNumeroTelephone({id: $stateParams.id}, $scope.numeroTelephone, onSaveSuccess, onSaveError);
         };
 
         $scope.clear = function() {

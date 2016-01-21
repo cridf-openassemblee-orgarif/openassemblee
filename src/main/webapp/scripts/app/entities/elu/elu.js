@@ -534,9 +534,9 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elu.detail.ajouterAdresse', {
+            .state('elu.detail.ajouterAdressePostale', {
                 parent: 'elu.detail',
-                url: '/adresse',
+                url: '/adressePostale',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
@@ -544,6 +544,98 @@ angular.module('babylone14166App')
                     $modal.open({
                         templateUrl: 'scripts/app/entities/adressePostale/adressePostale-dialog.html',
                         controller: 'AdressePostaleDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.ajouterAdresseMail', {
+                parent: 'elu.detail',
+                url: '/adresseMail',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/adresseMail/adresseMail-dialog.html',
+                        controller: 'AdresseMailDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.ajouterNumeroFax', {
+                parent: 'elu.detail',
+                url: '/numeroFax',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroFax/numeroFax-dialog.html',
+                        controller: 'NumeroFaxDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.ajouterNumeroTelephone', {
+                parent: 'elu.detail',
+                url: '/numeroTelephone',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroTelephone/numeroTelephone-dialog.html',
+                        controller: 'NumeroTelephoneDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.ajouterIdentiteInternet', {
+                parent: 'elu.detail',
+                url: '/identiteInternet',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/identiteInternet/identiteInternet-dialog.html',
+                        controller: 'IdentiteInternetDialogController',
                         size: 'lg',
                         resolve: {
                             entity: function () {

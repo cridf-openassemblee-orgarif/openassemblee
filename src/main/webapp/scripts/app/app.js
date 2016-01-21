@@ -2,7 +2,7 @@
 
 angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
         'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead',
-        'mgcrea.ngStrap.datepicker'])
+        'mgcrea.ngStrap.datepicker', 'ngSanitize'])
 
     .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
 
@@ -143,32 +143,69 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
     }])
     .filter('civilite', [function () {
         return function (value) {
-            if (value == 'MADAME') {
-                return 'Mme.';
-            } else if (value == 'MONSIEUR') {
-                return 'M.';
+            switch (value) {
+                case 'MADAME':
+                    return 'Mme.';
+                case 'MONSIEUR':
+                    return 'M.';
             }
             return 'Inconnu';
         };
     }])
     .filter('properso', [function () {
         return function (value) {
-            if (value == 'PRO') {
-                return 'Professionnelle';
-            } else if (value == "PERSO") {
-                return 'Personnelle';
+            switch (value) {
+                case 'PRO':
+                    return 'Professionnelle';
+                case 'PERSO':
+                    return 'Personnelle';
             }
             return 'Inconnu';
         };
     }])
     .filter('confidentialite', [function () {
         return function (value) {
-            if (value == 'PUBLIABLE') {
-                return 'Publiable';
-            } else if (value == 'CONFIDENTIEL') {
-                return 'Confidentiel';
-            } else if (value == 'INTERNE') {
-                return 'Interne';
+            switch (value) {
+                case'PUBLIABLE':
+                    return 'Publiable';
+                case 'CONFIDENTIEL':
+                    return 'Confidentiel';
+                case 'INTERNE':
+                    return 'Interne';
+            }
+            return 'Inconnu';
+        };
+    }])
+    .filter('typeIdentiteInternet', [function () {
+        return function (value) {
+            switch (value) {
+                case 'SiteInternet':
+                    return '<span class="grey">(site Internet)</span>';
+                case 'Blog':
+                    return '<span class="grey">(bloc)</span>';
+                case 'Twitter':
+                    return '<span class="grey icon fa fa-twitter"></span>';
+                case 'LinkedIn':
+                    return '<span class="grey icon fa fa-linkedin"></span>';
+                case 'Viadeo':
+                    return '<span class="grey">(Viadeo)</span>';
+                case 'Facebook':
+                    return '<span class="grey icon fa fa-facebook"></span>';
+                case 'GooglePlus':
+                    return '<span class="grey icon fa fa-google-plus"></span>';
+                case 'Autre':
+                    return '<span class="grey">(autre)</span>';
+            }
+            return '<span class="grey">(inconnu)</span>';
+        };
+    }])
+    .filter('natureFixeMobile', [function () {
+        return function (value) {
+            switch (value) {
+                case'FIXE':
+                    return 'Fixe';
+                case 'MOBILE':
+                    return 'Mobile';
             }
             return 'Inconnu';
         };

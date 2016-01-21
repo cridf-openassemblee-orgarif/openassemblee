@@ -67,11 +67,45 @@ public class EluResource {
             .body(elu);
     }
 
-    @RequestMapping(value = "/elus/{id}/adresse", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{id}/adressePostale", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createAdresse(@PathVariable Long id, @RequestBody AdressePostale adressePostale)
+    public ResponseEntity<Void> createAdressePostale(@PathVariable Long id, @RequestBody AdressePostale adressePostale)
         throws URISyntaxException {
-        eluService.saveAdresse(id, adressePostale);
+        eluService.saveAdressePostale(id, adressePostale);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{id}/adresseMail", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createAdresseMail(@PathVariable Long id, @RequestBody AdresseMail adresseMail)
+        throws URISyntaxException {
+        eluService.saveAdresseMail(id, adresseMail);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{id}/identiteInternet", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long id, @RequestBody IdentiteInternet
+        identiteInternet)
+        throws URISyntaxException {
+        eluService.saveIdentiteInternet(id, identiteInternet);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{id}/numeroFax", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createNumeroFax(@PathVariable Long id, @RequestBody NumeroFax numeroFax)
+        throws URISyntaxException {
+        eluService.saveNumeroFax(id, numeroFax);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{id}/numeroTelephone", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long id, @RequestBody NumeroTelephone
+        numeroTelephone)
+        throws URISyntaxException {
+        eluService.saveNumeroTelephone(id, numeroTelephone);
         return ResponseEntity.ok().build();
     }
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('babylone14166App').controller('NumeroFaxDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroFax',
-        function($scope, $stateParams, $modalInstance, entity, NumeroFax) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroFax', 'Elu',
+        function ($scope, $stateParams, $modalInstance, entity, NumeroFax, Elu) {
 
         $scope.numeroFax = entity;
         $scope.load = function(id) {
@@ -23,11 +23,7 @@ angular.module('babylone14166App').controller('NumeroFaxDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.numeroFax.id != null) {
-                NumeroFax.update($scope.numeroFax, onSaveSuccess, onSaveError);
-            } else {
-                NumeroFax.save($scope.numeroFax, onSaveSuccess, onSaveError);
-            }
+            Elu.saveNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
         };
 
         $scope.clear = function() {
