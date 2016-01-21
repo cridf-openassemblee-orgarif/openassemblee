@@ -17,8 +17,7 @@
             <label for="field_groupePolitique">Groupe politique</label>
             <select class="form-control" id="field_groupePolitique" name="groupePolitique"
                     ng-model="appartenanceGroupePolitique.groupePolitique"
-                    ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques track by groupePolitique.id">
-                <option value=""></option>
+                    ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques | filter: {dateFin: '!'}">
             </select>
         </div>
     </div>
