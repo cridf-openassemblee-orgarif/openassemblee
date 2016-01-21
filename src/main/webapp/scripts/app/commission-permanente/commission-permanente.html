@@ -15,7 +15,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in comm.appartenances"
                      ng-if="a.dateFin == null">
                     <div class="info-box entity-component" ng-init="elu = comm.elus[a.elu.id]"
-                         ui-sref="elus.detail({id:elu.id})">
+                         ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
@@ -39,7 +39,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctions"
                      ng-if="f.dateFin == null">
                     <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                         ui-sref="elus.detail({id:elu.id})">
+                         ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
@@ -63,7 +63,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctionsExecutives"
                      ng-if="f.dateFin == null">
                     <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                         ui-sref="elus.detail({id:elu.id})">
+                         ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
