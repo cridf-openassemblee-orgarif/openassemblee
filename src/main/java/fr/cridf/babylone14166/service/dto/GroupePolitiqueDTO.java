@@ -8,28 +8,25 @@ public class GroupePolitiqueDTO {
 
     private GroupePolitique groupePolitique;
     private List<AppartenanceGroupePolitiqueDTO> appartenanceGroupePolitiqueDTOs;
+    private List<FonctionGroupePolitiqueDTO> fonctionGroupePolitiqueDTOs;
 
-    public GroupePolitiqueDTO(GroupePolitique groupePolitique,
-        List<AppartenanceGroupePolitiqueDTO> appartenanceGroupePolitiqueDTOs) {
+    public GroupePolitiqueDTO(GroupePolitique groupePolitique, List<AppartenanceGroupePolitiqueDTO>
+        appartenanceGroupePolitiqueDTOs, List<FonctionGroupePolitiqueDTO> fonctionGroupePolitiqueDTOs) {
         this.groupePolitique = groupePolitique;
         this.appartenanceGroupePolitiqueDTOs = appartenanceGroupePolitiqueDTOs;
+        this.fonctionGroupePolitiqueDTOs = fonctionGroupePolitiqueDTOs;
     }
 
     public GroupePolitique getGroupePolitique() {
         return groupePolitique;
     }
 
-    public void setGroupePolitique(GroupePolitique groupePolitique) {
-        this.groupePolitique = groupePolitique;
-    }
-
     public List<AppartenanceGroupePolitiqueDTO> getAppartenanceGroupePolitiqueDTOs() {
         return appartenanceGroupePolitiqueDTOs;
     }
 
-    public void setAppartenanceGroupePolitiqueDTOs(List<AppartenanceGroupePolitiqueDTO>
-        appartenanceGroupePolitiqueDTOs) {
-        this.appartenanceGroupePolitiqueDTOs = appartenanceGroupePolitiqueDTOs;
+    public List<FonctionGroupePolitiqueDTO> getFonctionGroupePolitiqueDTOs() {
+        return fonctionGroupePolitiqueDTOs;
     }
 }
 

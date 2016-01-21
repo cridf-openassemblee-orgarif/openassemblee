@@ -19,14 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
 
-import fr.cridf.babylone14166.domain.AppartenanceCommissionThematique;
 import fr.cridf.babylone14166.domain.CommissionThematique;
 import fr.cridf.babylone14166.repository.CommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
 import fr.cridf.babylone14166.service.CommissionThematiqueService;
 import fr.cridf.babylone14166.service.ExportService;
-import fr.cridf.babylone14166.service.dto.CommissionThematiqueDTO;
-import fr.cridf.babylone14166.service.dto.CommissionThematiqueListDTO;
+import fr.cridf.babylone14166.service.dto.*;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 
 /**
@@ -143,13 +141,13 @@ public class CommissionThematiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<CommissionThematique> getCommissionThematique(@PathVariable Long id) {
+    public ResponseEntity<CommissionThematiqueDTO> getCommissionThematique(@PathVariable Long id) {
         log.debug("REST request to get CommissionThematique : {}", id);
-        return Optional.ofNullable(commissionThematiqueRepository.findOne(id))
-            .map(commissionThematique -> new ResponseEntity<>(
-                commissionThematique,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
+        if (dto != null) {
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -167,7 +165,7 @@ public class CommissionThematiqueResource {
             CommissionThematique ct = dto.getCommissionThematique();
             lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
             lines.add(new ArrayList<>());
-            for (AppartenanceCommissionThematique act : dto.getAppartenanceCommissionThematiqueList()) {
+            for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
                 lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
             }
             byte[] export = exportService.exportToExcel(lines);

@@ -1,6 +1,5 @@
 package fr.cridf.babylone14166.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -8,8 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.domain.AppartenanceCommissionThematique;
-import fr.cridf.babylone14166.domain.CommissionThematique;
+import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.AdressePostaleSearchRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
@@ -31,6 +29,8 @@ public class CommissionThematiqueService {
 
     @Inject
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
+    @Inject
+    private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
 
     public List<CommissionThematiqueListDTO> getAll() {
         List<CommissionThematique> list = commissionThematiqueRepository.findAll();
@@ -48,17 +48,29 @@ public class CommissionThematiqueService {
         CommissionThematique ct = commissionThematiqueRepository.findOne(id);
         List<AppartenanceCommissionThematique> acts =
             appartenanceCommissionThematiqueRepository.findAllByCommissionThematique(ct);
-        List<AppartenanceCommissionThematiqueDTO> agpDtos = acts.stream()
+        List<AppartenanceCommissionThematiqueDTO> actDtos = acts.stream()
             .filter(CommissionThematiqueService::isAppartenanceCourante)
             .map(a -> new AppartenanceCommissionThematiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
-        return new CommissionThematiqueDTO(ct, acts);
+        List<FonctionCommissionThematique> fcts = fonctionCommissionThematiqueRepository
+            .findAllByCommissionThematique(ct);
+        List<FonctionCommissionThematiqueDTO> fctDtos = fcts.stream()
+            .filter(CommissionThematiqueService::isAppartenanceCourante)
+            .map(a -> new FonctionCommissionThematiqueDTO(a, a.getElu()))
+            .collect(Collectors.toList());
+        return new CommissionThematiqueDTO(ct, actDtos, fctDtos);
     }
 
     // TODO va mériter un super test et une verif pour les dates
     // s'optimise ou... ?
     public static boolean isAppartenanceCourante(AppartenanceCommissionThematique a) {
-        return a.getDateFin() == null || a.getDateFin().isAfter(LocalDate.now());
+        // later remettre || a.getDateFin().isAfter(LocalDate.now());
+        return a.getDateFin() == null;
+    }
+
+    public static boolean isAppartenanceCourante(FonctionCommissionThematique f) {
+        // later remettre || a.getDateFin().isAfter(LocalDate.now());
+        return f.getDateFin() == null;
     }
 
 }

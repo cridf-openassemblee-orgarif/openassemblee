@@ -54,7 +54,9 @@
     </div>
 
     <div>
-        <img ng-if="dto.groupePolitique.image" class="profile-image" ng-src="images/{{dto.groupePolitique.image}}"/>
+        <span class="info-box-photo">
+            <img ng-if="dto.groupePolitique.image" class="profile-image" ng-src="images/{{dto.groupePolitique.image}}"/>
+        </span>
         <button class="btn btn-sm btn-primary"
                 ui-sref="groupesPolitiques.detail.uploadImage">
             Ajouter une image
@@ -66,5 +68,50 @@
                 ui-sref="groupesPolitiques.detail.fin">
             Fixer une date et un motif de fin du groupe
         </button>
+    </div>
+
+    <br/>
+
+    <h2>Les élus du groupe</h2>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceGroupePolitiqueDTOs"
+             ng-if="a.dateFin == null">
+            <div class="info-box entity-component"
+                 ui-sref="elu.detail({id:a.elu.id})">
+                        <span class="info-box-photo">
+                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                        </span>
+
+                <div class="info-box-content">
+                        <span
+                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                    <div class="info-box-info">
+                        <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Les élus en fonction dans le groupe</h2>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionGroupePolitiqueDTOs"
+             ng-if="a.dateFin == null">
+            <div class="info-box entity-component"
+                 ui-sref="elu.detail({id:a.elu.id})">
+                        <span class="info-box-photo">
+                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                        </span>
+
+                <div class="info-box-content">
+                        <span
+                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                    <div class="info-box-info">
+                        {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
+                        {{a.fonctionGroupePolitique.dateDebut}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

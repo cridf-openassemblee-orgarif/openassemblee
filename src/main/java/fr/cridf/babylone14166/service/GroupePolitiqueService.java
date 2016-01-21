@@ -8,8 +8,7 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.domain.AppartenanceGroupePolitique;
-import fr.cridf.babylone14166.domain.GroupePolitique;
+import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.AdressePostaleSearchRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
@@ -31,6 +30,8 @@ public class GroupePolitiqueService {
 
     @Inject
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
+    @Inject
+    private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
 
     public List<GroupePolitiqueListDTO> getAll() {
         List<GroupePolitique> list = groupePolitiqueRepository.findAll();
@@ -55,7 +56,13 @@ public class GroupePolitiqueService {
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(a -> new AppartenanceGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
-        return new GroupePolitiqueDTO(gp, agpDtos);
+        List<FonctionGroupePolitique> ftps =
+            fonctionGroupePolitiqueRepository.findAllByGroupePolitique(gp);
+        List<FonctionGroupePolitiqueDTO> ftpDtps = ftps.stream()
+            .filter(GroupePolitiqueService::isAppartenanceCourante)
+            .map(a -> new FonctionGroupePolitiqueDTO(a, a.getElu()))
+            .collect(Collectors.toList());
+        return new GroupePolitiqueDTO(gp, agpDtos, ftpDtps);
     }
 
     // TODO va mériter un super test et une verif pour les dates
@@ -63,6 +70,11 @@ public class GroupePolitiqueService {
     public static boolean isAppartenanceCourante(AppartenanceGroupePolitique a) {
         // plus tard : || a.getDateFin().isAfter(LocalDate.now())
         return a.getDateFin() == null;
+    }
+
+    public static boolean isAppartenanceCourante(FonctionGroupePolitique f) {
+        // plus tard : || f.getDateFin().isAfter(LocalDate.now())
+        return f.getDateFin() == null;
     }
 
     public GroupePolitique save(GroupePolitique groupePolitique) {
