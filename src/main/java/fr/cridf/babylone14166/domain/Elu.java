@@ -46,6 +46,9 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
+    @Column(name = "departement")
+    private String departement;
+
     @Column(name = "image")
     private Long image;
 
@@ -187,6 +190,14 @@ public class Elu implements Serializable {
 
     public void setLieuNaissance(String lieuNaissance) {
         this.lieuNaissance = lieuNaissance;
+    }
+
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
     }
 
     public List<AdressePostale> getAdressesPostales() {

@@ -28,6 +28,7 @@
             <column name="profession" type="varchar(255)"/>
             <column name="date_naissance" type="date"/>
             <column name="lieu_naissance" type="varchar(255)"/>
+            <column name="departement" type="varchar(255)"/>
             <column name="image" type="bigint"/>
         </createTable>
     </changeSet>

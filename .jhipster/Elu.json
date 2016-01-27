@@ -44,6 +44,11 @@
             "fieldId": 7,
             "fieldName": "lieuNaissance",
             "fieldType": "String"
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "departement",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20151126114337",
