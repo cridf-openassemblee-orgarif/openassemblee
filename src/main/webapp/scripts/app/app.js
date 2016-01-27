@@ -164,7 +164,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
                 case 'MONSIEUR':
                     return 'M.';
             }
-            return 'Inconnu';
+            return '';
         };
     }])
     .filter('properso', [function () {
