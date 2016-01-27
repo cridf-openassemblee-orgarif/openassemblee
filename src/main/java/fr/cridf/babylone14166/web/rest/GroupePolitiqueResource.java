@@ -112,6 +112,9 @@ public class GroupePolitiqueResource {
         }
         GroupePolitique result = groupePolitiqueRepository.save(groupePolitique);
         groupePolitiqueSearchRepository.save(groupePolitique);
+        if (groupePolitique.getDateFin() != null) {
+            groupePolitiqueService.sortirElus(groupePolitique);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("groupePolitique", groupePolitique.getId().toString()))
             .body(result);

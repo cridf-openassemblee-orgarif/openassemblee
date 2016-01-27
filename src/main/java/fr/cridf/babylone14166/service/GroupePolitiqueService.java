@@ -10,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.repository.search.AdressePostaleSearchRepository;
-import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
+import fr.cridf.babylone14166.repository.search.*;
 import fr.cridf.babylone14166.service.dto.*;
 
 @Service
@@ -30,6 +29,8 @@ public class GroupePolitiqueService {
 
     @Inject
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
+    @Inject
+    private AppartenanceGroupePolitiqueSearchRepository appartenanceGroupePolitiqueSearchRepository;
     @Inject
     private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
 
@@ -85,6 +86,17 @@ public class GroupePolitiqueService {
         groupePolitiqueRepository.save(groupePolitique);
         groupePolitiqueSearchRepository.save(groupePolitique);
         return groupePolitique;
+    }
+
+    public void sortirElus(GroupePolitique groupePolitique) {
+        List<AppartenanceGroupePolitique> agps = appartenanceGroupePolitiqueRepository
+            .findAllByGroupePolitique(groupePolitique);
+        agps.stream().forEach(agp -> {
+            agp.setDateFin(groupePolitique.getDateFin());
+            agp.setMotifFin(groupePolitique.getMotifFin());
+            appartenanceGroupePolitiqueRepository.save(agp);
+            appartenanceGroupePolitiqueSearchRepository.save(agp);
+        });
     }
 
 }
