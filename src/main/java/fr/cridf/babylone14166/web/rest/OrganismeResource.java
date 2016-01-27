@@ -131,7 +131,7 @@ public class OrganismeResource {
     @Timed
     public List<Organisme> searchOrganismes(@PathVariable String query) {
         return StreamSupport
-            .stream(organismeSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(organismeSearchRepository.search(queryStringQuery(query + "*")).spliterator(), false)
             .collect(Collectors.toList());
     }
 }
