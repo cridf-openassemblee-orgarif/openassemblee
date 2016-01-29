@@ -3,13 +3,16 @@ package fr.cridf.babylone14166.repository;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.*;
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.cridf.babylone14166.domain.Image;
@@ -22,47 +25,43 @@ public class ImageRepository {
     private static final String INSERT_IMAGE = "insert into images(content_type, data) values (?, ?)";
     private static final String READ_IMAGE = "select content_type, data from images where id = ?";
 
+    private JdbcTemplate jdbcTemplate;
+
     @Autowired
-    protected DataSource dataSource;
-
-    protected Connection connection;
-
-    @PostConstruct
-    public void init() {
-        try {
-            // TODO la création d'une nouvelle connexion est un probleme
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            log.error("Impossible de créer la connexion à la base", e);
-        }
+    private void init(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public Long saveImage(Image image) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_IMAGE,
-            Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setString(1, image.getContentType());
-        preparedStatement.setBytes(2, image.getData());
-        preparedStatement.executeUpdate();
-        ResultSet keys = preparedStatement.getGeneratedKeys();
-        if (keys.next()) {
-            return keys.getLong(1);
-        }
-        return null;
+        KeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(INSERT_IMAGE, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, image.getContentType());
+            ps.setBytes(2, image.getData());
+            return ps;
+        }, holder);
+        return holder.getKey().longValue();
     }
 
     public Image getImage(Long id) throws SQLException, IOException {
-        PreparedStatement preparedStatement = connection.prepareStatement(READ_IMAGE);
-        preparedStatement.setLong(1, id);
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()) {
-            String contentType = result.getString("content_type");
-            Blob blob = result.getBlob("data");
+        try {
+            return jdbcTemplate.queryForObject(READ_IMAGE, new Long[] { id }, (rs, rowNum) -> {
+                String contentType = rs.getString("content_type");
+                Blob blob = rs.getBlob("data");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                try {
+                    Streams.copy(blob.getBinaryStream(), baos);
+                } catch (IOException e) {
+                    // TODO exception
+                    e.printStackTrace();
+                }
+                return new Image(contentType, baos.toByteArray());
+            });
+        } catch (EmptyResultDataAccessException e) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Streams.copy(blob.getBinaryStream(), baos);
-            return new Image(contentType, baos.toByteArray());
+            Streams.copy(getClass().getClassLoader().getResourceAsStream("pas-dimage.jpg"), baos);
+            return new Image("image/jpeg", baos.toByteArray());
         }
-        // TODO utiliser l'image 'pas d'image'
-        return null;
     }
 
 }
