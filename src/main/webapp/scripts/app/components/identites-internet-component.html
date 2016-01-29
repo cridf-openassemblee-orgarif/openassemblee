@@ -7,8 +7,6 @@
             <div class="unit-bloc" ng-repeat="a in dto.elu.identitesInternet">
                 {{a.url}}
                 <span ng-bind-html="a.typeIdentiteInternet | typeIdentiteInternet"></span>
-                <br/>
-                {{a.typeIdentiteInternet}}
             </div>
             <div ng-hide="dto.elu.identitesInternet.length">Aucune identité connue</div>
         </div>
