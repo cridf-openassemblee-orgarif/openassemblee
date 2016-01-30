@@ -9,24 +9,29 @@
     <!-- Main content -->
     <section class="content">
         <div class="container">
-            <h2>Les membres de la commission</h2>
+            <h2 ng-if="!comm.appartenances.length && !comm.fonctions.length && !comm.fonctionsExecutives.length">
+                Aucun membre à la commission permanente
+            </h2>
+            <div ng-if="comm.appartenances.length">
+                <h2>Les membres de la commission</h2>
 
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in comm.appartenances"
-                     ng-if="a.dateFin == null">
-                    <div class="info-box entity-component" ng-init="elu = comm.elus[a.elu.id]"
-                         ui-sref="elu.detail({id:elu.id})">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in comm.appartenances"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component" ng-init="elu = comm.elus[a.elu.id]"
+                             ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
 
-                        <div class="info-box-content">
+                            <div class="info-box-content">
                         <span
                             class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                            <div class="info-box-info">
-                                Depuis le {{a.dateDebut}}
-                                <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant :
-                                    {{a.motifFin}}
+                                <div class="info-box-info">
+                                    Depuis le {{a.dateDebut}}
+                                    <div ng-if="a.dateFin">Prend fin le {{a.dateFin}} pour le motif suivant :
+                                        {{a.motifFin}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -34,23 +39,25 @@
                 </div>
             </div>
 
-            <h2>Les élus ayant une fonction à la commission</h2>
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctions"
-                     ng-if="f.dateFin == null">
-                    <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                         ui-sref="elu.detail({id:elu.id})">
+            <div ng-if="comm.fonctions.length">
+                <h2>Les élus ayant une fonction à la commission</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctions"
+                         ng-if="f.dateFin == null">
+                        <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
+                             ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
 
-                        <div class="info-box-content">
+                            <div class="info-box-content">
                         <span
                             class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                            <div class="info-box-info">
-                                Depuis le {{f.dateDebut}}
-                                <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
-                                    {{f.motifFin}}
+                                <div class="info-box-info">
+                                    Depuis le {{f.dateDebut}}
+                                    <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
+                                        {{f.motifFin}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -58,23 +65,25 @@
                 </div>
             </div>
 
-            <h2>Les élus ayant une fonction exécutive</h2>
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctionsExecutives"
-                     ng-if="f.dateFin == null">
-                    <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                         ui-sref="elu.detail({id:elu.id})">
+            <div ng-if="comm.fonctionsExecutives.length">
+                <h2>Les élus ayant une fonction exécutive</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in comm.fonctionsExecutives"
+                         ng-if="f.dateFin == null">
+                        <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
+                             ui-sref="elu.detail({id:elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                         </span>
 
-                        <div class="info-box-content">
+                            <div class="info-box-content">
                         <span
                             class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                            <div class="info-box-info">
-                                Depuis le {{f.dateDebut}}
-                                <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
-                                    {{f.motifFin}}
+                                <div class="info-box-info">
+                                    Depuis le {{f.dateDebut}}
+                                    <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
+                                        {{f.motifFin}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
