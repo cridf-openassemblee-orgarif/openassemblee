@@ -215,3 +215,19 @@ h2 {
 .datepicker button.btn-today {
     background-color: #ddd;
 }
+
+.search-bloc {
+    padding: 20px 0;
+}
+
+.search-label {
+    font-size: 20px;
+}
+
+#search-input {
+    padding: 10px 20px;
+    width: 80%;
+    margin: 0 20px 20px 20px;
+    font-size: 20px;
+    border: 1px solid #1b8dbb;
+}

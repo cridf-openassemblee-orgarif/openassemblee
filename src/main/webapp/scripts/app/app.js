@@ -18,6 +18,21 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
 
         });
 
+        $rootScope.$watch('searchToken', function(value) {
+            if(value && value.length > 2) {
+                $state.go('home');
+                $http({
+                    method: 'GET',
+                    url: 'api/search/' + value
+                }).then(function successCallback(result) {
+                    $rootScope.dtos = result.data;
+                }, function errorCallback(response) {
+                });
+            } else {
+                $rootScope.dtos = []
+            }
+        });
+
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
             var titleKey = 'babylone14166' ;
 
