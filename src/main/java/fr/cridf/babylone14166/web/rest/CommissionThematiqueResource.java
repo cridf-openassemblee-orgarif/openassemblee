@@ -116,20 +116,20 @@ public class CommissionThematiqueResource {
     @Timed
     public void getAllCommissionThematiquesExport(HttpServletResponse response) {
         log.debug("REST request to get all GroupePolitiques");
-        try {
-            List<CommissionThematiqueListDTO> cts = commissionThematiqueService.getAll();
-            List<List<String>> lines = new ArrayList<>();
-            for (CommissionThematiqueListDTO ctDTO : cts) {
-                CommissionThematique ct = ctDTO.getCommissionThematique();
-                lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt(), ctDTO.getCount() + " membres"));
-            }
-            byte[] export = exportService.exportToExcel("Commission thématiques", lines);
+        List<CommissionThematiqueListDTO> cts = commissionThematiqueService.getAll();
+        List<List<String>> lines = new ArrayList<>();
+        for (CommissionThematiqueListDTO ctDTO : cts) {
+            CommissionThematique ct = ctDTO.getCommissionThematique();
+            lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt(), ctDTO.getCount() + " membres"));
+        }
+        byte[] export = exportService.exportToExcel("Commission thématiques", lines);
 
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-disposition", "attachment; filename=commissions-thematiques.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-disposition", "attachment; filename=commissions-thematiques.xlsx");
+        try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {
-            // TODO
+            // TODO exception
             e.printStackTrace();
         }
     }
@@ -157,25 +157,24 @@ public class CommissionThematiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void getCommissionThematiqueExport(@PathVariable Long id,
-        HttpServletResponse response) {
-        try {
-            CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
-            List<List<String>> lines = new ArrayList<>();
-            CommissionThematique ct = dto.getCommissionThematique();
-            lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
-            lines.add(new ArrayList<>());
-            // TODO autre sheet ?
-            for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
-                lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
-            }
-            byte[] export = exportService.exportToExcel("Commission thématique", lines);
+    public void getCommissionThematiqueExport(@PathVariable Long id, HttpServletResponse response) {
+        CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
+        List<List<String>> lines = new ArrayList<>();
+        CommissionThematique ct = dto.getCommissionThematique();
+        lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
+        lines.add(new ArrayList<>());
+        // TODO autre sheet ?
+        for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
+            lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
+        }
+        byte[] export = exportService.exportToExcel("Commission thématique", lines);
 
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-disposition", "attachment; filename=commission-thematique-" + id + ".xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-disposition", "attachment; filename=commission-thematique-" + id + ".xlsx");
+        try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {
-            // TODO
+            // TODO exception
             e.printStackTrace();
         }
     }

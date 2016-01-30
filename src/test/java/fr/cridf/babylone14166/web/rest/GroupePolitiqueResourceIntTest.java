@@ -47,7 +47,7 @@ import fr.cridf.babylone14166.service.GroupePolitiqueService;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest
-// TODO mlo test adresse
+// TODO test adresse
 public class GroupePolitiqueResourceIntTest {
 
     private static final String DEFAULT_NOM = "AAAAA";

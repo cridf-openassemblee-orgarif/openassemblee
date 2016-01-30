@@ -235,7 +235,7 @@ public class EluResource {
             try {
                 Streams.copy(export, response.getOutputStream());
             } catch (IOException e1) {
-                // TODO
+                // TODO exception
                 e1.printStackTrace();
             }
         }
@@ -248,29 +248,28 @@ public class EluResource {
     @Timed
     public void getAllElusExport(HttpServletResponse response) {
         log.debug("REST request to get all GroupePolitiques");
-        // TODO move ces try
-        try {
-            List<EluListDTO> gps = eluService.getAll();
-            List<List<String>> lines = new ArrayList<>();
-            lines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-                "Date de naissance"));
-            for (EluListDTO dto : gps) {
-                Elu e = dto.getElu();
-                String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
-                String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
-                    "Aucun groupe politique";
-                String dateNaissance = e.getDateNaissance() != null ?
-                    e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
-                lines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance));
-            }
-            byte[] export = exportService.exportToExcel("Élus", lines);
+        List<EluListDTO> gps = eluService.getAll();
+        List<List<String>> lines = new ArrayList<>();
+        lines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
+            "Date de naissance"));
+        for (EluListDTO dto : gps) {
+            Elu e = dto.getElu();
+            String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
+            String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
+                "Aucun groupe politique";
+            String dateNaissance = e.getDateNaissance() != null ?
+                e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
+            lines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
+                e.getLieuNaissance(), dateNaissance));
+        }
+        byte[] export = exportService.exportToExcel("Élus", lines);
 
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-disposition", "attachment; filename=elus.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-disposition", "attachment; filename=elus.xlsx");
+        try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {
-            // TODO
+            // TODO exception
             e.printStackTrace();
         }
     }

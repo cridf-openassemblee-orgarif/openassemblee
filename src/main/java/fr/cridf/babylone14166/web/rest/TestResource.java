@@ -26,16 +26,14 @@ public class TestResource {
         return ResponseEntity.ok().build();
     }
 
-    // TODO passer en POST
-    @RequestMapping(value = "/inject-test-data", method = RequestMethod.GET)
+    @RequestMapping(value = "/inject-test-data", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> injectTestData() {
         testDataInjector.injectTestData();
         return ResponseEntity.ok().build();
     }
 
-    // TODO passer en POST
-    @RequestMapping(value = "/inject-organismes", method = RequestMethod.GET)
+    @RequestMapping(value = "/inject-organismes", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> injectOrganismes() {
         testDataInjector.injectOrganismes();
