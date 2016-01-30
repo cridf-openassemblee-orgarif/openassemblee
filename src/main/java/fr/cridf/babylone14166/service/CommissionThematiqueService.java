@@ -46,6 +46,9 @@ public class CommissionThematiqueService {
 
     public CommissionThematiqueDTO get(Long id) {
         CommissionThematique ct = commissionThematiqueRepository.findOne(id);
+        if(ct == null) {
+            return null;
+        }
         List<AppartenanceCommissionThematique> acts =
             appartenanceCommissionThematiqueRepository.findAllByCommissionThematique(ct);
         List<AppartenanceCommissionThematiqueDTO> actDtos = acts.stream()

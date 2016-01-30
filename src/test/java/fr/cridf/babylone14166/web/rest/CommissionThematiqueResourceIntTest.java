@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.CommissionThematique;
 import fr.cridf.babylone14166.repository.CommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.CommissionThematiqueService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,9 @@ public class CommissionThematiqueResourceIntTest {
     private CommissionThematiqueSearchRepository commissionThematiqueSearchRepository;
 
     @Inject
+    private CommissionThematiqueService commissionThematiqueService;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -79,6 +83,7 @@ public class CommissionThematiqueResourceIntTest {
         CommissionThematiqueResource commissionThematiqueResource = new CommissionThematiqueResource();
         ReflectionTestUtils.setField(commissionThematiqueResource, "commissionThematiqueRepository", commissionThematiqueRepository);
         ReflectionTestUtils.setField(commissionThematiqueResource, "commissionThematiqueSearchRepository", commissionThematiqueSearchRepository);
+        ReflectionTestUtils.setField(commissionThematiqueResource, "commissionThematiqueService", commissionThematiqueService);
         this.restCommissionThematiqueMockMvc = MockMvcBuilders.standaloneSetup(commissionThematiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -145,12 +150,12 @@ public class CommissionThematiqueResourceIntTest {
         restCommissionThematiqueMockMvc.perform(get("/api/commissionThematiques/{id}", commissionThematique.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(commissionThematique.getId().intValue()))
-            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM.toString()))
-            .andExpect(jsonPath("$.nomCourt").value(DEFAULT_NOM_COURT.toString()))
-            .andExpect(jsonPath("$.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
-            .andExpect(jsonPath("$.dateFin").value(DEFAULT_DATE_FIN.toString()))
-            .andExpect(jsonPath("$.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
+            .andExpect(jsonPath("$.commissionThematique.id").value(commissionThematique.getId().intValue()))
+            .andExpect(jsonPath("$.commissionThematique.nom").value(DEFAULT_NOM.toString()))
+            .andExpect(jsonPath("$.commissionThematique.nomCourt").value(DEFAULT_NOM_COURT.toString()))
+            .andExpect(jsonPath("$.commissionThematique.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
+            .andExpect(jsonPath("$.commissionThematique.dateFin").value(DEFAULT_DATE_FIN.toString()))
+            .andExpect(jsonPath("$.commissionThematique.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
     }
 
     @Test

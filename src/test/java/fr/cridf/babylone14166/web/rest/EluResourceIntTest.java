@@ -178,14 +178,14 @@ public class EluResourceIntTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(elu.getId().intValue())))
-                .andExpect(jsonPath("$.[*].civilite").value(hasItem(DEFAULT_CIVILITE.toString())))
-                .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM.toString())))
-            .andExpect(jsonPath("$.[*].prenom").value(hasItem(DEFAULT_PRENOM.toString())))
-                .andExpect(jsonPath("$.[*].nomJeuneFille").value(hasItem(DEFAULT_NOM_JEUNE_FILLE.toString())))
-                .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION.toString())))
-                .andExpect(jsonPath("$.[*].dateNaissance").value(hasItem(DEFAULT_DATE_NAISSANCE.toString())))
-                .andExpect(jsonPath("$.[*].lieuNaissance").value(hasItem(DEFAULT_LIEU_NAISSANCE.toString())));
+                .andExpect(jsonPath("$.[*].elu.id").value(hasItem(elu.getId().intValue())))
+                .andExpect(jsonPath("$.[*].elu.civilite").value(hasItem(DEFAULT_CIVILITE.toString())))
+                .andExpect(jsonPath("$.[*].elu.nom").value(hasItem(DEFAULT_NOM.toString())))
+                .andExpect(jsonPath("$.[*].elu.prenom").value(hasItem(DEFAULT_PRENOM.toString())))
+                .andExpect(jsonPath("$.[*].elu.nomJeuneFille").value(hasItem(DEFAULT_NOM_JEUNE_FILLE.toString())))
+                .andExpect(jsonPath("$.[*].elu.profession").value(hasItem(DEFAULT_PROFESSION.toString())))
+                .andExpect(jsonPath("$.[*].elu.dateNaissance").value(hasItem(DEFAULT_DATE_NAISSANCE.toString())))
+                .andExpect(jsonPath("$.[*].elu.lieuNaissance").value(hasItem(DEFAULT_LIEU_NAISSANCE.toString())));
     }
 
     @Test
@@ -200,15 +200,15 @@ public class EluResourceIntTest {
             //            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(elu.getId().intValue()))
-            .andExpect(jsonPath("$.civilite").value(DEFAULT_CIVILITE.toString()))
-            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM.toString()))
-            .andExpect(jsonPath("$.prenom").value(DEFAULT_PRENOM.toString()))
-            .andExpect(jsonPath("$.nomJeuneFille").value(DEFAULT_NOM_JEUNE_FILLE.toString()))
-            .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION.toString()))
-            .andExpect(jsonPath("$.dateNaissance").value(DEFAULT_DATE_NAISSANCE.toString()))
-            .andExpect(jsonPath("$.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()))
-            .andExpect(jsonPath("$.adressesPostales[0].rue").value(DEFAULT_VOIE));
+            .andExpect(jsonPath("$.elu.id").value(elu.getId().intValue()))
+            .andExpect(jsonPath("$.elu.civilite").value(DEFAULT_CIVILITE.toString()))
+            .andExpect(jsonPath("$.elu.nom").value(DEFAULT_NOM.toString()))
+            .andExpect(jsonPath("$.elu.prenom").value(DEFAULT_PRENOM.toString()))
+            .andExpect(jsonPath("$.elu.nomJeuneFille").value(DEFAULT_NOM_JEUNE_FILLE.toString()))
+            .andExpect(jsonPath("$.elu.profession").value(DEFAULT_PROFESSION.toString()))
+            .andExpect(jsonPath("$.elu.dateNaissance").value(DEFAULT_DATE_NAISSANCE.toString()))
+            .andExpect(jsonPath("$.elu.lieuNaissance").value(DEFAULT_LIEU_NAISSANCE.toString()))
+            .andExpect(jsonPath("$.elu.adressesPostales[0].voie").value(DEFAULT_VOIE));
         // TODO mlo test adresse + verifier ne vient pas avec les listes (?)
     }
 

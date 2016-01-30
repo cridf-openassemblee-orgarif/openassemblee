@@ -48,7 +48,9 @@ public class GroupePolitiqueService {
 
     public GroupePolitiqueDTO get(Long id) {
         GroupePolitique gp = groupePolitiqueRepository.findOne(id);
-        if (gp != null) {
+        if(gp == null) {
+            return null;
+        } else {
             Hibernate.initialize(gp.getAdressePostale());
         }
         List<AppartenanceGroupePolitique> agps =

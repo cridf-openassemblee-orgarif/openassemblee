@@ -156,12 +156,12 @@ public class GroupePolitiqueResourceIntTest {
         restGroupePolitiqueMockMvc.perform(get("/api/groupePolitiques/{id}", groupePolitique.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(groupePolitique.getId().intValue()))
-            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM.toString()))
-            .andExpect(jsonPath("$.nomCourt").value(DEFAULT_NOM_COURT.toString()))
-            .andExpect(jsonPath("$.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
-            .andExpect(jsonPath("$.dateFin").value(DEFAULT_DATE_FIN.toString()))
-            .andExpect(jsonPath("$.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
+            .andExpect(jsonPath("$.groupePolitique.id").value(groupePolitique.getId().intValue()))
+            .andExpect(jsonPath("$.groupePolitique.nom").value(DEFAULT_NOM.toString()))
+            .andExpect(jsonPath("$.groupePolitique.nomCourt").value(DEFAULT_NOM_COURT.toString()))
+            .andExpect(jsonPath("$.groupePolitique.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
+            .andExpect(jsonPath("$.groupePolitique.dateFin").value(DEFAULT_DATE_FIN.toString()))
+            .andExpect(jsonPath("$.groupePolitique.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
     }
 
     @Test
