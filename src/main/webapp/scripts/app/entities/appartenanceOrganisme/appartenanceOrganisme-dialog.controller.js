@@ -25,6 +25,9 @@ angular.module('babylone14166App').controller('AppartenanceOrganismeDialogContro
             $scope.save = function () {
                 $scope.isSaving = true;
                 $scope.appartenanceOrganisme.elu = {id: $stateParams.id};
+                if(typeof $scope.appartenanceOrganisme.codeRNE === 'object') {
+                    $scope.appartenanceOrganisme.codeRNE = $scope.appartenanceOrganisme.codeRNE.codeRNE;
+                }
                 if ($scope.appartenanceOrganisme.id != null) {
                     AppartenanceOrganisme.update($scope.appartenanceOrganisme, onSaveSuccess, onSaveError);
                 } else {
