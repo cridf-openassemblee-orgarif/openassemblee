@@ -11,17 +11,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExportService {
 
-    public byte[] exportToExcel(List<List<String>> lines) {
+    public static class Entry {
+        private String sheetName;
+        private List<List<String>> lines;
+
+        public Entry(String sheetName, List<List<String>> lines) {
+            this.sheetName = sheetName;
+            this.lines = lines;
+        }
+
+        public String getSheetName() {
+            return sheetName;
+        }
+
+        public List<List<String>> getLines() {
+            return lines;
+        }
+    }
+
+    public byte[] exportToExcel(String sheetName, List<List<String>> lines) {
+        return exportToExcel(new Entry(sheetName, lines));
+    }
+
+    public byte[] exportToExcel(Entry... entries) {
         Workbook wb = new XSSFWorkbook();
-        Sheet sheet = wb.createSheet("export");
-        int i = 0;
-        for (List<String> line : lines) {
-            Row row = sheet.createRow(i);
-            i++;
-            int j = 0;
-            for (String cell : line) {
-                row.createCell(j).setCellValue(cell);
-                j++;
+        for(Entry e : entries) {
+            Sheet sheet = wb.createSheet(e.getSheetName());
+            int i = 0;
+            for (List<String> line : e.getLines()) {
+                Row row = sheet.createRow(i);
+                i++;
+                int j = 0;
+                for (String cell : line) {
+                    row.createCell(j).setCellValue(cell);
+                    j++;
+                }
             }
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

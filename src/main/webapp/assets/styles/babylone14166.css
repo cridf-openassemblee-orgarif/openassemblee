@@ -15,6 +15,8 @@ a:visited, a:hover, a:focus {
 .title-box {
     background: #69acd3;
     color: white;
+}
+.title-box-elu {
     word-break: break-all;
 }
 
@@ -92,8 +94,9 @@ a:visited, a:hover, a:focus {
     /*min-height: 156px;*/
 }
 
-.info-box-content-elu h2 {
+.container h2 {
     margin: 0 0 16px 0;
+    font-size: 20px;
 }
 
 .box-body h2 {

@@ -2,7 +2,7 @@
     <section class="content">
         <div class="container">
             <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="info-box title-box">
+                <div class="info-box title-box title-box-elu">
                     <div class="info-box-content-elu">
                         <h1>
                             {{dto.elu.civilite | civilite}} {{dto.elu.prenom}} {{dto.elu.nom}}
@@ -24,9 +24,24 @@
                             </div>
                         </span>
                         <div class="btn-group elu-action">
-                            <button type="button" class="btn btn-default" ui-sref="elu.edit({id:dto.elu.id})">
-                                <span class="fa fa-pencil"></span>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="caret"></span>
                             </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="#" ui-sref="elu.edit({id:dto.elu.id})">
+                                        <span class="fa fa-pencil"></span>
+                                        Éditer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" ng-href="api/elus/{{dto.elu.id}}/export">
+                                        <span class="fa fa-table"></span>
+                                        <span>Export Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -73,5 +88,5 @@
                 <vie-politique-passee></vie-politique-passee>
             </div>
         </div>
-</section>
+    </section>
 </div>

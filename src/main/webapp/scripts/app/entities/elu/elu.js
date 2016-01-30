@@ -47,7 +47,6 @@ angular.module('babylone14166App')
                             }
                         }
                     }).result.then(function (result) {
-                        console.log(result.id);
                         $state.go('elu.detail', {id: result.id}, {reload: true});
                     }, function () {
                         $state.go('elu');
