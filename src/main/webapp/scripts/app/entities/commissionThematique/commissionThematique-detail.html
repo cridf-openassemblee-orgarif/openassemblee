@@ -1,120 +1,108 @@
 <div>
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Commission thématique
-        </h1>
+    <section class="content">
+        <div class="container">
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="info-box title-box">
+                    <div class="info-box-content-elu">
+                        <h1>
+                            {{dto.commissionThematique.nom}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-content-elu">
+                        <span class="info-box-info-elu">
+                            <div>
+                                <span class="lg">Nom court</span> {{dto.commissionThematique.nomCourt}}
+                            </div>
+                            <div>
+                                <span class="lg">Date de début</span> {{dto.commissionThematique.dateDebut}}
+                            </div>
+                            <div ng-if="dto.commissionThematique.dateFin">
+                                <span class="lg">Dissolu le</span> {{dto.commissionThematique.dateFin}}
+                                <span class="lg">pour le motif suivant :</span> {{dto.commissionThematique.motifFin}}
+                            </div>
+                        </span>
+                        <div class="btn-group elu-action">
+
+                        </div>
+                        <div class="btn-group elu-action">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="#" ui-sref="commissionThematique.detail.fin"
+                                       ng-if="dto.commissionThematique.dateFin==undefined">
+                                        <span class="fa fa-pencil"></span>
+                                        Fixer une date et un motif de fin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ng-href="api/commissionThematiques/{{dto.commissionThematique.id}}/export">
+                                        <span class="fa fa-table"></span>
+                                        <span>Export Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h2 class="col-md-12"
+                ng-if="!dto.appartenanceCommissionThematiqueDTOs.length && !dto.fonctionCommissionThematiqueDTOs.length">
+                Aucun élu dans la commission thématique
+            </h2>
+            <div class="col-md-12" ng-if="dto.appartenanceCommissionThematiqueDTOs.length">
+                <h2>Les élus dans la commission</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component"
+                             ui-sref="elu.detail({id:a.elu.id})">
+                        <span class="info-box-photo">
+                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                        </span>
+
+                            <div class="info-box-content">
+                        <span
+                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                <div class="info-box-info">
+                                    <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-if="dto.fonctionCommissionThematiqueDTOs.length">
+                <h2>Les élus en fonction dans la commission</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component"
+                             ui-sref="elu.detail({id:a.elu.id})">
+                        <span class="info-box-photo">
+                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                        </span>
+
+                            <div class="info-box-content">
+                        <span
+                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                <div class="info-box-info">
+                                    {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
+                                    {{a.fonctionCommissionThematique.dateDebut}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-
-    <div class="content">
-        <div class="row">
-            <div class="col-lg-12 align-right">
-                <a class="btn btn-sm btn-primary"
-                   href="api/commissionThematiques/{{dto.commissionThematique.id}}/export">
-                    <span class="fa fa-table"></span>
-                    <span>Export Excel</span>
-                </a>
-            </div>
-        </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Nom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.commissionThematique.nom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>NomCourt</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.commissionThematique.nomCourt}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.commissionThematique.dateDebut | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.commissionThematique.dateFin | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>MotifFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.commissionThematique.motifFin}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div ng-if="dto.commissionThematique.dateFin==undefined">
-        <button class="btn btn-sm btn-primary"
-                ui-sref="dto.commissionThematique.detail.fin">
-            Fixer une date et un motif de fin de la commission
-        </button>
-    </div>
-
-    <h2>Les élus dans la commission</h2>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
-             ng-if="a.dateFin == null">
-            <div class="info-box entity-component"
-                 ui-sref="elu.detail({id:a.elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                        </span>
-
-                <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                    <div class="info-box-info">
-                        <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h2>Les élus en fonction dans la commission</h2>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
-             ng-if="a.dateFin == null">
-            <div class="info-box entity-component"
-                 ui-sref="elu.detail({id:a.elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                        </span>
-
-                <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                    <div class="info-box-info">
-                        {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
-                        {{a.fonctionCommissionThematique.dateDebut}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

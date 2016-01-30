@@ -4,10 +4,10 @@ angular.module('babylone14166App').controller('CommissionThematiqueDialogControl
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'CommissionThematique',
         function($scope, $stateParams, $modalInstance, entity, CommissionThematique) {
 
-        $scope.commissionThematique = entity;
+        $scope.dto = entity;
         $scope.load = function(id) {
             CommissionThematique.get({id : id}, function(result) {
-                $scope.commissionThematique = result;
+                $scope.dto = result;
             });
         };
 
@@ -23,10 +23,10 @@ angular.module('babylone14166App').controller('CommissionThematiqueDialogControl
 
         $scope.save = function () {
             $scope.isSaving = true;
-            if ($scope.commissionThematique.id != null) {
-                CommissionThematique.update($scope.commissionThematique, onSaveSuccess, onSaveError);
+            if ($scope.dto.commissionThematique.id != null) {
+                CommissionThematique.update($scope.dto.commissionThematique, onSaveSuccess, onSaveError);
             } else {
-                CommissionThematique.save($scope.commissionThematique, onSaveSuccess, onSaveError);
+                CommissionThematique.save($scope.dto.commissionThematique, onSaveSuccess, onSaveError);
             }
         };
 

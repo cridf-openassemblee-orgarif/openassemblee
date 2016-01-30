@@ -123,7 +123,7 @@ public class CommissionThematiqueResource {
                 CommissionThematique ct = ctDTO.getCommissionThematique();
                 lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt(), ctDTO.getCount() + " membres"));
             }
-            byte[] export = exportService.exportToExcel(lines);
+            byte[] export = exportService.exportToExcel("Commission thématiques", lines);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-disposition", "attachment; filename=commissions-thematiques.xlsx");
@@ -165,10 +165,11 @@ public class CommissionThematiqueResource {
             CommissionThematique ct = dto.getCommissionThematique();
             lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
             lines.add(new ArrayList<>());
+            // TODO autre sheet ?
             for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
                 lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
             }
-            byte[] export = exportService.exportToExcel(lines);
+            byte[] export = exportService.exportToExcel("Commission thématique", lines);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-disposition", "attachment; filename=commission-thematique-" + id + ".xlsx");

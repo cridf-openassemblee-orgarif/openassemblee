@@ -18,25 +18,6 @@ angular.module('babylone14166App')
                 },
                 resolve: {}
             })
-            .state('commissionThematique.detail', {
-                parent: 'commissionThematique',
-                url: '/commission-thematique/{id}',
-                data: {
-                    authorities: ['ROLE_USER'],
-                    pageTitle: 'CommissionThematique'
-                },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/entities/commissionThematique/commissionThematique-detail.html',
-                        controller: 'CommissionThematiqueDetailController'
-                    }
-                },
-                resolve: {
-                    entity: ['$stateParams', 'CommissionThematique', function ($stateParams, CommissionThematique) {
-                        return CommissionThematique.get({id: $stateParams.id});
-                    }]
-                }
-            })
             .state('commissionThematique.new', {
                 parent: 'commissionThematique',
                 url: '/new',
@@ -61,11 +42,30 @@ angular.module('babylone14166App')
                             }
                         }
                     }).result.then(function (result) {
-                        $state.go('commissionThematique', null, {reload: true});
+                        $state.go('commissionThematique.detail', {id: result.id}, {reload: true});
                     }, function () {
                         $state.go('commissionThematique');
                     })
                 }]
+            })
+            .state('commissionThematique.detail', {
+                parent: 'commissionThematique',
+                url: '/{id}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'CommissionThematique'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/commissionThematique/commissionThematique-detail.html',
+                        controller: 'CommissionThematiqueDetailController'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'CommissionThematique', function ($stateParams, CommissionThematique) {
+                        return CommissionThematique.get({id: $stateParams.id});
+                    }]
+                }
             })
             .state('commissionThematique.edit', {
                 parent: 'commissionThematique',
