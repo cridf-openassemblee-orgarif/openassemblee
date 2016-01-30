@@ -59,7 +59,7 @@ public class GroupePolitiqueService {
         List<FonctionGroupePolitique> ftps =
             fonctionGroupePolitiqueRepository.findAllByGroupePolitique(gp);
         List<FonctionGroupePolitiqueDTO> ftpDtps = ftps.stream()
-            .filter(GroupePolitiqueService::isAppartenanceCourante)
+            .filter(GroupePolitiqueService::isFonctionCourante)
             .map(a -> new FonctionGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
         return new GroupePolitiqueDTO(gp, agpDtos, ftpDtps);
@@ -72,7 +72,7 @@ public class GroupePolitiqueService {
         return a.getDateFin() == null;
     }
 
-    public static boolean isAppartenanceCourante(FonctionGroupePolitique f) {
+    public static boolean isFonctionCourante(FonctionGroupePolitique f) {
         // plus tard : || f.getDateFin().isAfter(LocalDate.now())
         return f.getDateFin() == null;
     }

@@ -155,8 +155,7 @@ public class GroupePolitiqueResource {
                 String adresse = gp.getAdressePostale() != null ? gp.getAdressePostale().getOneline() : "Pas d'adresse";
                 lines.add(Arrays.asList(gp.getNom(), gp.getNomCourt(), gpDto.getCount() + " membres", adresse));
             }
-            byte[] export = exportService.exportToExcel(lines);
-
+            byte[] export = exportService.exportToExcel("Groupes politiques", lines);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-disposition", "attachment; filename=groupes-politiques.xlsx");
             Streams.copy(export, response.getOutputStream());

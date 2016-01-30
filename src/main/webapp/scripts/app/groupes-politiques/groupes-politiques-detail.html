@@ -1,117 +1,100 @@
 <div>
-    <h2><span>GroupePolitique</span> {{dto.groupePolitique.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Nom</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.groupePolitique.nom}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>NomCourt</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.groupePolitique.nomCourt}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.groupePolitique.dateDebut | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.groupePolitique.dateFin | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>MotifFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{dto.groupePolitique.motifFin}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <span class="info-box-photo">
-            <img ng-if="dto.groupePolitique.image" class="profile-image" ng-src="images/{{dto.groupePolitique.image}}"/>
-        </span>
-        <button class="btn btn-sm btn-primary"
-                ui-sref="groupesPolitiques.detail.uploadImage">
-            Ajouter une image
-        </button>
-    </div>
-
-    <div ng-if="dto.groupePolitique.dateFin==undefined">
-        <button class="btn btn-sm btn-primary"
-                ui-sref="groupesPolitiques.detail.fin">
-            Fixer une date et un motif de fin du groupe
-        </button>
-    </div>
-
-    <br/>
-
-    <h2>Les élus du groupe</h2>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceGroupePolitiqueDTOs"
-             ng-if="a.dateFin == null">
-            <div class="info-box entity-component"
-                 ui-sref="elu.detail({id:a.elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+    <section class="content">
+        <div class="container">
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="info-box title-box">
+                    <div class="info-box-content-elu">
+                        <h1>
+                            {{dto.groupePolitique.nom}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-content-elu">
+                        <span class="info-box-info-elu">
+                            <div>
+                                <span class="lg">Nom court</span> {{dto.groupePolitique.nomCourt}}
+                            </div>
+                            <div>
+                                <span class="lg">Date de début</span> {{dto.groupePolitique.dateDebut}}
+                            </div>
+                            <div ng-if="dto.groupePolitique.dateFin">
+                                <span class="lg">Dissolu le</span> {{dto.groupePolitique.dateFin}}
+                                <span class="lg">pour le motif suivant :</span> {{dto.groupePolitique.motifFin}}
+                            </div>
                         </span>
-
-                <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                    <div class="info-box-info">
-                        <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut}}
+                        <div class="btn-group elu-action">
+                            <button type="button" class="btn btn-default" ui-sref="groupesPolitiques.detail.fin"
+                                    ng-if="dto.groupePolitique.dateFin==undefined">
+                                <span class="fa fa-pencil"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="info-box">
+                    <div class="info-box-photo-big">
+                        <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
+                             ui-sref="groupesPolitiques.detail.uploadImage"/>
+                        <button ng-if="dto.groupePolitique.image == null" class="btn btn-sm btn-primary"
+                                ui-sref="groupesPolitiques.detail.uploadImage">
+                            Ajouter une image
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <h2>Les élus en fonction dans le groupe</h2>
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionGroupePolitiqueDTOs"
-             ng-if="a.dateFin == null">
-            <div class="info-box entity-component"
-                 ui-sref="elu.detail({id:a.elu.id})">
+        <div class="container">
+            <h2 class="col-md-12"
+                ng-if="!dto.appartenanceGroupePolitiqueDTOs.length && !dto.fonctionGroupePolitiqueDTOs.length">
+                Aucun élu dans le groupe politique
+            </h2>
+            <div class="col-md-12" ng-if="dto.appartenanceGroupePolitiqueDTOs.length">
+                <h2>Les élus du groupe</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceGroupePolitiqueDTOs"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component"
+                             ui-sref="elu.detail({id:a.elu.id})">
                         <span class="info-box-photo">
                             <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
                         </span>
 
-                <div class="info-box-content">
+                            <div class="info-box-content">
                         <span
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                    <div class="info-box-info">
-                        {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
-                        {{a.fonctionGroupePolitique.dateDebut}}
+                                <div class="info-box-info">
+                                    <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" ng-if="dto.fonctionGroupePolitiqueDTOs.length">
+                <h2>Les élus en fonction dans le groupe</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionGroupePolitiqueDTOs"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component"
+                             ui-sref="elu.detail({id:a.elu.id})">
+                        <span class="info-box-photo">
+                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                        </span>
+
+                            <div class="info-box-content">
+                        <span
+                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                <div class="info-box-info">
+                                    {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
+                                    {{a.fonctionGroupePolitique.dateDebut}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
