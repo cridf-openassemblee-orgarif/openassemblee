@@ -4,6 +4,7 @@ import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.COM
 import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.ELU;
 import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.GROUPE_POLITIQUE;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.springframework.data.elasticsearch.annotations.FieldType.Auto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,11 @@ import org.springframework.stereotype.Service;
 
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
+@Transactional
 public class IndexService {
 
     private final Logger logger = LoggerFactory.getLogger(IndexService.class);
@@ -49,12 +52,18 @@ public class IndexService {
     @Autowired
     protected CommissionThematiqueSearchRepository commissionThematiqueSearchRepository;
 
+    @Autowired
+    protected FonctionExecutiveRepository fonctionExecutiveRepository;
+    @Autowired
+    protected FonctionExecutiveSearchRepository fonctionExecutiveSearchRepository;
+
     public void resetIndex() {
         logger.debug("Reset search index");
         resetRepository(eluRepository, eluSearchRepository);
         resetRepository(groupePolitiqueRepository, groupePolitiqueSearchRepository);
         resetRepository(organismeRepository, organismeSearchRepository);
         resetRepository(commissionThematiqueRepository, commissionThematiqueSearchRepository);
+        resetRepository(fonctionExecutiveRepository, fonctionExecutiveSearchRepository);
     }
 
     private <T> void resetRepository(JpaRepository<T, Long> jpaRepository,
@@ -70,8 +79,7 @@ public class IndexService {
         List<SearchResultDTO> results = new ArrayList<>();
         results.addAll(StreamSupport
             .stream(eluSearchRepository.search(qb).spliterator(), false)
-            .map(e -> new SearchResultDTO(ELU, e.getId(),
-                e.getCivilite().label() + " " + e.getPrenom() + " " + e.getNom(), e.getImage()))
+            .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
             .collect(Collectors.toList()));
         if(results.size() < 20 ) {
             results.addAll(StreamSupport
@@ -83,6 +91,13 @@ public class IndexService {
                     .stream(commissionThematiqueSearchRepository.search(qb).spliterator(), false)
                     .map(e -> new SearchResultDTO(COMMISSION_THEMATIQUE, e.getId(), e.getNom(), null))
                     .collect(Collectors.toList()));
+                if (results.size() < 20) {
+                    results.addAll(StreamSupport
+                        .stream(fonctionExecutiveSearchRepository.search(qb).spliterator(), false)
+                        .map(f -> eluRepository.getOne(f.getElu().getId()))
+                        .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
+                        .collect(Collectors.toList()));
+                }
             }
         }
         if(results.size() > 20 ) {

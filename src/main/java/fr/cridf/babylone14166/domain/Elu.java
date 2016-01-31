@@ -261,7 +261,7 @@ public class Elu implements Serializable {
     }
 
     public void setAppartenancesCommissionPermanente(List<AppartenanceCommissionPermanente>
-        appartenancesCommissionPermanente) {
+                                                         appartenancesCommissionPermanente) {
         this.appartenancesCommissionPermanente = appartenancesCommissionPermanente;
     }
 
@@ -286,7 +286,7 @@ public class Elu implements Serializable {
     }
 
     public void setAppartenancesCommissionsThematiques(Set<AppartenanceCommissionThematique>
-        appartenancesCommissionsThematiques) {
+                                                           appartenancesCommissionsThematiques) {
         this.appartenancesCommissionsThematiques = appartenancesCommissionsThematiques;
     }
 
@@ -312,6 +312,13 @@ public class Elu implements Serializable {
 
     public void setAppartenancesOrganismes(Set<AppartenanceOrganisme> appartenancesOrganismes) {
         this.appartenancesOrganismes = appartenancesOrganismes;
+    }
+
+    public String civiliteComplete() {
+        String c = civilite != null ? civilite.label() + " " : "";
+        c += prenom != null ? prenom + " " : "";
+        c += nom != null ? nom + " " : "";
+        return c;
     }
 
     @Override
