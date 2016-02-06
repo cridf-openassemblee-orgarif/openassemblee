@@ -23,7 +23,6 @@
             </column>
             <column name="nom" type="varchar(255)"/>
             <column name="code_rne" type="varchar(255)"/>
-            <column name="siret" type="varchar(255)"/>
             <column name="sigle" type="varchar(255)"/>
             <column name="type" type="varchar(255)"/>
             <column name="secteur" type="varchar(255)"/>

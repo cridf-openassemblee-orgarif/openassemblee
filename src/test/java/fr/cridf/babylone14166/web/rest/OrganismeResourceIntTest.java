@@ -48,8 +48,6 @@ public class OrganismeResourceIntTest {
     private static final String UPDATED_NOM = "BBBBB";
     private static final String DEFAULT_CODE_RNE = "AAAAA";
     private static final String UPDATED_CODE_RNE = "BBBBB";
-    private static final String DEFAULT_SIRET = "AAAAA";
-    private static final String UPDATED_SIRET = "BBBBB";
     private static final String DEFAULT_SIGLE = "AAAAA";
     private static final String UPDATED_SIGLE = "BBBBB";
     private static final String DEFAULT_TYPE = "AAAAA";
@@ -97,7 +95,6 @@ public class OrganismeResourceIntTest {
         organisme = new Organisme();
         organisme.setNom(DEFAULT_NOM);
         organisme.setCodeRNE(DEFAULT_CODE_RNE);
-        organisme.setSiret(DEFAULT_SIRET);
         organisme.setSigle(DEFAULT_SIGLE);
         organisme.setType(DEFAULT_TYPE);
         organisme.setSecteur(DEFAULT_SECTEUR);
@@ -124,7 +121,6 @@ public class OrganismeResourceIntTest {
         Organisme testOrganisme = organismes.get(organismes.size() - 1);
         assertThat(testOrganisme.getNom()).isEqualTo(DEFAULT_NOM);
         assertThat(testOrganisme.getCodeRNE()).isEqualTo(DEFAULT_CODE_RNE);
-        assertThat(testOrganisme.getSiret()).isEqualTo(DEFAULT_SIRET);
         assertThat(testOrganisme.getSigle()).isEqualTo(DEFAULT_SIGLE);
         assertThat(testOrganisme.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testOrganisme.getSecteur()).isEqualTo(DEFAULT_SECTEUR);
@@ -146,7 +142,6 @@ public class OrganismeResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(organisme.getId().intValue())))
                 .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM.toString())))
                 .andExpect(jsonPath("$.[*].codeRNE").value(hasItem(DEFAULT_CODE_RNE.toString())))
-                .andExpect(jsonPath("$.[*].siret").value(hasItem(DEFAULT_SIRET.toString())))
                 .andExpect(jsonPath("$.[*].sigle").value(hasItem(DEFAULT_SIGLE.toString())))
                 .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
                 .andExpect(jsonPath("$.[*].secteur").value(hasItem(DEFAULT_SECTEUR.toString())))
@@ -168,7 +163,6 @@ public class OrganismeResourceIntTest {
             .andExpect(jsonPath("$.id").value(organisme.getId().intValue()))
             .andExpect(jsonPath("$.nom").value(DEFAULT_NOM.toString()))
             .andExpect(jsonPath("$.codeRNE").value(DEFAULT_CODE_RNE.toString()))
-            .andExpect(jsonPath("$.siret").value(DEFAULT_SIRET.toString()))
             .andExpect(jsonPath("$.sigle").value(DEFAULT_SIGLE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.secteur").value(DEFAULT_SECTEUR.toString()))
@@ -196,7 +190,6 @@ public class OrganismeResourceIntTest {
         // Update the organisme
         organisme.setNom(UPDATED_NOM);
         organisme.setCodeRNE(UPDATED_CODE_RNE);
-        organisme.setSiret(UPDATED_SIRET);
         organisme.setSigle(UPDATED_SIGLE);
         organisme.setType(UPDATED_TYPE);
         organisme.setSecteur(UPDATED_SECTEUR);
@@ -215,7 +208,6 @@ public class OrganismeResourceIntTest {
         Organisme testOrganisme = organismes.get(organismes.size() - 1);
         assertThat(testOrganisme.getNom()).isEqualTo(UPDATED_NOM);
         assertThat(testOrganisme.getCodeRNE()).isEqualTo(UPDATED_CODE_RNE);
-        assertThat(testOrganisme.getSiret()).isEqualTo(UPDATED_SIRET);
         assertThat(testOrganisme.getSigle()).isEqualTo(UPDATED_SIGLE);
         assertThat(testOrganisme.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testOrganisme.getSecteur()).isEqualTo(UPDATED_SECTEUR);

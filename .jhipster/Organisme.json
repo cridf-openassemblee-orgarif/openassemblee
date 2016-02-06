@@ -21,36 +21,31 @@
         },
         {
             "fieldId": 3,
-            "fieldName": "siret",
-            "fieldType": "String"
-        },
-        {
-            "fieldId": 4,
             "fieldName": "sigle",
             "fieldType": "String"
         },
         {
-            "fieldId": 5,
+            "fieldId": 4,
             "fieldName": "type",
             "fieldType": "String"
         },
         {
-            "fieldId": 6,
+            "fieldId": 5,
             "fieldName": "secteur",
             "fieldType": "String"
         },
         {
-            "fieldId": 7,
+            "fieldId": 6,
             "fieldName": "dateDebut",
             "fieldType": "LocalDate"
         },
         {
-            "fieldId": 8,
+            "fieldId": 7,
             "fieldName": "dateFin",
             "fieldType": "LocalDate"
         },
         {
-            "fieldId": 9,
+            "fieldId": 8,
             "fieldName": "motifFin",
             "fieldType": "String"
         }

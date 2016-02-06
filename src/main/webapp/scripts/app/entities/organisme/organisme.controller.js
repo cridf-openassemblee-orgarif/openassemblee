@@ -37,7 +37,6 @@ angular.module('babylone14166App')
             $scope.organisme = {
                 nom: null,
                 codeRNE: null,
-                siret: null,
                 sigle: null,
                 type: null,
                 secteur: null,

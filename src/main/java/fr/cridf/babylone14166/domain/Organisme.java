@@ -28,9 +28,6 @@ public class Organisme implements Serializable {
     @Column(name = "code_rne")
     private String codeRNE;
 
-    @Column(name = "siret")
-    private String siret;
-
     @Column(name = "sigle")
     private String sigle;
 
@@ -74,14 +71,6 @@ public class Organisme implements Serializable {
 
     public void setCodeRNE(String codeRNE) {
         this.codeRNE = codeRNE;
-    }
-
-    public String getSiret() {
-        return siret;
-    }
-
-    public void setSiret(String siret) {
-        this.siret = siret;
     }
 
     public String getSigle() {
@@ -163,7 +152,6 @@ public class Organisme implements Serializable {
             "id=" + id +
             ", nom='" + nom + "'" +
             ", codeRNE='" + codeRNE + "'" +
-            ", siret='" + siret + "'" +
             ", sigle='" + sigle + "'" +
             ", type='" + type + "'" +
             ", secteur='" + secteur + "'" +

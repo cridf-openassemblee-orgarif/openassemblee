@@ -18,10 +18,8 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <!--<th>ID</th>-->
                     <th>Nom</th>
-                    <th>Code RNE</th>
-                    <th>Siret</th>
+                    <th>Code RNE / Siret</th>
                     <th>Sigle</th>
                     <th>Type</th>
                     <th>Secteur</th>
@@ -30,10 +28,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="organisme in organismes track by organisme.id">
-                    <!--<td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.id}}</a></td>-->
                     <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.nom}}</a></td>
                     <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.codeRNE}}</a></td>
-                    <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.siret}}</a></td>
                     <td>{{organisme.sigle}}</td>
                     <td>{{organisme.type}}</td>
                     <td>{{organisme.secteur}}</td>

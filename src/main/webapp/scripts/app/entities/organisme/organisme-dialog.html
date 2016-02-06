@@ -4,31 +4,19 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myOrganismeLabel">Create or edit a Organisme</h4>
+        <h4 class="modal-title" id="myOrganismeLabel">Ajouter ou éditer un organisme</h4>
     </div>
     <div class="modal-body">
-        <jh-alert-error></jh-alert-error>
         <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="organisme.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_nom">Nom</label>
+            <label class="control-label" for="field_nom">Nom de l'organisme</label>
             <input type="text" class="form-control" name="nom" id="field_nom"
                     ng-model="organisme.nom"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_codeRNE">CodeRNE</label>
+            <label class="control-label" for="field_codeRNE">Code RNE / Siret</label>
             <input type="text" class="form-control" name="codeRNE" id="field_codeRNE"
                     ng-model="organisme.codeRNE"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_siret">Siret</label>
-            <input type="text" class="form-control" name="siret" id="field_siret"
-                    ng-model="organisme.siret"
                      />
         </div>
         <div class="form-group">
@@ -38,31 +26,31 @@
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_type">Type</label>
+            <label class="control-label" for="field_type">Type d'organisme</label>
             <input type="text" class="form-control" name="type" id="field_type"
                     ng-model="organisme.type"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_secteur">Secteur</label>
+            <label class="control-label" for="field_secteur">Secteur d'activité</label>
             <input type="text" class="form-control" name="secteur" id="field_secteur"
                     ng-model="organisme.secteur"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDebut">DateDebut</label>
+            <label class="control-label" for="field_dateDebut">Date de création</label>
             <input type="text" bs-datepicker class="form-control" name="dateDebut" id="field_dateDebut"
                    ng-model="organisme.dateDebut"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateFin">DateFin</label>
+            <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
                    ng-model="organisme.dateFin"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifFin">MotifFin</label>
+            <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="form-control" name="motifFin" id="field_motifFin"
                     ng-model="organisme.motifFin"
                      />
