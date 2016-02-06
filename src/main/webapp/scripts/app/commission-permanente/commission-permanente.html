@@ -24,8 +24,9 @@
                         </span>
 
                             <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
+                                <span
+                                    class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
+                                <span class="info-box-info fonction">{{f.fonction}}</span>
                                 <div class="info-box-info">
                                     Depuis le {{f.dateDebut}}
                                     <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
