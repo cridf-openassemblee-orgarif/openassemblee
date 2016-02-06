@@ -91,9 +91,13 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
         };
 
-        $rootScope.professionsAutocomplete = autocomplete(professions);
         $rootScope.finsDeMandatAutocomplete = autocomplete(finsDeMandat);
         $rootScope.finsGroupePolitiqueAutocomplete = autocomplete(finsGroupePolitique);
+        $rootScope.typesOrganismeAutocomplete = autocomplete(typesOrganisme);
+        $rootScope.secteursActiviteAutocomplete = autocomplete(secteursActivite);
+        $rootScope.statutsAppartenanceOrganismeAutocomplete = autocomplete(statutsAppartenanceOrganisme);
+        $rootScope.typesNominationAutocomplete = autocomplete(typesNomination);
+        $rootScope.professionsAutocomplete = autocomplete(professions);
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast

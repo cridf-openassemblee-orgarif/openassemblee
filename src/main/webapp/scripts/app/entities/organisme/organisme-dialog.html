@@ -1,4 +1,3 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
 
     <div class="modal-header">
@@ -10,50 +9,46 @@
         <div class="form-group">
             <label class="control-label" for="field_nom">Nom de l'organisme</label>
             <input type="text" class="form-control" name="nom" id="field_nom"
-                    ng-model="organisme.nom"
-                     />
+                   ng-model="organisme.nom"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_codeRNE">Code RNE / Siret</label>
             <input type="text" class="form-control" name="codeRNE" id="field_codeRNE"
-                    ng-model="organisme.codeRNE"
-                     />
+                   ng-model="organisme.codeRNE"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_sigle">Sigle</label>
             <input type="text" class="form-control" name="sigle" id="field_sigle"
-                    ng-model="organisme.sigle"
-                     />
+                   ng-model="organisme.sigle"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_type">Type d'organisme</label>
-            <input type="text" class="form-control" name="type" id="field_type"
-                    ng-model="organisme.type"
-                     />
+            <input type="text" class="typeahead form-control" name="type" id="field_type"
+                   options="typeaheadOptionsZeroChar" datasets="typesOrganismeAutocomplete"
+                   ng-model="organisme.type"
+                   sf-typeahead autocomplete="off"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_secteur">Secteur d'activité</label>
-            <input type="text" class="form-control" name="secteur" id="field_secteur"
-                    ng-model="organisme.secteur"
-                     />
+            <input type="text" class="typeahead form-control" name="secteur" id="field_secteur"
+                   options="typeaheadOptionsZeroChar" datasets="secteursActiviteAutocomplete"
+                   ng-model="organisme.secteur"
+                   sf-typeahead autocomplete="off"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateDebut">Date de création</label>
             <input type="text" bs-datepicker class="form-control" name="dateDebut" id="field_dateDebut"
-                   ng-model="organisme.dateDebut"
-                     />
+                   ng-model="organisme.dateDebut"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
-                   ng-model="organisme.dateFin"
-                     />
+                   ng-model="organisme.dateFin"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                    ng-model="organisme.motifFin"
-                     />
+                   ng-model="organisme.motifFin"/>
         </div>
 
     </div>
