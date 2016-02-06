@@ -234,3 +234,15 @@ h2 {
     font-size: 20px;
     border: 1px solid #1b8dbb;
 }
+
+.commission-permanente {
+    margin: 20px 10px;
+    padding: 10px 40px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+}
+
+.commission-permanente h2 {
+    text-align: center;
+    margin: 0 0 20px 0;
+}
