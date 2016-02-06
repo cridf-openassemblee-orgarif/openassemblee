@@ -118,6 +118,7 @@ public class EluService {
             .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
         Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
             .map(a -> a.getCodeRNE())
+            .filter(r -> r != null && !r.equals(""))
             .distinct()
             // anti-NPE
             .map(rne -> new Object[] { rne, organismeRepository.findOneByCodeRNE(rne) })
