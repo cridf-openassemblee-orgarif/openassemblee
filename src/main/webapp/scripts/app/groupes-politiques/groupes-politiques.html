@@ -27,20 +27,21 @@
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
                 <div class="info-box entity-component"
-                     ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})">
+                     ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})"
+                     ng-if="!dto.groupePolitique.dateFin">
                     <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
-                            <span class="info-box-photo bg-white">
-                              <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"/>
-                            </span>
+                    <span class="info-box-photo bg-white">
+                      <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"/>
+                    </span>
 
                     <div class="info-box-content">
-                                <span class="info-box-titre">
-                                    {{dto.groupePolitique.nom}}
-                                    <span class="grey">({{dto.groupePolitique.nomCourt}})</span>
-                                </span>
-                                <span class="info-box-info">
-                                    {{dto.count}} membres
-                                </span>
+                        <span class="info-box-titre">
+                            {{dto.groupePolitique.nom}}
+                            <span class="grey">({{dto.groupePolitique.nomCourt}})</span>
+                        </span>
+                        <span class="info-box-info">
+                            {{dto.count}} membres
+                        </span>
                         <!--<span class="info-box-info">-->
                         <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
                         <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
@@ -50,6 +51,48 @@
                     <!-- /.info-box-content -->
                 </div>
                 <!-- /.info-box -->
+            </div>
+        </div>
+        <div class="box box-default box-solid collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Groupes politiques fermés</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                        class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body groupes-fermes" style="display: none;">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
+                        <div class="info-box entity-component"
+                             ui-sref="groupesPolitiques.detail({id:dto.groupePolitique.id})"
+                             ng-if="dto.groupePolitique.dateFin">
+                            <!--<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-user"></i></span>-->
+                            <span class="info-box-photo bg-white">
+                              <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"/>
+                            </span>
+
+                            <div class="info-box-content">
+                                    <span class="info-box-titre">
+                                        {{dto.groupePolitique.nom}}
+                                        <span class="grey">({{dto.groupePolitique.nomCourt}})</span>
+                                    </span>
+                                    <span class="info-box-info">
+                                        {{dto.count}} membres
+                                    </span>
+                                <!--<span class="info-box-info">-->
+                                <!--<span class="lg">Né le</span> {{elu.dateNaissance}}-->
+                                <!--<span class="lg">à</span> {{elu.lieuNaissance}}-->
+                                <!--</span>-->
+                                <!--<span class="info-box-info"><span class="lg">Profession :</span> {{elu.profession}}</span>-->
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
