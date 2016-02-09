@@ -42,6 +42,7 @@ liquibase:
 
 server:
     port: 8080
+    contextPath: /angel
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
