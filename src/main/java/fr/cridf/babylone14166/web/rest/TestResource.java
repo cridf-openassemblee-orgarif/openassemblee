@@ -19,21 +19,22 @@ public class TestResource {
     @Autowired
     private IndexService indexService;
 
-    @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
+    // TODO tout ça devrait être en POST
+    @RequestMapping(value = "/index-reset", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<Void> resetIndex() {
         indexService.resetIndex();
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/inject-test-data", method = RequestMethod.POST)
+    @RequestMapping(value = "/inject-test-data", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<Void> injectTestData() {
         testDataInjector.injectTestData();
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/inject-organismes", method = RequestMethod.POST)
+    @RequestMapping(value = "/inject-organismes", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<Void> injectOrganismes() {
         testDataInjector.injectOrganismes();
