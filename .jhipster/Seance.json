@@ -1,0 +1,23 @@
+{
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "intitule",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "type",
+            "fieldType": "TypeSeance",
+            "fieldValues": "PLENIERE, COMMISSION_PERMANENTE"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "changelogDate": "20160804111818",
+    "dto": "no",
+    "pagination": "pagination"
+}
