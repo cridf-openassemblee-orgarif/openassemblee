@@ -260,3 +260,9 @@ h2 {
 .table-info-box {
     padding: 10px;
 }
+
+.error-message {
+    padding: 0 0 12px 0;
+    color: #910507;
+    font-weight: bold;
+}

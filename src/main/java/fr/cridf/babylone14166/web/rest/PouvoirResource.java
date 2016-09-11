@@ -3,7 +3,6 @@ package fr.cridf.babylone14166.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Pouvoir;
 import fr.cridf.babylone14166.repository.PouvoirRepository;
-import fr.cridf.babylone14166.repository.search.PouvoirSearchRepository;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -21,10 +20,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Pouvoir.
@@ -37,9 +32,6 @@ public class PouvoirResource {
 
     @Inject
     private PouvoirRepository pouvoirRepository;
-
-    @Inject
-    private PouvoirSearchRepository pouvoirSearchRepository;
 
     /**
      * POST  /pouvoirs -> Create a new pouvoir.
@@ -54,7 +46,6 @@ public class PouvoirResource {
             return ResponseEntity.badRequest().header("Failure", "A new pouvoir cannot already have an ID").body(null);
         }
         Pouvoir result = pouvoirRepository.save(pouvoir);
-        pouvoirSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/pouvoirs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("pouvoir", result.getId().toString()))
             .body(result);
@@ -73,7 +64,6 @@ public class PouvoirResource {
             return createPouvoir(pouvoir);
         }
         Pouvoir result = pouvoirRepository.save(pouvoir);
-        pouvoirSearchRepository.save(pouvoir);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("pouvoir", pouvoir.getId().toString()))
             .body(result);
@@ -119,21 +109,7 @@ public class PouvoirResource {
     public ResponseEntity<Void> deletePouvoir(@PathVariable Long id) {
         log.debug("REST request to delete Pouvoir : {}", id);
         pouvoirRepository.delete(id);
-        pouvoirSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("pouvoir", id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/pouvoirs/:query -> search for the pouvoir corresponding
-     * to the query.
-     */
-    @RequestMapping(value = "/_search/pouvoirs/{query}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public List<Pouvoir> searchPouvoirs(@PathVariable String query) {
-        return StreamSupport
-            .stream(pouvoirSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
 }
