@@ -6,15 +6,15 @@
     </section>
 
     <div class="container">
-        <div class="row">
+        <div class="row buttons">
             <div class="col-lg-12 align-right">
                 <button class="btn btn-sm btn-primary" ui-sref="organisme.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Créer un nouvel organisme</span>
+                    <span class="glyphicon glyphicon-plus"></span> <span>Créer un nouvel organisme</span>
                 </button>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -35,19 +35,14 @@
                     <td>{{organisme.secteur}}</td>
                     <td>
                         <button type="submit"
-                                ui-sref="organisme.detail({id:organisme.id})"
-                                class="btn btn-sm btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
-                        </button>
-                        <button type="submit"
                                 ui-sref="organisme.edit({id:organisme.id})"
                                 class="btn btn-sm btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
                         </button>
                         <button type="submit"
                                 ui-sref="organisme.delete({id:organisme.id})"
                                 class="btn btn-sm btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
                         </button>
                     </td>
                 </tr>
