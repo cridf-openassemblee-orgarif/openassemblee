@@ -37,6 +37,7 @@
                    ng-model="pouvoirTemp.heureDebutAsTime"
             />
         </div>
+        <a ng-click="debutIsNow()">Fixer l'heure actuelle en heure de début</a>
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
             <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
@@ -49,6 +50,7 @@
                    ng-model="pouvoirTemp.heureFinAsTime"
             />
         </div>
+        <a ng-click="finIsNow()">Fixer l'heure actuelle en heure de fin</a>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

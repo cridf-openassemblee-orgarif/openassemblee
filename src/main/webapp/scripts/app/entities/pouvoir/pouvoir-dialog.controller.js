@@ -53,6 +53,22 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             $scope.isSaving = false;
         };
 
+        $scope.debutIsNow = function() {
+            var date = new Date();
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+            $scope.pouvoir.dateDebut = date;
+            $scope.pouvoirTemp.heureDebutAsTime = date;
+        };
+
+        $scope.finIsNow = function() {
+            var date = new Date();
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+            $scope.pouvoir.dateFin = date;
+            $scope.pouvoirTemp.heureFinAsTime = date;
+        };
+
         $scope.save = function () {
             $scope.isSaving = true;
             var heureDebut = $scope.pouvoirTemp.heureDebutAsTime;
