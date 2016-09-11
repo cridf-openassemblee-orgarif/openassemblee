@@ -42,5 +42,6 @@
     <include file="classpath:config/liquibase/changelog/20151204111818_added_entity_Organisme.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151211134351_added_entity_AppartenanceOrganisme.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160804111818_added_entity_Seance.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160910111818_added_entity_Pouvoir.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
