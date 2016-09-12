@@ -1,3 +1,6 @@
+# si true, cela active les endpoints TestResource
+fakeData: false
+
 # ===================================================================
 # Spring Boot configuration for the "prod" profile.
 #

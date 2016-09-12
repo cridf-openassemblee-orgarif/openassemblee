@@ -1,6 +1,7 @@
 package fr.cridf.babylone14166.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +11,11 @@ import fr.cridf.babylone14166.config.data.TestDataInjector;
 import fr.cridf.babylone14166.service.IndexService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/dev-api")
 public class TestResource {
+
+    @Value("${fakeData}")
+    private boolean fakeData;
 
     @Autowired
     private TestDataInjector testDataInjector;
@@ -19,25 +23,30 @@ public class TestResource {
     @Autowired
     private IndexService indexService;
 
-    // TODO tout ça devrait être en POST
-    @RequestMapping(value = "/index-reset", method = RequestMethod.GET)
+    @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> resetIndex() {
-        indexService.resetIndex();
+        if(fakeData) {
+            indexService.resetIndex();
+        }
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/inject-test-data", method = RequestMethod.GET)
+    @RequestMapping(value = "/inject-test-data", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> injectTestData() {
-        testDataInjector.injectTestData();
+        if(fakeData) {
+            testDataInjector.injectTestData();
+        }
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/inject-organismes", method = RequestMethod.GET)
+    @RequestMapping(value = "/inject-organismes", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> injectOrganismes() {
-        testDataInjector.injectOrganismes();
+        if(fakeData) {
+            testDataInjector.injectOrganismes();
+        }
         return ResponseEntity.ok().build();
     }
 

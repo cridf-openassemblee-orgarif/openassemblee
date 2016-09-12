@@ -1,3 +1,6 @@
+# si true, cela active les endpoints TestResource
+fakeData: true
+
 # ===================================================================
 # Spring Boot configuration for the "dev" profile.
 #

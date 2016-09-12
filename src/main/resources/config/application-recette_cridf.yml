@@ -1,3 +1,6 @@
+# si true, cela active les endpoints TestResource
+fakeData: true
+
 spring:
     profiles:
         active: recette_cridf
