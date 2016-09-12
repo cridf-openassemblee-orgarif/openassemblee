@@ -1,19 +1,21 @@
 package fr.cridf.babylone14166.service;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-
-import org.hibernate.Hibernate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.*;
 import fr.cridf.babylone14166.service.dto.EluDTO;
 import fr.cridf.babylone14166.service.dto.EluListDTO;
+import org.hibernate.Hibernate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -77,19 +79,19 @@ public class EluService {
         if (elu == null) {
             return null;
         }
-            Hibernate.initialize(elu.getAdressesPostales());
-            Hibernate.initialize(elu.getNumerosTelephones());
-            Hibernate.initialize(elu.getNumerosFax());
-            Hibernate.initialize(elu.getAdressesMail());
-            Hibernate.initialize(elu.getIdentitesInternet());
-            Hibernate.initialize(elu.getAppartenancesCommissionPermanente());
-            Hibernate.initialize(elu.getFonctionsCommissionPermanente());
-            Hibernate.initialize(elu.getFonctionsExecutives());
-            Hibernate.initialize(elu.getAppartenancesGroupePolitique());
-            Hibernate.initialize(elu.getFonctionsGroupePolitique());
-            Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
-            Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
-            Hibernate.initialize(elu.getAppartenancesOrganismes());
+        Hibernate.initialize(elu.getAdressesPostales());
+        Hibernate.initialize(elu.getNumerosTelephones());
+        Hibernate.initialize(elu.getNumerosFax());
+        Hibernate.initialize(elu.getAdressesMail());
+        Hibernate.initialize(elu.getIdentitesInternet());
+        Hibernate.initialize(elu.getAppartenancesCommissionPermanente());
+        Hibernate.initialize(elu.getFonctionsCommissionPermanente());
+        Hibernate.initialize(elu.getFonctionsExecutives());
+        Hibernate.initialize(elu.getAppartenancesGroupePolitique());
+        Hibernate.initialize(elu.getFonctionsGroupePolitique());
+        Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
+        Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
+        Hibernate.initialize(elu.getAppartenancesOrganismes());
         Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
         groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())
@@ -121,7 +123,7 @@ public class EluService {
             .filter(r -> r != null && !r.equals(""))
             .distinct()
             // anti-NPE
-            .map(rne -> new Object[] { rne, organismeRepository.findOneByCodeRNE(rne) })
+            .map(rne -> new Object[]{rne, organismeRepository.findOneByCodeRNE(rne)})
             .filter(o -> o[1] != null)
             .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
