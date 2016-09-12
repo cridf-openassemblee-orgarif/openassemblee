@@ -33,6 +33,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/moment/moment.js',
             'main/webapp/bower_components/angular-strap/dist/angular-strap.js',
             'main/webapp/bower_components/angular-strap/dist/angular-strap.tpl.js',
+            'main/webapp/bower_components/json-formatter/dist/json-formatter.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
