@@ -23,10 +23,8 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Entity</th>
-                    <th>EntityId</th>
-                    <th>ParentEntity</th>
-                    <th>ParentEntityId</th>
+                    <th>Entité</th>
+                    <th>Entité parente</th>
                     <th>Action</th>
                     <th>Utilisateur</th>
                     <th>Date</th>
@@ -37,10 +35,8 @@
                 <tr ng-repeat="auditTrail in auditTrails track by auditTrail.id"
                     ui-sref="auditTrail.detail({id:auditTrail.id})"
                     class="link-line">
-                    <td>{{auditTrail.entity}}</td>
-                    <td>{{auditTrail.entityId}}</td>
-                    <td>{{auditTrail.parentEntity}}</td>
-                    <td>{{auditTrail.parentEntityId}}</td>
+                    <td>{{auditTrail.entity + ' ' + auditTrail.entityId}}</td>
+                    <td>{{auditTrail.parentEntity ? auditTrail.parentEntity + ' ' + auditTrail.parentEntityId : ''}}</td>
                     <td>{{auditTrail.action | auditTrailAction}}</td>
                     <td>{{auditTrail.user}}</td>
                     <td>{{auditTrail.date | date:'mediumDate'}}</td>
