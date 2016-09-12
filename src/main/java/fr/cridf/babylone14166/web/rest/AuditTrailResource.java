@@ -4,7 +4,12 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.AuditTrail;
 import fr.cridf.babylone14166.repository.AuditTrailRepository;
 import fr.cridf.babylone14166.repository.search.AuditTrailSearchRepository;
+<<<<<<< HEAD
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+=======
+import fr.cridf.babylone14166.web.rest.dto.AuditTrailDTO;
+import fr.cridf.babylone14166.web.rest.mapper.AuditTrailMapper;
+>>>>>>> 63865dd... AuditTrail cleaning backend
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,16 +20,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing AuditTrail.
@@ -40,44 +49,6 @@ public class AuditTrailResource {
 
     @Inject
     private AuditTrailSearchRepository auditTrailSearchRepository;
-
-    /**
-     * POST  /auditTrails -> Create a new auditTrail.
-     */
-    @RequestMapping(value = "/auditTrails",
-        method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<AuditTrail> createAuditTrail(@RequestBody AuditTrail auditTrail) throws URISyntaxException {
-        log.debug("REST request to save AuditTrail : {}", auditTrail);
-        if (auditTrail.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new auditTrail cannot already have an ID").body(null);
-        }
-        AuditTrail result = auditTrailRepository.save(auditTrail);
-        auditTrailSearchRepository.save(result);
-        return ResponseEntity.created(new URI("/api/auditTrails/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("auditTrail", result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /auditTrails -> Updates an existing auditTrail.
-     */
-    @RequestMapping(value = "/auditTrails",
-        method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<AuditTrail> updateAuditTrail(@RequestBody AuditTrail auditTrail) throws URISyntaxException {
-        log.debug("REST request to update AuditTrail : {}", auditTrail);
-        if (auditTrail.getId() == null) {
-            return createAuditTrail(auditTrail);
-        }
-        AuditTrail result = auditTrailRepository.save(auditTrail);
-        auditTrailSearchRepository.save(auditTrail);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("auditTrail", auditTrail.getId().toString()))
-            .body(result);
-    }
 
     /**
      * GET  /auditTrails -> get all the auditTrails.
@@ -107,20 +78,6 @@ public class AuditTrailResource {
                 auditTrail,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    /**
-     * DELETE  /auditTrails/:id -> delete the "id" auditTrail.
-     */
-    @RequestMapping(value = "/auditTrails/{id}",
-        method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<Void> deleteAuditTrail(@PathVariable Long id) {
-        log.debug("REST request to delete AuditTrail : {}", id);
-        auditTrailRepository.delete(id);
-        auditTrailSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("auditTrail", id.toString())).build();
     }
 
     /**
