@@ -7,7 +7,7 @@ angular.module('babylone14166App')
         var jsonDetail = function() {
             var obj = JSON.parse($scope.auditTrail.details);
             Object.keys(obj).forEach(function(k) {
-                if(typeof obj[k] === 'object') {
+                if(typeof obj[k] === 'object' && obj[k] && obj[k].id) {
                     obj[k] = {
                         id: obj[k].id
                     }
