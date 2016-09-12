@@ -1,61 +1,47 @@
-package fr.cridf.babylone14166.domain;
+package fr.cridf.babylone14166.web.rest.dto;
 
 import fr.cridf.babylone14166.domain.enumeration.AuditTrailAction;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
- * A AuditTrail.
+ * A DTO for the AuditTrail entity.
  */
-@Entity
-@Table(name = "audit_trail")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "audittrail")
-public class AuditTrail implements Serializable {
+public class AuditTrailDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "entity")
     private String entity;
 
-    @Column(name = "entity_id")
     private Long entityId;
 
-    @Column(name = "parent_entity")
     private String parentEntity;
 
-    @Column(name = "parent_entity_id")
     private Long parentEntityId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "action")
     private AuditTrailAction action;
 
-    @Column(name = "user")
     private String user;
 
-    @Column(name = "date")
-    private ZonedDateTime date;
+    private String date;
 
-    @Column(name = "details")
     private String details;
 
-    @Column(name = "reason")
     private String reason;
 
-    public AuditTrail() {
+    public AuditTrailDTO() {
     }
 
-    public AuditTrail(AuditTrailAction action, String details, String reason) {
+    public AuditTrailDTO(Long id, String entity, Long entityId, String parentEntity, Long parentEntityId, AuditTrailAction action, String user, String date, String details, String reason) {
+        this.id = id;
+        this.entity = entity;
+        this.entityId = entityId;
+        this.parentEntity = parentEntity;
+        this.parentEntityId = parentEntityId;
         this.action = action;
+        this.user = user;
+        this.date = date;
         this.details = details;
         this.reason = reason;
     }
@@ -116,11 +102,11 @@ public class AuditTrail implements Serializable {
         this.user = user;
     }
 
-    public ZonedDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -148,8 +134,12 @@ public class AuditTrail implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AuditTrail auditTrail = (AuditTrail) o;
-        return Objects.equals(id, auditTrail.id);
+
+        AuditTrailDTO auditTrailDTO = (AuditTrailDTO) o;
+
+        if (!Objects.equals(id, auditTrailDTO.id)) return false;
+
+        return true;
     }
 
     @Override
@@ -159,12 +149,8 @@ public class AuditTrail implements Serializable {
 
     @Override
     public String toString() {
-        return "AuditTrail{" +
+        return "AuditTrailDTO{" +
             "id=" + id +
-            ", entity='" + entity + "'" +
-            ", entityId='" + entityId + "'" +
-            ", parentEntity='" + parentEntity + "'" +
-            ", parentEntityId='" + parentEntityId + "'" +
             ", action='" + action + "'" +
             ", user='" + user + "'" +
             ", date='" + date + "'" +

@@ -16,6 +16,7 @@ a:visited, a:hover, a:focus {
     background: #69acd3;
     color: white;
 }
+
 .title-box-elu {
     word-break: break-all;
 }
@@ -265,4 +266,11 @@ h2 {
     padding: 0 0 12px 0;
     color: #910507;
     font-weight: bold;
+}
+
+.link-line {
+    cursor: pointer;
+}
+.link-line:hover {
+    background: #eee !important;
 }

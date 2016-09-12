@@ -2,19 +2,18 @@ package fr.cridf.babylone14166.web.rest;
 
 import fr.cridf.babylone14166.Application;
 import fr.cridf.babylone14166.domain.AuditTrail;
+import fr.cridf.babylone14166.domain.enumeration.AuditTrailAction;
 import fr.cridf.babylone14166.repository.AuditTrailRepository;
 import fr.cridf.babylone14166.repository.search.AuditTrailSearchRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -24,15 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import fr.cridf.babylone14166.domain.enumeration.AuditLogAction;
 
 /**
  * Test class for the AuditTrailResource REST controller.
@@ -47,21 +47,22 @@ public class AuditTrailResourceIntTest {
 
     private static final String DEFAULT_ENTITY = "AAAAA";
     private static final String UPDATED_ENTITY = "BBBBB";
-    private static final String DEFAULT_ENTITY_ID = "AAAAA";
-    private static final String UPDATED_ENTITY_ID = "BBBBB";
+    private static final Long DEFAULT_ENTITY_ID = 111L;
+    private static final Long UPDATED_ENTITY_ID = 222L;
     private static final String DEFAULT_PARENT_ENTITY = "AAAAA";
     private static final String UPDATED_PARENT_ENTITY = "BBBBB";
-    private static final String DEFAULT_PARENT_ENTITY_ID = "AAAAA";
-    private static final String UPDATED_PARENT_ENTITY_ID = "BBBBB";
+    private static final Long DEFAULT_PARENT_ENTITY_ID = 333L;
+    private static final Long UPDATED_PARENT_ENTITY_ID = 444L;
 
 
-private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
-    private static final AuditLogAction UPDATED_ACTION = AuditLogAction.UPDATE;
+    private static final AuditTrailAction DEFAULT_ACTION = AuditTrailAction.CREATE;
+    private static final AuditTrailAction UPDATED_ACTION = AuditTrailAction.UPDATE;
     private static final String DEFAULT_USER = "AAAAA";
     private static final String UPDATED_USER = "BBBBB";
 
-    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofLocal(
+        LocalDateTime.ofEpochSecond(0L, 0, ZoneOffset.UTC), ZoneId.systemDefault(), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault());
     private static final String DEFAULT_DETAILS = "AAAAA";
     private static final String UPDATED_DETAILS = "BBBBB";
     private static final String DEFAULT_REASON = "AAAAA";
@@ -116,9 +117,9 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
         // Create the AuditTrail
 
         restAuditTrailMockMvc.perform(post("/api/auditTrails")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(auditTrail)))
-                .andExpect(status().isCreated());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(auditTrail)))
+            .andExpect(status().isCreated());
 
         // Validate the AuditTrail in the database
         List<AuditTrail> auditTrails = auditTrailRepository.findAll();
@@ -143,18 +144,18 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
 
         // Get all the auditTrails
         restAuditTrailMockMvc.perform(get("/api/auditTrails"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(auditTrail.getId().intValue())))
-                .andExpect(jsonPath("$.[*].entity").value(hasItem(DEFAULT_ENTITY.toString())))
-                .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.toString())))
-                .andExpect(jsonPath("$.[*].parentEntity").value(hasItem(DEFAULT_PARENT_ENTITY.toString())))
-                .andExpect(jsonPath("$.[*].parentEntityId").value(hasItem(DEFAULT_PARENT_ENTITY_ID.toString())))
-                .andExpect(jsonPath("$.[*].action").value(hasItem(DEFAULT_ACTION.toString())))
-                .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER.toString())))
-                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-                .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS.toString())))
-                .andExpect(jsonPath("$.[*].reason").value(hasItem(DEFAULT_REASON.toString())));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(auditTrail.getId().intValue())))
+            .andExpect(jsonPath("$.[*].entity").value(hasItem(DEFAULT_ENTITY.toString())))
+            .andExpect(jsonPath("$.[*].entityId").value(hasItem(DEFAULT_ENTITY_ID.toString())))
+            .andExpect(jsonPath("$.[*].parentEntity").value(hasItem(DEFAULT_PARENT_ENTITY.toString())))
+            .andExpect(jsonPath("$.[*].parentEntityId").value(hasItem(DEFAULT_PARENT_ENTITY_ID.toString())))
+            .andExpect(jsonPath("$.[*].action").value(hasItem(DEFAULT_ACTION.toString())))
+            .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER.toString())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].reason").value(hasItem(DEFAULT_REASON.toString())));
     }
 
     @Test
@@ -184,7 +185,7 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
     public void getNonExistingAuditTrail() throws Exception {
         // Get the auditTrail
         restAuditTrailMockMvc.perform(get("/api/auditTrails/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -193,7 +194,7 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
         // Initialize the database
         auditTrailRepository.saveAndFlush(auditTrail);
 
-		int databaseSizeBeforeUpdate = auditTrailRepository.findAll().size();
+        int databaseSizeBeforeUpdate = auditTrailRepository.findAll().size();
 
         // Update the auditTrail
         auditTrail.setEntity(UPDATED_ENTITY);
@@ -207,9 +208,9 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
         auditTrail.setReason(UPDATED_REASON);
 
         restAuditTrailMockMvc.perform(put("/api/auditTrails")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(auditTrail)))
-                .andExpect(status().isOk());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(auditTrail)))
+            .andExpect(status().isOk());
 
         // Validate the AuditTrail in the database
         List<AuditTrail> auditTrails = auditTrailRepository.findAll();
@@ -232,12 +233,12 @@ private static final AuditLogAction DEFAULT_ACTION = AuditLogAction.CREATE;
         // Initialize the database
         auditTrailRepository.saveAndFlush(auditTrail);
 
-		int databaseSizeBeforeDelete = auditTrailRepository.findAll().size();
+        int databaseSizeBeforeDelete = auditTrailRepository.findAll().size();
 
         // Get the auditTrail
         restAuditTrailMockMvc.perform(delete("/api/auditTrails/{id}", auditTrail.getId())
-                .accept(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
 
         // Validate the database is empty
         List<AuditTrail> auditTrails = auditTrailRepository.findAll();

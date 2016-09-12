@@ -8,7 +8,7 @@
         {
             "fieldId": 2,
             "fieldName": "entityId",
-            "fieldType": "String"
+            "fieldType": "Long"
         },
         {
             "fieldId": 3,
@@ -18,12 +18,12 @@
         {
             "fieldId": 4,
             "fieldName": "parentEntityId",
-            "fieldType": "String"
+            "fieldType": "Long"
         },
         {
             "fieldId": 5,
             "fieldName": "action",
-            "fieldType": "AuditLogAction",
+            "fieldType": "AuditTrailAction",
             "fieldValues": "CREATE, UPDATE, CLOSE, DELETE"
         },
         {

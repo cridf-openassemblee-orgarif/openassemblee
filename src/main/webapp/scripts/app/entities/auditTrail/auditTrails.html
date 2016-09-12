@@ -23,7 +23,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Entity</th>
                     <th>EntityId</th>
                     <th>ParentEntity</th>
@@ -31,28 +30,21 @@
                     <th>Action</th>
                     <th>Utilisateur</th>
                     <th>Date</th>
-                    <th>Raison</th>
-                    <th></th>
+                    <th>Heure</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="auditTrail in auditTrails track by auditTrail.id">
-                    <td><a ui-sref="auditTrail.detail({id:auditTrail.id})">{{auditTrail.id}}</a></td>
+                <tr ng-repeat="auditTrail in auditTrails track by auditTrail.id"
+                    ui-sref="auditTrail.detail({id:auditTrail.id})"
+                    class="link-line">
                     <td>{{auditTrail.entity}}</td>
                     <td>{{auditTrail.entityId}}</td>
                     <td>{{auditTrail.parentEntity}}</td>
                     <td>{{auditTrail.parentEntityId}}</td>
-                    <td translate="{{'babylone14166App.AuditLogAction.' + auditTrail.action}}">{{auditTrail.action}}</td>
+                    <td>{{auditTrail.action | auditTrailAction}}</td>
                     <td>{{auditTrail.user}}</td>
                     <td>{{auditTrail.date | date:'mediumDate'}}</td>
-                    <td>{{auditTrail.reason}}</td>
-                    <td>
-                        <button type="submit"
-                                ui-sref="auditTrail.detail({id:auditTrail.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
-                        </button>
-                    </td>
+                    <td>{{auditTrail.date | date:'mediumTime'}}</td>
                 </tr>
                 </tbody>
             </table>

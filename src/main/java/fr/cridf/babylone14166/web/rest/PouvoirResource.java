@@ -3,6 +3,7 @@ package fr.cridf.babylone14166.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Pouvoir;
 import fr.cridf.babylone14166.repository.PouvoirRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import static fr.cridf.babylone14166.domain.enumeration.AuditTrailAction.CREATE;
+
 /**
  * REST controller for managing Pouvoir.
  */
@@ -32,6 +35,9 @@ public class PouvoirResource {
 
     @Inject
     private PouvoirRepository pouvoirRepository;
+
+    @Inject
+    private AuditTrailService auditTrailService;
 
     /**
      * POST  /pouvoirs -> Create a new pouvoir.
@@ -46,6 +52,7 @@ public class PouvoirResource {
             return ResponseEntity.badRequest().header("Failure", "A new pouvoir cannot already have an ID").body(null);
         }
         Pouvoir result = pouvoirRepository.save(pouvoir);
+        auditTrailService.logAuditTrail(CREATE, result);
         return ResponseEntity.created(new URI("/api/pouvoirs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("pouvoir", result.getId().toString()))
             .body(result);

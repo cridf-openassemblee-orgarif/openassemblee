@@ -29,7 +29,7 @@
                 <tr ng-repeat="seance in seances track by seance.id">
                     <!--<td><a ui-sref="seance.detail({id:seance.id})">{{seance.id}}</a></td>-->
                     <td><a ui-sref="seance.detail({id:seance.id})">{{seance.intitule}}</a></td>
-                    <td translate="{{'babylone14166App.TypeSeance.' + seance.type}}">{{seance.type}}</td>
+                    <td translate="{{'babylone14166App.TypeSeance.' + seance.type}}">{{seance.type | typeSeance}}</td>
                     <td>{{seance.date | date:'mediumDate'}}</td>
                     <td>
                         <button type="submit"

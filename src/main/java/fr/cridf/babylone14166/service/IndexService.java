@@ -1,30 +1,24 @@
 package fr.cridf.babylone14166.service;
 
-import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.COMMISSION_THEMATIQUE;
-import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.ELU;
-import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.GROUPE_POLITIQUE;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-import static org.springframework.data.elasticsearch.annotations.FieldType.Auto;
+import fr.cridf.babylone14166.repository.*;
+import fr.cridf.babylone14166.repository.search.*;
+import fr.cridf.babylone14166.web.rest.dto.SearchResultDTO;
+import fr.cridf.babylone14166.web.rest.mapper.AuditTrailMapper;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import fr.cridf.babylone14166.web.rest.dto.SearchResultDTO;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.repository.search.*;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
+import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.*;
 
 @Service
 @Transactional
@@ -32,30 +26,35 @@ public class IndexService {
 
     private final Logger logger = LoggerFactory.getLogger(IndexService.class);
 
-    @Autowired
+    @Inject
     protected EluRepository eluRepository;
-    @Autowired
+    @Inject
     protected EluSearchRepository eluSearchRepository;
 
-    @Autowired
+    @Inject
     protected GroupePolitiqueRepository groupePolitiqueRepository;
-    @Autowired
+    @Inject
     protected GroupePolitiqueSearchRepository groupePolitiqueSearchRepository;
 
-    @Autowired
+    @Inject
     protected OrganismeRepository organismeRepository;
-    @Autowired
+    @Inject
     protected OrganismeSearchRepository organismeSearchRepository;
 
-    @Autowired
+    @Inject
     protected CommissionThematiqueRepository commissionThematiqueRepository;
-    @Autowired
+    @Inject
     protected CommissionThematiqueSearchRepository commissionThematiqueSearchRepository;
 
-    @Autowired
+    @Inject
     protected FonctionExecutiveRepository fonctionExecutiveRepository;
-    @Autowired
+    @Inject
     protected FonctionExecutiveSearchRepository fonctionExecutiveSearchRepository;
+
+    @Inject
+    protected AuditTrailRepository auditTrailRepository;
+    @Inject
+    protected AuditTrailSearchRepository auditTrailSearchRepository;
 
     public void resetIndex() {
         logger.debug("Reset search index");
@@ -64,10 +63,11 @@ public class IndexService {
         resetRepository(organismeRepository, organismeSearchRepository);
         resetRepository(commissionThematiqueRepository, commissionThematiqueSearchRepository);
         resetRepository(fonctionExecutiveRepository, fonctionExecutiveSearchRepository);
+        resetRepository(auditTrailRepository, auditTrailSearchRepository);
     }
 
     private <T> void resetRepository(JpaRepository<T, Long> jpaRepository,
-        ElasticsearchRepository<T, Long> elasticsearchRepository) {
+                                     ElasticsearchRepository<T, Long> elasticsearchRepository) {
         elasticsearchRepository.deleteAll();
         for (T t : jpaRepository.findAll()) {
             elasticsearchRepository.save(t);
@@ -81,7 +81,7 @@ public class IndexService {
             .stream(eluSearchRepository.search(qb).spliterator(), false)
             .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
             .collect(Collectors.toList()));
-        if(results.size() < 20 ) {
+        if (results.size() < 20) {
             results.addAll(StreamSupport
                 .stream(groupePolitiqueSearchRepository.search(qb).spliterator(), false)
                 .map(e -> new SearchResultDTO(GROUPE_POLITIQUE, e.getId(), e.getNom(), e.getImage()))
@@ -100,7 +100,7 @@ public class IndexService {
                 }
             }
         }
-        if(results.size() > 20 ) {
+        if (results.size() > 20) {
             results = results.subList(0, 20);
         }
         return results;

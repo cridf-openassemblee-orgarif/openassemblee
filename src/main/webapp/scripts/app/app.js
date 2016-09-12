@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
-        'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead',
-        'mgcrea.ngStrap.datepicker', 'ngSanitize'])
+    'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead',
+    'mgcrea.ngStrap.datepicker', 'ngSanitize', 'jsonFormatter'])
 
-    .run(function ($rootScope, $location, $window, $http, $state,  Auth, Principal, ENV, VERSION) {
+    .run(function ($rootScope, $location, $window, $http, $state, Auth, Principal, ENV, VERSION) {
 
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
@@ -18,8 +18,8 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
 
         });
 
-        $rootScope.$watch('searchToken', function(value) {
-            if(value && value.length > 2) {
+        $rootScope.$watch('searchToken', function (value) {
+            if (value && value.length > 2) {
                 $state.go('home');
                 $http({
                     method: 'GET',
@@ -33,16 +33,16 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
         });
 
-        $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
-            var titleKey = 'babylone14166' ;
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            var titleKey = 'babylone14166';
 
             // Remember previous state unless we've been redirected to login or we've just
             // reset the state memory after logout. If we're redirected to login, our
             // previousState is already set in the authExpiredInterceptor. If we're going
             // to login directly, we don't want to be sent to some previous state anyway
             if (toState.name != 'login' && $rootScope.previousStateName) {
-              $rootScope.previousStateName = fromState.name;
-              $rootScope.previousStateParams = fromParams;
+                $rootScope.previousStateName = fromState.name;
+                $rootScope.previousStateParams = fromParams;
             }
 
             // Set the page title key to the one configured in state or use default one
@@ -52,7 +52,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             $window.document.title = titleKey;
         });
 
-        $rootScope.back = function() {
+        $rootScope.back = function () {
             // If previous state is 'activate' or do not exist go to 'home'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
                 $state.go('home');
@@ -99,7 +99,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
         $rootScope.typesNominationAutocomplete = autocomplete(typesNomination);
         $rootScope.professionsAutocomplete = autocomplete(professions);
     })
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider,  httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast
         //AlertServiceProvider.showAsToast(true);
 
@@ -133,13 +133,21 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
         $httpProvider.interceptors.push('notificationInterceptor');
 
     })
-    .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {
+    .config(['$urlMatcherFactoryProvider', function ($urlMatcherFactory) {
         $urlMatcherFactory.type('boolean', {
-            name : 'boolean',
-            decode: function(val) { return val == true ? true : val == "true" ? true : false },
-            encode: function(val) { return val ? 1 : 0; },
-            equals: function(a, b) { return this.is(a) && a === b; },
-            is: function(val) { return [true,false,0,1].indexOf(val) >= 0 },
+            name: 'boolean',
+            decode: function (val) {
+                return val == true ? true : val == "true" ? true : false
+            },
+            encode: function (val) {
+                return val ? 1 : 0;
+            },
+            equals: function (a, b) {
+                return this.is(a) && a === b;
+            },
+            is: function (val) {
+                return [true, false, 0, 1].indexOf(val) >= 0
+            },
             pattern: /bool|true|0|1/
         });
     }])
@@ -225,6 +233,32 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
                     return 'Fixe';
                 case 'MOBILE':
                     return 'Mobile';
+            }
+            return 'Inconnu';
+        };
+    }])
+    .filter('auditTrailAction', [function () {
+        return function (value) {
+            switch (value) {
+                case'CREATE':
+                    return 'Création';
+                case 'UPDATE':
+                    return 'Édition';
+                case 'CLOSE':
+                    return 'Fermeture';
+                case 'DELETE':
+                    return 'Suppression';
+            }
+            return 'Inconnu';
+        };
+    }])
+    .filter('typeSeance', [function () {
+        return function (value) {
+            switch (value) {
+                case'COMMISSION_PERMANENTE':
+                    return 'Commission permanente';
+                case 'PLENIERE':
+                    return 'Plénière';
             }
             return 'Inconnu';
         };

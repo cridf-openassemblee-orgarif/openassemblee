@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static fr.cridf.babylone14166.domain.enumeration.AuditTrailAction.CREATE;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
@@ -41,6 +43,9 @@ public class SeanceResource {
     @Inject
     private SeanceSearchRepository seanceSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /seances -> Create a new seance.
      */
@@ -55,6 +60,7 @@ public class SeanceResource {
         }
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(result);
+        auditTrailService.logAuditTrail(CREATE, result);
         return ResponseEntity.created(new URI("/api/seances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("seance", result.getId().toString()))
             .body(result);

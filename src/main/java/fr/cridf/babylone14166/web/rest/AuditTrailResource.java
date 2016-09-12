@@ -4,12 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.AuditTrail;
 import fr.cridf.babylone14166.repository.AuditTrailRepository;
 import fr.cridf.babylone14166.repository.search.AuditTrailSearchRepository;
-<<<<<<< HEAD
-import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
-=======
 import fr.cridf.babylone14166.web.rest.dto.AuditTrailDTO;
 import fr.cridf.babylone14166.web.rest.mapper.AuditTrailMapper;
->>>>>>> 63865dd... AuditTrail cleaning backend
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +44,9 @@ public class AuditTrailResource {
     private AuditTrailRepository auditTrailRepository;
 
     @Inject
+    private AuditTrailMapper auditTrailMapper;
+
+    @Inject
     private AuditTrailSearchRepository auditTrailSearchRepository;
 
     /**
@@ -57,11 +56,14 @@ public class AuditTrailResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<AuditTrail>> getAllAuditTrails(Pageable pageable)
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<AuditTrailDTO>> getAllAuditTrails(Pageable pageable)
         throws URISyntaxException {
         Page<AuditTrail> page = auditTrailRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/auditTrails");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent().stream()
+            .map(auditTrailMapper::entityToDto)
+            .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
     }
 
     /**
@@ -71,11 +73,12 @@ public class AuditTrailResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<AuditTrail> getAuditTrail(@PathVariable Long id) {
+    public ResponseEntity<AuditTrailDTO> getAuditTrail(@PathVariable Long id) {
         log.debug("REST request to get AuditTrail : {}", id);
         return Optional.ofNullable(auditTrailRepository.findOne(id))
-            .map(auditTrail -> new ResponseEntity<>(
-                auditTrail,
+            .map(auditTrailMapper::entityToDto)
+            .map(auditTrailDTO -> new ResponseEntity<>(
+                auditTrailDTO,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -88,9 +91,10 @@ public class AuditTrailResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<AuditTrail> searchAuditTrails(@PathVariable String query) {
+    public List<AuditTrailDTO> searchAuditTrails(@PathVariable String query) {
         return StreamSupport
             .stream(auditTrailSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(auditTrailMapper::entityToDto)
             .collect(Collectors.toList());
     }
 }
