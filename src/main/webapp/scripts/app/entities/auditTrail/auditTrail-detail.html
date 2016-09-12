@@ -1,0 +1,94 @@
+
+<div>
+    <h2><span>AuditTrail</span> {{auditTrail.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Entity</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.entity}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>EntityId</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.entityId}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>ParentEntity</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.parentEntity}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>ParentEntityId</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.parentEntityId}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Action</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'babylone14166App.AuditLogAction.' + auditTrail.action}}">{{auditTrail.action}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>User</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.user}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Date</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.date | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Details</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.details}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Reason</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{auditTrail.reason}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>
