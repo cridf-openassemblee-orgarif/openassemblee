@@ -1,33 +1,38 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import com.codahale.metrics.annotation.Timed;
+import fr.cridf.babylone14166.domain.*;
+import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.search.EluSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
+import fr.cridf.babylone14166.service.EluService;
+import fr.cridf.babylone14166.service.ExportService;
+import fr.cridf.babylone14166.service.ImageService;
+import fr.cridf.babylone14166.service.dto.EluDTO;
+import fr.cridf.babylone14166.service.dto.EluListDTO;
+import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.collect.Lists;
+import org.elasticsearch.common.io.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.elasticsearch.common.collect.Lists;
-import org.elasticsearch.common.io.Streams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.codahale.metrics.annotation.Timed;
-
-import fr.cridf.babylone14166.domain.*;
-import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.search.EluSearchRepository;
-import fr.cridf.babylone14166.service.*;
-import fr.cridf.babylone14166.service.dto.EluDTO;
-import fr.cridf.babylone14166.service.dto.EluListDTO;
-import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Elu.
@@ -53,6 +58,9 @@ public class EluResource {
     @Inject
     private ExportService exportService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /elus -> Create a new elu.
      */
@@ -72,11 +80,12 @@ public class EluResource {
             .body(elu);
     }
 
-    @RequestMapping(value = "/elus/{id}/adressePostale", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{eluId}/adressePostale", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createAdressePostale(@PathVariable Long id, @RequestBody AdressePostale adressePostale)
+    public ResponseEntity<Void> createAdressePostale(@PathVariable Long eluId, @RequestBody AdressePostale adressePostale)
         throws URISyntaxException {
-        eluService.saveAdressePostale(id, adressePostale);
+        eluService.saveAdressePostale(eluId, adressePostale);
+        auditTrailService.logCreation(adressePostale, adressePostale.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 

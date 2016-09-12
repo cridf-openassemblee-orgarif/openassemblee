@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.ZonedDateTime;
+
+import static fr.cridf.babylone14166.domain.enumeration.AuditTrailAction.*;
 
 @Service
 public class AuditTrailService {
@@ -40,24 +40,30 @@ public class AuditTrailService {
         objectMapper = jackson2ObjectMapperBuilder.build();
     }
 
-    public void logAuditTrail(AuditTrailAction action, Serializable entity) {
-        logAuditTrail(action, entity, null, null, null);
+    public <T extends Serializable> void logCreation(T entity, Long id) {
+        logAuditTrail(CREATE, entity.getClass(), id, entity, null, null, null);
     }
 
-    public void logAuditTrail(AuditTrailAction action, Serializable entity
-        , Class<Serializable> parentEntityClass, Long parentEntityId) {
-        logAuditTrail(action, entity, parentEntityClass, parentEntityId, null);
+    public <T extends Serializable, P extends Serializable> void logCreation(T entity, Long id,
+                                                                             Class<P> parentEntityClass,
+                                                                             Long parentId) {
+        logAuditTrail(CREATE, entity.getClass(), id, entity, parentEntityClass, parentId, null);
     }
 
-    public void logAuditTrail(AuditTrailAction action, Serializable entity, String reason) {
-        logAuditTrail(action, entity, null, null, reason);
+    public <T extends Serializable> void logUpdate(T entity, Long id) {
+        logAuditTrail(UPDATE, entity.getClass(), id, entity, null, null, null);
     }
 
-    public void logAuditTrail(AuditTrailAction action, Serializable entity, Class<Serializable> parentEntityClass,
-                              Long parentEntityId, String reason) {
+    public <T extends Serializable> void logDeletion(Class<T> entityClass, Long id) {
+        logAuditTrail(DELETE, entityClass, id, null, null, null, null);
+    }
+
+    private <T extends Serializable, P extends Serializable> void
+    logAuditTrail(AuditTrailAction action, Class<T> entityClass, Long entityId, Serializable entity,
+                  Class<P> parentEntityClass, Long parentEntityId, String reason) {
         AuditTrail at = new AuditTrail();
-        at.setEntity(entity.getClass().getSimpleName());
-        at.setEntityId(getId(entity));
+        at.setEntity(entityClass.getSimpleName());
+        at.setEntityId(entityId);
         if (parentEntityClass != null) {
             at.setParentEntity(parentEntityClass.getSimpleName());
             at.setParentEntityId(parentEntityId);
@@ -76,23 +82,6 @@ public class AuditTrailService {
         at.setReason(reason);
         auditTrailRepository.save(at);
         auditTrailSearchRepository.save(at);
-    }
-
-    // pas super clean mais pour le moment ne vaut pas le coup de tout impacter pour ça
-    // l'autre possibilité simple étant de mettre l'id dans la signature de logAuditTrail()
-    private Long getId(Serializable entity) {
-        try {
-            Method method = entity.getClass().getMethod("getId");
-            return (Long) method.invoke(entity);
-        } catch (SecurityException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

@@ -25,8 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static fr.cridf.babylone14166.domain.enumeration.AuditTrailAction.CREATE;
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Seance.
@@ -60,7 +59,7 @@ public class SeanceResource {
         }
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(result);
-        auditTrailService.logAuditTrail(CREATE, result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/seances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("seance", result.getId().toString()))
             .body(result);
@@ -80,6 +79,7 @@ public class SeanceResource {
         }
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(seance);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("seance", seance.getId().toString()))
             .body(result);
@@ -126,6 +126,7 @@ public class SeanceResource {
         log.debug("REST request to delete Seance : {}", id);
         seanceRepository.delete(id);
         seanceSearchRepository.delete(id);
+        auditTrailService.logDeletion(Seance.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("seance", id.toString())).build();
     }
 

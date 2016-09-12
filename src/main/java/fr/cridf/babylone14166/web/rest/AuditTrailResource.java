@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,7 +59,8 @@ public class AuditTrailResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<AuditTrailDTO>> getAllAuditTrails(Pageable pageable)
+    public ResponseEntity<List<AuditTrailDTO>> getAllAuditTrails(
+        @SortDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable)
         throws URISyntaxException {
         Page<AuditTrail> page = auditTrailRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/auditTrails");

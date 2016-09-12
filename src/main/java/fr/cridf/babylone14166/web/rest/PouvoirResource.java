@@ -22,8 +22,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-import static fr.cridf.babylone14166.domain.enumeration.AuditTrailAction.CREATE;
-
 /**
  * REST controller for managing Pouvoir.
  */
@@ -52,7 +50,7 @@ public class PouvoirResource {
             return ResponseEntity.badRequest().header("Failure", "A new pouvoir cannot already have an ID").body(null);
         }
         Pouvoir result = pouvoirRepository.save(pouvoir);
-        auditTrailService.logAuditTrail(CREATE, result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/pouvoirs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("pouvoir", result.getId().toString()))
             .body(result);
@@ -71,6 +69,7 @@ public class PouvoirResource {
             return createPouvoir(pouvoir);
         }
         Pouvoir result = pouvoirRepository.save(pouvoir);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("pouvoir", pouvoir.getId().toString()))
             .body(result);
@@ -116,6 +115,7 @@ public class PouvoirResource {
     public ResponseEntity<Void> deletePouvoir(@PathVariable Long id) {
         log.debug("REST request to delete Pouvoir : {}", id);
         pouvoirRepository.delete(id);
+        auditTrailService.logDeletion(Pouvoir.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("pouvoir", id.toString())).build();
     }
 
