@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cridf.babylone14166.domain.*;
 import fr.cridf.babylone14166.domain.enumeration.Civilite;
 import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.service.IndexService;
+import fr.cridf.babylone14166.service.SearchService;
 import liquibase.util.csv.opencsv.CSVReader;
 
 @Component
@@ -44,7 +44,7 @@ public class TestDataInjector {
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
 
     @Autowired
-    private IndexService indexService;
+    private SearchService searchService;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -67,7 +67,7 @@ public class TestDataInjector {
             List<AppartenanceGroupePolitique> agps = initAppartenanceGroupePolitiques(elus, gps);
             appartenanceGroupePolitiqueRepository.save(agps);
             List<CommissionThematique> cts = initCommissionsThematiques();
-            indexService.resetIndex();
+            searchService.resetIndex();
         }
     }
 
@@ -95,7 +95,7 @@ public class TestDataInjector {
             } catch (IOException e) {
                 logger.debug("Can't read organismes CSV file", e);
             }
-            indexService.resetIndex();
+            searchService.resetIndex();
         }
     }
 

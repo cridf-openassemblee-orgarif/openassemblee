@@ -3,7 +3,6 @@ package fr.cridf.babylone14166.service;
 import fr.cridf.babylone14166.repository.*;
 import fr.cridf.babylone14166.repository.search.*;
 import fr.cridf.babylone14166.web.rest.dto.SearchResultDTO;
-import fr.cridf.babylone14166.web.rest.mapper.AuditTrailMapper;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +21,9 @@ import static fr.cridf.babylone14166.web.rest.dto.SearchResultDTO.ResultType.*;
 
 @Service
 @Transactional
-public class IndexService {
+public class SearchService {
 
-    private final Logger logger = LoggerFactory.getLogger(IndexService.class);
+    private final Logger logger = LoggerFactory.getLogger(SearchService.class);
 
     @Inject
     protected EluRepository eluRepository;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.cridf.babylone14166.config.data.TestDataInjector;
-import fr.cridf.babylone14166.service.IndexService;
+import fr.cridf.babylone14166.service.SearchService;
 
 @RestController
 @RequestMapping("/dev-api")
@@ -21,13 +21,13 @@ public class TestResource {
     private TestDataInjector testDataInjector;
 
     @Autowired
-    private IndexService indexService;
+    private SearchService searchService;
 
     @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> resetIndex() {
         if(fakeData) {
-            indexService.resetIndex();
+            searchService.resetIndex();
         }
         return ResponseEntity.ok().build();
     }

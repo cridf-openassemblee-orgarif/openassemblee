@@ -23,7 +23,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
                 $state.go('home');
                 $http({
                     method: 'GET',
-                    url: 'api/search/' + value
+                    url: 'search/' + value
                 }).then(function successCallback(result) {
                     $rootScope.dtos = result.data;
                 }, function errorCallback(response) {
