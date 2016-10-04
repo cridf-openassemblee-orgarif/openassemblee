@@ -8,7 +8,7 @@
         },
         {
             "fieldId": 2,
-            "fieldName": "rue",
+            "fieldName": "voie",
             "fieldType": "String"
         },
         {
