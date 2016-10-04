@@ -95,29 +95,6 @@ angular.module('babylone14166App')
                     })
                 }]
             })
-            .state('elu.delete', {
-                parent: 'elu',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/elus/elu-delete-dialog.html',
-                        controller: 'EluDeleteController',
-                        size: 'md',
-                        resolve: {
-                            entity: ['Elu', function (Elu) {
-                                return Elu.get({id: $stateParams.id});
-                            }]
-                        }
-                    }).result.then(function (result) {
-                        $state.go('elu', null, {reload: true});
-                    }, function () {
-                        $state.go('^');
-                    })
-                }]
-            })
             .state('elu.detail.nouvelleFonctionExecutive', {
                 parent: 'elu.detail',
                 url: '/nouvelle-fonction-executive',
@@ -126,7 +103,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionExecutive-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionExecutive/fonctionExecutive-dialog.html',
                         controller: 'FonctionExecutiveDialogController',
                         size: 'lg',
                         resolve: {
@@ -155,7 +132,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionExecutive-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionExecutive/fonctionExecutive-fin-dialog.html',
                         controller: 'FonctionExecutiveDialogController',
                         size: 'lg',
                         resolve: {
@@ -178,7 +155,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionCommissionPermanente-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionCommissionPermanente/fonctionCommissionPermanente-dialog.html',
                         controller: 'FonctionCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -207,7 +184,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionCommissionPermanente-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionCommissionPermanente/fonctionCommissionPermanente-fin-dialog.html',
                         controller: 'FonctionCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -230,7 +207,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/appartenanceCommissionPermanente-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionPermanente/appartenanceCommissionPermanente-dialog.html',
                         controller: 'AppartenanceCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -258,7 +235,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/appartenanceCommissionPermanente-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionPermanente/appartenanceCommissionPermanente-fin-dialog.html',
                         controller: 'AppartenanceCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -281,7 +258,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/appartenanceGroupePolitique-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceGroupePolitique/appartenanceGroupePolitique-dialog.html',
                         controller: 'AppartenanceGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -309,7 +286,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/appartenanceGroupePolitique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceGroupePolitique/appartenanceGroupePolitique-fin-dialog.html',
                         controller: 'AppartenanceGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -378,7 +355,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entites/fonctionGroupePolitique/fonctionGroupePolitique-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionGroupePolitique/fonctionGroupePolitique-dialog.html',
                         controller: 'FonctionGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -408,7 +385,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionGroupePolitique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionGroupePolitique/fonctionGroupePolitique-fin-dialog.html',
                         controller: 'FonctionGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -523,7 +500,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/upload-image-dialog.html',
+                        templateUrl: 'scripts/app/entities/upload/upload-image-dialog.html',
                         controller: 'UploadImageEluDialogController',
                         size: 'lg'
                     }).result.then(function (result) {
