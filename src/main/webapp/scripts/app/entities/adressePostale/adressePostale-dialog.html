@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myAdressePostaleLabel">Ajouter une adresse postale</h4>
+        <h4 class="modal-title" id="myAdressePostaleLabel">Ajouter ou éditer une adresse postale</h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
@@ -36,7 +36,7 @@
             <label class="control-label" for="field_niveauConfidentialite">Niveau de confidentialité</label>
             <select class="form-control" name="niveauConfidentialite" ng-model="adressePostale.niveauConfidentialite" id="field_niveauConfidentialite">
                 <option value="PUBLIABLE">Publiable</option>
-                <option value="CONFIDENTIEL">Confidentiel</option>
+                <option value="CONFIDENTIEL">Confidentielle</option>
                 <option value="INTERNE">Interne</option>
             </select>
         </div>

@@ -4,50 +4,50 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myNumeroTelephoneLabel">Create or edit a NumeroTelephone</h4>
+        <h4 class="modal-title" id="myNumeroTelephoneLabel">Ajouter ou éditer un numéro de téléphone</h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label class="control-label" for="field_natureProPerso">NatureProPerso</label>
+            <label class="control-label" for="field_natureProPerso">Nature professionnelle ou personnelle</label>
             <select class="form-control" name="natureProPerso" ng-model="numeroTelephone.natureProPerso" id="field_natureProPerso">
-                <option value="PRO">PRO</option>
-                <option value="PERSO">PERSO</option>
+                <option value="PRO">Professionnelle</option>
+                <option value="PERSO">Personnelle</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_natureFixeMobile">NatureFixeMobile</label>
+            <label class="control-label" for="field_natureFixeMobile">Fixe ou mobile</label>
             <select class="form-control" name="natureFixeMobile" ng-model="numeroTelephone.natureFixeMobile" id="field_natureFixeMobile">
-                <option value="FIXE">FIXE</option>
-                <option value="MOBILE">MOBILE</option>
+                <option value="FIXE">Fixe</option>
+                <option value="MOBILE">Mobile</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_numero">Numero</label>
+            <label class="control-label" for="field_numero">Numéro</label>
             <input type="text" class="form-control" name="numero" id="field_numero"
                     ng-model="numeroTelephone.numero"
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_niveauConfidentialite">NiveauConfidentialite</label>
+            <label class="control-label" for="field_niveauConfidentialite">Niveau de confidentialité</label>
             <select class="form-control" name="niveauConfidentialite" ng-model="numeroTelephone.niveauConfidentialite" id="field_niveauConfidentialite">
-                <option value="PUBLIABLE">PUBLIABLE</option>
-                <option value="CONFIDENTIEL">CONFIDENTIEL</option>
-                <option value="INTERNE">INTERNE</option>
+                <option value="PUBLIABLE">Publiable</option>
+                <option value="CONFIDENTIEL">Confidentielle</option>
+                <option value="INTERNE">Interne</option>
             </select>
         </div>
         <div class="form-group">
             <input type="checkbox" name="publicationAnnuaire" id="field_publicationAnnuaire"
                    ng-model="numeroTelephone.publicationAnnuaire"/>
-            <label class="control-label" for="field_publicationAnnuaire">PublicationAnnuaire</label>
+            <label class="control-label" for="field_publicationAnnuaire">Publication dans l'annuaire</label>
         </div>
 
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
         </button>
         <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
         </button>
     </div>
 </form>
