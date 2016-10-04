@@ -378,7 +378,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/elus/fonctionGroupePolitique-dialog.html',
+                        templateUrl: 'scripts/app/entites/fonctionGroupePolitique/fonctionGroupePolitique-dialog.html',
                         controller: 'FonctionGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {

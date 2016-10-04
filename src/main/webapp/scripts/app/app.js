@@ -2,7 +2,7 @@
 
 angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
     'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead',
-    'mgcrea.ngStrap.datepicker', 'ngSanitize', 'jsonFormatter'])
+    'mgcrea.ngStrap.datepicker', 'ngSanitize', 'jsonFormatter', 'ui.select'])
 
     .run(function ($rootScope, $location, $window, $http, $state, Auth, Principal, ENV, VERSION) {
 

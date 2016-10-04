@@ -7,20 +7,26 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="field_eluCedeur">Élu cédeur</label>
-            <select class="form-control" id="field_eluCedeur" name="eluCedeur"
-                    ng-model="pouvoir.eluCedeur"
-                    ng-options="elu as elu.prenom + ' ' + elu.nom for elu in elus track by elu.id">
-                <option value=""></option>
-            </select>
+            <label>Élu cédeur</label>
+            <ui-select ng-model="pouvoir.eluCedeur">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="elu in (elus | filter: $select.search) track by elu.id">
+                    <span ng-bind="elu.prenom + ' ' + elu.nom"></span>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="form-group">
-            <label for="field_eluBeneficiaire">Élu bénéficiaire</label>
-            <select class="form-control" id="field_eluBeneficiaire" name="eluBeneficiaire"
-                    ng-model="pouvoir.eluBeneficiaire"
-                    ng-options="elu as elu.prenom + ' ' + elu.nom for elu in elus track by elu.id">
-                <option value=""></option>
-            </select>
+            <label>Élu bénéficiaire</label>
+            <ui-select ng-model="pouvoir.eluBeneficiaire">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="elu in (elus | filter: $select.search) track by elu.id">
+                    <span ng-bind="elu.prenom + ' ' + elu.nom"></span>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="error-message" ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
             Attention, l'élu cédeur et l'élu bénéficiaire déclarés sont la même personne !

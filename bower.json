@@ -24,7 +24,8 @@
     "moment": "~2.11.1",
     "angular-strap": "~2.3.7",
     "angular-i18n": "~1.4.8",
-    "json-formatter": "~0.6.0"
+    "json-formatter": "~0.6.0",
+    "angular-ui-select": "~0.19.4"
   },
   "devDependencies": {
     "angular-mocks": "1.4.5",
