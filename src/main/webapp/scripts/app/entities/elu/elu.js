@@ -533,6 +533,29 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elu.detail.editerAdressePostale', {
+                parent: 'elu.detail',
+                url: '/adressePostale/{adressePostaleId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/adressePostale/adressePostale-dialog.html',
+                        controller: 'AdressePostaleDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AdressePostale', function(AdressePostale) {
+                                return AdressePostale.get({id : $stateParams.adressePostaleId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterAdresseMail', {
                 parent: 'elu.detail',
                 url: '/adresseMail',

@@ -89,6 +89,15 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/elus/{eluId}/adressePostale", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateAdressePostale(@PathVariable Long eluId, @RequestBody AdressePostale adressePostale)
+        throws URISyntaxException {
+        eluService.updateAdressePostale(adressePostale);
+        auditTrailService.logUpdate(adressePostale, adressePostale.getId(), Elu.class, eluId);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/elus/{id}/adresseMail", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createAdresseMail(@PathVariable Long id, @RequestBody AdresseMail adresseMail)

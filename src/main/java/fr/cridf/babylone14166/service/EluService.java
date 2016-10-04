@@ -145,6 +145,11 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    public void updateAdressePostale(AdressePostale adressePostale) {
+        adressePostaleRepository.save(adressePostale);
+        adressePostaleSearchRepository.save(adressePostale);
+    }
+
     public void saveIdentiteInternet(Long id, IdentiteInternet identiteInternet) {
         identiteInternetRepository.save(identiteInternet);
         identiteInternetSearchRepository.save(identiteInternet);

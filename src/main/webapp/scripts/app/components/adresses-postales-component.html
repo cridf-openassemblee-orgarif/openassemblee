@@ -4,7 +4,8 @@
             <h3 class="box-title"><i class="fa fa-home"></i> Adresses postales</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc" ng-repeat="a in dto.elu.adressesPostales">
+            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.adressesPostales"
+                 ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})">
                 {{a.oneline}}
                 <br/>
                 <span class="lg">

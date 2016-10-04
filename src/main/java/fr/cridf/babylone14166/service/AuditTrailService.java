@@ -54,6 +54,12 @@ public class AuditTrailService {
         logAuditTrail(UPDATE, entity.getClass(), id, entity, null, null, null);
     }
 
+    public <T extends Serializable, P extends Serializable> void logUpdate(T entity, Long id,
+                                                                           Class<P> parentEntityClass,
+                                                                           Long parentId) {
+        logAuditTrail(UPDATE, entity.getClass(), id, entity, parentEntityClass, parentId, null);
+    }
+
     public <T extends Serializable> void logDeletion(Class<T> entityClass, Long id) {
         logAuditTrail(DELETE, entityClass, id, null, null, null, null);
     }

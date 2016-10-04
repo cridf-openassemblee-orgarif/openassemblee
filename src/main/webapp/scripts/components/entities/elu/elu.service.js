@@ -33,6 +33,13 @@ angular.module('babylone14166App')
                     return angular.toJson(data);
                 }
             },
+            'updateAdressePostale': {
+                method: 'PUT',
+                url: 'api/elus/:id/adressePostale',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveAdresseMail': {
                 method: 'POST',
                 url: 'api/elus/:id/adresseMail',

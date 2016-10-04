@@ -23,7 +23,12 @@ angular.module('babylone14166App').controller('AdressePostaleDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            Elu.saveAdressePostale({id: $stateParams.id}, $scope.adressePostale, onSaveSuccess, onSaveError);
+            if ($scope.adressePostale.id != null) {
+                Elu.updateAdressePostale({id: $stateParams.id}, $scope.adressePostale, onSaveSuccess, onSaveError);
+            } else {
+                Elu.saveAdressePostale({id: $stateParams.id}, $scope.adressePostale, onSaveSuccess, onSaveError);
+            }
+
         };
 
         $scope.clear = function() {
