@@ -40,6 +40,13 @@ angular.module('babylone14166App')
                     return angular.toJson(data);
                 }
             },
+            'deleteAdressePostale': {
+                method: 'DELETE',
+                url: 'api/elus/:eluId/adressePostale/:adressePostaleId',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveAdresseMail': {
                 method: 'POST',
                 url: 'api/elus/:id/adresseMail',

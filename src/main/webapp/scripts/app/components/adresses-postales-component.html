@@ -4,21 +4,23 @@
             <h3 class="box-title"><i class="fa fa-home"></i> Adresses postales</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.adressesPostales"
-                 ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})">
-                {{a.oneline}}
-                <br/>
-                <span class="lg">
-                    <span class="grey">Nature :</span>
-                    {{a.natureProPerso | properso}}
-                    <span class="grey">| Niveau de confidentialité :</span>
-                    {{a.niveauConfidentialite | confidentialite}}
+            <div class="unit-bloc" ng-repeat="a in dto.elu.adressesPostales">
+                <div class="action-bloc" ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})">
+                    {{a.oneline}}
                     <br/>
-                    <span class="grey">Adresse de correspondance :</span>
-                    {{a.adresseDeCorrespondance | ouinon}}
-                    <span class="grey">| Publication dans l'annuaire :</span>
-                    {{a.publicationAnnuaire | ouinon}}
-                </span>
+                    <span class="lg">
+                        <span class="grey">Nature :</span>
+                        {{a.natureProPerso | properso}}
+                        <span class="grey">| Niveau de confidentialité :</span>
+                        {{a.niveauConfidentialite | confidentialite}}
+                        <br/>
+                        <span class="grey">Adresse de correspondance :</span>
+                        {{a.adresseDeCorrespondance | ouinon}}
+                        <span class="grey">| Publication dans l'annuaire :</span>
+                        {{a.publicationAnnuaire | ouinon}}
+                    </span>
+                </div>
+                <a ui-sref="elu.detail.supprimerAdressePostale({adressePostaleId: a.id})">Supprimer</a>
             </div>
             <div ng-hide="dto.elu.adressesPostales.length">Aucune adresse connue</div>
         </div>

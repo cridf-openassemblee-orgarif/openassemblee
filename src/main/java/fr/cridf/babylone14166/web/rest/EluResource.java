@@ -98,6 +98,20 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * DELETE  /adressePostales/:id -> delete the "id" adressePostale.
+     */
+    @RequestMapping(value = "/elus/{eluId}/adressePostale/{adressePostaleId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteAdressePostale(@PathVariable Long eluId, @PathVariable Long adressePostaleId) {
+        log.debug("REST request to delete AdressePostale : {} for elu {}", adressePostaleId, eluId);
+        eluService.deleteAdressePostale(eluId, adressePostaleId);
+        auditTrailService.logDeletion(AdressePostale.class, adressePostaleId, Elu.class, eluId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("adressePostale", adressePostaleId.toString())).build();
+    }
+
     @RequestMapping(value = "/elus/{id}/adresseMail", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createAdresseMail(@PathVariable Long id, @RequestBody AdresseMail adresseMail)

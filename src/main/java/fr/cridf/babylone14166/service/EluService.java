@@ -150,6 +150,17 @@ public class EluService {
         adressePostaleSearchRepository.save(adressePostale);
     }
 
+    public void deleteAdressePostale(Long eluId, Long adressePostaleId) {
+        Elu elu = eluRepository.getOne(eluId);
+        // TODO ça mérite un test car on dépend de l'impl equals là
+        AdressePostale ap = new AdressePostale();
+        ap.setId(adressePostaleId);
+        elu.getAdressesPostales().remove(ap);
+        eluRepository.save(elu);
+        adressePostaleRepository.delete(adressePostaleId);
+        adressePostaleSearchRepository.delete(adressePostaleId);
+    }
+
     public void saveIdentiteInternet(Long id, IdentiteInternet identiteInternet) {
         identiteInternetRepository.save(identiteInternet);
         identiteInternetSearchRepository.save(identiteInternet);
@@ -173,4 +184,5 @@ public class EluService {
         elu.getNumerosTelephones().add(numeroTelephone);
         eluRepository.save(elu);
     }
+
 }
