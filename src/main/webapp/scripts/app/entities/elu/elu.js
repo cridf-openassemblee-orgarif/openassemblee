@@ -605,6 +605,29 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elu.detail.editerAdresseMail', {
+                parent: 'elu.detail',
+                url: '/adresseMail/{adresseMailId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/adresseMail/adresseMail-dialog.html',
+                        controller: 'AdresseMailDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['AdresseMail', function(AdresseMail) {
+                                return AdresseMail.get({id : $stateParams.adresseMailId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterNumeroFax', {
                 parent: 'elu.detail',
                 url: '/numeroFax',
@@ -624,6 +647,29 @@ angular.module('babylone14166App')
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.editerNumeroFax', {
+                parent: 'elu.detail',
+                url: '/numeroFax/{numeroFaxId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroFax/numeroFax-dialog.html',
+                        controller: 'NumeroFaxDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['NumeroFax', function(NumeroFax) {
+                                return NumeroFax.get({id : $stateParams.numeroFaxId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
                         $state.go('^');
                     })
                 }]
@@ -651,6 +697,29 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('elu.detail.editerNumeroTelephone', {
+                parent: 'elu.detail',
+                url: '/numeroTelephone/{numeroTelephoneId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroTelephone/numeroTelephone-dialog.html',
+                        controller: 'NumeroTelephoneDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['NumeroTelephone', function(NumeroTelephone) {
+                                return NumeroTelephone.get({id : $stateParams.numeroTelephoneId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterIdentiteInternet', {
                 parent: 'elu.detail',
                 url: '/identiteInternet',
@@ -670,6 +739,29 @@ angular.module('babylone14166App')
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.editerIdentiteInternet', {
+                parent: 'elu.detail',
+                url: '/identiteInternet/{identiteInternetId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/identiteInternet/identiteInternet-dialog.html',
+                        controller: 'IdentiteInternetDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['IdentiteInternet', function(IdentiteInternet) {
+                                return IdentiteInternet.get({id : $stateParams.identiteInternetId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
                         $state.go('^');
                     })
                 }]

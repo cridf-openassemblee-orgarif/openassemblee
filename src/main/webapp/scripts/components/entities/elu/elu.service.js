@@ -54,8 +54,22 @@ angular.module('babylone14166App')
                     return angular.toJson(data);
                 }
             },
+            'updateAdresseMail': {
+                method: 'PUT',
+                url: 'api/elus/:id/adresseMail',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveIdentiteInternet': {
                 method: 'POST',
+                url: 'api/elus/:id/identiteInternet',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'updateIdentiteInternet': {
+                method: 'PUT',
                 url: 'api/elus/:id/identiteInternet',
                 transformRequest: function (data) {
                     return angular.toJson(data);
@@ -68,8 +82,22 @@ angular.module('babylone14166App')
                     return angular.toJson(data);
                 }
             },
+            'updateNumeroFax': {
+                method: 'PUT',
+                url: 'api/elus/:id/numeroFax',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveNumeroTelephone': {
                 method: 'POST',
+                url: 'api/elus/:id/numeroTelephone',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'updateNumeroTelephone': {
+                method: 'PUT',
                 url: 'api/elus/:id/numeroTelephone',
                 transformRequest: function (data) {
                     return angular.toJson(data);

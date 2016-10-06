@@ -23,7 +23,11 @@ angular.module('babylone14166App').controller('NumeroFaxDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            Elu.saveNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
+            if ($scope.numeroFax.id != null) {
+                Elu.updateNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
+            } else {
+                Elu.saveNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
+            }
         };
 
         $scope.clear = function() {

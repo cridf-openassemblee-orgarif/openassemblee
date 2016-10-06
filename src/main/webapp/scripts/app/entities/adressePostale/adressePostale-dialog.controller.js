@@ -28,7 +28,6 @@ angular.module('babylone14166App').controller('AdressePostaleDialogController',
             } else {
                 Elu.saveAdressePostale({id: $stateParams.id}, $scope.adressePostale, onSaveSuccess, onSaveError);
             }
-
         };
 
         $scope.clear = function() {

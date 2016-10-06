@@ -4,7 +4,8 @@
             <h3 class="box-title"><i class="fa fa-envelope"></i> Adresses mail</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc" ng-repeat="a in dto.elu.adressesMail">
+            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.adressesMail"
+                 ui-sref="elu.detail.editerAdresseMail({adresseMailId: a.id})">
                 {{a.mail}}
                 <br/>
                 <span class="lg">

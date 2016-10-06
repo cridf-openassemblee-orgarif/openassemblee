@@ -23,7 +23,11 @@ angular.module('babylone14166App').controller('IdentiteInternetDialogController'
 
         $scope.save = function () {
             $scope.isSaving = true;
-            Elu.saveIdentiteInternet({id: $stateParams.id}, $scope.identiteInternet, onSaveSuccess, onSaveError);
+            if ($scope.identiteInternet.id != null) {
+                Elu.updateIdentiteInternet({id: $stateParams.id}, $scope.identiteInternet, onSaveSuccess, onSaveError);
+            } else {
+                Elu.saveIdentiteInternet({id: $stateParams.id}, $scope.identiteInternet, onSaveSuccess, onSaveError);
+            }
         };
 
         $scope.clear = function() {

@@ -120,12 +120,30 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/elus/{eluId}/adresseMail", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateAdresseMail(@PathVariable Long eluId, @RequestBody AdresseMail adresseMail)
+        throws URISyntaxException {
+        eluService.updateAdresseMail(adresseMail);
+        auditTrailService.logUpdate(adresseMail, adresseMail.getId(), Elu.class, eluId);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/elus/{id}/identiteInternet", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long id, @RequestBody IdentiteInternet
         identiteInternet)
         throws URISyntaxException {
         eluService.saveIdentiteInternet(id, identiteInternet);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{eluId}/identiteInternet", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateIdentiteInternet(@PathVariable Long eluId, @RequestBody IdentiteInternet identiteInternet)
+        throws URISyntaxException {
+        eluService.updateIdentiteInternet(identiteInternet);
+        auditTrailService.logUpdate(identiteInternet, identiteInternet.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 
@@ -137,12 +155,30 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/elus/{eluId}/numeroFax", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateNumeroFax(@PathVariable Long eluId, @RequestBody NumeroFax numeroFax)
+        throws URISyntaxException {
+        eluService.updateNumeroFax(numeroFax);
+        auditTrailService.logUpdate(numeroFax, numeroFax.getId(), Elu.class, eluId);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/elus/{id}/numeroTelephone", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long id, @RequestBody NumeroTelephone
         numeroTelephone)
         throws URISyntaxException {
         eluService.saveNumeroTelephone(id, numeroTelephone);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{eluId}/numeroTelephone", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateNumeroTelephone(@PathVariable Long eluId, @RequestBody NumeroTelephone numeroTelephone)
+        throws URISyntaxException {
+        eluService.updateNumeroTelephone(numeroTelephone);
+        auditTrailService.logUpdate(numeroTelephone, numeroTelephone.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 

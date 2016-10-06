@@ -23,7 +23,11 @@ angular.module('babylone14166App').controller('NumeroTelephoneDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            Elu.saveNumeroTelephone({id: $stateParams.id}, $scope.numeroTelephone, onSaveSuccess, onSaveError);
+            if ($scope.numeroTelephone.id != null) {
+                Elu.updateNumeroTelephone({id: $stateParams.id}, $scope.numeroTelephone, onSaveSuccess, onSaveError);
+            } else {
+                Elu.saveNumeroTelephone({id: $stateParams.id}, $scope.numeroTelephone, onSaveSuccess, onSaveError);
+            }
         };
 
         $scope.clear = function() {

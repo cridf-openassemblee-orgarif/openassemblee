@@ -137,6 +137,11 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    public void updateAdresseMail(AdresseMail adresseMail) {
+        adresseMailRepository.save(adresseMail);
+        adresseMailSearchRepository.save(adresseMail);
+    }
+
     public void saveAdressePostale(long id, AdressePostale adressePostale) {
         adressePostaleRepository.save(adressePostale);
         adressePostaleSearchRepository.save(adressePostale);
@@ -169,6 +174,11 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    public void updateIdentiteInternet(IdentiteInternet identiteInternet) {
+        identiteInternetRepository.save(identiteInternet);
+        identiteInternetSearchRepository.save(identiteInternet);
+    }
+
     public void saveNumeroFax(Long id, NumeroFax numeroFax) {
         numeroFaxRepository.save(numeroFax);
         numeroFaxSearchRepository.save(numeroFax);
@@ -177,12 +187,22 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    public void updateNumeroFax(NumeroFax numeroFax) {
+        numeroFaxRepository.save(numeroFax);
+        numeroFaxSearchRepository.save(numeroFax);
+    }
+
     public void saveNumeroTelephone(Long id, NumeroTelephone numeroTelephone) {
         numeroTelephoneRepository.save(numeroTelephone);
         numeroTelephoneSearchRepository.save(numeroTelephone);
         Elu elu = eluRepository.getOne(id);
         elu.getNumerosTelephones().add(numeroTelephone);
         eluRepository.save(elu);
+    }
+
+    public void updateNumeroTelephone(NumeroTelephone numeroTelephone) {
+        numeroTelephoneRepository.save(numeroTelephone);
+        numeroTelephoneSearchRepository.save(numeroTelephone);
     }
 
 }

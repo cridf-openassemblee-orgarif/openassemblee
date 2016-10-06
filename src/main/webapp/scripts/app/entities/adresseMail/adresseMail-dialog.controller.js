@@ -23,7 +23,11 @@ angular.module('babylone14166App').controller('AdresseMailDialogController',
 
         $scope.save = function () {
             $scope.isSaving = true;
-            Elu.saveAdresseMail({id: $stateParams.id}, $scope.adresseMail, onSaveSuccess, onSaveError);
+            if ($scope.adresseMail.id != null) {
+                Elu.updateAdresseMail({id: $stateParams.id}, $scope.adresseMail, onSaveSuccess, onSaveError);
+            } else {
+                Elu.saveAdresseMail({id: $stateParams.id}, $scope.adresseMail, onSaveSuccess, onSaveError);
+            }
         };
 
         $scope.clear = function() {
