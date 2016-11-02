@@ -2,11 +2,11 @@
 
 angular.module('babylone14166App')
     .controller('SeanceController', function ($scope, $state, $modal, Seance, SeanceSearch, ParseLinks) {
-      
+
         $scope.seances = [];
         $scope.page = 0;
         $scope.loadAll = function() {
-            Seance.query({page: $scope.page, size: 20}, function(result, headers) {
+            Seance.query({page: $scope.page, size: 20, sort: 'date,desc'}, function(result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 $scope.seances = result;
             });
