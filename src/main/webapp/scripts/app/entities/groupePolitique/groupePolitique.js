@@ -13,7 +13,7 @@ angular.module('babylone14166App')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques.html',
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique.html',
                         controller: 'GroupesPolitiquesController'
                     }
                 },
@@ -26,24 +26,34 @@ angular.module('babylone14166App')
                     authorities: ['ROLE_USER'],
                     pageTitle: "Ajout d'un groupe politique"
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-edit.html',
-                        controller: 'GroupePolitiqueEditController'
-                    }
-                },
-                resolve: {
-                    entity: function () {
-                        return {
-                            nom: null,
-                            nomCourt: null,
-                            dateDebut: null,
-                            dateFin: null,
-                            motifFin: null,
-                            id: null
-                        };
-                    }
-                }
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-dialog.html',
+                        controller: 'GroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    nom: null,
+                                    nomCourt: null,
+                                    dateDebut: null,
+                                    dateFin: null,
+                                    motifFin: null,
+                                    id: null,
+                                    adressePostale: {
+                                        voie: null,
+                                        codePostal: null,
+                                        ville: null
+                                    }
+                                };
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('groupesPolitiques.detail', {id: result.id});
+                    }, function() {
+                        $state.go('groupesPolitiques');
+                    })
+                }]
             })
             .state('groupesPolitiques.detail', {
                 parent: 'groupesPolitiques',
@@ -54,7 +64,7 @@ angular.module('babylone14166App')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-detail.html',
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-detail.html',
                         controller: 'GroupePolitiqueDetailController'
                     }
                 },
@@ -72,8 +82,8 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-fin-dialog.html',
-                        controller: 'GroupePolitiqueDialogController',
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-fin-dialog.html',
+                        controller: 'GroupePolitiqueFinDialogController',
                         size: 'lg',
                         resolve: {
                             entity: ['GroupePolitique', function (GroupePolitique) {
@@ -87,6 +97,29 @@ angular.module('babylone14166App')
                     })
                 }]
             })
+            .state('groupesPolitiques.edit', {
+                parent: 'groupesPolitiques',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-dialog.html',
+                        controller: 'GroupePolitiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['GroupePolitique', function(GroupePolitique) {
+                                return GroupePolitique.get({id : $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('groupesPolitiques', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('groupesPolitiques.delete', {
                 parent: 'groupesPolitiques',
                 url: '/{id}/delete',
@@ -95,7 +128,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/groupes-politiques/groupes-politiques-delete-dialog.html',
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-delete-dialog.html',
                         controller: 'GroupePolitiqueDeleteController',
                         size: 'md',
                         resolve: {

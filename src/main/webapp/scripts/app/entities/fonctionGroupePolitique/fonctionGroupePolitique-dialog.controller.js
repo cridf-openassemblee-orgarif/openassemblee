@@ -4,7 +4,6 @@ angular.module('babylone14166App').controller('FonctionGroupePolitiqueDialogCont
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'FonctionGroupePolitique', 'Elu', 'GroupePolitique',
         function ($scope, $stateParams, $modalInstance, entity, FonctionGroupePolitique, Elu, GroupePolitique) {
 
-            console.log(entity)
             $scope.fonctionGroupePolitique = entity;
             $scope.elus = Elu.query();
             $scope.groupepolitiques = GroupePolitique.query();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('GroupePolitiqueDialogController',
+angular.module('babylone14166App').controller('GroupePolitiqueFinDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'GroupePolitique',
         function($scope, $stateParams, $modalInstance, entity, GroupePolitique) {
 

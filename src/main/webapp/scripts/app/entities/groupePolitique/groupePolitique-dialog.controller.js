@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App').controller('GroupePolitiqueEditController',
-    ['$scope', '$stateParams', 'entity', 'GroupePolitique', '$state',
-        function ($scope, $stateParams, entity, GroupePolitique, $state) {
+angular.module('babylone14166App').controller('GroupePolitiqueDialogController',
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'GroupePolitique',
+        function($scope, $stateParams, $modalInstance, entity, GroupePolitique) {
 
         $scope.groupePolitique = entity;
         $scope.load = function(id) {
@@ -13,8 +13,8 @@ angular.module('babylone14166App').controller('GroupePolitiqueEditController',
 
         var onSaveSuccess = function (result) {
             $scope.$emit('babylone14166App:groupePolitiqueUpdate', result);
+            $modalInstance.close(result);
             $scope.isSaving = false;
-            $state.go('groupesPolitiques.detail', {id: result.id});
         };
 
         var onSaveError = function (result) {
@@ -30,4 +30,7 @@ angular.module('babylone14166App').controller('GroupePolitiqueEditController',
             }
         };
 
+        $scope.clear = function() {
+            $modalInstance.dismiss('cancel');
+        };
 }]);
