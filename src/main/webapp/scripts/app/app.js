@@ -262,4 +262,22 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
             return 'Inconnu';
         };
+    }])
+    // thanks to http://stackoverflow.com/questions/31850457/angularjs-select-match-first-characters
+    .filter('nomPrenomFilter', [function () {
+        return function (items, search) {
+            var out = [];
+            if (angular.isArray(items)) {
+                items.forEach(function (item) {
+                    if ((item.nom != null && item.nom.toLowerCase().latinize().indexOf(search) === 0)
+                        || (item.prenom != null && item.prenom.toLowerCase().latinize().indexOf(search) === 0)) {
+                        out.push(item);
+                    }
+                });
+            } else {
+                out = items;
+            }
+            return out;
+        };
     }]);
+

@@ -12,8 +12,8 @@
                 <ui-select-match>
                     <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="elu in (elus | filter: $select.search) track by elu.id">
-                    <span ng-bind="elu.prenom + ' ' + elu.nom"></span>
+                <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
+                    <span ng-bind-html="elu.prenom + ' ' + elu.nom | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -23,8 +23,8 @@
                 <ui-select-match>
                     <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="elu in (elus | filter: $select.search) track by elu.id">
-                    <span ng-bind="elu.prenom + ' ' + elu.nom"></span>
+                <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
+                    <span ng-bind-html="elu.prenom + ' ' + elu.nom | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
