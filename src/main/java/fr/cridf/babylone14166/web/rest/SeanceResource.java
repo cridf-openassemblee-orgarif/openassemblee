@@ -5,6 +5,8 @@ import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
 import fr.cridf.babylone14166.service.AuditTrailService;
+import fr.cridf.babylone14166.service.SeanceService;
+import fr.cridf.babylone14166.service.dto.SeanceDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class SeanceResource {
 
     @Inject
     private SeanceRepository seanceRepository;
+
+    @Inject
+    private SeanceService seanceService;
 
     @Inject
     private SeanceSearchRepository seanceSearchRepository;
@@ -109,6 +114,22 @@ public class SeanceResource {
     public ResponseEntity<Seance> getSeance(@PathVariable Long id) {
         log.debug("REST request to get Seance : {}", id);
         return Optional.ofNullable(seanceRepository.findOne(id))
+            .map(seance -> new ResponseEntity<>(
+                seance,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /seances/:id -> get the "id" seance.
+     */
+    @RequestMapping(value = "/seances/{id}/dto",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<SeanceDTO> getSeanceDTO(@PathVariable Long id) {
+        log.debug("REST request to get Seance : {}", id);
+        return Optional.ofNullable(seanceService.get(id))
             .map(seance -> new ResponseEntity<>(
                 seance,
                 HttpStatus.OK))

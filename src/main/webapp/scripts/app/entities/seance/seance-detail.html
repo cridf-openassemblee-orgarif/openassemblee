@@ -1,46 +1,85 @@
-
 <div>
-    <h2><span>Seance</span> {{seance.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Intitule</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{seance.intitule}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Type</span>
-                </td>
-                <td>
-                    <span class="form-control-static" translate="{{'babylone14166App.TypeSeance.' + seance.type}}">{{seance.type}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Date</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{seance.date | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+    <section>
+        <div class="container">
+            <h1>Séance {{dto.seance.intitule}}</h1>
+            <h2>{{dto.seance.type | typeSeance}} du {{dto.seance.date | date:'mediumDate'}}</h2>
+            <br/>
+            <div ng-if="dto.pouvoirs.length == 0">
+                <h3>Aucun pouvoir afecté à la séance</h3>
+            </div>
+            <div ng-if="dto.pouvoirs.length > 0">
+                <h3>Liste des pouvoirs de la séance</h3>
+                <div class="table-responsive info-box table-info-box">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Élu cédeur</th>
+                            <th>Élu bénéficiaire</th>
+                            <th>Date de début</th>
+                            <th>Heure de début</th>
+                            <th>Date de fin</th>
+                            <th>Heure de fin</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="dto in dto.pouvoirs track by pouvoir.id">
+                            <td>
+                                <a ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">
+                                    {{dto.pouvoir.eluCedeur.prenom + ' ' + dto.pouvoir.eluCedeur.nom}}
+                                    <span ng-if="dto.eluCedeur.groupePolitique">
+                                        {{' (' + dto.eluCedeur.groupePolitique.nom + ')'}}
+                                    </span>
+                                    <span ng-if="dto.eluCedeur.groupePolitique == null">
+                                        (sans groupe)
+                                    </span>
+                                </a>
+                            <td>
+                                <a ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})">
+                                    {{dto.pouvoir.eluBeneficiaire.prenom + ' ' + dto.pouvoir.eluBeneficiaire.nom}}
+                                    <span ng-if="dto.eluBeneficiaire.groupePolitique">
+                                        {{' (' + dto.eluBeneficiaire.groupePolitique.nom + ')'}}
+                                    </span>
+                                    <span ng-if="dto.eluBeneficiaire.groupePolitique == null">
+                                        (sans groupe)
+                                    </span>
+                                </a>
+                            </td>
+                            <td>{{dto.pouvoir.dateDebut | date:'mediumDate'}}</td>
+                            <td>{{dto.pouvoir.heureDebut}}</td>
+                            <td>{{dto.pouvoir.dateFin | date:'mediumDate'}}</td>
+                            <td>{{dto.pouvoir.heureFin}}</td>
+                            <td>
+                                <button type="submit"
+                                        ui-sref="pouvoir.edit({id:dto.pouvoir.id})"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer / fermer</span>
+                                </button>
+                                <button type="submit"
+                                        ui-sref="pouvoir.delete({id:dto.pouvoir.id})"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                            <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
+                            <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
+                            <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                            <li class="active"><a>{{page + 1}}</a></li>
+                            <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
+                            <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a>
+                            </li>
+                            <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                            <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

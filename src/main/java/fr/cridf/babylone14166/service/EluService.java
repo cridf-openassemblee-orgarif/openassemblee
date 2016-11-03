@@ -74,6 +74,20 @@ public class EluService {
         }).collect(Collectors.toList());
     }
 
+    public EluListDTO getEluListDTO(Long id) {
+        Elu elu = eluRepository.findOne(id);
+        List<AppartenanceGroupePolitique> agps = appartenanceGroupePolitiqueRepository.findAllByElu(elu);
+        Optional<GroupePolitique> groupePolitique = agps.stream()
+            .filter(GroupePolitiqueService::isAppartenanceCourante)
+            .map(AppartenanceGroupePolitique::getGroupePolitique)
+            .findFirst();
+        if (groupePolitique.isPresent()) {
+            return new EluListDTO(elu, groupePolitique.get());
+        } else {
+            return new EluListDTO(elu);
+        }
+    }
+
     public EluDTO get(Long id) {
         Elu elu = eluRepository.findOne(id);
         if (elu == null) {

@@ -2,10 +2,10 @@
 
 angular.module('babylone14166App')
     .controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
-        $scope.seance = entity;
+        $scope.dto = entity;
         $scope.load = function (id) {
-            Seance.get({id: id}, function(result) {
-                $scope.seance = result;
+            Seance.getDto({id: id}, function(result) {
+                $scope.dto = result;
             });
         };
         var unsubscribe = $rootScope.$on('babylone14166App:seanceUpdate', function(event, result) {
