@@ -21,9 +21,7 @@
                     <th>Élu cédeur</th>
                     <th>Élu bénéficiaire</th>
                     <th>Date de début</th>
-                    <th>Heure de début</th>
                     <th>Date de fin</th>
-                    <th>Heure de fin</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -38,10 +36,8 @@
                             {{pouvoir.eluBeneficiaire.prenom + ' ' + pouvoir.eluBeneficiaire.nom}}
                         </a>
                     </td>
-                    <td>{{pouvoir.dateDebut | date:'mediumDate'}}</td>
-                    <td>{{pouvoir.heureDebut}}</td>
-                    <td>{{pouvoir.dateFin | date:'mediumDate'}}</td>
-                    <td>{{pouvoir.heureFin}}</td>
+                    <td>{{pouvoir.dateDebut | date:'mediumDate'}} - {{pouvoir.heureDebut}}</td>
+                    <td>{{pouvoir.dateFin | date:'mediumDate'}} - {{pouvoir.heureFin}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="pouvoir.edit({id:pouvoir.id})"

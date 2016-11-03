@@ -9,6 +9,29 @@
             </div>
             <div ng-if="dto.pouvoirs.length > 0">
                 <h3>Liste des pouvoirs de la séance</h3>
+                <form class="form-horizontal">
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                        <div class="col-md-8">
+                            <select class="form-control" name="type" ng-model="filtre.state" id="field_type">
+                                <option value="tous">Tous (pas de filtre)</option>
+                                <option value="actifs">Actifs maintenant</option>
+                                <option value="nonActifs">Non actifs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                        <div class="col-md-8">
+                            <select class="form-control" name="type" ng-model="filtre.groupePolitique" id="field_type">
+                                <option value="tous">Tous (pas de filtre)</option>
+                                <option ng-repeat="gp in computeGroupesPolitiques() track by gp.id" value="{{gp.id}}">
+                                    {{gp.nom}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
                 <div class="table-responsive info-box table-info-box">
                     <table class="table table-striped">
                         <thead>
@@ -16,47 +39,43 @@
                             <th>Élu cédeur</th>
                             <th>Élu bénéficiaire</th>
                             <th>Date de début</th>
-                            <th>Heure de début</th>
                             <th>Date de fin</th>
-                            <th>Heure de fin</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="dto in dto.pouvoirs track by pouvoir.id">
+                        <tr ng-repeat="pvDto in computePouvoirs() track by pvDto.pouvoir.id">
                             <td>
                                 <a ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">
-                                    {{dto.pouvoir.eluCedeur.prenom + ' ' + dto.pouvoir.eluCedeur.nom}}
-                                    <span ng-if="dto.eluCedeur.groupePolitique">
-                                        {{' (' + dto.eluCedeur.groupePolitique.nom + ')'}}
+                                    {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
+                                    <span ng-if="pvDto.eluCedeur.groupePolitique">
+                                        {{' (' + pvDto.eluCedeur.groupePolitique.nom + ')'}}
                                     </span>
-                                    <span ng-if="dto.eluCedeur.groupePolitique == null">
+                                    <span ng-if="pvDto.eluCedeur.groupePolitique == null">
                                         (sans groupe)
                                     </span>
                                 </a>
                             <td>
                                 <a ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})">
-                                    {{dto.pouvoir.eluBeneficiaire.prenom + ' ' + dto.pouvoir.eluBeneficiaire.nom}}
-                                    <span ng-if="dto.eluBeneficiaire.groupePolitique">
-                                        {{' (' + dto.eluBeneficiaire.groupePolitique.nom + ')'}}
+                                    {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' + pvDto.pouvoir.eluBeneficiaire.nom}}
+                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
+                                        {{' (' + pvDto.eluBeneficiaire.groupePolitique.nom + ')'}}
                                     </span>
-                                    <span ng-if="dto.eluBeneficiaire.groupePolitique == null">
+                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
                                         (sans groupe)
                                     </span>
                                 </a>
                             </td>
-                            <td>{{dto.pouvoir.dateDebut | date:'mediumDate'}}</td>
-                            <td>{{dto.pouvoir.heureDebut}}</td>
-                            <td>{{dto.pouvoir.dateFin | date:'mediumDate'}}</td>
-                            <td>{{dto.pouvoir.heureFin}}</td>
+                            <td>{{pvDto.pouvoir.dateDebut | date:'mediumDate'}} - {{pvDto.pouvoir.heureDebut}}</td>
+                            <td>{{pvDto.pouvoir.dateFin | date:'mediumDate'}} - {{pvDto.pouvoir.heureFin}}</td>
                             <td>
                                 <button type="submit"
-                                        ui-sref="pouvoir.edit({id:dto.pouvoir.id})"
+                                        ui-sref="pouvoir.edit({id:pvDto.pouvoir.id})"
                                         class="btn btn-primary btn-sm">
                                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer / fermer</span>
                                 </button>
                                 <button type="submit"
-                                        ui-sref="pouvoir.delete({id:dto.pouvoir.id})"
+                                        ui-sref="pouvoir.delete({id:pvDto.pouvoir.id})"
                                         class="btn btn-danger btn-sm">
                                     <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
                                 </button>
