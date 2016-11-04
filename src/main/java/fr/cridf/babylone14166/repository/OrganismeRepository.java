@@ -1,8 +1,7 @@
 package fr.cridf.babylone14166.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import fr.cridf.babylone14166.domain.Organisme;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the Organisme entity.

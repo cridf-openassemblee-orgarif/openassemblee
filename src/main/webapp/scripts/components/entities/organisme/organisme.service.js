@@ -13,6 +13,16 @@ angular.module('babylone14166App')
                     return data;
                 }
             },
+            'getDto': {
+                method: 'GET',
+                url: 'api/organismes/:id/dto',
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    data.dateDebut = DateUtils.convertLocaleDateFromServer(data.dateDebut);
+                    data.dateFin = DateUtils.convertLocaleDateFromServer(data.dateFin);
+                    return data;
+                }
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {

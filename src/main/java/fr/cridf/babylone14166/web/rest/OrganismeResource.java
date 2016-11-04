@@ -1,29 +1,32 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import com.codahale.metrics.annotation.Timed;
+import fr.cridf.babylone14166.domain.Organisme;
+import fr.cridf.babylone14166.repository.OrganismeRepository;
+import fr.cridf.babylone14166.repository.search.OrganismeSearchRepository;
+import fr.cridf.babylone14166.service.OrganismeService;
+import fr.cridf.babylone14166.service.dto.OrganismeDTO;
+import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
-
-import fr.cridf.babylone14166.domain.Organisme;
-import fr.cridf.babylone14166.repository.OrganismeRepository;
-import fr.cridf.babylone14166.repository.search.OrganismeSearchRepository;
-import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
-import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Organisme.
@@ -39,6 +42,9 @@ public class OrganismeResource {
 
     @Inject
     private OrganismeSearchRepository organismeSearchRepository;
+
+    @Inject
+    private OrganismeService organismeService;
 
     /**
      * POST  /organismes -> Create a new organisme.
@@ -103,6 +109,22 @@ public class OrganismeResource {
         return Optional.ofNullable(organismeRepository.findOne(id))
             .map(organisme -> new ResponseEntity<>(
                 organisme,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /organismes/:id -> get the "id" organisme.
+     */
+    @RequestMapping(value = "/organismes/{id}/dto",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<OrganismeDTO> getOrganismeDto(@PathVariable Long id) {
+        log.debug("REST request to get Organisme : {}", id);
+        return Optional.ofNullable(organismeService.get(id))
+            .map(seance -> new ResponseEntity<>(
+                seance,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

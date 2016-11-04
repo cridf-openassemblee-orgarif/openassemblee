@@ -2,10 +2,10 @@
 
 angular.module('babylone14166App')
     .controller('OrganismeDetailController', function ($scope, $rootScope, $stateParams, entity, Organisme) {
-        $scope.organisme = entity;
+        $scope.dto = entity;
         $scope.load = function (id) {
-            Organisme.get({id: id}, function(result) {
-                $scope.organisme = result;
+            Organisme.getDto({id: id}, function(result) {
+                $scope.dto = result;
             });
         };
         var unsubscribe = $rootScope.$on('babylone14166App:organismeUpdate', function(event, result) {

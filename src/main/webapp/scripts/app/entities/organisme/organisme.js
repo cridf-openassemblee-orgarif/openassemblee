@@ -34,7 +34,7 @@ angular.module('babylone14166App')
                 },
                 resolve: {
                     entity: ['$stateParams', 'Organisme', function($stateParams, Organisme) {
-                        return Organisme.get({id : $stateParams.id});
+                        return Organisme.getDto({id : $stateParams.id});
                     }]
                 }
             })

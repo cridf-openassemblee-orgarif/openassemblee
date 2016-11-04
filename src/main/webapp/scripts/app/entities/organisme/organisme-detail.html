@@ -1,8 +1,8 @@
 <div>
     <section>
         <div class="container">
-            <h1>{{organisme.nom}}</h1>
-            <br />
+            <h1>{{dto.organisme.nom}}</h1>
+            <br/>
             <div class="table-responsive info-box table-info-box">
                 <table class="table table-striped">
                     <tbody>
@@ -11,7 +11,7 @@
                             <span>Code RNE / Siret</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.codeRNE}}</span>
+                            <span class="form-control-static">{{dto.organisme.codeRNE}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -19,7 +19,7 @@
                             <span>Sigle</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.sigle}}</span>
+                            <span class="form-control-static">{{dto.organisme.sigle}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -27,7 +27,7 @@
                             <span>Type d'organisme</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.type}}</span>
+                            <span class="form-control-static">{{dto.organisme.type}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -35,7 +35,7 @@
                             <span>Secteur d'activité</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.secteur}}</span>
+                            <span class="form-control-static">{{dto.organisme.secteur}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -43,7 +43,7 @@
                             <span>Date de création</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.dateDebut | date:'mediumDate'}}</span>
+                            <span class="form-control-static">{{dto.organisme.dateDebut | date:'mediumDate'}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -51,7 +51,7 @@
                             <span>Date de fin</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.dateFin | date:'mediumDate'}}</span>
+                            <span class="form-control-static">{{dto.organisme.dateFin | date:'mediumDate'}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -59,11 +59,39 @@
                             <span>Motif de fin</span>
                         </td>
                         <td>
-                            <span class="form-control-static">{{organisme.motifFin}}</span>
+                            <span class="form-control-static">{{dto.organisme.motifFin}}</span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="container">
+            <h2 class="col-md-12" ng-if="!dto.appartenances.length">
+                Aucun élu dans l'organisme
+            </h2>
+            <div class="col-md-12" ng-if="dto.appartenances.length">
+                <h2>Les élus en fonction dans l'organisme</h2>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenances"
+                         ng-if="a.dateFin == null">
+                        <div class="info-box entity-component" ui-sref="elu.detail({id:a.eluDto.elu.id})">
+                            <span class="info-box-photo">
+                                <img ng-if="a.eluDto.elu.image" ng-src="images/{{a.eluDto.elu.image}}"/>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span
+                                    class="info-box-titre">{{a.eluDto.elu.civilite | civilite}} {{a.eluDto.elu.prenom}} {{a.eluDto.elu.nom}}</span>
+                                {{a.eluDto.groupePolitique != null ? a.eluDto.groupePolitique.nomCourt : 'Sans groupe'}}
+                                <div class="info-box-info">
+                                    <span>{{a.appartenance.statut}}</span>
+                                    <span class="grey">depuis le</span> {{a.appartenance.dateNomination}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
