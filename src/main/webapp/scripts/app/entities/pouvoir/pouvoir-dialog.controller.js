@@ -61,7 +61,9 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
 
             Elu.query(function (elus) {
                 $scope.elus = elus.map(function (e) {
-                    return e.elu
+                    var gp = e.groupePolitique != null ? e.groupePolitique.nomCourt : 'sans groupe';
+                    e.elu.groupePolitique = gp;
+                    return e.elu;
                 });
             });
             $scope.load = function (id) {

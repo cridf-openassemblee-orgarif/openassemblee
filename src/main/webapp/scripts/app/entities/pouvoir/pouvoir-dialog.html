@@ -10,10 +10,10 @@
             <label>Élu cédeur</label>
             <ui-select ng-model="pouvoir.eluCedeur">
                 <ui-select-match>
-                    <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
+                    <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "></span>
                 </ui-select-match>
                 <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
-                    <span ng-bind-html="elu.prenom + ' ' + elu.nom | highlight: $select.search"></span>
+                    <span ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -24,7 +24,7 @@
                     <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
                 </ui-select-match>
                 <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
-                    <span ng-bind-html="elu.prenom + ' ' + elu.nom | highlight: $select.search"></span>
+                    <span ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
