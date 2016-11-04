@@ -268,9 +268,30 @@ h2 {
     font-weight: bold;
 }
 
+.super-error-message {
+    margin: 4px;
+    padding: 4px;
+    background: #910507;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+
 .link-line {
     cursor: pointer;
 }
+
 .link-line:hover {
     background: #eee !important;
+}
+
+.pouvoir-conflict-error {
+    margin: 4px;
+    border-radius: 4px;
+    border: 2px solid #910507;
+}
+
+.pouvoir-conflict-error .super-error-message {
+    margin: 0;
+    border-radius: 0;
 }

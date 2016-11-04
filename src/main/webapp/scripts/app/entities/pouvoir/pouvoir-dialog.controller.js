@@ -25,14 +25,40 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Pouvoir', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, Pouvoir, Elu) {
 
-            $scope.pouvoir = entity;
+            var initPouvoirScope = function (entity) {
+                $scope.pouvoir = entity;
+                $scope.pouvoirTemp = tempHours(entity);
+            };
+
             if (entity.$promise) {
                 entity.$promise.then(function callback() {
-                    $scope.pouvoirTemp = tempHours($scope.pouvoir);
+                    initPouvoirScope(entity);
                 });
             } else {
-                $scope.pouvoirTemp = tempHours(entity);
+                initPouvoirScope(entity);
             }
+
+            $scope.autoclosePrecedentPouvoir = false;
+            $scope.pouvoirDejaExistant = function () {
+                var result;
+                $scope.openPouvoirs.forEach(function (pv) {
+                    if (pv.eluCedeur != null
+                        && $scope.pouvoir.eluCedeur != null
+                        && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id) {
+                        result = pv;
+                    }
+                });
+                return result;
+            };
+            $scope.eluCedeurADejaDelegue = function () {
+                return $scope.pouvoirDejaExistant() != null;
+            };
+
+            $scope.openPouvoirs = [];
+            Pouvoir.getAllOpen(function (result) {
+                $scope.openPouvoirs = result;
+            });
+
             Elu.query(function (elus) {
                 $scope.elus = elus.map(function (e) {
                     return e.elu
@@ -40,8 +66,7 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             });
             $scope.load = function (id) {
                 Pouvoir.get({id: id}, function (result) {
-                    $scope.pouvoir = result;
-                    $scope.pouvoirTemp = tempHours(result);
+                    initPouvoirScope(result)
                 });
             };
 
@@ -71,6 +96,13 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                 $scope.pouvoirTemp.heureFinAsTime = date;
             };
 
+            var savePouvoir = function () {
+                if ($scope.pouvoir.id != null) {
+                    Pouvoir.update($scope.pouvoir, onSaveSuccess, onSaveError);
+                } else {
+                    Pouvoir.save($scope.pouvoir, onSaveSuccess, onSaveError);
+                }
+            };
             $scope.save = function () {
                 $scope.isSaving = true;
                 var heureDebut = $scope.pouvoirTemp.heureDebutAsTime;
@@ -85,10 +117,16 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                     var heureFinMinutes = heureFin.getMinutes() > 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
                     $scope.pouvoir.heureFin = heureFinHours + ':' + heureFinMinutes;
                 }
-                if ($scope.pouvoir.id != null) {
-                    Pouvoir.update($scope.pouvoir, onSaveSuccess, onSaveError);
+                var pouvoirDejaExistant = $scope.pouvoirDejaExistant();
+                if (pouvoirDejaExistant != null && $scope.autoclosePrecedentPouvoir) {
+                    // TODO se plante s'il n'y en a pas...
+                    pouvoirDejaExistant.dateFin = $scope.pouvoir.dateDebut;
+                    pouvoirDejaExistant.heureFin = $scope.pouvoir.heureDebut;
+                    Pouvoir.update(pouvoirDejaExistant, function () {
+                        savePouvoir()
+                    }, onSaveError);
                 } else {
-                    Pouvoir.save($scope.pouvoir, onSaveSuccess, onSaveError);
+                    savePouvoir()
                 }
             };
 

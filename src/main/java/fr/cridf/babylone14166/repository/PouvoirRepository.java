@@ -13,4 +13,5 @@ public interface PouvoirRepository extends JpaRepository<Pouvoir,Long> {
 
     List<Pouvoir> findAllByDateDebut(LocalDate dateDebut);
 
+    List<Pouvoir> findAllByDateFinAndHeureFin(LocalDate dateFin, String heureFin);
 }

@@ -13,6 +13,20 @@ angular.module('babylone14166App')
                     return data;
                 }
             },
+            'getAllOpen': {
+                method: 'GET',
+                url: 'api/pouvoirs/open',
+                isArray: true,
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    data.map(function (p) {
+                        p.dateDebut = DateUtils.convertLocaleDateFromServer(p.dateDebut);
+                        p.dateFin = DateUtils.convertLocaleDateFromServer(p.dateFin);
+                        return p;
+                    });
+                    return data;
+                }
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {

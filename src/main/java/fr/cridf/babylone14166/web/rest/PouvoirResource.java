@@ -90,6 +90,17 @@ public class PouvoirResource {
     }
 
     /**
+     * GET  /pouvoirs -> get all the pouvoirs sans date de fin.
+     */
+    @RequestMapping(value = "/pouvoirs/open",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Pouvoir> getAllOpenPouvoirs() throws URISyntaxException {
+        return pouvoirRepository.findAllByDateFinAndHeureFin(null, null);
+    }
+
+    /**
      * GET  /pouvoirs/:id -> get the "id" pouvoir.
      */
     @RequestMapping(value = "/pouvoirs/{id}",
