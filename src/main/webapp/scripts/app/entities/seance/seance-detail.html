@@ -46,7 +46,7 @@
                         <tbody>
                         <tr ng-repeat="pvDto in computePouvoirs() track by pvDto.pouvoir.id">
                             <td>
-                                <a ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">
+                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
                                     {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
                                     <span ng-if="pvDto.eluCedeur.groupePolitique">
                                         {{' (' + pvDto.eluCedeur.groupePolitique.nom + ')'}}
@@ -56,7 +56,7 @@
                                     </span>
                                 </a>
                             <td>
-                                <a ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})">
+                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
                                     {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' + pvDto.pouvoir.eluBeneficiaire.nom}}
                                     <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
                                         {{' (' + pvDto.eluBeneficiaire.groupePolitique.nom + ')'}}
