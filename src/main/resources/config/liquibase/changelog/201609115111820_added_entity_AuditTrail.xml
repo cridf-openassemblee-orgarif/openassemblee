@@ -28,7 +28,7 @@
             <column name="action" type="varchar(255)"/>
             <column name="user" type="varchar(255)"/>
             <column name="date" type="datetime"/>
-            <column name="details" type="varchar(255)"/>
+            <column name="details" type="text"/>
             <column name="reason" type="varchar(255)"/>
         </createTable>
 
