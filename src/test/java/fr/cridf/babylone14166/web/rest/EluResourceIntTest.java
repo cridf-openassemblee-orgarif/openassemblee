@@ -1,22 +1,16 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import fr.cridf.babylone14166.Application;
+import fr.cridf.babylone14166.domain.AdressePostale;
+import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
+import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
+import fr.cridf.babylone14166.repository.AdressePostaleRepository;
+import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.search.EluSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
+import fr.cridf.babylone14166.service.EluService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +20,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -34,14 +32,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.Application;
-import fr.cridf.babylone14166.domain.AdressePostale;
-import fr.cridf.babylone14166.domain.Elu;
-import fr.cridf.babylone14166.domain.enumeration.*;
-import fr.cridf.babylone14166.repository.AdressePostaleRepository;
-import fr.cridf.babylone14166.repository.EluRepository;
-import fr.cridf.babylone14166.repository.search.EluSearchRepository;
-import fr.cridf.babylone14166.service.EluService;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the EluResource REST controller.
@@ -95,6 +97,9 @@ public class EluResourceIntTest {
     private EluService eluService;
 
     @Inject
+    private AuditTrailService auditTrailService;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -112,6 +117,7 @@ public class EluResourceIntTest {
         ReflectionTestUtils.setField(eluResource, "eluRepository", eluRepository);
         ReflectionTestUtils.setField(eluResource, "eluSearchRepository", eluSearchRepository);
         ReflectionTestUtils.setField(eluResource, "eluService", eluService);
+        ReflectionTestUtils.setField(eluResource, "auditTrailService", auditTrailService);
         this.restEluMockMvc = MockMvcBuilders.standaloneSetup(eluResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -139,6 +145,10 @@ public class EluResourceIntTest {
         adressePostale.setPublicationAnnuaire(DEFAULT_PUBLICATION_ANNUAIRE);
         adressesPostales.add(adressePostale);
         elu.setAdressesPostales(adressesPostales);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

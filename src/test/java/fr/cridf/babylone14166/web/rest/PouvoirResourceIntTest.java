@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.Pouvoir;
 import fr.cridf.babylone14166.repository.PouvoirRepository;
 import fr.cridf.babylone14166.repository.search.PouvoirSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +65,7 @@ public class PouvoirResourceIntTest {
     private PouvoirRepository pouvoirRepository;
 
     @Inject
-    private PouvoirSearchRepository pouvoirSearchRepository;
+    private AuditTrailService auditTrailService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -76,7 +82,7 @@ public class PouvoirResourceIntTest {
         MockitoAnnotations.initMocks(this);
         PouvoirResource pouvoirResource = new PouvoirResource();
         ReflectionTestUtils.setField(pouvoirResource, "pouvoirRepository", pouvoirRepository);
-        ReflectionTestUtils.setField(pouvoirResource, "pouvoirSearchRepository", pouvoirSearchRepository);
+        ReflectionTestUtils.setField(pouvoirResource, "auditTrailService", auditTrailService);
         this.restPouvoirMockMvc = MockMvcBuilders.standaloneSetup(pouvoirResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -89,6 +95,10 @@ public class PouvoirResourceIntTest {
         pouvoir.setHeureDebut(DEFAULT_HEURE_DEBUT);
         pouvoir.setDateFin(DEFAULT_DATE_FIN);
         pouvoir.setHeureFin(DEFAULT_HEURE_FIN);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

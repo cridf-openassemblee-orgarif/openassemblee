@@ -1,33 +1,37 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
-import java.util.*;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-
-import org.elasticsearch.common.collect.Lists;
-import org.elasticsearch.common.io.Streams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.codahale.metrics.annotation.Timed;
-
 import fr.cridf.babylone14166.domain.GroupePolitique;
 import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
-import fr.cridf.babylone14166.service.*;
+import fr.cridf.babylone14166.service.ExportService;
+import fr.cridf.babylone14166.service.GroupePolitiqueService;
+import fr.cridf.babylone14166.service.ImageService;
 import fr.cridf.babylone14166.service.dto.GroupePolitiqueDTO;
 import fr.cridf.babylone14166.service.dto.GroupePolitiqueListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.collect.Lists;
+import org.elasticsearch.common.io.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing GroupePolitique.
@@ -110,8 +114,7 @@ public class GroupePolitiqueResource {
         if (groupePolitique.getId() == null) {
             return createGroupePolitique(groupePolitique);
         }
-        GroupePolitique result = groupePolitiqueRepository.save(groupePolitique);
-        groupePolitiqueSearchRepository.save(groupePolitique);
+        GroupePolitique result = groupePolitiqueService.save(groupePolitique);
         if (groupePolitique.getDateFin() != null) {
             groupePolitiqueService.sortirElus(groupePolitique);
         }
