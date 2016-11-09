@@ -1,5 +1,6 @@
 # si true, cela active les endpoints TestResource
 fakeData: false
+autoResetIndex: false
 
 # ===================================================================
 # Spring Boot configuration.
