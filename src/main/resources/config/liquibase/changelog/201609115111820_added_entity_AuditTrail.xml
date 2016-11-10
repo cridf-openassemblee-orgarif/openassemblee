@@ -12,6 +12,8 @@
 
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle"/>
+    <property name="textType" value="text" dbms="postgresql, mysql, oracle"/>
+    <property name="textType" value="varchar(255)" dbms="h2"/>
 
     <!--
         Added the entity AuditTrail.
@@ -28,7 +30,7 @@
             <column name="action" type="varchar(255)"/>
             <column name="user" type="varchar(255)"/>
             <column name="date" type="datetime"/>
-            <column name="details" type="text"/>
+            <column name="details" type="${textType}"/>
             <column name="reason" type="varchar(255)"/>
         </createTable>
 
