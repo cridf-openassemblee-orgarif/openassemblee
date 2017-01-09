@@ -13,7 +13,7 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle"/>
     <property name="textType" value="text" dbms="postgresql, mysql, oracle"/>
-    <property name="textType" value="varchar(255)" dbms="h2"/>
+    <property name="textType" value="varchar(2550)" dbms="h2"/>
 
     <!--
         Added the entity AuditTrail.
