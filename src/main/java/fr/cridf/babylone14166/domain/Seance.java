@@ -1,5 +1,6 @@
 package fr.cridf.babylone14166.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.time.LocalDate;
@@ -7,6 +8,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
@@ -36,6 +39,11 @@ public class Seance implements Serializable {
 
     @Column(name = "nombre_signatures")
     private Integer nombreSignatures;
+
+    @OneToMany(mappedBy = "seance")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PresenceElu> presenceElus = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -75,6 +83,14 @@ public class Seance implements Serializable {
 
     public void setNombreSignatures(Integer nombreSignatures) {
         this.nombreSignatures = nombreSignatures;
+    }
+
+    public Set<PresenceElu> getPresenceElus() {
+        return presenceElus;
+    }
+
+    public void setPresenceElus(Set<PresenceElu> PresenceElus) {
+        this.presenceElus = PresenceElus;
     }
 
     @Override

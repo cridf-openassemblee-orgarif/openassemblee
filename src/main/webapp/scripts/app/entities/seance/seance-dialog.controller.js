@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('babylone14166App').controller('SeanceDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Seance',
-        function($scope, $stateParams, $modalInstance, entity, Seance) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Seance', 'PresenceElu',
+        function($scope, $stateParams, $modalInstance, entity, Seance, PresenceElu) {
 
         $scope.seance = entity;
+        $scope.presenceelus = PresenceElu.query();
         $scope.load = function(id) {
             Seance.get({id : id}, function(result) {
                 $scope.seance = result;
