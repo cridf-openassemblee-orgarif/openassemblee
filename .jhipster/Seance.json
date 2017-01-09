@@ -1,4 +1,13 @@
 {
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "presenceElu",
+            "otherEntityName": "PresenceElu",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "seance"
+        }
+    ],
     "fields": [
         {
             "fieldId": 1,

@@ -13,6 +13,13 @@
             "otherEntityName": "signature",
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "presenceElu"
+        },
+        {
+            "relationshipId": 3,
+            "relationshipName": "seance",
+            "otherEntityName": "Seance",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [],
