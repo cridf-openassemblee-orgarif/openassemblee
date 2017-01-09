@@ -2,23 +2,19 @@ package fr.cridf.babylone14166.web.rest;
 
 import fr.cridf.babylone14166.Application;
 import fr.cridf.babylone14166.domain.Seance;
-import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
-import fr.cridf.babylone14166.service.AuditTrailService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -30,13 +26,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
 
 /**
  * Test class for the SeanceResource REST controller.
@@ -59,14 +55,14 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
     private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
+    private static final Integer DEFAULT_NOMBRE_SIGNATURES = 1;
+    private static final Integer UPDATED_NOMBRE_SIGNATURES = 2;
+
     @Inject
     private SeanceRepository seanceRepository;
 
     @Inject
     private SeanceSearchRepository seanceSearchRepository;
-
-    @Inject
-    private AuditTrailService auditTrailService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -84,7 +80,6 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         SeanceResource seanceResource = new SeanceResource();
         ReflectionTestUtils.setField(seanceResource, "seanceRepository", seanceRepository);
         ReflectionTestUtils.setField(seanceResource, "seanceSearchRepository", seanceSearchRepository);
-        ReflectionTestUtils.setField(seanceResource, "auditTrailService", auditTrailService);
         this.restSeanceMockMvc = MockMvcBuilders.standaloneSetup(seanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -96,10 +91,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         seance.setIntitule(DEFAULT_INTITULE);
         seance.setType(DEFAULT_TYPE);
         seance.setDate(DEFAULT_DATE);
-
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
-        SecurityContextHolder.setContext(securityContext);
+        seance.setNombreSignatures(DEFAULT_NOMBRE_SIGNATURES);
     }
 
     @Test
@@ -121,6 +113,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         assertThat(testSeance.getIntitule()).isEqualTo(DEFAULT_INTITULE);
         assertThat(testSeance.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testSeance.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testSeance.getNombreSignatures()).isEqualTo(DEFAULT_NOMBRE_SIGNATURES);
     }
 
     @Test
@@ -136,7 +129,8 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
                 .andExpect(jsonPath("$.[*].id").value(hasItem(seance.getId().intValue())))
                 .andExpect(jsonPath("$.[*].intitule").value(hasItem(DEFAULT_INTITULE.toString())))
                 .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+                .andExpect(jsonPath("$.[*].nombreSignatures").value(hasItem(DEFAULT_NOMBRE_SIGNATURES)));
     }
 
     @Test
@@ -152,7 +146,8 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
             .andExpect(jsonPath("$.id").value(seance.getId().intValue()))
             .andExpect(jsonPath("$.intitule").value(DEFAULT_INTITULE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+            .andExpect(jsonPath("$.nombreSignatures").value(DEFAULT_NOMBRE_SIGNATURES));
     }
 
     @Test
@@ -175,6 +170,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         seance.setIntitule(UPDATED_INTITULE);
         seance.setType(UPDATED_TYPE);
         seance.setDate(UPDATED_DATE);
+        seance.setNombreSignatures(UPDATED_NOMBRE_SIGNATURES);
 
         restSeanceMockMvc.perform(put("/api/seances")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -188,6 +184,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         assertThat(testSeance.getIntitule()).isEqualTo(UPDATED_INTITULE);
         assertThat(testSeance.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testSeance.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testSeance.getNombreSignatures()).isEqualTo(UPDATED_NOMBRE_SIGNATURES);
     }
 
     @Test

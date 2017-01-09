@@ -34,6 +34,9 @@ public class Seance implements Serializable {
     @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "nombre_signatures")
+    private Integer nombreSignatures;
+
     public Long getId() {
         return id;
     }
@@ -66,6 +69,14 @@ public class Seance implements Serializable {
         this.date = date;
     }
 
+    public Integer getNombreSignatures() {
+        return nombreSignatures;
+    }
+
+    public void setNombreSignatures(Integer nombreSignatures) {
+        this.nombreSignatures = nombreSignatures;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -90,6 +101,7 @@ public class Seance implements Serializable {
             ", intitule='" + intitule + "'" +
             ", type='" + type + "'" +
             ", date='" + date + "'" +
+            ", nombreSignatures='" + nombreSignatures + "'" +
             '}';
     }
 }

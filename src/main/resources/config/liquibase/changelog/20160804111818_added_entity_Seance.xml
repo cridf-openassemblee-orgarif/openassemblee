@@ -24,6 +24,7 @@
             <column name="intitule" type="varchar(255)"/>
             <column name="type" type="varchar(255)"/>
             <column name="date" type="date"/>
+            <column name="nombre_signatures" type="integer"/>
         </createTable>
         
     </changeSet>

@@ -38,6 +38,7 @@ angular.module('babylone14166App')
                 intitule: null,
                 type: null,
                 date: null,
+                nombreSignatures: null,
                 id: null
             };
         };
