@@ -22,6 +22,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="elu_id" type="bigint"/>
+            <column name="seance_id" type="bigint"/>
         </createTable>
         
         <addForeignKeyConstraint baseColumnNames="elu_id"
@@ -29,6 +30,12 @@
                                  constraintName="fk_presenceelu_elu_id"
                                  referencedColumnNames="id"
                                  referencedTableName="elu"/>
+
+        <addForeignKeyConstraint baseColumnNames="seance_id"
+                                 baseTableName="presence_elu"
+                                 constraintName="fk_presenceelu_seance_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seance"/>
 
     </changeSet>
 </databaseChangeLog>

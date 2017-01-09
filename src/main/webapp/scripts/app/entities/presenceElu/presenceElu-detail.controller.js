@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('babylone14166App')
-    .controller('PresenceEluDetailController', function ($scope, $rootScope, $stateParams, entity, PresenceElu, Elu, Signature) {
+    .controller('PresenceEluDetailController', function ($scope, $rootScope, $stateParams, entity, PresenceElu, Elu, Signature, Seance) {
         $scope.presenceElu = entity;
         $scope.load = function (id) {
             PresenceElu.get({id: id}, function(result) {

@@ -33,6 +33,10 @@ public class PresenceElu implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Signature> signatures = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "seance_id")
+    private Seance seance;
+
     public Long getId() {
         return id;
     }
@@ -55,6 +59,14 @@ public class PresenceElu implements Serializable {
 
     public void setSignatures(Set<Signature> signatures) {
         this.signatures = signatures;
+    }
+
+    public Seance getSeance() {
+        return seance;
+    }
+
+    public void setSeance(Seance Seance) {
+        this.seance = Seance;
     }
 
     @Override

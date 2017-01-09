@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('babylone14166App').controller('PresenceEluDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'PresenceElu', 'Elu', 'Signature',
-        function($scope, $stateParams, $modalInstance, entity, PresenceElu, Elu, Signature) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'PresenceElu', 'Elu', 'Signature', 'Seance',
+        function($scope, $stateParams, $modalInstance, entity, PresenceElu, Elu, Signature, Seance) {
 
         $scope.presenceElu = entity;
         $scope.elus = Elu.query();
         $scope.signatures = Signature.query();
+        $scope.seances = Seance.query();
         $scope.load = function(id) {
             PresenceElu.get({id : id}, function(result) {
                 $scope.presenceElu = result;

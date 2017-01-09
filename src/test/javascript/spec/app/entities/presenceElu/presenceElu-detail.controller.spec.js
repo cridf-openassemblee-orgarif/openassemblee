@@ -2,7 +2,7 @@
 
 describe('PresenceElu Detail Controller', function() {
     var $scope, $rootScope;
-    var MockEntity, MockPresenceElu, MockElu, MockSignature;
+    var MockEntity, MockPresenceElu, MockElu, MockSignature, MockSeance;
     var createController;
 
     beforeEach(inject(function($injector) {
@@ -12,6 +12,7 @@ describe('PresenceElu Detail Controller', function() {
         MockPresenceElu = jasmine.createSpy('MockPresenceElu');
         MockElu = jasmine.createSpy('MockElu');
         MockSignature = jasmine.createSpy('MockSignature');
+        MockSeance = jasmine.createSpy('MockSeance');
         
 
         var locals = {
@@ -20,7 +21,8 @@ describe('PresenceElu Detail Controller', function() {
             'entity': MockEntity ,
             'PresenceElu': MockPresenceElu,
             'Elu': MockElu,
-            'Signature': MockSignature
+            'Signature': MockSignature,
+            'Seance': MockSeance
         };
         createController = function() {
             $injector.get('$controller')("PresenceEluDetailController", locals);

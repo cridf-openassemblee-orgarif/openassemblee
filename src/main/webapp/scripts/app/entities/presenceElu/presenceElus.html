@@ -26,6 +26,7 @@
                 <tr>
                     <th>ID</th>
                     <th>elu</th>
+                    <th>seance</th>
                     <th></th>
                 </tr>
             </thead>
@@ -34,6 +35,9 @@
                     <td><a ui-sref="presenceElu.detail({id:presenceElu.id})">{{presenceElu.id}}</a></td>
                     <td>
                         <a ui-sref="elu.detail({id:presenceElu.elu.id})">{{presenceElu.elu.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="Seance.detail({id:presenceElu.seance.id})">{{presenceElu.seance.id}}</a>
                     </td>
                     <td>
                         <button type="submit"
