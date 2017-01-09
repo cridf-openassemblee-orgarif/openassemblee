@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
-import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.SeanceService;
 import fr.cridf.babylone14166.service.dto.SeanceDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
@@ -47,9 +46,6 @@ public class SeanceResource {
     @Inject
     private SeanceSearchRepository seanceSearchRepository;
 
-    @Inject
-    private AuditTrailService auditTrailService;
-
     /**
      * POST  /seances -> Create a new seance.
      */
@@ -62,9 +58,7 @@ public class SeanceResource {
         if (seance.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new seance cannot already have an ID").body(null);
         }
-        Seance result = seanceRepository.save(seance);
-        seanceSearchRepository.save(result);
-        auditTrailService.logCreation(result, result.getId());
+        Seance result = seanceService.create(seance);
         return ResponseEntity.created(new URI("/api/seances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("seance", result.getId().toString()))
             .body(result);
@@ -82,9 +76,7 @@ public class SeanceResource {
         if (seance.getId() == null) {
             return createSeance(seance);
         }
-        Seance result = seanceRepository.save(seance);
-        seanceSearchRepository.save(seance);
-        auditTrailService.logUpdate(result, result.getId());
+        Seance result = seanceService.update(seance);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("seance", seance.getId().toString()))
             .body(result);
@@ -145,9 +137,7 @@ public class SeanceResource {
     @Timed
     public ResponseEntity<Void> deleteSeance(@PathVariable Long id) {
         log.debug("REST request to delete Seance : {}", id);
-        seanceRepository.delete(id);
-        seanceSearchRepository.delete(id);
-        auditTrailService.logDeletion(Seance.class, id);
+        seanceService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("seance", id.toString())).build();
     }
 

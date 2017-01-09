@@ -3,6 +3,7 @@ package fr.cridf.babylone14166.service;
 import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.repository.PouvoirRepository;
 import fr.cridf.babylone14166.repository.SeanceRepository;
+import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
 import fr.cridf.babylone14166.service.dto.EluListDTO;
 import fr.cridf.babylone14166.service.dto.PouvoirListDTO;
 import fr.cridf.babylone14166.service.dto.SeanceDTO;
@@ -12,6 +13,9 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// FIXME une incohérence possible
+// j'enleve une présence
+// et le mec a fait des pouvoirs / signatures
 @Service
 public class SeanceService {
 
@@ -21,6 +25,10 @@ public class SeanceService {
     private PouvoirRepository pouvoirRepository;
     @Inject
     private EluService eluService;
+    @Inject
+    private SeanceSearchRepository seanceSearchRepository;
+    @Inject
+    private AuditTrailService auditTrailService;
 
     public SeanceDTO get(Long id) {
         Seance seance = seanceRepository.findOne(id);
@@ -36,4 +44,24 @@ public class SeanceService {
         return new SeanceDTO(seance, pouvoirs);
     }
 
+    public Seance create(Seance seance) {
+        Seance result = seanceRepository.save(seance);
+        seanceSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
+        return seance;
+    }
+
+    public Seance update(Seance seance) {
+        Seance result = seanceRepository.save(seance);
+        seanceSearchRepository.save(seance);
+        auditTrailService.logUpdate(result, result.getId());
+        return seance;
+    }
+
+    // TODONOW il faut modifier tous les pouvoirs
+    public void delete(Long id) {
+        seanceRepository.delete(id);
+        seanceSearchRepository.delete(id);
+        auditTrailService.logDeletion(Seance.class, id);
+    }
 }
