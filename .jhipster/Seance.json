@@ -15,6 +15,11 @@
             "fieldId": 3,
             "fieldName": "date",
             "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "nombreSignatures",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20160804111818",
