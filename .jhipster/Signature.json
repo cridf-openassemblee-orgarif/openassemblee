@@ -1,0 +1,19 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "position",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "statut",
+            "fieldType": "SignatureStatus",
+            "fieldValues": "PRESENT,ABSENT,EXCUSE"
+        }
+    ],
+    "changelogDate": "20170109170548",
+    "dto": "no",
+    "pagination": "pagination"
+}
