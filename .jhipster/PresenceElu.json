@@ -1,0 +1,22 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "signature",
+            "otherEntityName": "signature",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "presenceElu"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170109170820",
+    "dto": "no",
+    "pagination": "pagination"
+}
