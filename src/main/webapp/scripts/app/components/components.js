@@ -61,6 +61,26 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/numeros-telephone-component.html'
         }
     })
+    .directive('signatureSeance', function () {
+        return {
+            restrict: 'E',
+            controller: ['$scope', function SignatureSeanceController($scope) {
+                $scope.color = function (color) {
+                    switch (color) {
+                        case 'PRESENT':
+                            return '#bff1c5';
+                        case 'ABSENT':
+                            return '#f1b294';
+                        case 'EXCUSE':
+                            return '#f1e8b5';
+                    }
+                    return '#bbb';
+                }
+            }],
+            templateUrl: 'scripts/app/components/signature-seance.html'
+        }
+    })
+    // thanks to https://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     .directive('showtab',
         function () {
             return {

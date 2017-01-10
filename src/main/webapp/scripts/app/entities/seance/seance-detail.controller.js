@@ -3,6 +3,21 @@
 angular.module('babylone14166App')
     .controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
         $scope.dto = entity;
+        $scope.signaturesArray = [];
+
+        var initSignaturesArray = function () {
+            for (var i = 1; i <= entity.seance.nombreSignatures; i++) {
+                $scope.signaturesArray.push(i);
+            }
+        };
+
+        if (entity.$promise) {
+            entity.$promise.then(function callback() {
+                initSignaturesArray()
+            });
+        } else {
+            initSignaturesArray()
+        }
 
         $scope.computeGroupesPolitiques = function () {
             var groupesPolitiques = {};
@@ -30,7 +45,7 @@ angular.module('babylone14166App')
                     }
                     return true;
                 })
-                .filter(function(pvDto) {
+                .filter(function (pvDto) {
                     if ($scope.filtre.groupePolitique == 'tous') {
                         return true;
                     }

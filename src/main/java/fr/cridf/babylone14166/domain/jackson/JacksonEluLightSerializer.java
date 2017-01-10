@@ -26,7 +26,7 @@ public class JacksonEluLightSerializer extends JsonSerializer<Elu> {
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .findFirst();
         if (gp.isPresent()) {
-            jsonGenerator.writeStringField("groupePolitque", gp.get().getNom());
+            jsonGenerator.writeStringField("groupePolitique", gp.get().getNom());
         }
         jsonGenerator.writeEndObject();
     }
