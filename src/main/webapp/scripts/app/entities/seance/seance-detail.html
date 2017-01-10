@@ -126,16 +126,16 @@
                     <div id="signatures-container" class="tab-pane fade in active">
                         <h3>Signatures de la séance</h3>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped signature-table">
                                 <thead>
                                 <tr>
-                                    <th>Élus</th>
+                                    <th class="elu">Élus</th>
                                     <th ng-repeat="index in signaturesArray">Signature {{index}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="presenceElu in dto.seance.presenceElus track by presenceElu.id">
-                                    <td>
+                                    <td class="elu">
                                         <a ui-sref="elu.detail({id:presenceElu.elu.id})">
                                             {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
                                             <br/>
