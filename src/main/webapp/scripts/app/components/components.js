@@ -61,3 +61,14 @@ angular.module('babylone14166App')
             templateUrl: 'scripts/app/components/numeros-telephone-component.html'
         }
     })
+    .directive('showtab',
+        function () {
+            return {
+                link: function (scope, element, attrs) {
+                    element.click(function (e) {
+                        e.preventDefault();
+                        $(element).tab('show');
+                    });
+                }
+            };
+        });

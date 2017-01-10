@@ -4,99 +4,128 @@
             <h1>Séance {{dto.seance.intitule}}</h1>
             <h2>{{dto.seance.type | typeSeance}} du {{dto.seance.date | date:'mediumDate'}}</h2>
             <br/>
-            <div ng-if="dto.pouvoirs.length == 0">
-                <h3>Aucun pouvoir affecté à la séance</h3>
-            </div>
-            <div ng-if="dto.pouvoirs.length > 0">
-                <h3>Liste des pouvoirs de la séance</h3>
-                <form class="form-horizontal">
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4" for="field_type">Filtrer :</label>
-                        <div class="col-md-8">
-                            <select class="form-control" name="type" ng-model="filtre.state" id="field_type">
-                                <option value="tous">Tous (pas de filtre)</option>
-                                <option value="actifs">Actifs maintenant</option>
-                                <option value="nonActifs">Non actifs</option>
-                            </select>
+            <div class="table-responsive info-box table-info-box">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a showtab="" href="#pouvoirs-container">Pouvoirs</a></li>
+                    <li><a showtab="" href="#signatures-container">Signatures</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="pouvoirs-container" class="tab-pane fade in active">
+                        <div ng-if="dto.pouvoirs.length == 0">
+                            <h3>Aucun pouvoir affecté à la séance</h3>
                         </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
-                        <div class="col-md-8">
-                            <select class="form-control" name="type" ng-model="filtre.groupePolitique" id="field_type">
-                                <option value="tous">Tous (pas de filtre)</option>
-                                <option ng-repeat="gp in computeGroupesPolitiques() track by gp.id" value="{{gp.id}}">
-                                    {{gp.nom}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div class="table-responsive info-box table-info-box">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Élu cédeur</th>
-                            <th>Élu bénéficiaire</th>
-                            <th>Date de début</th>
-                            <th>Date de fin</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="pvDto in computePouvoirs() track by pvDto.pouvoir.id">
-                            <td>
-                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
-                                    {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
-                                    <span ng-if="pvDto.eluCedeur.groupePolitique">
+                        <div ng-if="dto.pouvoirs.length > 0">
+                            <h3>Liste des pouvoirs de la séance</h3>
+                            <form class="form-horizontal">
+                                <div class="form-group col-md-6">
+                                    <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="type" ng-model="filtre.state"
+                                                id="field_type">
+                                            <option value="tous">Tous (pas de filtre)</option>
+                                            <option value="actifs">Actifs maintenant</option>
+                                            <option value="nonActifs">Non actifs</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="type" ng-model="filtre.groupePolitique"
+                                                id="field_type">
+                                            <option value="tous">Tous (pas de filtre)</option>
+                                            <option ng-repeat="gp in computeGroupesPolitiques() track by gp.id"
+                                                    value="{{gp.id}}">
+                                                {{gp.nom}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive info-box table-info-box">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Élu cédeur</th>
+                                        <th>Élu bénéficiaire</th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="pvDto in computePouvoirs() track by pvDto.pouvoir.id">
+                                        <td>
+                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
+                                                {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
+                                                <span ng-if="pvDto.eluCedeur.groupePolitique">
                                         {{' (' + pvDto.eluCedeur.groupePolitique.nom + ')'}}
                                     </span>
-                                    <span ng-if="pvDto.eluCedeur.groupePolitique == null">
+                                                <span ng-if="pvDto.eluCedeur.groupePolitique == null">
                                         (sans groupe)
                                     </span>
-                                </a>
-                            <td>
-                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
-                                    {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' + pvDto.pouvoir.eluBeneficiaire.nom}}
-                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
+                                            </a>
+                                        <td>
+                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
+                                                {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' +
+                                                pvDto.pouvoir.eluBeneficiaire.nom}}
+                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
                                         {{' (' + pvDto.eluBeneficiaire.groupePolitique.nom + ')'}}
                                     </span>
-                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
+                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
                                         (sans groupe)
                                     </span>
-                                </a>
-                            </td>
-                            <td>{{pvDto.pouvoir.dateDebut | date:'mediumDate'}} - {{pvDto.pouvoir.heureDebut}}</td>
-                            <td>{{pvDto.pouvoir.dateFin | date:'mediumDate'}} - {{pvDto.pouvoir.heureFin}}</td>
-                            <td>
-                                <button type="submit"
-                                        ui-sref="pouvoir.edit({id:pvDto.pouvoir.id})"
-                                        class="btn btn-primary btn-sm">
-                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer / fermer</span>
-                                </button>
-                                <button type="submit"
-                                        ui-sref="pouvoir.delete({id:pvDto.pouvoir.id})"
-                                        class="btn btn-danger btn-sm">
-                                    <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <nav>
-                        <ul class="pagination">
-                            <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
-                            <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
-                            <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
-                            <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
-                            <li class="active"><a>{{page + 1}}</a></li>
-                            <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                            <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a>
-                            </li>
-                            <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                            <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
-                        </ul>
-                    </nav>
+                                            </a>
+                                        </td>
+                                        <td>{{pvDto.pouvoir.dateDebut | date:'mediumDate'}} -
+                                            {{pvDto.pouvoir.heureDebut}}
+                                        </td>
+                                        <td>{{pvDto.pouvoir.dateFin | date:'mediumDate'}} - {{pvDto.pouvoir.heureFin}}
+                                        </td>
+                                        <td>
+                                            <button type="submit"
+                                                    ui-sref="pouvoir.edit({id:pvDto.pouvoir.id})"
+                                                    class="btn btn-primary btn-sm">
+                                        <span
+                                            class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer / fermer</span>
+                                            </button>
+                                            <button type="submit"
+                                                    ui-sref="pouvoir.delete({id:pvDto.pouvoir.id})"
+                                                    class="btn btn-danger btn-sm">
+                                        <span
+                                            class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <nav>
+                                    <ul class="pagination">
+                                        <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>
+                                            &lt;&lt;</a>
+                                        </li>
+                                        <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
+                                        <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
+                                        <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                                        <li class="active"><a>{{page + 1}}</a></li>
+                                        <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page +
+                                            2}}</a>
+                                        </li>
+                                        <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page +
+                                            3}}</a>
+                                        </li>
+                                        <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                                        <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>
+                                            &gt;&gt;</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="signatures-container" class="tab-pane fade">
+                        Signatures
+                    </div>
                 </div>
             </div>
         </div>
