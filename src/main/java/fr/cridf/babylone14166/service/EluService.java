@@ -60,14 +60,15 @@ public class EluService {
     @Transactional(readOnly = true)
     public List<Elu> getAllActifsAssemblee() {
         return eluRepository.findAll().stream()
-            .filter(e -> {
-                for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
-                    if (a.getDateFin() == null) {
-                        return true;
-                    }
-                }
-                return false;
-            })
+            // FIXME pour le moment tous les élus sont actifs, wtf...
+//            .filter(e -> {
+//                for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
+//                    if (a.getDateFin() == null) {
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            })
             .collect(Collectors.toList());
     }
 
