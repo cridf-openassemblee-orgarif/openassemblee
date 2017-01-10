@@ -1,20 +1,26 @@
 package fr.cridf.babylone14166.service;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import fr.cridf.babylone14166.service.dto.FonctionGroupePolitiqueDTO;
+import fr.cridf.babylone14166.domain.AppartenanceCommissionPermanente;
+import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.FonctionCommissionPermanente;
+import fr.cridf.babylone14166.domain.FonctionExecutive;
+import fr.cridf.babylone14166.repository.AppartenanceCommissionPermanenteRepository;
+import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.FonctionCommissionPermanenteRepository;
+import fr.cridf.babylone14166.repository.FonctionExecutiveRepository;
+import fr.cridf.babylone14166.service.dto.CommissionPermanenteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.domain.*;
-import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.service.dto.CommissionPermanenteDTO;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class CommissionPermanenteService {
 
     @Autowired
@@ -26,6 +32,7 @@ public class CommissionPermanenteService {
     @Autowired
     private FonctionExecutiveRepository fonctionExecutiveRepository;
 
+    @Transactional(readOnly = true)
     public CommissionPermanenteDTO getCommissionPermanente() {
         List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
             .filter(CommissionPermanenteService::isAppartenanceCourante)
@@ -45,16 +52,19 @@ public class CommissionPermanenteService {
         return new CommissionPermanenteDTO(acp, fcp, fe, elus);
     }
 
+    @Transactional(readOnly = true)
     public static boolean isAppartenanceCourante(AppartenanceCommissionPermanente a) {
         // plus tard : || a.getDateFin().isAfter(LocalDate.now())
         return a.getDateFin() == null;
     }
 
+    @Transactional(readOnly = true)
     public static boolean isFonctionCourante(FonctionCommissionPermanente f) {
         // plus tard : || f.getDateFin().isAfter(LocalDate.now())
         return f.getDateFin() == null;
     }
 
+    @Transactional(readOnly = true)
     public static boolean isFonctionExecutiveCourante(FonctionExecutive f) {
         // plus tard : || f.getDateFin().isAfter(LocalDate.now())
         return f.getDateFin() == null;

@@ -316,11 +316,11 @@ public class EluResource {
     @Timed
     public void getAllElusExport(HttpServletResponse response) {
         log.debug("REST request to get all GroupePolitiques");
-        List<EluListDTO> gps = eluService.getAll();
+        List<EluListDTO> dtos = eluService.getAll();
         List<List<String>> lines = new ArrayList<>();
         lines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
             "Date de naissance"));
-        for (EluListDTO dto : gps) {
+        for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
             String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
             String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :

@@ -18,7 +18,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class EluService {
 
     private List<EluDTO> all;
@@ -58,11 +57,25 @@ public class EluService {
     @Inject
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
 
+    @Transactional(readOnly = true)
+    public List<Elu> getAllActifsAssemblee() {
+        return eluRepository.findAll().stream()
+            .filter(e -> {
+                for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
+                    if (a.getDateFin() == null) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<EluListDTO> getAll() {
         List<Elu> elus = eluRepository.findAll();
         return elus.stream().map(e -> {
-            List<AppartenanceGroupePolitique> agps = appartenanceGroupePolitiqueRepository.findAllByElu(e);
-            Optional<GroupePolitique> groupePolitique = agps.stream()
+            Optional<GroupePolitique> groupePolitique = e.getAppartenancesGroupePolitique().stream()
                 .filter(GroupePolitiqueService::isAppartenanceCourante)
                 .map(AppartenanceGroupePolitique::getGroupePolitique)
                 .findFirst();
@@ -74,10 +87,10 @@ public class EluService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public EluListDTO getEluListDTO(Long id) {
         Elu elu = eluRepository.findOne(id);
-        List<AppartenanceGroupePolitique> agps = appartenanceGroupePolitiqueRepository.findAllByElu(elu);
-        Optional<GroupePolitique> groupePolitique = agps.stream()
+        Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .findFirst();
@@ -88,6 +101,7 @@ public class EluService {
         }
     }
 
+    @Transactional(readOnly = true)
     public EluDTO get(Long id) {
         Elu elu = eluRepository.findOne(id);
         if (elu == null) {
@@ -143,6 +157,7 @@ public class EluService {
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
     }
 
+    @Transactional
     public void saveAdresseMail(Long id, AdresseMail adresseMail) {
         adresseMailRepository.save(adresseMail);
         adresseMailSearchRepository.save(adresseMail);
@@ -151,11 +166,13 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    @Transactional
     public void updateAdresseMail(AdresseMail adresseMail) {
         adresseMailRepository.save(adresseMail);
         adresseMailSearchRepository.save(adresseMail);
     }
 
+    @Transactional
     public void saveAdressePostale(long id, AdressePostale adressePostale) {
         adressePostaleRepository.save(adressePostale);
         adressePostaleSearchRepository.save(adressePostale);
@@ -164,11 +181,13 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    @Transactional
     public void updateAdressePostale(AdressePostale adressePostale) {
         adressePostaleRepository.save(adressePostale);
         adressePostaleSearchRepository.save(adressePostale);
     }
 
+    @Transactional
     public void deleteAdressePostale(Long eluId, Long adressePostaleId) {
         Elu elu = eluRepository.getOne(eluId);
         // TODO ça mérite un test car on dépend de l'impl equals là
@@ -180,6 +199,7 @@ public class EluService {
         adressePostaleSearchRepository.delete(adressePostaleId);
     }
 
+    @Transactional
     public void saveIdentiteInternet(Long id, IdentiteInternet identiteInternet) {
         identiteInternetRepository.save(identiteInternet);
         identiteInternetSearchRepository.save(identiteInternet);
@@ -188,11 +208,13 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    @Transactional
     public void updateIdentiteInternet(IdentiteInternet identiteInternet) {
         identiteInternetRepository.save(identiteInternet);
         identiteInternetSearchRepository.save(identiteInternet);
     }
 
+    @Transactional
     public void saveNumeroFax(Long id, NumeroFax numeroFax) {
         numeroFaxRepository.save(numeroFax);
         numeroFaxSearchRepository.save(numeroFax);
@@ -201,11 +223,13 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    @Transactional
     public void updateNumeroFax(NumeroFax numeroFax) {
         numeroFaxRepository.save(numeroFax);
         numeroFaxSearchRepository.save(numeroFax);
     }
 
+    @Transactional
     public void saveNumeroTelephone(Long id, NumeroTelephone numeroTelephone) {
         numeroTelephoneRepository.save(numeroTelephone);
         numeroTelephoneSearchRepository.save(numeroTelephone);
@@ -214,6 +238,7 @@ public class EluService {
         eluRepository.save(elu);
     }
 
+    @Transactional
     public void updateNumeroTelephone(NumeroTelephone numeroTelephone) {
         numeroTelephoneRepository.save(numeroTelephone);
         numeroTelephoneSearchRepository.save(numeroTelephone);

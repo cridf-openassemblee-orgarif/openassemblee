@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 public class OrganismeService {
 
     @Inject
@@ -26,9 +25,10 @@ public class OrganismeService {
     @Inject
     private EluService eluService;
 
+    @Transactional(readOnly = true)
     public OrganismeDTO get(long id) {
         Organisme organisme = organismeRepository.getOne(id);
-        if(organisme == null) {
+        if (organisme == null) {
             return null;
         }
         List<AppartenanceOrganismeDTO> appartenances = appartenanceOrganismeRepository.findAllByCodeRNE(organisme.getCodeRNE()).stream()

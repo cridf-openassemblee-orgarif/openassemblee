@@ -1,6 +1,8 @@
 package fr.cridf.babylone14166.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluLightSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,8 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A PresenceElu.
@@ -26,15 +28,16 @@ public class PresenceElu implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
+    @JsonSerialize(using = JacksonEluLightSerializer.class)
     private Elu elu;
 
     @OneToMany(mappedBy = "presenceElu")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Signature> signatures = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "seance_id")
+    @JsonIgnore
     private Seance seance;
 
     public Long getId() {

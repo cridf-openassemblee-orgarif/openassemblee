@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("/dev-api")
+// FIXME remote
+// un inject all
 public class DevApiResource {
 
     @Value("${fakeData}")

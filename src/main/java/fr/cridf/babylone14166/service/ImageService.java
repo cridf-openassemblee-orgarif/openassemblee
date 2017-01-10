@@ -1,16 +1,18 @@
 package fr.cridf.babylone14166.service;
 
-import java.sql.SQLException;
-import javax.inject.Inject;
-
+import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.GroupePolitique;
+import fr.cridf.babylone14166.domain.Image;
+import fr.cridf.babylone14166.repository.EluRepository;
+import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
+import fr.cridf.babylone14166.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.domain.*;
-import fr.cridf.babylone14166.repository.*;
+import javax.inject.Inject;
+import java.sql.SQLException;
 
 @Service
-@Transactional
 public class ImageService {
 
     @Inject
@@ -22,6 +24,7 @@ public class ImageService {
     @Inject
     private GroupePolitiqueRepository groupePolitiqueRepository;
 
+    @Transactional
     public void saveImagePourGroupePolitique(Long groupePolitiqueId, Image image) throws SQLException {
         Long imageId = imageRepository.saveImage(image);
         // TODO un truc plus clean...
@@ -30,6 +33,7 @@ public class ImageService {
         groupePolitiqueRepository.save(groupePolitique);
     }
 
+    @Transactional
     public void saveImagePourElu(Long eluId, Image image) throws SQLException {
         Long imageId = imageRepository.saveImage(image);
         // TODO un truc plus clean...
