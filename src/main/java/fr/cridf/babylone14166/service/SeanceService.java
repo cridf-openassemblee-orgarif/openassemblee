@@ -1,5 +1,6 @@
 package fr.cridf.babylone14166.service;
 
+import fr.cridf.babylone14166.domain.Elu;
 import fr.cridf.babylone14166.domain.PresenceElu;
 import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.repository.PouvoirRepository;
@@ -17,6 +18,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static fr.cridf.babylone14166.domain.enumeration.TypeSeance.COMMISSION_PERMANENTE;
 
 // FIXME une incohérence possible
 // j'enleve une présence
@@ -59,7 +62,11 @@ public class SeanceService {
 
     @Transactional
     public Seance create(Seance seance) {
-        Set<PresenceElu> pes = eluService.getAllActifsAssemblee().stream().map(e -> {
+        // FIXME demo ici, pour le coup, c'est un vrai problème si on a pas fixé le type de seance
+        // de la possibilité de supprimer des présence ?
+        List<Elu> elus = seance.getType() == COMMISSION_PERMANENTE ? eluService.getCommissionPermanente() :
+            eluService.getActifsAssemblee();
+        Set<PresenceElu> pes = elus.stream().map(e -> {
             PresenceElu pe = new PresenceElu();
             pe.setElu(e);
             return presenceEluRepository.save(pe);

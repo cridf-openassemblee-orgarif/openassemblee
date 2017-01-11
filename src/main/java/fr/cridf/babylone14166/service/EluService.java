@@ -58,17 +58,23 @@ public class EluService {
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
 
     @Transactional(readOnly = true)
-    public List<Elu> getAllActifsAssemblee() {
+    public List<Elu> getActifsAssemblee() {
+        // FIXME pour le moment tous les élus sont actifs, wtf...
+        return eluRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Elu> getCommissionPermanente() {
         return eluRepository.findAll().stream()
-            // FIXME pour le moment tous les élus sont actifs, wtf...
-//            .filter(e -> {
-//                for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
-//                    if (a.getDateFin() == null) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            })
+            .filter(e -> {
+                // FIXME demo condition suffisante ? Les executifs ?
+                for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
+                    if (a.getDateFin() == null) {
+                        return true;
+                    }
+                }
+                return false;
+            })
             .collect(Collectors.toList());
     }
 
