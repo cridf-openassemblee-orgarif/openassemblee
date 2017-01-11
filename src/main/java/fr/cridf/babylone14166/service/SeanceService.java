@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // FIXME une incohérence possible
@@ -42,7 +43,11 @@ public class SeanceService {
         if (seance == null) {
             return null;
         }
-        seance.getPresenceElus().forEach(pe -> Hibernate.initialize(pe.getElu().getAppartenancesGroupePolitique()));
+        Hibernate.initialize(seance.getPresenceElus());
+        seance.getPresenceElus().forEach(pe -> {
+            Hibernate.initialize(pe.getElu().getAppartenancesGroupePolitique());
+            Hibernate.initialize(pe.getSignatures());
+        });
         List<PouvoirListDTO> pouvoirs = pouvoirRepository.findAllByDateDebut(seance.getDate())
             .stream().map(p -> {
                 EluListDTO eluCedeur = eluService.getEluListDTO(p.getEluCedeur().getId());
@@ -54,15 +59,15 @@ public class SeanceService {
 
     @Transactional
     public Seance create(Seance seance) {
+        Set<PresenceElu> pes = eluService.getAllActifsAssemblee().stream().map(e -> {
+            PresenceElu pe = new PresenceElu();
+            pe.setElu(e);
+            return presenceEluRepository.save(pe);
+        }).collect(Collectors.toSet());
+        seance.setPresenceElus(pes);
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
-        eluService.getAllActifsAssemblee().forEach(e -> {
-            PresenceElu pe = new PresenceElu();
-            pe.setElu(e);
-            pe.setSeance(result);
-            presenceEluRepository.save(pe);
-        });
         return seance;
     }
 

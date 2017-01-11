@@ -1,6 +1,5 @@
 package fr.cridf.babylone14166.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fr.cridf.babylone14166.domain.jackson.JacksonEluLightSerializer;
 import org.hibernate.annotations.Cache;
@@ -32,13 +31,8 @@ public class PresenceElu implements Serializable {
     private Elu elu;
 
     @OneToMany(mappedBy = "presenceElu")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Signature> signatures = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "seance_id")
-    @JsonIgnore
-    private Seance seance;
 
     public Long getId() {
         return id;
@@ -62,14 +56,6 @@ public class PresenceElu implements Serializable {
 
     public void setSignatures(Set<Signature> signatures) {
         this.signatures = signatures;
-    }
-
-    public Seance getSeance() {
-        return seance;
-    }
-
-    public void setSeance(Seance Seance) {
-        this.seance = Seance;
     }
 
     @Override

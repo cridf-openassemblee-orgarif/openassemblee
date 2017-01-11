@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="1449131230662845-4">
+        <createTable tableName="seance_presences_elus">
+            <column name="seance_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="presence_elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="seance_id, presence_elu_id" tableName="seance_presences_elus"/>
+        <addUniqueConstraint columnNames="presence_elu_id" tableName="seance_presences_elus"/>
+        <addForeignKeyConstraint baseColumnNames="seance_id" baseTableName="seance_presences_elus"
+                                 constraintName="FK_7njohjnjssdvtyf9sf6e809ecvgf" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="seance"/>
+        <addForeignKeyConstraint baseColumnNames="presence_elu_id" baseTableName="seance_presences_elus"
+                                 constraintName="FK_r8xasd9fdsfka0nlw14dv42bt6lc" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="presence_elu"/>
+    </changeSet>
+</databaseChangeLog>

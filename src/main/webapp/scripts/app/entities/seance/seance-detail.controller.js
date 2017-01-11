@@ -19,6 +19,12 @@ angular.module('babylone14166App')
             initSignaturesArray()
         }
 
+        $scope.getSignature = function (presenceElu, position) {
+            return presenceElu.signatures.find(function (s) {
+                return s.position == position;
+            });
+        };
+
         $scope.computeGroupesPolitiques = function () {
             var groupesPolitiques = {};
             $scope.dto.pouvoirs.map(function (p) {

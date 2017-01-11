@@ -10,7 +10,7 @@
                     <li><a showtab="" href="#signatures-container">Signatures</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="pouvoirs-container" class="tab-pane fade">
+                    <div id="pouvoirs-container" class="tab-pane fade in active">
                         <div ng-if="dto.pouvoirs.length == 0">
                             <h3>Aucun pouvoir affecté à la séance</h3>
                         </div>
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="signatures-container" class="tab-pane fade in active">
+                    <div id="signatures-container" class="tab-pane fade">
                         <h3>Signatures de la séance</h3>
                         <div class="table-responsive">
                             <table class="table table-striped signature-table">
@@ -143,22 +143,27 @@
                                         </a>
                                     </td>
                                     <td ng-repeat="index in signaturesArray" class="signature-td">
-                                        <signature-seance></signature-seance>
+                                        <signature-seance
+                                            signature="{{getSignature(presenceElu, index)}}"></signature-seance>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                             <nav>
                                 <ul class="pagination">
-                                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>
+                                        &lt;&lt;</a></li>
                                     <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
                                     <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
                                     <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
                                     <li class="active"><a>{{page + 1}}</a></li>
-                                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a></li>
+                                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a>
+                                    </li>
+                                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page +
+                                        3}}</a></li>
                                     <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>

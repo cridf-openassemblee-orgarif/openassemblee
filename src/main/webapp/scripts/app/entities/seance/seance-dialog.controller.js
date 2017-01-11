@@ -5,7 +5,7 @@ angular.module('babylone14166App').controller('SeanceDialogController',
         function($scope, $stateParams, $modalInstance, entity, Seance, PresenceElu) {
 
         $scope.seance = entity;
-        $scope.presenceelus = PresenceElu.query();
+        // $scope.presenceelus = PresenceElu.query();
         $scope.load = function(id) {
             Seance.get({id : id}, function(result) {
                 $scope.seance = result;

@@ -38,7 +38,10 @@ public class Seance implements Serializable {
     @Column(name = "nombre_signatures")
     private Integer nombreSignatures;
 
-    @OneToMany(mappedBy = "seance")
+    @OneToMany
+    @JoinTable(name = "seance_presences_elus",
+        joinColumns = @JoinColumn(name = "seance_id"),
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 

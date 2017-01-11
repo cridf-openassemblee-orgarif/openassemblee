@@ -43,8 +43,9 @@
     <include file="classpath:config/liquibase/changelog/20151211134351_added_entity_AppartenanceOrganisme.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160804111818_added_entity_Seance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160910111818_added_entity_Pouvoir.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/201609115111820_added_entity_AuditTrail.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160911081740_added_entity_AuditTrail.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170109170820_added_entity_PresenceElu.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170109170548_added_entity_Signature.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170110081740_changelog.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

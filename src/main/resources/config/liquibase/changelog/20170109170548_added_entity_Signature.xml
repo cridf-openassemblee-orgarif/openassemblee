@@ -25,7 +25,7 @@
             <column name="statut" type="varchar(255)"/>
             <column name="presence_elu_id" type="bigint"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="presence_elu_id"
                                  baseTableName="signature"
                                  constraintName="fk_signature_presenceelu_id"

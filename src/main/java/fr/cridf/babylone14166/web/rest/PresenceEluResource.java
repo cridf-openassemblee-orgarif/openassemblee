@@ -1,9 +1,14 @@
 package fr.cridf.babylone14166.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.IdentiteInternet;
 import fr.cridf.babylone14166.domain.PresenceElu;
+import fr.cridf.babylone14166.domain.Signature;
 import fr.cridf.babylone14166.repository.PresenceEluRepository;
 import fr.cridf.babylone14166.repository.search.PresenceEluSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
+import fr.cridf.babylone14166.service.PresenceEluService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -24,7 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing PresenceElu.
@@ -40,6 +45,12 @@ public class PresenceEluResource {
 
     @Inject
     private PresenceEluSearchRepository presenceEluSearchRepository;
+
+    @Inject
+    private PresenceEluService presenceEluService;
+
+    @Inject
+    private AuditTrailService auditTrailService;
 
     /**
      * POST  /presenceElus -> Create a new presenceElu.
@@ -136,4 +147,24 @@ public class PresenceEluResource {
             .stream(presenceEluSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+
+    @RequestMapping(value = "/presenceElus/{presenceId}/signature", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> createSignature(@PathVariable Long id, @RequestBody Signature signature)
+        throws URISyntaxException {
+        presenceEluService.saveSignature(id, signature);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/presenceElus/{presenceId}/signature", method = RequestMethod.PUT)
+    @Timed
+    public ResponseEntity<Void> updateSignature(@PathVariable Long presenceId, @RequestBody Signature signature)
+        throws URISyntaxException {
+        presenceEluService.updateSignature(signature);
+        auditTrailService.logUpdate(signature, signature.getId(), PresenceElu.class, presenceId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

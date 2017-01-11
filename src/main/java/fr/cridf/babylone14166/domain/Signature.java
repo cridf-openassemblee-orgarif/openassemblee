@@ -1,16 +1,15 @@
 package fr.cridf.babylone14166.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.cridf.babylone14166.domain.enumeration.SignatureStatus;
+import fr.cridf.babylone14166.domain.jackson.JacksonPresenceEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import fr.cridf.babylone14166.domain.enumeration.SignatureStatus;
 
 /**
  * A Signature.
@@ -34,6 +33,9 @@ public class Signature implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "presence_elu_id")
+    // FIXME remove ?
+    @JsonSerialize(using = JacksonPresenceEluIdSerializer.class)
+//    @JsonProperty(access = WRITE_ONLY)
     private PresenceElu presenceElu;
 
     public Long getId() {

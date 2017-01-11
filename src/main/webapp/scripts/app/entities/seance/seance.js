@@ -61,7 +61,7 @@ angular.module('babylone14166App')
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('seance', null, { reload: true });
+                        $state.go('seance.detail', {id: result.id});
                     }, function() {
                         $state.go('seance');
                     })

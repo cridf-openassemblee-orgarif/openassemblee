@@ -64,7 +64,14 @@ angular.module('babylone14166App')
     .directive('signatureSeance', function () {
         return {
             restrict: 'E',
-            controller: ['$scope', function SignatureSeanceController($scope) {
+            link: function ($scope, elem, attrs) {
+                if (attrs.signature) {
+                    $scope.signature = JSON.parse(attrs.signature);
+                } else {
+                    $scope.signature = {};
+                }
+            },
+            controller: ['$scope', 'Signature', function SignatureSeanceController($scope, Signature) {
                 $scope.color = function (color) {
                     switch (color) {
                         case 'PRESENT':
@@ -75,7 +82,22 @@ angular.module('babylone14166App')
                             return '#f1e8b5';
                     }
                     return '#bbb';
-                }
+                };
+                $scope.requesting = false;
+                $scope.setSignature = function (signature) {
+                    $scope.requesting = true;
+                    if (signature.id) {
+                        Signature.update(signature).$promise.then(function (result) {
+                            $scope.requesting = false;
+                            $scope.signature.id = result.id;
+                        });
+                    } else {
+                        Signature.save(signature).$promise.then(function (result) {
+                            $scope.requesting = false;
+                            $scope.signature.id = result.id;
+                        });
+                    }
+                };
             }],
             templateUrl: 'scripts/app/components/signature-seance.html'
         }

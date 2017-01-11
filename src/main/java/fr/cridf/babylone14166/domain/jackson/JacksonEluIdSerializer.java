@@ -1,14 +1,14 @@
 package fr.cridf.babylone14166.domain.jackson;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import fr.cridf.babylone14166.domain.Elu;
 
+import java.io.IOException;
+
 // TODO tester unit + integ
+// FIXME remplaçable par un @JsonProperty(access = WRITE_ONLY) ?
 public class JacksonEluIdSerializer extends JsonSerializer<Elu> {
 
     @Override
