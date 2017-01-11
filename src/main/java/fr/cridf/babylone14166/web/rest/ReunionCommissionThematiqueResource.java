@@ -57,8 +57,7 @@ public class ReunionCommissionThematiqueResource {
         if (reunionCommissionThematique.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new reunionCommissionThematique cannot already have an ID").body(null);
         }
-        ReunionCommissionThematique result = reunionCommissionThematiqueRepository.save(reunionCommissionThematique);
-        reunionCommissionThematiqueSearchRepository.save(result);
+        ReunionCommissionThematique result = reunionCommissionThematiqueService.create(reunionCommissionThematique);
         return ResponseEntity.created(new URI("/api/reunionCommissionThematiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("reunionCommissionThematique", result.getId().toString()))
             .body(result);

@@ -46,7 +46,6 @@ public class SeanceService {
         if (seance == null) {
             return null;
         }
-        Hibernate.initialize(seance.getPresenceElus());
         seance.getPresenceElus().forEach(pe -> {
             Hibernate.initialize(pe.getElu().getAppartenancesGroupePolitique());
             Hibernate.initialize(pe.getSignatures());
