@@ -1,0 +1,54 @@
+
+<div>
+    <h2><span>ReunionCao</span> {{reunionCao.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span>Libelle</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{reunionCao.libelle}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Date</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{reunionCao.date | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>HeureDebut</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{reunionCao.heureDebut}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>HeureFin</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{reunionCao.heureFin}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

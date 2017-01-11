@@ -50,5 +50,6 @@
     <include file="classpath:config/liquibase/changelog/20170111125358_added_entity_ReunionCommissionThematique.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111181740_changelog.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111181840_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170111185358_added_entity_ReunionCao.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
