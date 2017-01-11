@@ -28,7 +28,7 @@ angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialog
             $scope.commissions = CommissionThematique.query();
 
             var initScope = function (entity) {
-                $scope.reunionCommissionThematique = entity;
+                $scope.reunion = entity;
                 $scope.reunionTemp = tempHours(entity);
             };
 
@@ -40,7 +40,7 @@ angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialog
                 initScope(entity);
             }
 
-            $scope.reunionCommissionThematique = entity;
+            $scope.reunion = entity;
             $scope.load = function (id) {
                 ReunionCommissionThematique.get({id: id}, function (result) {
                     initScope(result);
@@ -63,18 +63,18 @@ angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialog
                 if (heureDebut) {
                     var heureDebutHours = heureDebut.getHours() >= 10 ? heureDebut.getHours() : '0' + heureDebut.getHours();
                     var heureDebutMinutes = heureDebut.getMinutes() >= 10 ? heureDebut.getMinutes() : '0' + heureDebut.getMinutes();
-                    $scope.reunionCommissionThematique.heureDebut = heureDebutHours + ':' + heureDebutMinutes;
+                    $scope.reunion.heureDebut = heureDebutHours + ':' + heureDebutMinutes;
                 }
                 var heureFin = $scope.reunionTemp.heureFinAsTime;
                 if (heureFin) {
                     var heureFinHours = heureFin.getHours() >= 10 ? heureFin.getHours() : '0' + heureFin.getHours();
                     var heureFinMinutes = heureFin.getMinutes() >= 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
-                    $scope.reunionCommissionThematique.heureFin = heureFinHours + ':' + heureFinMinutes;
+                    $scope.reunion.heureFin = heureFinHours + ':' + heureFinMinutes;
                 }
-                if ($scope.reunionCommissionThematique.id !== null) {
-                    ReunionCommissionThematique.update($scope.reunionCommissionThematique, onSaveSuccess, onSaveError);
+                if ($scope.reunion.id !== null) {
+                    ReunionCommissionThematique.update($scope.reunion, onSaveSuccess, onSaveError);
                 } else {
-                    ReunionCommissionThematique.save($scope.reunionCommissionThematique, onSaveSuccess, onSaveError);
+                    ReunionCommissionThematique.save($scope.reunion, onSaveSuccess, onSaveError);
                 }
             };
 

@@ -9,12 +9,12 @@
         <div class="form-group">
             <label class="control-label" for="field_libelle">Libellé</label>
             <input type="text" class="form-control" name="libelle" id="field_libelle"
-                   ng-model="reunionCommissionThematique.libelle"/>
+                   ng-model="reunion.libelle"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_date">Date</label>
             <input type="text" bs-datepicker class="form-control" name="date" id="field_date"
-                   ng-model="reunionCommissionThematique.date"
+                   ng-model="reunion.date"
                    autocomplete="off"/>
         </div>
         <div class="row">
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group">
             <label>Commissions présentes</label>
-            <ui-select multiple ng-model="reunionCommissionThematique.commissionsThematiques" theme="bootstrap" close-on-select="false">
+            <ui-select multiple ng-model="reunion.commissionsThematiques" theme="bootstrap" close-on-select="false">
                 <ui-select-match>
                     <span ng-bind="$item.nom"></span>
                 </ui-select-match>
