@@ -29,6 +29,18 @@
                        ng-model="reunionTemp.heureFinAsTime"/>
             </div>
         </div>
+        <div class="form-group">
+            <label>Commissions présentes</label>
+            <ui-select multiple ng-model="reunionCommissionThematique.commissionsThematiques" theme="bootstrap" close-on-select="false">
+                <ui-select-match>
+                    <span ng-bind="$item.nom"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="commission in (commissions | nomPrenomFilter: $select.search) track by commission.id">
+                    <span
+                        ng-bind-html="commission.nom | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

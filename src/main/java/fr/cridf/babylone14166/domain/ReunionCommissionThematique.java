@@ -2,12 +2,14 @@ package fr.cridf.babylone14166.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A ReunionCommissionThematique.
@@ -33,6 +35,20 @@ public class ReunionCommissionThematique implements Serializable {
 
     @Column(name = "heure_fin")
     private String heureFin;
+
+    @ManyToMany
+    @JoinTable(name = "reunion_commission_thematiques_commission_thematiques",
+        joinColumns = @JoinColumn(name = "reunion_id"),
+        inverseJoinColumns = @JoinColumn(name = "commission_thematique_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CommissionThematique> commissionsThematiques = new HashSet<>();
+
+    @OneToMany
+    @JoinTable(name = "reunion_commission_thematiques_presence_elus",
+        joinColumns = @JoinColumn(name = "reunion_id"),
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PresenceElu> presenceElus = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,6 +88,22 @@ public class ReunionCommissionThematique implements Serializable {
 
     public void setHeureFin(String heureFin) {
         this.heureFin = heureFin;
+    }
+
+    public Set<CommissionThematique> getCommissionsThematiques() {
+        return commissionsThematiques;
+    }
+
+    public void setCommissionsThematiques(Set<CommissionThematique> commissionsThematiques) {
+        this.commissionsThematiques = commissionsThematiques;
+    }
+
+    public Set<PresenceElu> getPresenceElus() {
+        return presenceElus;
+    }
+
+    public void setPresenceElus(Set<PresenceElu> presenceElus) {
+        this.presenceElus = presenceElus;
     }
 
     @Override

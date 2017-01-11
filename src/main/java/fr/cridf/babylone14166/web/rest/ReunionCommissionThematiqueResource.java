@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.ReunionCommissionThematique;
 import fr.cridf.babylone14166.repository.ReunionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCommissionThematiqueSearchRepository;
+import fr.cridf.babylone14166.service.ReunionCommissionThematiqueService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class ReunionCommissionThematiqueResource {
 
     @Inject
     private ReunionCommissionThematiqueSearchRepository reunionCommissionThematiqueSearchRepository;
+
+    @Inject
+    private ReunionCommissionThematiqueService reunionCommissionThematiqueService;
 
     /**
      * POST  /reunionCommissionThematiques -> Create a new reunionCommissionThematique.
@@ -102,7 +106,7 @@ public class ReunionCommissionThematiqueResource {
     @Timed
     public ResponseEntity<ReunionCommissionThematique> getReunionCommissionThematique(@PathVariable Long id) {
         log.debug("REST request to get ReunionCommissionThematique : {}", id);
-        return Optional.ofNullable(reunionCommissionThematiqueRepository.findOne(id))
+        return Optional.ofNullable(reunionCommissionThematiqueService.get(id))
             .map(reunionCommissionThematique -> new ResponseEntity<>(
                 reunionCommissionThematique,
                 HttpStatus.OK))

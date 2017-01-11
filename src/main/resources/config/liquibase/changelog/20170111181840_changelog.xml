@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="1449131230662845-4">
+        <createTable tableName="reunion_commission_thematiques_presence_elus">
+            <column name="reunion_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="presence_elu_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="reunion_id, presence_elu_id" tableName="reunion_commission_thematiques_presence_elus"/>
+        <addUniqueConstraint columnNames="presence_elu_id" tableName="reunion_commission_thematiques_presence_elus"/>
+        <addForeignKeyConstraint baseColumnNames="reunion_id" baseTableName="reunion_commission_thematiques_presence_elus"
+                                 constraintName="FK_ksdhvlhjsd" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="reunion_commission_thematique"/>
+        <addForeignKeyConstraint baseColumnNames="presence_elu_id" baseTableName="reunion_commission_thematiques_presence_elus"
+                                 constraintName="FK_lksdjbvkjlsdbv" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="presence_elu"/>
+    </changeSet>
+</databaseChangeLog>

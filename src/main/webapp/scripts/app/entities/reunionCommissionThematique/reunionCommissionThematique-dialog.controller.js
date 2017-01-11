@@ -22,8 +22,10 @@ var tempHours = function (reunionCommissionThematique) {
 };
 
 angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'ReunionCommissionThematique',
-        function ($scope, $stateParams, $modalInstance, entity, ReunionCommissionThematique) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'ReunionCommissionThematique', 'CommissionThematique',
+        function ($scope, $stateParams, $modalInstance, entity, ReunionCommissionThematique, CommissionThematique) {
+
+            $scope.commissions = CommissionThematique.query();
 
             var initScope = function (entity) {
                 $scope.reunionCommissionThematique = entity;
