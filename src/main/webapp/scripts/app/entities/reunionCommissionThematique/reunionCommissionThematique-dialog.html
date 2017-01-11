@@ -1,4 +1,3 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
 
     <div class="modal-header">
@@ -10,28 +9,26 @@
         <div class="form-group">
             <label class="control-label" for="field_libelle">Libellé</label>
             <input type="text" class="form-control" name="libelle" id="field_libelle"
-                    ng-model="reunionCommissionThematique.libelle"
-                     />
+                   ng-model="reunionCommissionThematique.libelle"/>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_date">Date</label>
-            <input type="date" class="form-control" name="date" id="field_date"
-                    ng-model="reunionCommissionThematique.date"
-                     />
+            <input type="text" bs-datepicker class="form-control" name="date" id="field_date"
+                   ng-model="reunionCommissionThematique.date"
+                   autocomplete="off"/>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="field_heureDebut">Heure de début</label>
-            <input type="text" class="form-control" name="heureDebut" id="field_heureDebut"
-                    ng-model="reunionCommissionThematique.heureDebut"
-                     />
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label class="control-label" for="field_heureDebut">Heure de début</label>
+                <input type="time" class="form-control" name="heureDebut" id="field_heureDebut"
+                       ng-model="reunionTemp.heureDebutAsTime"/>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="field_heureFin">Heure de fin</label>
+                <input type="time" class="form-control" name="heureDebut" id="field_heureFin"
+                       ng-model="reunionTemp.heureFinAsTime"/>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="field_heureFin">Heure de fin</label>
-            <input type="text" class="form-control" name="heureFin" id="field_heureFin"
-                    ng-model="reunionCommissionThematique.heureFin"
-                     />
-        </div>
-
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
