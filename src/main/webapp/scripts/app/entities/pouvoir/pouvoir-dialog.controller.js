@@ -109,18 +109,18 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                 $scope.isSaving = true;
                 var heureDebut = $scope.pouvoirTemp.heureDebutAsTime;
                 if (heureDebut) {
-                    var heureDebutHours = heureDebut.getHours() > 10 ? heureDebut.getHours() : '0' + heureDebut.getHours();
-                    var heureDebutMinutes = heureDebut.getMinutes() > 10 ? heureDebut.getMinutes() : '0' + heureDebut.getMinutes();
+                    var heureDebutHours = heureDebut.getHours() >= 10 ? heureDebut.getHours() : '0' + heureDebut.getHours();
+                    var heureDebutMinutes = heureDebut.getMinutes() >= 10 ? heureDebut.getMinutes() : '0' + heureDebut.getMinutes();
                     $scope.pouvoir.heureDebut = heureDebutHours + ':' + heureDebutMinutes;
                 }
                 var heureFin = $scope.pouvoirTemp.heureFinAsTime;
                 if (heureFin) {
-                    var heureFinHours = heureFin.getHours() > 10 ? heureFin.getHours() : '0' + heureFin.getHours();
-                    var heureFinMinutes = heureFin.getMinutes() > 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
+                    var heureFinHours = heureFin.getHours() >= 10 ? heureFin.getHours() : '0' + heureFin.getHours();
+                    var heureFinMinutes = heureFin.getMinutes() >= 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
                     $scope.pouvoir.heureFin = heureFinHours + ':' + heureFinMinutes;
                 }
                 var pouvoirDejaExistant = $scope.pouvoirDejaExistant();
-                if (pouvoirDejaExistant != null && $scope.autoclosePrecedentPouvoir) {
+                if (pouvoirDejaExistant !== null && $scope.autoclosePrecedentPouvoir) {
                     // TODO se plante s'il n'y en a pas...
                     pouvoirDejaExistant.dateFin = $scope.pouvoir.dateDebut;
                     pouvoirDejaExistant.heureFin = $scope.pouvoir.heureDebut;
