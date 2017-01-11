@@ -1,0 +1,28 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "libelle",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "heureDebut",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "heureFin",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170111125358",
+    "dto": "no",
+    "pagination": "pagination"
+}
