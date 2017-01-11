@@ -47,5 +47,6 @@
     <include file="classpath:config/liquibase/changelog/20170109170820_added_entity_PresenceElu.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170109170548_added_entity_Signature.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170110081740_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170111125358_added_entity_ReunionCommissionThematique.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
