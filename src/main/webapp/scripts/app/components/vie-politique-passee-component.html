@@ -93,5 +93,20 @@
                 <span class="grey">Nomination le</span> {{a.dateNomination}}
             </span>
         </div>
+        <h2>Autres mandats</h2>
+        <div class="unit-bloc"
+             ng-repeat="a in dto.elu.autreMandats"
+             ng-if="a.dateFin != null">
+            {{a.collectiviteOuOrganisme}}
+            <i class="fa fa-pencil"></i>
+            <br/>
+            <span class="lg"><span class="grey">Fonction :</span> {{a.fonction}}</span>
+            <br/>
+            <span class="lg">
+                <span class="grey">Du</span> {{a.dateDebut}}
+                <span class="grey">au</span> {{a.dateFin}}<span class="grey">, motif de fin :</span>
+                {{a.motifFin}}
+            </span>
+        </div>
     </div>
 </div>
