@@ -236,16 +236,14 @@ h2 {
     border: 1px solid #1b8dbb;
 }
 
-.commission-permanente {
-    margin: 20px 10px;
-    padding: 10px 40px;
-    border: 1px solid #ccc;
-    background: #fafafa;
+.commission-permanente-titre {
+    text-align: center;
+    margin: 20px !important;
 }
 
-.commission-permanente h2 {
-    text-align: center;
-    margin: 0 0 20px 0;
+.commission-permanente-separator {
+    margin: 20px 0;
+    border-top: 1px dashed #ccc;
 }
 
 .groupes-fermes {
