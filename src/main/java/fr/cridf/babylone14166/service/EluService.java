@@ -126,6 +126,7 @@ public class EluService {
         Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
         Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
         Hibernate.initialize(elu.getAppartenancesOrganismes());
+        Hibernate.initialize(elu.getAutreMandats());
         Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
         groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
             .map(a -> a.getGroupePolitique())

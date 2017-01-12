@@ -5,13 +5,6 @@ angular.module('babylone14166App').controller('AppartenanceOrganismeDialogContro
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceOrganisme, Elu) {
 
             $scope.appartenanceOrganisme = entity;
-            // FIXME vérifier
-            //$scope.elus = Elu.query();
-            $scope.load = function (id) {
-                AppartenanceOrganisme.get({id: id}, function (result) {
-                    $scope.appartenanceOrganisme = result;
-                });
-            };
 
             var onSaveSuccess = function (result) {
                 $scope.$emit('babylone14166App:appartenanceOrganismeUpdate', result);

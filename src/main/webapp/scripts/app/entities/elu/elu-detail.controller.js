@@ -21,13 +21,14 @@ angular.module('babylone14166App')
             $scope.eluACommissionThematiqueOuFonction = check('appartenancesCommissionsThematiques',
                 'fonctionsCommissionsThematiques');
             $scope.eluAOrganismes = check('appartenancesOrganismes');
+            $scope.eluAAutreMandats = check('autreMandats');
             angular.forEach($scope.dto.elu.appartenancesGroupePolitique, function (a) {
                 if (a.dateFin == null) {
                     $scope.groupePolitiqueId = a.groupePolitique.id;
                     return;
                 }
             });
-        }
+        };
         var check = function () {
             var result = false;
             angular.forEach(arguments, function (gp) {

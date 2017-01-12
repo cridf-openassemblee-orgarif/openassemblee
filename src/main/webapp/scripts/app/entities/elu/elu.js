@@ -55,6 +55,7 @@ angular.module('babylone14166App')
             })
             .state('elu.detail', {
                 parent: 'elu',
+                // FIXME nommer le paramètre ici eluId eut été malin au départ...
                 url: '/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -293,6 +294,58 @@ angular.module('babylone14166App')
                             entity: ['AppartenanceGroupePolitique', function (AppartenanceGroupePolitique) {
                                 return AppartenanceGroupePolitique.get({id: $stateParams.appartenanceId});
                             }]
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.autreMandat', {
+                parent: 'elu.detail',
+                url: '/autre-mandat',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/autreMandat/autreMandat-dialog.html',
+                        controller: 'AutreMandatDialogController',
+                        size: 'lg',
+                        resolve: {
+                            title: function () {
+                                return "Ajouter un autre mandat";
+                            },
+                            entity: function () {
+                                return {};
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.editAutreMandat', {
+                parent: 'elu.detail',
+                url: '/autre-mandat/{mandatId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/autreMandat/autreMandat-dialog.html',
+                        controller: 'AutreMandatDialogController',
+                        size: 'lg',
+                        resolve: {
+                            title: function () {
+                                return "Modifier le mandat";
+                            },
+                            entity: function (AutreMandat) {
+                                return AutreMandat.get({id: $stateParams.mandatId});
+                            }
                         }
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});

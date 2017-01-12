@@ -1,15 +1,14 @@
 package fr.cridf.babylone14166.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.*;
-import javax.persistence.*;
-
+import fr.cridf.babylone14166.domain.enumeration.Civilite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * A Elu.
@@ -120,6 +119,10 @@ public class Elu implements Serializable {
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<AppartenanceOrganisme> appartenancesOrganismes = new HashSet<>();
+
+    @OneToMany(mappedBy = "elu")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private Set<AutreMandat> autreMandats = new HashSet<>();
 
     public Elu() {
     }
@@ -312,6 +315,14 @@ public class Elu implements Serializable {
 
     public void setAppartenancesOrganismes(Set<AppartenanceOrganisme> appartenancesOrganismes) {
         this.appartenancesOrganismes = appartenancesOrganismes;
+    }
+
+    public Set<AutreMandat> getAutreMandats() {
+        return autreMandats;
+    }
+
+    public void setAutreMandats(Set<AutreMandat> autreMandats) {
+        this.autreMandats = autreMandats;
     }
 
     public String civiliteComplete() {

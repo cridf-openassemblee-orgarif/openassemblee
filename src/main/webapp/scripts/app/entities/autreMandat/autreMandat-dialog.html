@@ -4,17 +4,11 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myAutreMandatLabel">Create or edit a AutreMandat</h4>
+        <h4 class="modal-title" id="myAutreMandatLabel">{{title}}</h4>
     </div>
     <div class="modal-body">
-        <jh-alert-error></jh-alert-error>
         <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="autreMandat.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_collectiviteOuOrganisme">CollectiviteOuOrganisme</label>
+            <label class="control-label" for="field_collectiviteOuOrganisme">Collectivité ou organisme</label>
             <input type="text" class="form-control" name="collectiviteOuOrganisme" id="field_collectiviteOuOrganisme"
                     ng-model="autreMandat.collectiviteOuOrganisme"
                      />
@@ -26,37 +20,29 @@
                      />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDebut">DateDebut</label>
-            <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
-                    ng-model="autreMandat.dateDebut"
-                     />
+            <label class="control-label" for="field_dateDebut">Date de création</label>
+            <input type="text" bs-datepicker class="form-control" name="dateDebut" id="field_dateDebut"
+                   ng-model="autreMandat.dateDebut"
+                   autocomplete="off"/>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateFin">DateFin</label>
-            <input type="date" class="form-control" name="dateFin" id="field_dateFin"
-                    ng-model="autreMandat.dateFin"
-                     />
+            <label class="control-label" for="field_dateFin">Date de fin</label>
+            <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
+                   ng-model="autreMandat.dateFin"
+                   autocomplete="off"/>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifFin">MotifFin</label>
+            <label class="control-label" for="field_motifFin">Motif de fin</label>
             <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                    ng-model="autreMandat.motifFin"
-                     />
-        </div>
-
-        <div class="form-group">
-            <label for="field_elu">elu</label>
-            <select class="form-control" id="field_elu" name="elu" ng-model="autreMandat.elu" ng-options="elu as elu.id for elu in elus track by elu.id">
-                <option value=""></option>
-            </select>
+                   ng-model="autreMandat.motifFin"/>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
         </button>
         <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
         </button>
     </div>
 </form>

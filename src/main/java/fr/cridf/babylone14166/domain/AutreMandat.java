@@ -1,14 +1,14 @@
 package fr.cridf.babylone14166.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -41,6 +41,7 @@ public class AutreMandat implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
+    @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
     public Long getId() {
