@@ -1,10 +1,16 @@
 package fr.cridf.babylone14166.config.data;
 
-import static fr.cridf.babylone14166.config.data.TestDataLists.PHOTOS;
-import static fr.cridf.babylone14166.config.data.TestDataLists.PROFESSIONS;
-import static fr.cridf.babylone14166.config.data.TestDataLists.VILLES;
-import static fr.cridf.babylone14166.domain.enumeration.Civilite.MADAME;
-import static fr.cridf.babylone14166.domain.enumeration.Civilite.MONSIEUR;
+import fr.cridf.babylone14166.domain.*;
+import fr.cridf.babylone14166.domain.enumeration.Civilite;
+import fr.cridf.babylone14166.repository.*;
+import fr.cridf.babylone14166.service.SearchService;
+import liquibase.util.csv.opencsv.CSVReader;
+import org.elasticsearch.common.io.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -15,18 +21,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.elasticsearch.common.io.Streams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import fr.cridf.babylone14166.domain.*;
-import fr.cridf.babylone14166.domain.enumeration.Civilite;
-import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.service.SearchService;
-import liquibase.util.csv.opencsv.CSVReader;
+import static fr.cridf.babylone14166.config.data.TestDataLists.*;
+import static fr.cridf.babylone14166.domain.enumeration.Civilite.MADAME;
+import static fr.cridf.babylone14166.domain.enumeration.Civilite.MONSIEUR;
 
 @Component
 @Transactional
@@ -55,6 +52,18 @@ public class TestDataInjector {
     @Autowired
     private OrganismeRepository organismeRepository;
 
+    @Autowired
+    private CommissionThematiqueRepository commissionThematiqueRepository;
+
+    @Autowired
+    private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
+
+    @Autowired
+    private AppartenanceCommissionPermanenteRepository appartenanceCommissionPermanenteRepository;
+
+    @Autowired
+    private FonctionExecutiveRepository fonctionExecutiveRepository;
+
     private Random random;
 
     public void injectTestData() {
@@ -67,6 +76,13 @@ public class TestDataInjector {
             List<AppartenanceGroupePolitique> agps = initAppartenanceGroupePolitiques(elus, gps);
             appartenanceGroupePolitiqueRepository.save(agps);
             List<CommissionThematique> cts = initCommissionsThematiques();
+            commissionThematiqueRepository.save(cts);
+            List<AppartenanceCommissionThematique> acts = initAppartenanceCommissionThematiques(elus, cts);
+            appartenanceCommissionThematiqueRepository.save(acts);
+            List<AppartenanceCommissionPermanente> acps = initAppartenanceCommissionPermanente(elus);
+            appartenanceCommissionPermanenteRepository.save(acps);
+            List<FonctionExecutive> fes = initFunctionExecutives(elus);
+            fonctionExecutiveRepository.save(fes);
             searchService.resetIndex();
         }
     }
@@ -278,7 +294,7 @@ public class TestDataInjector {
     }
 
     private List<AppartenanceGroupePolitique> initAppartenanceGroupePolitiques(List<Elu> elus,
-        List<GroupePolitique> gps) {
+                                                                               List<GroupePolitique> gps) {
         return elus.stream().map(elu -> {
             GroupePolitique gp = gps.get(random.nextInt(gps.size()));
             AppartenanceGroupePolitique agp = new AppartenanceGroupePolitique();
@@ -287,6 +303,76 @@ public class TestDataInjector {
             agp.setDateDebut(randomDate(gp.getDateDebut(), LocalDate.now()));
             return agp;
         }).collect(Collectors.toList());
+    }
+
+    private List<AppartenanceCommissionThematique> initAppartenanceCommissionThematiques(List<Elu> elus,
+                                                                                         List<CommissionThematique> cts) {
+        List<AppartenanceCommissionThematique> acts = new ArrayList<>();
+        Set<Elu> alreadySet = new HashSet<>();
+        for (int i = 0; i < 20; i++) {
+            Elu elu = elus.get(random.nextInt(elus.size()));
+            while (alreadySet.contains(elu)) {
+                elu = elus.get(random.nextInt(elus.size()));
+            }
+            alreadySet.add(elu);
+            CommissionThematique ct = cts.get(random.nextInt(cts.size()));
+            AppartenanceCommissionThematique act = new AppartenanceCommissionThematique();
+            act.setCommissionThematique(ct);
+            act.setElu(elu);
+            act.setDateDebut(randomDate(ct.getDateDebut(), LocalDate.now()));
+            acts.add(act);
+            if (i < 5) {
+                CommissionThematique secondeCt = cts.get(random.nextInt(cts.size()));
+                while (Objects.equals(ct.getId(), secondeCt.getId())) {
+                    secondeCt = cts.get(random.nextInt(cts.size()));
+                }
+                AppartenanceCommissionThematique act2 = new AppartenanceCommissionThematique();
+                act2.setCommissionThematique(secondeCt);
+                act2.setElu(elu);
+                act2.setDateDebut(randomDate(secondeCt.getDateDebut(), LocalDate.now()));
+                acts.add(act2);
+            }
+        }
+        return acts;
+    }
+
+    private List<AppartenanceCommissionPermanente> initAppartenanceCommissionPermanente(List<Elu> elus) {
+        List<AppartenanceCommissionPermanente> acps = new ArrayList<>();
+        Set<Elu> alreadySet = new HashSet<>();
+        for (int i = 0; i < 20; i++) {
+            Elu elu = elus.get(random.nextInt(elus.size()));
+            while (alreadySet.contains(elu)) {
+                elu = elus.get(random.nextInt(elus.size()));
+            }
+            alreadySet.add(elu);
+            AppartenanceCommissionPermanente acp = new AppartenanceCommissionPermanente();
+            acp.setElu(elu);
+            acp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
+            acps.add(acp);
+        }
+        return acps;
+    }
+
+    private List<FonctionExecutive> initFunctionExecutives(List<Elu> elus) {
+        List<FonctionExecutive> fes = new ArrayList<>();
+        Set<Elu> alreadySet = new HashSet<>();
+        for (int i = 0; i < 6; i++) {
+            Elu elu = elus.get(random.nextInt(elus.size()));
+            while (alreadySet.contains(elu)) {
+                elu = elus.get(random.nextInt(elus.size()));
+            }
+            alreadySet.add(elu);
+            FonctionExecutive fe = new FonctionExecutive();
+            fe.setElu(elu);
+            fe.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
+            if (i == 0) {
+                fe.setFonction("Président");
+            } else {
+                fe.setFonction("Vice président " + i);
+            }
+            fes.add(fe);
+        }
+        return fes;
     }
 
     private List<CommissionThematique> initCommissionsThematiques() {

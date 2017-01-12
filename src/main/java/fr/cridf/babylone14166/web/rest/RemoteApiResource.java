@@ -42,6 +42,16 @@ public class RemoteApiResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/inject-all", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<Void> injectAll() {
+        if (fakeData) {
+            testDataInjector.injectTestData();
+            testDataInjector.injectOrganismes();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/inject-test-data", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> injectTestData() {
