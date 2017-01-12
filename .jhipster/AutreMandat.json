@@ -1,0 +1,41 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "collectiviteOuOrganisme",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "fonction",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "dateFin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "motifFin",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170112140152",
+    "dto": "no",
+    "pagination": "no"
+}
