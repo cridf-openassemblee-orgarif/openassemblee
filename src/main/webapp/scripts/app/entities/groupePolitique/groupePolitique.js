@@ -74,16 +74,16 @@ angular.module('babylone14166App')
                     }]
                 }
             })
-            .state('groupesPolitiques.detail.fin', {
+            .state('groupesPolitiques.detail.edit', {
                 parent: 'groupesPolitiques.detail',
-                url: '/fin',
+                url: '/edit',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-fin-dialog.html',
-                        controller: 'GroupePolitiqueFinDialogController',
+                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-edit-dialog.html',
+                        controller: 'GroupePolitiqueEditDialogController',
                         size: 'lg',
                         resolve: {
                             entity: ['GroupePolitique', function (GroupePolitique) {
@@ -93,29 +93,6 @@ angular.module('babylone14166App')
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
-                        $state.go('^');
-                    })
-                }]
-            })
-            .state('groupesPolitiques.edit', {
-                parent: 'groupesPolitiques',
-                url: '/{id}/edit',
-                data: {
-                    authorities: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/entities/groupePolitique/groupePolitique-dialog.html',
-                        controller: 'GroupePolitiqueDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['GroupePolitique', function(GroupePolitique) {
-                                return GroupePolitique.get({id : $stateParams.id});
-                            }]
-                        }
-                    }).result.then(function(result) {
-                        $state.go('groupesPolitiques', null, { reload: true });
-                    }, function() {
                         $state.go('^');
                     })
                 }]
