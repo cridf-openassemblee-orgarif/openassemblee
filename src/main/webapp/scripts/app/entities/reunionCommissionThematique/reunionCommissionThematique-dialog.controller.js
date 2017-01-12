@@ -1,19 +1,19 @@
 'use strict';
 
-var tempHours = function (reunionCommissionThematique) {
+var tempHours = function (reunion) {
     var tempHours = {};
-    if (reunionCommissionThematique.heureDebut && reunionCommissionThematique.heureDebut !== '') {
+    if (reunion.heureDebut && reunion.heureDebut !== '') {
         var heureDebutAsTime = new Date();
-        heureDebutAsTime.setHours(+reunionCommissionThematique.heureDebut.substr(0, 2));
-        heureDebutAsTime.setMinutes(+reunionCommissionThematique.heureDebut.substr(3, 5));
+        heureDebutAsTime.setHours(+reunion.heureDebut.substr(0, 2));
+        heureDebutAsTime.setMinutes(+reunion.heureDebut.substr(3, 5));
         heureDebutAsTime.setSeconds(0);
         heureDebutAsTime.setMilliseconds(0);
         tempHours.heureDebutAsTime = heureDebutAsTime;
     }
-    if (reunionCommissionThematique.heureFin && reunionCommissionThematique.heureFin !== '') {
+    if (reunion.heureFin && reunion.heureFin !== '') {
         var heureFinAsTime = new Date();
-        heureFinAsTime.setHours(+reunionCommissionThematique.heureFin.substr(0, 2));
-        heureFinAsTime.setMinutes(+reunionCommissionThematique.heureFin.substr(3, 5));
+        heureFinAsTime.setHours(+reunion.heureFin.substr(0, 2));
+        heureFinAsTime.setMinutes(+reunion.heureFin.substr(3, 5));
         heureFinAsTime.setSeconds(0);
         heureFinAsTime.setMilliseconds(0);
         tempHours.heureFinAsTime = heureFinAsTime;

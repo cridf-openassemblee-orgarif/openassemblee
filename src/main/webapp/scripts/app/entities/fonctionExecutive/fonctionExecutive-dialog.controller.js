@@ -5,7 +5,8 @@ angular.module('babylone14166App').controller('FonctionExecutiveDialogController
         function ($scope, $stateParams, $modalInstance, entity, FonctionExecutive, Elu) {
 
             $scope.fonctionExecutive = entity;
-            $scope.elus = Elu.query();
+            // FIXME vérifier
+            //$scope.elus = Elu.query();
             $scope.load = function (id) {
                 FonctionExecutive.get({id: id}, function (result) {
                     $scope.fonctionExecutive = result;

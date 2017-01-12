@@ -5,7 +5,8 @@ angular.module('babylone14166App').controller('AppartenanceCommissionPermanenteD
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceCommissionPermanente, Elu) {
 
             $scope.appartenanceCommissionPermanente = entity;
-            $scope.elus = Elu.query();
+            // FIXME vérifier
+            //$scope.elus = Elu.query();
             $scope.load = function (id) {
                 AppartenanceCommissionPermanente.get({id: id}, function (result) {
                     $scope.appartenanceCommissionPermanente = result;

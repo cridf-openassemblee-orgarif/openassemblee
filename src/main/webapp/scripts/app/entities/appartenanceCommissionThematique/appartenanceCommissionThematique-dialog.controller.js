@@ -5,7 +5,8 @@ angular.module('babylone14166App').controller('AppartenanceCommissionThematiqueD
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceCommissionThematique, Elu, CommissionThematique) {
 
             $scope.appartenanceCommissionThematique = entity;
-            $scope.elus = Elu.query();
+            // FIXME vérifier
+            //$scope.elus = Elu.query();
             $scope.commissionthematiques = CommissionThematique.query();
             $scope.load = function (id) {
                 AppartenanceCommissionThematique.get({id: id}, function (result) {

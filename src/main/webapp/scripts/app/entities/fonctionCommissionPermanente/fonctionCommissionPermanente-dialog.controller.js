@@ -5,7 +5,8 @@ angular.module('babylone14166App').controller('FonctionCommissionPermanenteDialo
         function($scope, $stateParams, $modalInstance, entity, FonctionCommissionPermanente, Elu) {
 
         $scope.fonctionCommissionPermanente = entity;
-        $scope.elus = Elu.query();
+            // FIXME vérifier
+            //$scope.elus = Elu.query();
         $scope.load = function(id) {
             FonctionCommissionPermanente.get({id : id}, function(result) {
                 $scope.fonctionCommissionPermanente = result;
