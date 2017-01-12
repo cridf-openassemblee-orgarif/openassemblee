@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 
 @RestController
-@RequestMapping("/dev-api")
-// FIXME remote
-// un inject all
-public class DevApiResource {
+@RequestMapping("/remote-api")
+public class RemoteApiResource {
 
     @Value("${fakeData}")
     private boolean fakeData;

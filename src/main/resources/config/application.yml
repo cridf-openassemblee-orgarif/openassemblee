@@ -1,4 +1,4 @@
-# si true, cela active les endpoints DevApiResource
+# si true, cela active les endpoints RemoveApiResource
 fakeData: false
 autoResetIndex: false
 
