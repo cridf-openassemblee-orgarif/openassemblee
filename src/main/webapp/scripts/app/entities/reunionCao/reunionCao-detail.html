@@ -1,54 +1,43 @@
-
 <div>
-    <h2><span>ReunionCao</span> {{reunionCao.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span>Libelle</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{reunionCao.libelle}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Date</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{reunionCao.date | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>HeureDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{reunionCao.heureDebut}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>HeureFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{reunionCao.heureFin}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
+    <section>
+        <div class="container">
+            <h1>Réunion de CAO {{reunion.libelle}}</h1>
+            <h2>du {{reunion.date | date:'mediumDate'}} de {{reunion.heureDebut}} à {{reunion.heureFin}}</h2>
+            <br/>
+            <div class="info-box table-info-box">
+                <h3>Élus</h3>
+                <div class="clearfix">
+                    <div ng-repeat="pe in reunion.presenceElus track by pe.id" class="reunion-elu-item">
+                        {{pe.elu.nom}} {{pe.elu.prenom}} ({{pe.elu.groupePolitique}})
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive info-box table-info-box">
+                <h3>Signatures de la réunion</h3>
+                <table class="table table-striped signature-table">
+                    <thead>
+                    <tr>
+                        <th class="elu">Élus</th>
+                        <th>Signature</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="presenceElu in reunion.presenceElus track by presenceElu.id">
+                        <td class="elu">
+                            <a ui-sref="elu.detail({id:presenceElu.elu.id})">
+                                {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
+                                <br/>
+                                ({{presenceElu.elu.groupePolitique}})
+                            </a>
+                        </td>
+                        <td class="signature-td">
+                            <signature-seance
+                                signature="{{presenceElu.signatures[0]}}"></signature-seance>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </div>

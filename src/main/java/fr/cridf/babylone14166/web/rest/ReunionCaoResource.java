@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.ReunionCao;
 import fr.cridf.babylone14166.repository.ReunionCaoRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCaoSearchRepository;
+import fr.cridf.babylone14166.service.ReunionCaoService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing ReunionCao.
@@ -41,6 +42,9 @@ public class ReunionCaoResource {
     @Inject
     private ReunionCaoSearchRepository reunionCaoSearchRepository;
 
+    @Inject
+    private ReunionCaoService reunionCaoService;
+
     /**
      * POST  /reunionCaos -> Create a new reunionCao.
      */
@@ -53,8 +57,7 @@ public class ReunionCaoResource {
         if (reunionCao.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new reunionCao cannot already have an ID").body(null);
         }
-        ReunionCao result = reunionCaoRepository.save(reunionCao);
-        reunionCaoSearchRepository.save(result);
+        ReunionCao result = reunionCaoService.create(reunionCao);
         return ResponseEntity.created(new URI("/api/reunionCaos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("reunionCao", result.getId().toString()))
             .body(result);
@@ -102,7 +105,7 @@ public class ReunionCaoResource {
     @Timed
     public ResponseEntity<ReunionCao> getReunionCao(@PathVariable Long id) {
         log.debug("REST request to get ReunionCao : {}", id);
-        return Optional.ofNullable(reunionCaoRepository.findOne(id))
+        return Optional.ofNullable(reunionCaoService.get(id))
             .map(reunionCao -> new ResponseEntity<>(
                 reunionCao,
                 HttpStatus.OK))

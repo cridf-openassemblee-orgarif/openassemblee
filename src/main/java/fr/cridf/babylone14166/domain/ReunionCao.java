@@ -2,12 +2,14 @@ package fr.cridf.babylone14166.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A ReunionCao.
@@ -33,6 +35,13 @@ public class ReunionCao implements Serializable {
 
     @Column(name = "heure_fin")
     private String heureFin;
+
+    @OneToMany
+    @JoinTable(name = "reunion_cao_presences_elus",
+        joinColumns = @JoinColumn(name = "reunion_cao_id"),
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PresenceElu> presenceElus = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,6 +81,14 @@ public class ReunionCao implements Serializable {
 
     public void setHeureFin(String heureFin) {
         this.heureFin = heureFin;
+    }
+
+    public Set<PresenceElu> getPresenceElus() {
+        return presenceElus;
+    }
+
+    public void setPresenceElus(Set<PresenceElu> presenceElus) {
+        this.presenceElus = presenceElus;
     }
 
     @Override
