@@ -66,13 +66,11 @@ public class GroupePolitiqueService {
         List<AppartenanceGroupePolitique> agps =
             appartenanceGroupePolitiqueRepository.findAllByGroupePolitique(gp);
         List<AppartenanceGroupePolitiqueDTO> agpDtos = agps.stream()
-            .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(a -> new AppartenanceGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
         List<FonctionGroupePolitique> ftps =
             fonctionGroupePolitiqueRepository.findAllByGroupePolitique(gp);
         List<FonctionGroupePolitiqueDTO> ftpDtps = ftps.stream()
-            .filter(GroupePolitiqueService::isFonctionCourante)
             .map(a -> new FonctionGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
         return new GroupePolitiqueDTO(gp, agpDtos, ftpDtps);
