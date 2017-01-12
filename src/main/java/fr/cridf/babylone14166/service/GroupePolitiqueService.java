@@ -63,14 +63,12 @@ public class GroupePolitiqueService {
         } else {
             Hibernate.initialize(gp.getAdressePostale());
         }
-        List<AppartenanceGroupePolitique> agps =
-            appartenanceGroupePolitiqueRepository.findAllByGroupePolitique(gp);
-        List<AppartenanceGroupePolitiqueDTO> agpDtos = agps.stream()
+        List<AppartenanceGroupePolitiqueDTO> agpDtos = appartenanceGroupePolitiqueRepository
+            .findAllByGroupePolitique(gp).stream()
             .map(a -> new AppartenanceGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
-        List<FonctionGroupePolitique> ftps =
-            fonctionGroupePolitiqueRepository.findAllByGroupePolitique(gp);
-        List<FonctionGroupePolitiqueDTO> ftpDtps = ftps.stream()
+        List<FonctionGroupePolitiqueDTO> ftpDtps = fonctionGroupePolitiqueRepository
+            .findAllByGroupePolitique(gp).stream()
             .map(a -> new FonctionGroupePolitiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
         return new GroupePolitiqueDTO(gp, agpDtos, ftpDtps);

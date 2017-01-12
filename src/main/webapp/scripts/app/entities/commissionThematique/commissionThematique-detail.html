@@ -61,7 +61,7 @@
                 <h2>Les élus dans la commission</h2>
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
-                         ng-if="a.dateFin == null">
+                         ng-if="a.appartenanceCommissionThematique.dateFin == null">
                         <div class="info-box entity-component"
                              ui-sref="elu.detail({id:a.elu.id})">
                         <span class="info-box-photo">
@@ -84,7 +84,7 @@
                 <h2>Les élus en fonction dans la commission</h2>
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
-                         ng-if="a.dateFin == null">
+                         ng-if="a.fonctionCommissionThematique.dateFin == null">
                         <div class="info-box entity-component"
                              ui-sref="elu.detail({id:a.elu.id})">
                         <span class="info-box-photo">
@@ -97,6 +97,63 @@
                                 <div class="info-box-info">
                                     {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
                                     {{a.fonctionCommissionThematique.dateDebut}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Anciens membres</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        <h2>Anciens élus</h2>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
+                                 ng-if="a.appartenanceCommissionThematique.dateFin != null">
+                                <div class="info-box entity-component"
+                                     ui-sref="elu.detail({id:a.elu.id})">
+                                    <span class="info-box-photo">
+                                        <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                    </span>
+
+                                    <div class="info-box-content">
+                                        <span
+                                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                        <div class="info-box-info">
+                                            <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2>Anciens élus en fonction</h2>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
+                                 ng-if="a.fonctionCommissionThematique.dateFin != null">
+                                <div class="info-box entity-component"
+                                     ui-sref="elu.detail({id:a.elu.id})">
+                                    <span class="info-box-photo">
+                                        <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                    </span>
+
+                                    <div class="info-box-content">
+                                        <span
+                                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                        <div class="info-box-info">
+                                            {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
+                                            {{a.fonctionCommissionThematique.dateDebut}}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
