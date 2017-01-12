@@ -48,6 +48,7 @@ public class RemoteApiResource {
         if (fakeData) {
             testDataInjector.injectTestData();
             testDataInjector.injectOrganismes();
+            searchService.resetIndex();
         }
         return ResponseEntity.ok().build();
     }
