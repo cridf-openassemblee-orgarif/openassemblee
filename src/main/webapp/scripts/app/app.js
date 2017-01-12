@@ -17,6 +17,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
 
         });
+        $rootScope._ = _;
 
         $rootScope.$watch('searchToken', function (value) {
             if (value && value.length > 2) {
