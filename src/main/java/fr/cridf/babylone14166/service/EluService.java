@@ -96,16 +96,15 @@ public class EluService {
 
     @Transactional(readOnly = true)
     public EluListDTO getEluListDTO(Long id) {
-        Elu elu = eluRepository.findOne(id);
+        return eluToEluListDTO(eluRepository.findOne(id));
+    }
+
+    public EluListDTO eluToEluListDTO(Elu elu) {
         Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .findFirst();
-        if (groupePolitique.isPresent()) {
-            return new EluListDTO(elu, groupePolitique.get());
-        } else {
-            return new EluListDTO(elu);
-        }
+        return groupePolitique.map(groupePolitique1 -> new EluListDTO(elu, groupePolitique1)).orElseGet(() -> new EluListDTO(elu));
     }
 
     @Transactional(readOnly = true)
