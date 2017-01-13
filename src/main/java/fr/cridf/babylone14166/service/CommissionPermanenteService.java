@@ -136,7 +136,7 @@ public class CommissionPermanenteService {
             .flatMap(e -> e.getFonctionsCommissionPermanente().stream()).collect(Collectors.toList());
         ExportService.Entry[] entries = new ExportService.Entry[]{
             new ExportService.Entry("Fonctions éxécutives", getFonctionExecutivesLines(fes)),
-            new ExportService.Entry("Appartenances", getAppartenancesLines(acps)),
+            new ExportService.Entry("Membres", getAppartenancesLines(acps)),
             new ExportService.Entry("Fonctions", getFonctionsLines(fcps))
         };
         return entries;
