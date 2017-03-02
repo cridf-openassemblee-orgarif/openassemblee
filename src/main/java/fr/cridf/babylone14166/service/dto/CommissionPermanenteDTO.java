@@ -1,9 +1,12 @@
 package fr.cridf.babylone14166.service.dto;
 
+import fr.cridf.babylone14166.domain.AppartenanceCommissionPermanente;
+import fr.cridf.babylone14166.domain.Elu;
+import fr.cridf.babylone14166.domain.FonctionCommissionPermanente;
+import fr.cridf.babylone14166.domain.FonctionExecutive;
+
 import java.util.List;
 import java.util.Map;
-
-import fr.cridf.babylone14166.domain.*;
 
 public class CommissionPermanenteDTO {
 

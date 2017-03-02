@@ -1,31 +1,35 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-
-import org.elasticsearch.common.io.Streams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import fr.cridf.babylone14166.domain.CommissionThematique;
 import fr.cridf.babylone14166.repository.CommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
 import fr.cridf.babylone14166.service.CommissionThematiqueService;
 import fr.cridf.babylone14166.service.ExportService;
-import fr.cridf.babylone14166.service.dto.*;
+import fr.cridf.babylone14166.service.dto.AppartenanceCommissionThematiqueDTO;
+import fr.cridf.babylone14166.service.dto.CommissionThematiqueDTO;
+import fr.cridf.babylone14166.service.dto.CommissionThematiqueListDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.io.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing CommissionThematique.
@@ -163,6 +167,7 @@ public class CommissionThematiqueResource {
         CommissionThematique ct = dto.getCommissionThematique();
         lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
         lines.add(new ArrayList<>());
+        // FIXME si la CT est fermée ça n'apparait pas là!
         // TODO autre sheet ?
         for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
             lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));

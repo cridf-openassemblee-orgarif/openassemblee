@@ -155,6 +155,7 @@ public class GroupePolitiqueResource {
         log.debug("REST request to get all GroupePolitiques");
         List<GroupePolitiqueListDTO> gps = groupePolitiqueService.getAll();
         List<List<String>> lines = new ArrayList<>();
+        // FIXME si le groupe est fermé ça n'apparait pas là !
         for (GroupePolitiqueListDTO gpDto : gps) {
             GroupePolitique gp = gpDto.getGroupePolitique();
             String adresse = gp.getAdressePostale() != null ? gp.getAdressePostale().getOneline() : "Pas d'adresse";

@@ -17,7 +17,6 @@ angular.module('babylone14166App')
         };
         $scope.loadAll();
 
-
         $scope.search = function () {
             OrganismeSearch.query({query: $scope.searchQuery}, function(result) {
                 $scope.organismes = result;

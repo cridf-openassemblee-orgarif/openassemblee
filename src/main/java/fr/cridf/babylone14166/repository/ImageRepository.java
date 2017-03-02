@@ -1,10 +1,6 @@
 package fr.cridf.babylone14166.repository;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.*;
-import javax.sql.DataSource;
-
+import fr.cridf.babylone14166.domain.Image;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +11,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import fr.cridf.babylone14166.domain.Image;
+import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @Repository
 public class ImageRepository {
@@ -53,7 +55,7 @@ public class ImageRepository {
                     Streams.copy(blob.getBinaryStream(), baos);
                 } catch (IOException e) {
                     // TODO exception
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 return new Image(contentType, baos.toByteArray());
             });
