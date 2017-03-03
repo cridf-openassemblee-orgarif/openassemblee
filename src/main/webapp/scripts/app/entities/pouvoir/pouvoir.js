@@ -84,12 +84,9 @@ angular.module('babylone14166App')
                             }]
                         }
                     }).result.then(function(result) {
-                        // TODO remettre les $state ici une fois qu'un état clean aura été créé dans les seances
-                        // $state.go('pouvoir', null, { reload: true });
-                        window.history.back()
+                        $state.go('pouvoir', null, { reload: true });
                     }, function() {
-                        // $state.go('^');
-                        window.history.back()
+                        $state.go('^');
                     })
                 }]
             })

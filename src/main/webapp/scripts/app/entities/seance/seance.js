@@ -112,5 +112,51 @@ angular.module('babylone14166App')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('seance.detail.pouvoirEdit', {
+                parent: 'seance.detail',
+                url: '/pouvoir/{pouvoirId}/edit',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/pouvoir/pouvoir-dialog.html',
+                        controller: 'PouvoirDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['Pouvoir', function(Pouvoir) {
+                                return Pouvoir.get({id : $stateParams.pouvoirId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('seance.detail.pouvoirDelete', {
+                parent: 'seance.detail',
+                url: '/pouvoir/{pouvoirId}/delete',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/pouvoir/pouvoir-delete-dialog.html',
+                        controller: 'PouvoirDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: ['Pouvoir', function(Pouvoir) {
+                                return Pouvoir.get({id : $stateParams.pouvoirId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
             });
     });
