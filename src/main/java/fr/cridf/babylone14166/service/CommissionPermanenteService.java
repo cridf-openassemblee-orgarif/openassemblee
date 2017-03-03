@@ -36,15 +36,9 @@ public class CommissionPermanenteService {
 
     @Transactional(readOnly = true)
     public CommissionPermanenteDTO getCommissionPermanente() {
-        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isAppartenanceCourante)
-            .collect(Collectors.toList());
-        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isFonctionCourante)
-            .collect(Collectors.toList());
-        List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
-            .collect(Collectors.toList());
+        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll();
+        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll();
+        List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll();
         Set<Long> elusIds = new HashSet<>();
         elusIds.addAll(acp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         elusIds.addAll(fcp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
