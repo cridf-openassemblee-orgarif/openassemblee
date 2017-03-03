@@ -63,20 +63,27 @@
          ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
         Attention, l'élu cédeur et l'élu bénéficiaire déclarés sont la même personne !
     </div>
-    <div ng-if="eluCedeurADejaDelegue()" class="pouvoir-conflict-error">
+    <div ng-if="pouvoirsDejaExistant().length > 0 && pouvoir.dateFin == null && pouvoirsDejaExistant()[0].id != pouvoir.id" class="pouvoir-conflict-error">
         <div class="super-error-message">
-            Attention, l'élu cédeur a déjà cédé son pouvoir !
+            Attention, l'élu cédeur a déjà cédé ou bénéficie d'un pouvoir !
         </div>
-        <div style="margin: 10px">
-            <input id="autoclose" type="checkbox" ng-model="$parent.autoclosePrecedentPouvoir">
-            <label for="autoclose">Clore la précédente délégation de pouvoir de l'élu cédeur au début de celle-ci</label>
+        <div ng-if="pouvoirsDejaExistant().length == 1" style="margin: 10px">
+            <input id="autoclose" type="checkbox" ng-model="$parent.$parent.autoclosePrecedentPouvoir">
+            <label for="autoclose">
+                Clore la précédente délégation de pouvoir de l'élu cédeur au début de celle-ci.
+            </label>
+            <br/><b>Attention la date et heure de début doivent être précisées !</b>
+        </div>
+        <div ng-if="pouvoirsDejaExistant().length > 1" style="margin: 10px">
+            Il existe {{pouvoirsDejaExistant().length}} délégations liées à l'élu cédeur.
+            Vous devez les fermer à la main.
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+        <button type="submit" ng-disabled="isSaving" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
         </button>
     </div>

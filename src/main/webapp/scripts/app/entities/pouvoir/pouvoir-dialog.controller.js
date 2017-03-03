@@ -39,19 +39,14 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             }
 
             $scope.autoclosePrecedentPouvoir = false;
-            $scope.pouvoirDejaExistant = function () {
-                var result;
-                $scope.openPouvoirs.forEach(function (pv) {
-                    if (pv.eluCedeur != null
-                        && $scope.pouvoir.eluCedeur != null
-                        && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id) {
-                        result = pv;
-                    }
+            $scope.pouvoirsDejaExistant = function () {
+                return $scope.openPouvoirs.filter(function (pv) {
+                    return $scope.pouvoir.eluCedeur != null &&
+                        ((pv.eluCedeur != null
+                        && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id)
+                        || (pv.eluBeneficiaire != null
+                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluCedeur.id))
                 });
-                return result;
-            };
-            $scope.eluCedeurADejaDelegue = function () {
-                return $scope.pouvoirDejaExistant() != null;
             };
 
             $scope.openPouvoirs = [];
@@ -119,8 +114,10 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                     var heureFinMinutes = heureFin.getMinutes() >= 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
                     $scope.pouvoir.heureFin = heureFinHours + ':' + heureFinMinutes;
                 }
-                var pouvoirDejaExistant = $scope.pouvoirDejaExistant();
-                if (pouvoirDejaExistant !== null && $scope.autoclosePrecedentPouvoir) {
+                var pouvoirsDejaExistant = $scope.pouvoirsDejaExistant();
+                if (pouvoirsDejaExistant.length > 0 && $scope.autoclosePrecedentPouvoir) {
+                    // Ne propose pas la fermeture si plus d'un pouvoir
+                    var pouvoirDejaExistant = pouvoirsDejaExistant[0];
                     // TODO se plante s'il n'y en a pas...
                     pouvoirDejaExistant.dateFin = $scope.pouvoir.dateDebut;
                     pouvoirDejaExistant.heureFin = $scope.pouvoir.heureDebut;
