@@ -41,11 +41,19 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             $scope.autoclosePrecedentPouvoir = false;
             $scope.pouvoirsDejaExistant = function () {
                 return $scope.openPouvoirs.filter(function (pv) {
-                    return $scope.pouvoir.eluCedeur != null &&
+                    return ($scope.pouvoir.eluCedeur != null &&
                         ((pv.eluCedeur != null
                         && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id)
                         || (pv.eluBeneficiaire != null
-                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluCedeur.id))
+                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluCedeur.id)))
+
+                        ||
+
+                        ($scope.pouvoir.eluBeneficiaire != null &&
+                        ((pv.eluCedeur != null
+                        && pv.eluCedeur.id == $scope.pouvoir.eluBeneficiaire.id)
+                        || (pv.eluBeneficiaire != null
+                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluBeneficiaire.id)))
                 });
             };
 
