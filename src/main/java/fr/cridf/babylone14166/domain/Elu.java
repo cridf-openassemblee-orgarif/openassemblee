@@ -51,6 +51,10 @@ public class Elu implements Serializable {
     @Column(name = "image")
     private Long image;
 
+    // for public WS only
+    @Transient
+    private UUID uuid;
+
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // TODO et sans la joinTable ?
@@ -323,6 +327,14 @@ public class Elu implements Serializable {
 
     public void setAutreMandats(Set<AutreMandat> autreMandats) {
         this.autreMandats = autreMandats;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String civiliteComplete() {

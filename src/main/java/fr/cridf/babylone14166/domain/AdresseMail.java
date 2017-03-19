@@ -1,5 +1,7 @@
 package fr.cridf.babylone14166.domain;
 
+import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
+import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,10 +10,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
-
-import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
-
 /**
  * A AdresseMail.
  */
@@ -19,7 +17,7 @@ import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 @Table(name = "adresse_mail")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "adressemail")
-public class AdresseMail implements Serializable {
+public class AdresseMail implements Publishable, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +64,7 @@ public class AdresseMail implements Serializable {
         this.mail = mail;
     }
 
+    @Override
     public NiveauConfidentialite getNiveauConfidentialite() {
         return niveauConfidentialite;
     }
@@ -82,6 +81,7 @@ public class AdresseMail implements Serializable {
         this.adresseDeCorrespondance = adresseDeCorrespondance;
     }
 
+    @Override
     public Boolean getPublicationAnnuaire() {
         return publicationAnnuaire;
     }

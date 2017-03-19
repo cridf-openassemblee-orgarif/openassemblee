@@ -72,9 +72,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/remote-api/**");
         http
             .csrf()
+            .ignoringAntMatchers("/remote-api/**")
+            .ignoringAntMatchers("/api/publicdata/**")
+            .ignoringAntMatchers("/healthcheck")
             .ignoringAntMatchers("/websocket/**")
             .and()
             .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
@@ -113,6 +115,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/**").authenticated()
+            .antMatchers("/api/publicdata/**").permitAll()
             .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)

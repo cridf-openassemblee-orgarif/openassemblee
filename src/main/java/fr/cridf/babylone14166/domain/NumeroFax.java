@@ -1,5 +1,7 @@
 package fr.cridf.babylone14166.domain;
 
+import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
+import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,10 +10,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
-
-import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
-
 /**
  * A NumeroFax.
  */
@@ -19,7 +17,7 @@ import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 @Table(name = "numero_fax")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "numerofax")
-public class NumeroFax implements Serializable {
+public class NumeroFax implements Publishable, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,6 +61,7 @@ public class NumeroFax implements Serializable {
         this.numero = numero;
     }
 
+    @Override
     public NiveauConfidentialite getNiveauConfidentialite() {
         return niveauConfidentialite;
     }
@@ -71,6 +70,7 @@ public class NumeroFax implements Serializable {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
+    @Override
     public Boolean getPublicationAnnuaire() {
         return publicationAnnuaire;
     }

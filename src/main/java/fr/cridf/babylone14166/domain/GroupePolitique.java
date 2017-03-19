@@ -1,13 +1,16 @@
 package fr.cridf.babylone14166.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.*;
-import javax.persistence.*;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A GroupePolitique.
@@ -27,6 +30,10 @@ public class GroupePolitique implements Serializable {
 
     @Column(name = "nom_court")
     private String nomCourt;
+
+    // for public WS only
+    @Transient
+    private UUID uuid;
 
     @OneToOne
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -130,6 +137,14 @@ public class GroupePolitique implements Serializable {
 
     public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override

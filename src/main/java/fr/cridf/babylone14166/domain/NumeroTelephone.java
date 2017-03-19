@@ -1,5 +1,8 @@
 package fr.cridf.babylone14166.domain;
 
+import fr.cridf.babylone14166.domain.enumeration.NatureFixeMobile;
+import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
+import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,12 +11,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
-
-import fr.cridf.babylone14166.domain.enumeration.NatureFixeMobile;
-
-import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
-
 /**
  * A NumeroTelephone.
  */
@@ -21,7 +18,7 @@ import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 @Table(name = "numero_telephone")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "numerotelephone")
-public class NumeroTelephone implements Serializable {
+public class NumeroTelephone implements Publishable, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,6 +74,7 @@ public class NumeroTelephone implements Serializable {
         this.numero = numero;
     }
 
+    @Override
     public NiveauConfidentialite getNiveauConfidentialite() {
         return niveauConfidentialite;
     }
@@ -85,6 +83,7 @@ public class NumeroTelephone implements Serializable {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
+    @Override
     public Boolean getPublicationAnnuaire() {
         return publicationAnnuaire;
     }

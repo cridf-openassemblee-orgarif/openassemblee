@@ -1,15 +1,14 @@
 package fr.cridf.babylone14166.domain;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.*;
-
+import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
+import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import fr.cridf.babylone14166.domain.enumeration.NatureProPerso;
-import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A AdressePostale.
@@ -18,7 +17,7 @@ import fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite;
 @Table(name = "adresse_postale")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "adressepostale")
-public class AdressePostale implements Serializable {
+public class AdressePostale implements Publishable, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -107,6 +106,7 @@ public class AdressePostale implements Serializable {
         this.ville = ville;
     }
 
+    @Override
     public NiveauConfidentialite getNiveauConfidentialite() {
         return niveauConfidentialite;
     }
@@ -123,6 +123,7 @@ public class AdressePostale implements Serializable {
         this.adresseDeCorrespondance = adresseDeCorrespondance;
     }
 
+    @Override
     public Boolean getPublicationAnnuaire() {
         return publicationAnnuaire;
     }
