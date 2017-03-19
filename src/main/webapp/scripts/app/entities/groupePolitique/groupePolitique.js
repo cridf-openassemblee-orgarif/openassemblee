@@ -128,7 +128,7 @@ angular.module('babylone14166App')
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/groupes-politiques/upload-image-dialog.html',
+                        templateUrl: 'scripts/app/entities/groupePolitique/upload-image-dialog.html',
                         controller: 'UploadImageGroupePolitiqueDialogController',
                         size: 'lg'
                     }).result.then(function (result) {
