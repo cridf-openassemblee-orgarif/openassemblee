@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -85,6 +82,7 @@ public class EluService {
             Optional<GroupePolitique> groupePolitique = e.getAppartenancesGroupePolitique().stream()
                 .filter(GroupePolitiqueService::isAppartenanceCourante)
                 .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .filter(Objects::nonNull)
                 .findFirst();
             if (groupePolitique.isPresent()) {
                 return new EluListDTO(e, groupePolitique.get());
