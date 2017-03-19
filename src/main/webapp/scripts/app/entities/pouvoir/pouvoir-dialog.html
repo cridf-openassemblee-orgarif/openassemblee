@@ -10,10 +10,12 @@
             <label>Élu cédeur</label>
             <ui-select ng-model="pouvoir.eluCedeur">
                 <ui-select-match>
-                    <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "></span>
+                    <span
+                        ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "></span>
                 </ui-select-match>
                 <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
-                    <span ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
+                    <span
+                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -24,7 +26,8 @@
                     <span ng-bind="$select.selected.prenom + ' ' + $select.selected.nom"></span>
                 </ui-select-match>
                 <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
-                    <span ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
+                    <span
+                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -63,20 +66,35 @@
          ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
         Attention, l'élu cédeur et l'élu bénéficiaire déclarés sont la même personne !
     </div>
-    <div ng-if="pouvoirsDejaExistant().length > 0 && pouvoir.dateFin == null && pouvoirsDejaExistant()[0].id != pouvoir.id" class="pouvoir-conflict-error">
+    <div
+        ng-if="pouvoirsDejaExistant.length > 0 && pouvoir.dateFin == null && pouvoirsDejaExistant[0].id != pouvoir.id"
+        class="pouvoir-conflict-error">
         <div class="super-error-message">
-            Attention, l'élu cédeur a déjà cédé ou bénéficie d'un pouvoir !
+            Attention !
         </div>
-        <div ng-if="pouvoirsDejaExistant().length == 1" style="margin: 10px">
+        <div ng-if="pouvoirsDejaExistant.length == 1" style="margin: 10px">
+            <b>{{pouvoirsDejaExistant[0].eluCedeur.prenom}} {{pouvoirsDejaExistant[0].eluCedeur.nom}}
+            cède à
+            {{pouvoirsDejaExistant[0].eluBeneficiaire.prenom}} {{pouvoirsDejaExistant[0].eluBeneficiaire.nom}}
+            depuis le
+            {{pouvoirsDejaExistant[0].dateDebut | date:'mediumDate'}} - {{pouvoirsDejaExistant[0].heureDebut}}
+            </b>
+            <br /><br/>
             <input id="autoclose" type="checkbox" ng-model="$parent.$parent.autoclosePrecedentPouvoir">
             <label for="autoclose">
-                Clore la précédente délégation de pouvoir de l'élu cédeur au début de celle-ci.
+                Clore la délégation de pouvoir.
             </label>
             <br/><b>Attention la date et heure de début doivent être précisées !</b>
         </div>
-        <div ng-if="pouvoirsDejaExistant().length > 1" style="margin: 10px">
-            Il existe {{pouvoirsDejaExistant().length}} délégations liées à l'élu cédeur.
-            Vous devez les fermer à la main.
+        <div ng-if="pouvoirsDejaExistant.length > 1" style="margin: 10px">
+            Vous devez d'abord fermer ces délégations à la main :
+            <ul ng-repeat="p in pouvoirsDejaExistant">
+                <li>{{p.eluCedeur.prenom}} {{p.eluCedeur.nom}}
+                    cède à
+                    {{p.eluBeneficiaire.prenom}} {{p.eluBeneficiaire.nom}}
+                    depuis le
+                    {{p.dateDebut | date:'mediumDate'}} - {{p.heureDebut}}</li>
+            </ul>
         </div>
     </div>
     <div class="modal-footer">

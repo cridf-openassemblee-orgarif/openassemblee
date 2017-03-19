@@ -39,7 +39,8 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             }
 
             $scope.autoclosePrecedentPouvoir = false;
-            $scope.pouvoirsDejaExistant = function () {
+
+            var pouvoirsDejaExistant = function () {
                 return $scope.openPouvoirs.filter(function (pv) {
                     return ($scope.pouvoir.eluCedeur != null &&
                         ((pv.eluCedeur != null
@@ -56,6 +57,13 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                         && pv.eluBeneficiaire.id == $scope.pouvoir.eluBeneficiaire.id)))
                 });
             };
+
+            var initPouvoirsDejaExistant = function () {
+                $scope.pouvoirsDejaExistant = pouvoirsDejaExistant();
+            };
+
+            $scope.$watch('pouvoir.eluCedeur', initPouvoirsDejaExistant);
+            $scope.$watch('pouvoir.eluBeneficiaire', initPouvoirsDejaExistant);
 
             $scope.openPouvoirs = [];
             Pouvoir.getAllOpen(function (result) {
@@ -122,7 +130,7 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
                     var heureFinMinutes = heureFin.getMinutes() >= 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
                     $scope.pouvoir.heureFin = heureFinHours + ':' + heureFinMinutes;
                 }
-                var pouvoirsDejaExistant = $scope.pouvoirsDejaExistant();
+                var pouvoirsDejaExistant = $scope.pouvoirsDejaExistant;
                 if (pouvoirsDejaExistant.length > 0 && $scope.autoclosePrecedentPouvoir) {
                     // Ne propose pas la fermeture si plus d'un pouvoir
                     var pouvoirDejaExistant = pouvoirsDejaExistant[0];
