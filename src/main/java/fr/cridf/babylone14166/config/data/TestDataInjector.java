@@ -13,9 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -137,13 +134,11 @@ public class TestDataInjector {
         if (image != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
-                Path filePath = Paths.get(getClass().getClassLoader().getResource("test-data-images/" + image).toURI());
+                InputStream imageIS = getClass().getClassLoader().getResourceAsStream("test-data-images/" + image);
                 String contentType = "image/jpeg";
-                Streams.copy(new FileInputStream(filePath.toFile()), baos);
+                Streams.copy(imageIS, baos);
                 Long imageId = imageRepository.saveImage(new Image(contentType, baos.toByteArray()));
                 gp.setImage(imageId);
-            } catch (URISyntaxException e) {
-                logger.error("Error in URI for file : '" + image + "'", e);
             } catch (FileNotFoundException e) {
                 logger.error("File not found : '" + image + "'", e);
             } catch (IOException e) {
