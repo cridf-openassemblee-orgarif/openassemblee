@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.ReunionCommissionThematique;
 import fr.cridf.babylone14166.repository.ReunionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCommissionThematiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.ReunionCommissionThematiqueService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +62,9 @@ public class ReunionCommissionThematiqueResourceIntTest {
     private ReunionCommissionThematiqueSearchRepository reunionCommissionThematiqueSearchRepository;
 
     @Inject
+    private ReunionCommissionThematiqueService reunionCommissionThematiqueService;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -76,6 +80,7 @@ public class ReunionCommissionThematiqueResourceIntTest {
         ReunionCommissionThematiqueResource reunionCommissionThematiqueResource = new ReunionCommissionThematiqueResource();
         ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueRepository", reunionCommissionThematiqueRepository);
         ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueSearchRepository", reunionCommissionThematiqueSearchRepository);
+        ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueService", reunionCommissionThematiqueService);
         this.restReunionCommissionThematiqueMockMvc = MockMvcBuilders.standaloneSetup(reunionCommissionThematiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

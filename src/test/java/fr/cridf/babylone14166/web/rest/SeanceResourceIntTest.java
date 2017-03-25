@@ -2,19 +2,19 @@ package fr.cridf.babylone14166.web.rest;
 
 import fr.cridf.babylone14166.Application;
 import fr.cridf.babylone14166.domain.Seance;
+import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
-
+import fr.cridf.babylone14166.service.SeanceService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -29,10 +29,9 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
 
 /**
  * Test class for the SeanceResource REST controller.
@@ -65,6 +64,9 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
     private SeanceSearchRepository seanceSearchRepository;
 
     @Inject
+    private SeanceService seanceService;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -80,6 +82,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         SeanceResource seanceResource = new SeanceResource();
         ReflectionTestUtils.setField(seanceResource, "seanceRepository", seanceRepository);
         ReflectionTestUtils.setField(seanceResource, "seanceSearchRepository", seanceSearchRepository);
+        ReflectionTestUtils.setField(seanceResource, "seanceService", seanceService);
         this.restSeanceMockMvc = MockMvcBuilders.standaloneSetup(seanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
