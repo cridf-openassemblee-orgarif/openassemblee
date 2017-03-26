@@ -28,6 +28,10 @@ angular.module('babylone14166App')
                 dateDebut: null,
                 dateFin: null,
                 motifFin: null,
+                website: null,
+                phone: null,
+                mail: null,
+                fax: null,
                 id: null
             };
         };

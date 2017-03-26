@@ -50,6 +50,18 @@ public class GroupePolitique implements Serializable {
     @Column(name = "image")
     private Long image;
 
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "mail")
+    private String mail;
+
+    @Column(name = "fax")
+    private String fax;
+
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
@@ -120,6 +132,38 @@ public class GroupePolitique implements Serializable {
 
     public void setImage(Long image) {
         this.image = image;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {

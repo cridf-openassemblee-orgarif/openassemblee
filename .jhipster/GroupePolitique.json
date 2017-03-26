@@ -25,6 +25,26 @@
             "fieldId": 5,
             "fieldName": "motifFin",
             "fieldType": "String"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "website",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "phone",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "mail",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "fax",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20151204111818",
