@@ -128,6 +128,8 @@ public class TestDataInjector {
 
     private GroupePolitique initGroupePolitique(String nomCourt, String nom, String image) {
         GroupePolitique gp = new GroupePolitique();
+        gp.setCreatedBy("injector");
+        gp.setLastModifiedBy("injector");
         gp.setNomCourt(nomCourt);
         gp.setNom(nom);
         gp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
@@ -268,6 +270,8 @@ public class TestDataInjector {
 
     private Elu initElu(Civilite civilite, String nom, String prenom) {
         Elu elu = new Elu();
+        elu.setCreatedBy("injector");
+        elu.setLastModifiedBy("injector");
         elu.setCivilite(civilite);
         elu.setNom(nom);
         elu.setPrenom(prenom);
@@ -293,6 +297,8 @@ public class TestDataInjector {
         return elus.stream().map(elu -> {
             GroupePolitique gp = gps.get(random.nextInt(gps.size()));
             AppartenanceGroupePolitique agp = new AppartenanceGroupePolitique();
+            agp.setCreatedBy("injector");
+            agp.setLastModifiedBy("injector");
             agp.setElu(elu);
             agp.setGroupePolitique(gp);
             agp.setDateDebut(randomDate(gp.getDateDebut(), LocalDate.now()));
@@ -312,6 +318,8 @@ public class TestDataInjector {
             alreadySet.add(elu);
             CommissionThematique ct = cts.get(random.nextInt(cts.size()));
             AppartenanceCommissionThematique act = new AppartenanceCommissionThematique();
+            act.setCreatedBy("injector");
+            act.setLastModifiedBy("injector");
             act.setCommissionThematique(ct);
             act.setElu(elu);
             act.setDateDebut(randomDate(ct.getDateDebut(), LocalDate.now()));
@@ -322,6 +330,8 @@ public class TestDataInjector {
                     secondeCt = cts.get(random.nextInt(cts.size()));
                 }
                 AppartenanceCommissionThematique act2 = new AppartenanceCommissionThematique();
+                act2.setCreatedBy("injector");
+                act2.setLastModifiedBy("injector");
                 act2.setCommissionThematique(secondeCt);
                 act2.setElu(elu);
                 act2.setDateDebut(randomDate(secondeCt.getDateDebut(), LocalDate.now()));
@@ -341,6 +351,8 @@ public class TestDataInjector {
             }
             alreadySet.add(elu);
             AppartenanceCommissionPermanente acp = new AppartenanceCommissionPermanente();
+            acp.setCreatedBy("injector");
+            acp.setLastModifiedBy("injector");
             acp.setElu(elu);
             acp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
             acps.add(acp);
@@ -358,6 +370,8 @@ public class TestDataInjector {
             }
             alreadySet.add(elu);
             FonctionExecutive fe = new FonctionExecutive();
+            fe.setCreatedBy("injector");
+            fe.setLastModifiedBy("injector");
             fe.setElu(elu);
             fe.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
             if (i == 0) {
@@ -380,6 +394,8 @@ public class TestDataInjector {
 
     private CommissionThematique initCommissionThematique(String nom, String nomCourt) {
         CommissionThematique ct = new CommissionThematique();
+        ct.setCreatedBy("injector");
+        ct.setLastModifiedBy("injector");
         ct.setNom(nom);
         ct.setNomCourt(nomCourt);
         ct.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));

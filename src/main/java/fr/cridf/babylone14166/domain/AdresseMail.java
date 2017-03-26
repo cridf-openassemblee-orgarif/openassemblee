@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "adresse_mail")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "adressemail")
-public class AdresseMail extends AbstractAuditingEntity implements Publishable{
+public class AdresseMail extends AbstractAuditingEntity implements Publishable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

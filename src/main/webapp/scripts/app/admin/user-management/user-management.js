@@ -17,24 +17,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
-                }
-            })
-            .state('user-management-detail', {
-                parent: 'admin',
-                url: '/user-management/:login',
-                data: {
-                    authorities: ['ROLE_ADMIN'],
-                    pageTitle: 'babylone14166'
-                },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/admin/user-management/user-management-detail.html',
-                        controller: 'UserManagementDetailController'
-                    }
-                },
-                resolve: {
-                    
+
                 }
             })
             .state('user-management.new', {
@@ -64,6 +47,23 @@ angular.module('babylone14166App')
                         $state.go('user-management');
                     })
                 }]
+            })
+            .state('user-management-detail', {
+                parent: 'admin',
+                url: '/user-management/:login',
+                data: {
+                    authorities: ['ROLE_ADMIN'],
+                    pageTitle: 'babylone14166'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/admin/user-management/user-management-detail.html',
+                        controller: 'UserManagementDetailController'
+                    }
+                },
+                resolve: {
+
+                }
             })
             .state('user-management.edit', {
                 parent: 'user-management',
