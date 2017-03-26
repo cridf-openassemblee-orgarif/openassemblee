@@ -53,7 +53,7 @@ public class Elu implements Serializable {
 
     // for public WS only
     @Transient
-    private UUID uuid;
+    private String uuid;
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -329,11 +329,11 @@ public class Elu implements Serializable {
         this.autreMandats = autreMandats;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

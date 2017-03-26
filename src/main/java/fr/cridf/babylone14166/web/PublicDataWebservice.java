@@ -33,13 +33,17 @@ public class PublicDataWebservice {
     @Autowired
     private ImageRepository imageRepository;
 
+    private static long lastConseillerId = 0;
+    private static long lastEnsembleId = 0;
+    private static long lastMembreId = 0;
+
     @RequestMapping(value = "/websitedata", method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public Map<String, Object> ensembles() {
         List<Elu> elus = eluRepository.findAll();
-        elus.forEach(e -> e.setUuid(UUID.randomUUID()));
+        elus.forEach(e -> e.setUuid(String.valueOf(lastConseillerId++)));
         List<GroupePolitique> groupesPolitiques = groupePolitiqueRepository.findAll();
-        groupesPolitiques.forEach(gp -> gp.setUuid(UUID.randomUUID()));
+        groupesPolitiques.forEach(gp -> gp.setUuid(String.valueOf(lastEnsembleId++)));
         Map<String, Object> result = new HashMap<>();
         result.put("conseillers", getConseillers(elus));
         result.put("ensembles", getEnsembles(groupesPolitiques));
@@ -50,7 +54,8 @@ public class PublicDataWebservice {
     private List<ConseillerDto> getConseillers(List<Elu> elus) {
         return elus.stream().map(e -> {
             ConseillerDto d = new ConseillerDto();
-//            d.setMandature("");
+            // TODO
+            d.setMandature("");
             d.setNom(e.getNom());
             d.setActiviteProf(e.getProfession());
             getPublishable(e.getAdressesPostales()).ifPresent(ap -> {
@@ -71,17 +76,22 @@ public class PublicDataWebservice {
                     d.setGroupePolitique(gp.getNom());
                 }
             });
-//            d.setListeCourt("");
-//            d.setListeElectorale("");
-//            d.setNbEnfants("");
-//            d.setNomJeuneFille("");
+            // TODO
+            d.setListeCourt("");
+            // TODO
+            d.setListeElectorale("");
+            // TODO
+            d.setNbEnfants("");
+            // TODO
+            d.setNomJeuneFille("");
             d.setAutresMandats("");
             d.setSituationFamiliale("");
             getPublishable(e.getNumerosTelephones()).ifPresent(nt -> d.setTelephone(nt.getNumero()));
             getPublishable(e.getNumerosFax()).ifPresent(nf -> d.setFax(nf.getNumero()));
             getPublishable(e.getAdressesMail()).ifPresent(am -> d.setMail(am.getMail()));
             d.setValid('O');
-            // private String code_dep_election;
+            // TODO
+            d.setCodeDepElection("");
             d.setPrenom(e.getPrenom());
             if (e.getCivilite() != null) {
                 d.setCivilite(e.getCivilite().label());
@@ -90,27 +100,32 @@ public class PublicDataWebservice {
             // TODO différence avec setActiviteProf ?
             d.setProfession(e.getProfession());
             d.setUidConseiller(e.getUuid().toString());
-//            private String distinctions;
-//            private String description;
-//                d.setJpegphotoId(new SerialBlob(imageRepository.getImage(e.getImage()).getData()));
+            // TODO
+            d.setDistinctions("");
+            // TODO
+            d.setDescription("");
             d.setJpegphotoId(String.valueOf(e.getImage()));
-//            private Float st;
+            // TODO
+            d.setSt(0F);
             StringBuilder commissionsStringBuilder = new StringBuilder();
             e.getAppartenancesCommissionsThematiques().stream()
                 .filter(a -> a.getDateFin() == null)
                 .forEach(a -> commissionsStringBuilder.append(", ").append(a.getCommissionThematique().getNom()));
             d.setCommissions(commissionsStringBuilder.toString());
-//            private String designations;
+            // TODO
+            d.setDesignations("");
             Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
                 .filter(f -> f.getDateFin() == null)
                 .findFirst();
             fe.ifPresent(fonctionExecutive -> d.setFonctionExecutif(fonctionExecutive.getFonction()));
-//            private String phonetique;
+            // TODO
+            d.setPhonetique("");
             d.setTwitter(getUrl(e, Twitter));
             d.setFacebook(getUrl(e, Facebook));
             d.setSiteInternet(getUrl(e, SiteInternet));
             d.setBlog(getUrl(e, Blog));
-//            private String autre;
+            // TODO
+            d.setAutre("");
 
             return d;
         }).collect(Collectors.toList());
@@ -133,40 +148,54 @@ public class PublicDataWebservice {
     private List<EnsembleDto> getEnsembles(List<GroupePolitique> groupePolitiques) {
         return groupePolitiques.stream().map(gp -> {
             EnsembleDto e = new EnsembleDto();
-//            private String mandature;
+            // TODO
+            e.setMandature("");
             e.setUidEnsemble(gp.getUuid().toString());
             e.setLibCourt(gp.getNomCourt());
             if (gp.getDateDebut() != null) {
                 e.setDateCreation(gp.getDateDebut().toString());
             }
             e.setType("Groupe politique");
-//            private String typeCommission;
+            // TODO
+            e.setTypeCommission("");
             e.setNbMembre(gp.getAppartenancesGroupePolitique().stream()
                 .filter(g -> g.getDateFin() == null)
                 .count());
-//            private Float nbTitulaire;
-//            private Float nbSuppleant;
+            // TODO
+            e.setNbTitulaire(0L);
+            // TODO
+            e.setNbSuppleant(0L);
             e.setValid('O');
             e.setLibLong(gp.getNom());
-//            private Float st;
+            // TODO
+            e.setSt(0F);
             if (gp.getDateFin() != null) {
                 e.setDateFin(gp.getDateFin().toString());
             }
-//            private String description;
-//            private String codeRne;
-//            private String departement;
+            // TODO
+            e.setDescription("");
+            // TODO
+            e.setCodeRne("");
+            // TODO
+            e.setDepartement("");
             e.setMotifFin(gp.getMotifFin());
-//            private String secteur;
-//            private String telephone;
-//            private String fax;
+            // TODO
+            e.setSecteur("");
+            // TODO
+            e.setTelephone("");
+            // TODO
+            e.setFax("");
             if (gp.getAdressePostale() != null) {
                 e.setAdresse(gp.getAdressePostale().getVoie());
                 e.setCodePostal(gp.getAdressePostale().getCodePostal());
                 e.setVille(gp.getAdressePostale().getVille());
             }
-//            private String status;
-//            private String mail;
-//            private String phonetique;
+            // TODO
+            e.setStatus("");
+            // TODO
+            e.setMail("");
+            // TODO
+            e.setPhonetique("");
             return e;
         }).collect(Collectors.toList());
     }
@@ -174,8 +203,9 @@ public class PublicDataWebservice {
     private List<MembreDto> getMembres(List<Elu> elus) {
         return elus.stream().flatMap(e -> e.getAppartenancesGroupePolitique().stream().map(agp -> {
             MembreDto m = new MembreDto();
-            m.setUidMembre(UUID.randomUUID().toString());
-//            private String mandature;
+            m.setUidMembre(String.valueOf(lastMembreId++));
+            // TODO
+            m.setMandature("");
             m.setUidConseiller(e.getUuid().toString());
             if (agp.getGroupePolitique() != null) {
                 m.setUidEnsemble(agp.getGroupePolitique().getUuid().toString());
@@ -187,15 +217,23 @@ public class PublicDataWebservice {
             if (agp.getDateFin() != null) {
                 m.setDateFin(agp.getDateFin().toString());
             }
-//            private String numeroNomination;
-//            private String status;
-//            private String nomination;
-//            private Float st;
-//            private String fonction;
-//            private Character bureau;
+            // TODO
+            m.setNumeroNomination("");
+            // TODO
+            m.setStatus("");
+            // TODO
+            m.setNomination("");
+            // TODO
+            m.setSt(0f);
+            // TODO
+            m.setFonction("");
+            // TODO
+            m.setBureau('A');
             m.setMotifFin(agp.getMotifFin());
-//            private String dateNomination;
-//            private String description;
+            // TODO
+            m.setDateNomination("");
+            // TODO
+            m.setDescription("");
             return m;
         })).collect(Collectors.toList());
     }

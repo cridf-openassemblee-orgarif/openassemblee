@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * A GroupePolitique.
@@ -33,7 +32,7 @@ public class GroupePolitique implements Serializable {
 
     // for public WS only
     @Transient
-    private UUID uuid;
+    private String uuid;
 
     @OneToOne
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -139,11 +138,11 @@ public class GroupePolitique implements Serializable {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
