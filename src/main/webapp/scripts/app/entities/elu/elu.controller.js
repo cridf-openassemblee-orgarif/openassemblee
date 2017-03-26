@@ -25,6 +25,8 @@ angular.module('babylone14166App')
                 profession: null,
                 dateNaissance: null,
                 lieuNaissance: null,
+                motifDemission: null,
+                dateDemission: null,
                 id: null
             };
         };

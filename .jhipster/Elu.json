@@ -49,6 +49,16 @@
             "fieldId": 8,
             "fieldName": "departement",
             "fieldType": "String"
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "motifDemission",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 10,
+            "fieldName": "dateDemission",
+            "fieldType": "LocalDate"
         }
     ],
     "changelogDate": "20151126114337",

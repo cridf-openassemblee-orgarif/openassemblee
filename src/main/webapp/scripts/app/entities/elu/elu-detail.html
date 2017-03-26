@@ -25,6 +25,10 @@
                             <div>
                                 <span class="lg">Département</span> {{dto.elu.departement}}
                             </div>
+                            <div ng-if="dto.elu.dateDemission || dto.elu.motifDemission">
+                                <span class="lg">Élu non actif, cause :</span> {{dto.elu.motifDemission}}
+                                <span class="lg">depuis le</span> {{dto.elu.dateDemission | date:'mediumDate'}}
+                            </div>
                         </span>
                         <div class="btn-group elu-action">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"

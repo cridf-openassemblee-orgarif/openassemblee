@@ -30,6 +30,8 @@
             <column name="lieu_naissance" type="varchar(255)"/>
             <column name="departement" type="varchar(255)"/>
             <column name="image" type="bigint"/>
+            <column name="motif_demission" type="varchar(255)"/>
+            <column name="date_demission" type="date"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
