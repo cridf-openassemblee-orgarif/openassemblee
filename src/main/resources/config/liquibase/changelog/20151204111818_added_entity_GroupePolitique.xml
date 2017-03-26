@@ -28,6 +28,16 @@
             <column name="motif_fin" type="varchar(255)"/>
             <column name="adresse_postale_id" type="BIGINT"/>
             <column name="image" type="bigint"/>
+
+            <!--auditable columns-->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="adresse_postale_id" baseTableName="groupe_politique"
                                  constraintName="FK_grlgx614prmrh9u08c10mmie2" deferrable="false"

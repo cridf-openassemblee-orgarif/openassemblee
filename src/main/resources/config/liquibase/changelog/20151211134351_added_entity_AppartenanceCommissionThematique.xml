@@ -26,8 +26,18 @@
             <column name="motif_fin" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
             <column name="commission_thematique_id" type="bigint"/>
+
+            <!--auditable columns-->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_id"
                                  baseTableName="appartenance_commission_thematique"
                                  constraintName="fk_appartenancecommissionthematique_elu_id"
