@@ -1,17 +1,14 @@
 package fr.cridf.babylone14166.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A FonctionCommissionPermanente.
@@ -20,7 +17,7 @@ import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 @Table(name = "fonction_commission_permanente")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "fonctioncommissionpermanente")
-public class FonctionCommissionPermanente implements Serializable {
+public class FonctionCommissionPermanente extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

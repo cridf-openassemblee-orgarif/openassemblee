@@ -6,7 +6,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Table(name = "seance")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "seance")
-public class Seance implements Serializable {
+public class Seance extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

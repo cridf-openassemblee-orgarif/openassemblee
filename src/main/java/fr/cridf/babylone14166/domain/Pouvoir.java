@@ -2,13 +2,10 @@ package fr.cridf.babylone14166.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -18,7 +15,7 @@ import java.util.Objects;
 @Table(name = "pouvoir")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "pouvoir")
-public class Pouvoir implements Serializable {
+public class Pouvoir extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

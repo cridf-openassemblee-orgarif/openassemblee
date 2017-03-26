@@ -17,7 +17,7 @@ import fr.cridf.babylone14166.domain.enumeration.TypeIdentiteInternet;
 @Table(name = "identite_internet")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "identiteinternet")
-public class IdentiteInternet implements Serializable {
+public class IdentiteInternet extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

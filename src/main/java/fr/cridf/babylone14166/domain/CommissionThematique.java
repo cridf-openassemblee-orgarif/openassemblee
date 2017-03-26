@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "commission_thematique")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "commissionthematique")
-public class CommissionThematique implements Serializable {
+public class CommissionThematique extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -16,7 +16,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Table(name = "organisme")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "organisme")
-public class Organisme implements Serializable {
+public class Organisme extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

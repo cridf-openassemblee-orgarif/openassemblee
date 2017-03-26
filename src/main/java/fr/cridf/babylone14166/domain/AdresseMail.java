@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Objects;
 @Table(name = "adresse_mail")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "adressemail")
-public class AdresseMail implements Publishable, Serializable {
+public class AdresseMail extends AbstractAuditingEntity implements Publishable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

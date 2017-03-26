@@ -20,7 +20,7 @@ import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 @Table(name = "fonction_executive")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "fonctionexecutive")
-public class FonctionExecutive implements Serializable {
+public class FonctionExecutive extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

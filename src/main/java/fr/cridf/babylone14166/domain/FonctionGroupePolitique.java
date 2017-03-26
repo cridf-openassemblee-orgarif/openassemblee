@@ -21,7 +21,7 @@ import fr.cridf.babylone14166.domain.jackson.JacksonGroupePolitiqueIdSerializer;
 @Table(name = "fonction_groupe_politique")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "fonctiongroupepolitique")
-public class FonctionGroupePolitique implements Serializable {
+public class FonctionGroupePolitique extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

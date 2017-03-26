@@ -17,7 +17,7 @@ import java.util.*;
 @Table(name = "elu")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "elu")
-public class Elu implements Serializable {
+public class Elu extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

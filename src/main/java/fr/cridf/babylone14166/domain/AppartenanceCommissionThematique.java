@@ -21,7 +21,7 @@ import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 @Table(name = "appartenance_commission_thematique")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "appartenancecommissionthematique")
-public class AppartenanceCommissionThematique implements Serializable {
+public class AppartenanceCommissionThematique extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
