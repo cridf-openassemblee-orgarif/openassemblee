@@ -1,5 +1,6 @@
 # si true, cela active les endpoints RemoveApiResource
 fakeData: true
+autoResetIndex: true
 
 # ===================================================================
 # Spring Boot configuration for the "dev" profile.

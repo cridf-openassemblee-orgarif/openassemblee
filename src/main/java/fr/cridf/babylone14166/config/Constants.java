@@ -14,6 +14,9 @@ public final class Constants {
     // Spring profile used when deploying to Heroku
     public static final String SPRING_PROFILE_HEROKU = "heroku";
 
+    public static final String SPRING_PROFILE_CLEVERCLOUD = "clevercloud";
+    public static final String SPRING_PROFILE_MLO = "mlo";
+
     public static final String SYSTEM_ACCOUNT = "system";
 
     private Constants() {

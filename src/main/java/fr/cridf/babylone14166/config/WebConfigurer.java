@@ -20,9 +20,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.*;
 import javax.inject.Inject;
 import javax.servlet.*;
+import java.util.Arrays;
+import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -49,7 +50,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         if (!env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
             initMetrics(servletContext, disps);
         }
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION)) {
+        if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_CLEVERCLOUD,
+            Constants.SPRING_PROFILE_MLO)) {
             initCachingHttpHeadersFilter(servletContext, disps);
             initStaticResourcesProductionFilter(servletContext, disps);
         }
