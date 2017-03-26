@@ -2,7 +2,7 @@
 
 angular.module('babylone14166App')
     .controller('AppartenanceOrganismeController', function ($scope, $state, $modal, AppartenanceOrganisme, AppartenanceOrganismeSearch) {
-      
+
         $scope.appartenanceOrganismes = [];
         $scope.loadAll = function() {
             AppartenanceOrganisme.query(function(result) {
@@ -30,6 +30,7 @@ angular.module('babylone14166App')
         $scope.clear = function () {
             $scope.appartenanceOrganisme = {
                 statut: null,
+                organisme: null,
                 codeRNE: null,
                 dateDebut: null,
                 dateFin: null,

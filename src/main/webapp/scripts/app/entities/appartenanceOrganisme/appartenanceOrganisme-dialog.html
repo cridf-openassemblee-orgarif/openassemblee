@@ -16,10 +16,11 @@
                    sf-typeahead autocomplete="off"/>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_codeRNE">Code RNE / Siret</label>
-            <input type="text" class="typeahead form-control" name="codeRNE" id="field_codeRNE"
+            <label class="control-label" for="field_organisme">Organisme</label>
+            <input type="text" class="typeahead form-control organisme-typeahead" name="organisme" id="field_organisme"
                    options="typeaheadOptionsThreeChars" datasets="organismesAutocomplete"
-                   sf-typeahead ng-model="appartenanceOrganisme.codeRNE"/>
+                   sf-typeahead ng-model="organisme"/>
+            Code RNE / Siret : {{organisme.codeRNE}}
         </div>
         <!--<div class="form-group">-->
         <!--<label class="control-label" for="field_dateDebut">Date de début</label>-->

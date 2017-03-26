@@ -22,6 +22,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="statut" type="varchar(255)"/>
+            <column name="organisme" type="varchar(255)"/>
             <column name="code_rne" type="varchar(255)"/>
             <column name="date_debut" type="date"/>
             <column name="date_fin" type="date"/>
@@ -32,7 +33,7 @@
             <column name="lien_piece" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_id"
                                  baseTableName="appartenance_organisme"
                                  constraintName="fk_appartenanceorganisme_elu_id"

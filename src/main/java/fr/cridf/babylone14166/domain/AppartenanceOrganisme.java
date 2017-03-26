@@ -1,17 +1,15 @@
 package fr.cridf.babylone14166.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import fr.cridf.babylone14166.domain.jackson.JacksonEluIdSerializer;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A AppartenanceOrganisme.
@@ -28,6 +26,9 @@ public class AppartenanceOrganisme implements Serializable {
 
     @Column(name = "statut")
     private String statut;
+
+    @Column(name = "organisme")
+    private String organisme;
 
     @Column(name = "code_rne")
     private String codeRNE;
@@ -72,6 +73,14 @@ public class AppartenanceOrganisme implements Serializable {
 
     public void setStatut(String statut) {
         this.statut = statut;
+    }
+
+    public String getOrganisme() {
+        return organisme;
+    }
+
+    public void setOrganisme(String organisme) {
+        this.organisme = organisme;
     }
 
     public String getCodeRNE() {

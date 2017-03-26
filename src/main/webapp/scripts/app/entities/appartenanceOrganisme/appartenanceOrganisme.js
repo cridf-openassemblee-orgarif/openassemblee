@@ -53,6 +53,7 @@ angular.module('babylone14166App')
                             entity: function () {
                                 return {
                                     statut: null,
+                                    organisme: null,
                                     codeRNE: null,
                                     dateDebut: null,
                                     dateFin: null,

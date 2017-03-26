@@ -19,8 +19,11 @@ angular.module('babylone14166App').controller('AppartenanceOrganismeDialogContro
             $scope.save = function () {
                 $scope.isSaving = true;
                 $scope.appartenanceOrganisme.elu = {id: $stateParams.id};
-                if(typeof $scope.appartenanceOrganisme.codeRNE === 'object') {
-                    $scope.appartenanceOrganisme.codeRNE = $scope.appartenanceOrganisme.codeRNE.codeRNE;
+                if(typeof $scope.organisme === 'object') {
+                    $scope.appartenanceOrganisme.organisme = $scope.organisme.nom;
+                    $scope.appartenanceOrganisme.codeRNE = $scope.organisme.codeRNE;
+                } else {
+                    $scope.appartenanceOrganisme.organisme = $scope.organisme;
                 }
                 if ($scope.appartenanceOrganisme.id != null) {
                     AppartenanceOrganisme.update($scope.appartenanceOrganisme, onSaveSuccess, onSaveError);
@@ -35,7 +38,7 @@ angular.module('babylone14166App').controller('AppartenanceOrganismeDialogContro
 
             $scope.organismesAutocomplete = {
                 limit: 10,
-                display: 'codeRNE',
+                display: 'nom',
                 source: new Bloodhound({
                     datumTokenizer: Bloodhound.tokenizers.whitespace,
                     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -49,7 +52,6 @@ angular.module('babylone14166App').controller('AppartenanceOrganismeDialogContro
                         return '<p><b>' + data.codeRNE + '</b> - ' + data.nom + '</p>';
                     }
                 }
-
             };
 
         }]);
