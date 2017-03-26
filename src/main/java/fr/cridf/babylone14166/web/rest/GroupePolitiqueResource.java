@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.GroupePolitique;
 import fr.cridf.babylone14166.domain.Image;
 import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.GroupePolitiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.ExportService;
 import fr.cridf.babylone14166.service.GroupePolitiqueService;
 import fr.cridf.babylone14166.service.ImageService;
@@ -57,6 +58,9 @@ public class GroupePolitiqueResource {
     @Inject
     private ExportService exportService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /groupePolitiques -> Create a new groupePolitique.
      */
@@ -72,6 +76,7 @@ public class GroupePolitiqueResource {
                 .body(null);
         }
         GroupePolitique result = groupePolitiqueService.save(groupePolitique);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/groupePolitiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("groupePolitique", result.getId().toString()))
             .body(result);
@@ -118,6 +123,7 @@ public class GroupePolitiqueResource {
         if (groupePolitique.getDateFin() != null) {
             groupePolitiqueService.sortirElus(groupePolitique);
         }
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("groupePolitique", groupePolitique.getId().toString()))
             .body(result);
@@ -199,6 +205,7 @@ public class GroupePolitiqueResource {
         log.debug("REST request to delete GroupePolitique : {}", id);
         groupePolitiqueRepository.delete(id);
         groupePolitiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(GroupePolitique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("groupePolitique", id.toString()))
             .build();
     }

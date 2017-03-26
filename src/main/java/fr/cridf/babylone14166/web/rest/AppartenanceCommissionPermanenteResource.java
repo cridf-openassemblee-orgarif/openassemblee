@@ -1,24 +1,25 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import javax.inject.Inject;
-
-import org.elasticsearch.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import fr.cridf.babylone14166.domain.AppartenanceCommissionPermanente;
 import fr.cridf.babylone14166.repository.AppartenanceCommissionPermanenteRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceCommissionPermanenteSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing AppartenanceCommissionPermanente.
@@ -35,6 +36,9 @@ public class AppartenanceCommissionPermanenteResource {
     @Inject
     private AppartenanceCommissionPermanenteSearchRepository appartenanceCommissionPermanenteSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /appartenanceCommissionPermanentes -> Create a new appartenanceCommissionPermanente.
      */
@@ -49,6 +53,7 @@ public class AppartenanceCommissionPermanenteResource {
         }
         AppartenanceCommissionPermanente result = appartenanceCommissionPermanenteRepository.save(appartenanceCommissionPermanente);
         appartenanceCommissionPermanenteSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/appartenanceCommissionPermanentes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("appartenanceCommissionPermanente", result.getId().toString()))
             .body(result);
@@ -68,6 +73,7 @@ public class AppartenanceCommissionPermanenteResource {
         }
         AppartenanceCommissionPermanente result = appartenanceCommissionPermanenteRepository.save(appartenanceCommissionPermanente);
         appartenanceCommissionPermanenteSearchRepository.save(appartenanceCommissionPermanente);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("appartenanceCommissionPermanente", appartenanceCommissionPermanente.getId().toString()))
             .body(result);
@@ -113,6 +119,7 @@ public class AppartenanceCommissionPermanenteResource {
         log.debug("REST request to delete AppartenanceCommissionPermanente : {}", id);
         appartenanceCommissionPermanenteRepository.delete(id);
         appartenanceCommissionPermanenteSearchRepository.delete(id);
+        auditTrailService.logDeletion(AppartenanceCommissionPermanente.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("appartenanceCommissionPermanente", id.toString())).build();
     }
 

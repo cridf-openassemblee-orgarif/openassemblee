@@ -4,10 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.FonctionCommissionThematique;
 import fr.cridf.babylone14166.repository.FonctionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.FonctionCommissionThematiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing FonctionCommissionThematique.
@@ -38,6 +38,9 @@ public class FonctionCommissionThematiqueResource {
     @Inject
     private FonctionCommissionThematiqueSearchRepository fonctionCommissionThematiqueSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /fonctionCommissionThematiques -> Create a new fonctionCommissionThematique.
      */
@@ -52,6 +55,7 @@ public class FonctionCommissionThematiqueResource {
         }
         FonctionCommissionThematique result = fonctionCommissionThematiqueRepository.save(fonctionCommissionThematique);
         fonctionCommissionThematiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/fonctionCommissionThematiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("fonctionCommissionThematique", result.getId().toString()))
             .body(result);
@@ -71,6 +75,7 @@ public class FonctionCommissionThematiqueResource {
         }
         FonctionCommissionThematique result = fonctionCommissionThematiqueRepository.save(fonctionCommissionThematique);
         fonctionCommissionThematiqueSearchRepository.save(fonctionCommissionThematique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("fonctionCommissionThematique", fonctionCommissionThematique.getId().toString()))
             .body(result);
@@ -115,6 +120,7 @@ public class FonctionCommissionThematiqueResource {
         log.debug("REST request to delete FonctionCommissionThematique : {}", id);
         fonctionCommissionThematiqueRepository.delete(id);
         fonctionCommissionThematiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(FonctionCommissionThematique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("fonctionCommissionThematique", id.toString())).build();
     }
 

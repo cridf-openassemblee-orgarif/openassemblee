@@ -1,24 +1,25 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import javax.inject.Inject;
-
-import org.elasticsearch.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import fr.cridf.babylone14166.domain.FonctionCommissionPermanente;
 import fr.cridf.babylone14166.repository.FonctionCommissionPermanenteRepository;
 import fr.cridf.babylone14166.repository.search.FonctionCommissionPermanenteSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing FonctionCommissionPermanente.
@@ -35,6 +36,9 @@ public class FonctionCommissionPermanenteResource {
     @Inject
     private FonctionCommissionPermanenteSearchRepository fonctionCommissionPermanenteSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /fonctionCommissionPermanentes -> Create a new fonctionCommissionPermanente.
      */
@@ -49,6 +53,7 @@ public class FonctionCommissionPermanenteResource {
         }
         FonctionCommissionPermanente result = fonctionCommissionPermanenteRepository.save(fonctionCommissionPermanente);
         fonctionCommissionPermanenteSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/fonctionCommissionPermanentes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("fonctionCommissionPermanente", result.getId().toString()))
             .body(result);
@@ -68,6 +73,7 @@ public class FonctionCommissionPermanenteResource {
         }
         FonctionCommissionPermanente result = fonctionCommissionPermanenteRepository.save(fonctionCommissionPermanente);
         fonctionCommissionPermanenteSearchRepository.save(fonctionCommissionPermanente);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("fonctionCommissionPermanente", fonctionCommissionPermanente.getId().toString()))
             .body(result);
@@ -112,6 +118,7 @@ public class FonctionCommissionPermanenteResource {
         log.debug("REST request to delete FonctionCommissionPermanente : {}", id);
         fonctionCommissionPermanenteRepository.delete(id);
         fonctionCommissionPermanenteSearchRepository.delete(id);
+        auditTrailService.logDeletion(FonctionCommissionPermanente.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("fonctionCommissionPermanente", id.toString())).build();
     }
 

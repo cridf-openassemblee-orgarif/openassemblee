@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.CommissionThematique;
 import fr.cridf.babylone14166.repository.CommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.CommissionThematiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.CommissionThematiqueService;
 import fr.cridf.babylone14166.service.ExportService;
 import fr.cridf.babylone14166.service.dto.AppartenanceCommissionThematiqueDTO;
@@ -52,6 +53,9 @@ public class CommissionThematiqueResource {
     @Inject
     private ExportService exportService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /commissionThematiques -> Create a new commissionThematique.
      */
@@ -66,6 +70,7 @@ public class CommissionThematiqueResource {
         }
         CommissionThematique result = commissionThematiqueRepository.save(commissionThematique);
         commissionThematiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/commissionThematiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("commissionThematique", result.getId().toString()))
             .body(result);
@@ -85,6 +90,7 @@ public class CommissionThematiqueResource {
         }
         CommissionThematique result = commissionThematiqueRepository.save(commissionThematique);
         commissionThematiqueSearchRepository.save(commissionThematique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("commissionThematique", commissionThematique.getId().toString()))
             .body(result);
@@ -195,6 +201,7 @@ public class CommissionThematiqueResource {
         log.debug("REST request to delete CommissionThematique : {}", id);
         commissionThematiqueRepository.delete(id);
         commissionThematiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(CommissionThematique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("commissionThematique", id.toString())).build();
     }
 

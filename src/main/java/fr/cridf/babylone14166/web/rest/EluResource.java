@@ -73,8 +73,9 @@ public class EluResource {
         if (elu.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new elu cannot already have an ID").body(null);
         }
-        eluRepository.save(elu);
-        eluSearchRepository.save(elu);
+        Elu result = eluRepository.save(elu);
+        eluSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/elus/" + elu.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", elu.getId().toString()))
             .body(elu);
@@ -112,11 +113,12 @@ public class EluResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("adressePostale", adressePostaleId.toString())).build();
     }
 
-    @RequestMapping(value = "/elus/{id}/adresseMail", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{eluId}/adresseMail", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createAdresseMail(@PathVariable Long id, @RequestBody AdresseMail adresseMail)
+    public ResponseEntity<Void> createAdresseMail(@PathVariable Long eluId, @RequestBody AdresseMail adresseMail)
         throws URISyntaxException {
-        eluService.saveAdresseMail(id, adresseMail);
+        eluService.saveAdresseMail(eluId, adresseMail);
+        auditTrailService.logCreation(adresseMail, adresseMail.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 
@@ -129,12 +131,13 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/elus/{id}/identiteInternet", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{eluId}/identiteInternet", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long id, @RequestBody IdentiteInternet
+    public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long eluId, @RequestBody IdentiteInternet
         identiteInternet)
         throws URISyntaxException {
-        eluService.saveIdentiteInternet(id, identiteInternet);
+        eluService.saveIdentiteInternet(eluId, identiteInternet);
+        auditTrailService.logCreation(identiteInternet, identiteInternet.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 
@@ -147,11 +150,12 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/elus/{id}/numeroFax", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{eluId}/numeroFax", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createNumeroFax(@PathVariable Long id, @RequestBody NumeroFax numeroFax)
+    public ResponseEntity<Void> createNumeroFax(@PathVariable Long eluId, @RequestBody NumeroFax numeroFax)
         throws URISyntaxException {
-        eluService.saveNumeroFax(id, numeroFax);
+        eluService.saveNumeroFax(eluId, numeroFax);
+        auditTrailService.logCreation(numeroFax, numeroFax.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 
@@ -164,12 +168,13 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/elus/{id}/numeroTelephone", method = RequestMethod.POST)
+    @RequestMapping(value = "/elus/{eluId}/numeroTelephone", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long id, @RequestBody NumeroTelephone
+    public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long eluId, @RequestBody NumeroTelephone
         numeroTelephone)
         throws URISyntaxException {
-        eluService.saveNumeroTelephone(id, numeroTelephone);
+        eluService.saveNumeroTelephone(eluId, numeroTelephone);
+        auditTrailService.logCreation(numeroTelephone, numeroTelephone.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
     }
 
@@ -220,6 +225,7 @@ public class EluResource {
         }
         Elu result = eluRepository.save(elu);
         eluSearchRepository.save(elu);
+        auditTrailService.logUpdate(elu, elu.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("elu", elu.getId().toString()))
             .body(result);
@@ -354,6 +360,7 @@ public class EluResource {
         log.debug("REST request to delete Elu : {}", id);
         eluRepository.delete(id);
         eluSearchRepository.delete(id);
+        auditTrailService.logDeletion(Elu.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("elu", id.toString())).build();
     }
 

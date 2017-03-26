@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.ReunionCommissionThematique;
 import fr.cridf.babylone14166.repository.ReunionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCommissionThematiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.ReunionCommissionThematiqueService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
@@ -25,7 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing ReunionCommissionThematique.
@@ -45,6 +46,9 @@ public class ReunionCommissionThematiqueResource {
     @Inject
     private ReunionCommissionThematiqueService reunionCommissionThematiqueService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /reunionCommissionThematiques -> Create a new reunionCommissionThematique.
      */
@@ -58,6 +62,7 @@ public class ReunionCommissionThematiqueResource {
             return ResponseEntity.badRequest().header("Failure", "A new reunionCommissionThematique cannot already have an ID").body(null);
         }
         ReunionCommissionThematique result = reunionCommissionThematiqueService.create(reunionCommissionThematique);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/reunionCommissionThematiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("reunionCommissionThematique", result.getId().toString()))
             .body(result);
@@ -77,6 +82,7 @@ public class ReunionCommissionThematiqueResource {
         }
         ReunionCommissionThematique result = reunionCommissionThematiqueRepository.save(reunionCommissionThematique);
         reunionCommissionThematiqueSearchRepository.save(reunionCommissionThematique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("reunionCommissionThematique", reunionCommissionThematique.getId().toString()))
             .body(result);
@@ -123,6 +129,7 @@ public class ReunionCommissionThematiqueResource {
         log.debug("REST request to delete ReunionCommissionThematique : {}", id);
         reunionCommissionThematiqueRepository.delete(id);
         reunionCommissionThematiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(ReunionCommissionThematique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("reunionCommissionThematique", id.toString())).build();
     }
 

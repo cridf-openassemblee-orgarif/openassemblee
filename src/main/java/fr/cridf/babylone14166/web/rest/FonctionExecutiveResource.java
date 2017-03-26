@@ -1,24 +1,25 @@
 package fr.cridf.babylone14166.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import javax.inject.Inject;
-
-import org.elasticsearch.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import fr.cridf.babylone14166.domain.FonctionExecutive;
 import fr.cridf.babylone14166.repository.FonctionExecutiveRepository;
 import fr.cridf.babylone14166.repository.search.FonctionExecutiveSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing FonctionExecutive.
@@ -35,6 +36,9 @@ public class FonctionExecutiveResource {
     @Inject
     private FonctionExecutiveSearchRepository fonctionExecutiveSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /fonctionExecutives -> Create a new fonctionExecutive.
      */
@@ -49,6 +53,7 @@ public class FonctionExecutiveResource {
         }
         FonctionExecutive result = fonctionExecutiveRepository.save(fonctionExecutive);
         fonctionExecutiveSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/fonctionExecutives/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("fonctionExecutive", result.getId().toString()))
             .body(result);
@@ -68,6 +73,7 @@ public class FonctionExecutiveResource {
         }
         FonctionExecutive result = fonctionExecutiveRepository.save(fonctionExecutive);
         fonctionExecutiveSearchRepository.save(fonctionExecutive);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("fonctionExecutive", fonctionExecutive.getId().toString()))
             .body(result);
@@ -112,6 +118,7 @@ public class FonctionExecutiveResource {
         log.debug("REST request to delete FonctionExecutive : {}", id);
         fonctionExecutiveRepository.delete(id);
         fonctionExecutiveSearchRepository.delete(id);
+        auditTrailService.logDeletion(FonctionExecutive.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("fonctionExecutive", id.toString())).build();
     }
 

@@ -24,6 +24,9 @@ public class ImageService {
     @Inject
     private GroupePolitiqueRepository groupePolitiqueRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     @Transactional
     public void saveImagePourGroupePolitique(Long groupePolitiqueId, Image image) throws SQLException {
         Long imageId = imageRepository.saveImage(image);
@@ -31,6 +34,7 @@ public class ImageService {
         GroupePolitique groupePolitique = groupePolitiqueRepository.findOne(groupePolitiqueId);
         groupePolitique.setImage(imageId);
         groupePolitiqueRepository.save(groupePolitique);
+        auditTrailService.logUpdate(groupePolitique, groupePolitique.getId());
     }
 
     @Transactional
@@ -40,6 +44,7 @@ public class ImageService {
         Elu elu = eluRepository.findOne(eluId);
         elu.setImage(imageId);
         eluRepository.save(elu);
+        auditTrailService.logUpdate(elu, elu.getId());
     }
 
 }

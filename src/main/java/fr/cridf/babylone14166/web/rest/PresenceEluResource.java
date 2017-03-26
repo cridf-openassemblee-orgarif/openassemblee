@@ -1,8 +1,6 @@
 package fr.cridf.babylone14166.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.cridf.babylone14166.domain.Elu;
-import fr.cridf.babylone14166.domain.IdentiteInternet;
 import fr.cridf.babylone14166.domain.PresenceElu;
 import fr.cridf.babylone14166.domain.Signature;
 import fr.cridf.babylone14166.repository.PresenceEluRepository;
@@ -66,6 +64,7 @@ public class PresenceEluResource {
         }
         PresenceElu result = presenceEluRepository.save(presenceElu);
         presenceEluSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/presenceElus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("presenceElu", result.getId().toString()))
             .body(result);
@@ -85,6 +84,7 @@ public class PresenceEluResource {
         }
         PresenceElu result = presenceEluRepository.save(presenceElu);
         presenceEluSearchRepository.save(presenceElu);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("presenceElu", presenceElu.getId().toString()))
             .body(result);
@@ -131,6 +131,7 @@ public class PresenceEluResource {
         log.debug("REST request to delete PresenceElu : {}", id);
         presenceEluRepository.delete(id);
         presenceEluSearchRepository.delete(id);
+        auditTrailService.logDeletion(PresenceElu.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("presenceElu", id.toString())).build();
     }
 

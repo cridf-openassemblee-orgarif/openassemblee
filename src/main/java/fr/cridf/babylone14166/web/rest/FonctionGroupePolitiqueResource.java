@@ -4,10 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.FonctionGroupePolitique;
 import fr.cridf.babylone14166.repository.FonctionGroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.FonctionGroupePolitiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing FonctionGroupePolitique.
@@ -38,6 +38,9 @@ public class FonctionGroupePolitiqueResource {
     @Inject
     private FonctionGroupePolitiqueSearchRepository fonctionGroupePolitiqueSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /fonctionGroupePolitiques -> Create a new fonctionGroupePolitique.
      */
@@ -52,6 +55,7 @@ public class FonctionGroupePolitiqueResource {
         }
         FonctionGroupePolitique result = fonctionGroupePolitiqueRepository.save(fonctionGroupePolitique);
         fonctionGroupePolitiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/fonctionGroupePolitiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("fonctionGroupePolitique", result.getId().toString()))
             .body(result);
@@ -71,6 +75,7 @@ public class FonctionGroupePolitiqueResource {
         }
         FonctionGroupePolitique result = fonctionGroupePolitiqueRepository.save(fonctionGroupePolitique);
         fonctionGroupePolitiqueSearchRepository.save(fonctionGroupePolitique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("fonctionGroupePolitique", fonctionGroupePolitique.getId().toString()))
             .body(result);
@@ -115,6 +120,7 @@ public class FonctionGroupePolitiqueResource {
         log.debug("REST request to delete FonctionGroupePolitique : {}", id);
         fonctionGroupePolitiqueRepository.delete(id);
         fonctionGroupePolitiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(FonctionGroupePolitique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("fonctionGroupePolitique", id.toString())).build();
     }
 

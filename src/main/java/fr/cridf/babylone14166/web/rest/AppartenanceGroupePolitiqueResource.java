@@ -4,10 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.AppartenanceGroupePolitique;
 import fr.cridf.babylone14166.repository.AppartenanceGroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceGroupePolitiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing AppartenanceGroupePolitique.
@@ -38,6 +38,9 @@ public class AppartenanceGroupePolitiqueResource {
     @Inject
     private AppartenanceGroupePolitiqueSearchRepository appartenanceGroupePolitiqueSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /appartenanceGroupePolitiques -> Create a new appartenanceGroupePolitique.
      */
@@ -52,6 +55,7 @@ public class AppartenanceGroupePolitiqueResource {
         }
         AppartenanceGroupePolitique result = appartenanceGroupePolitiqueRepository.save(appartenanceGroupePolitique);
         appartenanceGroupePolitiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/appartenanceGroupePolitiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("appartenanceGroupePolitique", result.getId().toString()))
             .body(result);
@@ -71,6 +75,7 @@ public class AppartenanceGroupePolitiqueResource {
         }
         AppartenanceGroupePolitique result = appartenanceGroupePolitiqueRepository.save(appartenanceGroupePolitique);
         appartenanceGroupePolitiqueSearchRepository.save(appartenanceGroupePolitique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("appartenanceGroupePolitique", appartenanceGroupePolitique.getId().toString()))
             .body(result);
@@ -115,6 +120,7 @@ public class AppartenanceGroupePolitiqueResource {
         log.debug("REST request to delete AppartenanceGroupePolitique : {}", id);
         appartenanceGroupePolitiqueRepository.delete(id);
         appartenanceGroupePolitiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(AppartenanceGroupePolitique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("appartenanceGroupePolitique", id.toString())).build();
     }
 

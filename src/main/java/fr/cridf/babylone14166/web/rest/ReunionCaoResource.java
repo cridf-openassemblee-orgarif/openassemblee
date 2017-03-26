@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.ReunionCao;
 import fr.cridf.babylone14166.repository.ReunionCaoRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCaoSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.ReunionCaoService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
@@ -45,6 +46,9 @@ public class ReunionCaoResource {
     @Inject
     private ReunionCaoService reunionCaoService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /reunionCaos -> Create a new reunionCao.
      */
@@ -58,6 +62,7 @@ public class ReunionCaoResource {
             return ResponseEntity.badRequest().header("Failure", "A new reunionCao cannot already have an ID").body(null);
         }
         ReunionCao result = reunionCaoService.create(reunionCao);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/reunionCaos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("reunionCao", result.getId().toString()))
             .body(result);
@@ -77,6 +82,7 @@ public class ReunionCaoResource {
         }
         ReunionCao result = reunionCaoRepository.save(reunionCao);
         reunionCaoSearchRepository.save(reunionCao);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("reunionCao", reunionCao.getId().toString()))
             .body(result);
@@ -123,6 +129,7 @@ public class ReunionCaoResource {
         log.debug("REST request to delete ReunionCao : {}", id);
         reunionCaoRepository.delete(id);
         reunionCaoSearchRepository.delete(id);
+        auditTrailService.logDeletion(ReunionCao.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("reunionCao", id.toString())).build();
     }
 

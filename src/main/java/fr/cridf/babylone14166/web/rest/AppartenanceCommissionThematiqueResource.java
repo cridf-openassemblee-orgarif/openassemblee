@@ -4,10 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.AppartenanceCommissionThematique;
 import fr.cridf.babylone14166.repository.AppartenanceCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceCommissionThematiqueSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing AppartenanceCommissionThematique.
@@ -38,6 +38,9 @@ public class AppartenanceCommissionThematiqueResource {
     @Inject
     private AppartenanceCommissionThematiqueSearchRepository appartenanceCommissionThematiqueSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /appartenanceCommissionThematiques -> Create a new appartenanceCommissionThematique.
      */
@@ -52,6 +55,7 @@ public class AppartenanceCommissionThematiqueResource {
         }
         AppartenanceCommissionThematique result = appartenanceCommissionThematiqueRepository.save(appartenanceCommissionThematique);
         appartenanceCommissionThematiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/appartenanceCommissionThematiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("appartenanceCommissionThematique", result.getId().toString()))
             .body(result);
@@ -71,6 +75,7 @@ public class AppartenanceCommissionThematiqueResource {
         }
         AppartenanceCommissionThematique result = appartenanceCommissionThematiqueRepository.save(appartenanceCommissionThematique);
         appartenanceCommissionThematiqueSearchRepository.save(appartenanceCommissionThematique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("appartenanceCommissionThematique", appartenanceCommissionThematique.getId().toString()))
             .body(result);
@@ -115,6 +120,7 @@ public class AppartenanceCommissionThematiqueResource {
         log.debug("REST request to delete AppartenanceCommissionThematique : {}", id);
         appartenanceCommissionThematiqueRepository.delete(id);
         appartenanceCommissionThematiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(AppartenanceCommissionThematique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("appartenanceCommissionThematique", id.toString())).build();
     }
 

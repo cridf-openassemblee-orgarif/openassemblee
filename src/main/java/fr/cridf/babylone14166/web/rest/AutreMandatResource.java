@@ -4,10 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.AutreMandat;
 import fr.cridf.babylone14166.repository.AutreMandatRepository;
 import fr.cridf.babylone14166.repository.search.AutreMandatSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing AutreMandat.
@@ -38,6 +38,9 @@ public class AutreMandatResource {
     @Inject
     private AutreMandatSearchRepository autreMandatSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /autreMandats -> Create a new autreMandat.
      */
@@ -52,6 +55,7 @@ public class AutreMandatResource {
         }
         AutreMandat result = autreMandatRepository.save(autreMandat);
         autreMandatSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/autreMandats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("autreMandat", result.getId().toString()))
             .body(result);
@@ -71,6 +75,7 @@ public class AutreMandatResource {
         }
         AutreMandat result = autreMandatRepository.save(autreMandat);
         autreMandatSearchRepository.save(autreMandat);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("autreMandat", autreMandat.getId().toString()))
             .body(result);
@@ -115,6 +120,7 @@ public class AutreMandatResource {
         log.debug("REST request to delete AutreMandat : {}", id);
         autreMandatRepository.delete(id);
         autreMandatSearchRepository.delete(id);
+        auditTrailService.logDeletion(AutreMandat.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("autreMandat", id.toString())).build();
     }
 

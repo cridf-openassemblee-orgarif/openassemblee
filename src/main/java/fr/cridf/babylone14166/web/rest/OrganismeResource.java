@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.cridf.babylone14166.domain.Organisme;
 import fr.cridf.babylone14166.repository.OrganismeRepository;
 import fr.cridf.babylone14166.repository.search.OrganismeSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.OrganismeService;
 import fr.cridf.babylone14166.service.dto.OrganismeDTO;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
@@ -46,6 +47,9 @@ public class OrganismeResource {
     @Inject
     private OrganismeService organismeService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /organismes -> Create a new organisme.
      */
@@ -60,6 +64,7 @@ public class OrganismeResource {
         }
         Organisme result = organismeRepository.save(organisme);
         organismeSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/organismes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("organisme", result.getId().toString()))
             .body(result);
@@ -79,6 +84,7 @@ public class OrganismeResource {
         }
         Organisme result = organismeRepository.save(organisme);
         organismeSearchRepository.save(organisme);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("organisme", organisme.getId().toString()))
             .body(result);
@@ -140,6 +146,7 @@ public class OrganismeResource {
         log.debug("REST request to delete Organisme : {}", id);
         organismeRepository.delete(id);
         organismeSearchRepository.delete(id);
+        auditTrailService.logDeletion(Organisme.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("organisme", id.toString())).build();
     }
 

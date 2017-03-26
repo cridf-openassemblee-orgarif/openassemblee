@@ -36,8 +36,6 @@ public class SeanceService {
     @Inject
     private SeanceSearchRepository seanceSearchRepository;
     @Inject
-    private AuditTrailService auditTrailService;
-    @Inject
     private PresenceEluRepository presenceEluRepository;
 
     @Transactional(readOnly = true)
@@ -73,7 +71,6 @@ public class SeanceService {
         seance.setPresenceElus(pes);
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(result);
-        auditTrailService.logCreation(result, result.getId());
         return seance;
     }
 
@@ -82,7 +79,6 @@ public class SeanceService {
         // FIXME si le nombre de signature est différent...
         Seance result = seanceRepository.save(seance);
         seanceSearchRepository.save(seance);
-        auditTrailService.logUpdate(result, result.getId());
         return seance;
     }
 
@@ -93,6 +89,5 @@ public class SeanceService {
     public void delete(Long id) {
         seanceRepository.delete(id);
         seanceSearchRepository.delete(id);
-        auditTrailService.logDeletion(Seance.class, id);
     }
 }
