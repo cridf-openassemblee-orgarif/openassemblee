@@ -370,6 +370,7 @@ public class TestDataInjector {
             }
             alreadySet.add(elu);
             FonctionExecutive fe = new FonctionExecutive();
+            tous les setCreatedBy setLastModifiedBy ici sont useless
             fe.setCreatedBy("injector");
             fe.setLastModifiedBy("injector");
             fe.setElu(elu);
