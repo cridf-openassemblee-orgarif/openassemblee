@@ -8,6 +8,7 @@ import fr.cridf.babylone14166.publicdata.MembreDto;
 import fr.cridf.babylone14166.repository.EluRepository;
 import fr.cridf.babylone14166.repository.GroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.ImageRepository;
+import org.elasticsearch.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,10 @@ public class PublicDataWebservice {
     }
 
     private List<ConseillerDto> getConseillers(List<Elu> elus) {
-        return elus.stream().map(e -> {
+        return elus.stream()
+            // TODO filter ?
+            .filter(e -> !Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() != null)
+            .map(e -> {
             ConseillerDto d = new ConseillerDto();
             // TODO
             d.setMandature("");
@@ -181,10 +185,8 @@ public class PublicDataWebservice {
             e.setMotifFin(gp.getMotifFin());
             // TODO
             e.setSecteur("");
-            // TODO
-            e.setTelephone("");
-            // TODO
-            e.setFax("");
+            e.setTelephone(gp.getPhone());
+            e.setFax(gp.getFax());
             if (gp.getAdressePostale() != null) {
                 e.setAdresse(gp.getAdressePostale().getVoie());
                 e.setCodePostal(gp.getAdressePostale().getCodePostal());
@@ -192,8 +194,7 @@ public class PublicDataWebservice {
             }
             // TODO
             e.setStatus("");
-            // TODO
-            e.setMail("");
+            e.setMail(gp.getMail());
             // TODO
             e.setPhonetique("");
             return e;
@@ -234,6 +235,7 @@ public class PublicDataWebservice {
             m.setDateNomination("");
             // TODO
             m.setDescription("");
+            // TODO pas de site web ???
             return m;
         })).collect(Collectors.toList());
     }
