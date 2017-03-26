@@ -38,35 +38,6 @@ angular.module('babylone14166App')
                     }]
                 }
             })
-            .state('pouvoir.new', {
-                parent: 'pouvoir',
-                url: '/new',
-                data: {
-                    authorities: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/entities/pouvoir/pouvoir-dialog.html',
-                        controller: 'PouvoirDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: function () {
-                                return {
-                                    dateDebut: null,
-                                    heureDebut: null,
-                                    dateFin: null,
-                                    heureFin: null,
-                                    id: null
-                                };
-                            }
-                        }
-                    }).result.then(function(result) {
-                        $state.go('pouvoir', null, { reload: true });
-                    }, function() {
-                        $state.go('pouvoir');
-                    })
-                }]
-            })
             .state('pouvoir.edit', {
                 parent: 'pouvoir',
                 url: '/{id}/edit',

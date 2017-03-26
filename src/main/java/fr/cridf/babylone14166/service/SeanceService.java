@@ -50,7 +50,7 @@ public class SeanceService {
             Hibernate.initialize(pe.getElu().getAppartenancesGroupePolitique());
             Hibernate.initialize(pe.getSignatures());
         });
-        List<PouvoirListDTO> pouvoirs = pouvoirRepository.findAllByDateDebut(seance.getDate())
+        List<PouvoirListDTO> pouvoirs = pouvoirRepository.findAllBySeance(seance)
             .stream().map(p -> {
                 EluListDTO eluCedeur = eluService.getEluListDTO(p.getEluCedeur().getId());
                 EluListDTO eluBeneficiaire = eluService.getEluListDTO(p.getEluBeneficiaire().getId());

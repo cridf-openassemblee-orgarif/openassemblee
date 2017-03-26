@@ -2,13 +2,11 @@ package fr.cridf.babylone14166.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -43,6 +41,10 @@ public class Pouvoir implements Serializable {
     @ManyToOne
     @JoinColumn(name = "elu_beneficiaire_id")
     private Elu eluBeneficiaire;
+
+    @ManyToOne
+    @JoinColumn(name = "seance_id")
+    private Seance seance;
 
     public Long getId() {
         return id;
@@ -98,6 +100,14 @@ public class Pouvoir implements Serializable {
 
     public void setEluBeneficiaire(Elu elu) {
         this.eluBeneficiaire = elu;
+    }
+
+    public Seance getSeance() {
+        return seance;
+    }
+
+    public void setSeance(Seance seance) {
+        this.seance = seance;
     }
 
     @Override

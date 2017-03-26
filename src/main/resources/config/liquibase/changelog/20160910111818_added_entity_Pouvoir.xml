@@ -27,8 +27,9 @@
             <column name="heure_fin" type="varchar(255)"/>
             <column name="elu_cedeur_id" type="bigint"/>
             <column name="elu_beneficiaire_id" type="bigint"/>
+            <column name="seance_id" type="bigint"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_cedeur_id"
                                  baseTableName="pouvoir"
                                  constraintName="fk_pouvoir_elucedeur_id"
@@ -40,6 +41,12 @@
                                  constraintName="fk_pouvoir_elubeneficiaire_id"
                                  referencedColumnNames="id"
                                  referencedTableName="elu"/>
+
+        <addForeignKeyConstraint baseColumnNames="seance_id"
+                                 baseTableName="pouvoir"
+                                 constraintName="fk_pouvoir_seance_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seance"/>
 
     </changeSet>
 </databaseChangeLog>

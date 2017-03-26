@@ -22,12 +22,18 @@ var tempHours = function (pouvoir) {
 };
 
 angular.module('babylone14166App').controller('PouvoirDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Pouvoir', 'Elu',
-        function ($scope, $stateParams, $modalInstance, entity, Pouvoir, Elu) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Pouvoir', 'Elu', 'Seance',
+        function ($scope, $stateParams, $modalInstance, entity, Pouvoir, Elu, Seance) {
 
             var initPouvoirScope = function (entity) {
                 $scope.pouvoir = entity;
                 $scope.pouvoirTemp = tempHours(entity);
+                if(!$scope.pouvoir.seance) {
+                    $scope.pouvoir.seance = {id: $stateParams.id};
+                    Seance.get($scope.pouvoir.seance).$promise.then(function(s) {
+                        $scope.pouvoir.seance = s;
+                    });
+                }
             };
 
             if (entity.$promise) {
@@ -118,6 +124,7 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             };
             $scope.save = function () {
                 $scope.isSaving = true;
+                $scope.pouvoir.seance = {id: $stateParams.id};
                 var heureDebut = $scope.pouvoirTemp.heureDebutAsTime;
                 if (heureDebut) {
                     var heureDebutHours = heureDebut.getHours() >= 10 ? heureDebut.getHours() : '0' + heureDebut.getHours();

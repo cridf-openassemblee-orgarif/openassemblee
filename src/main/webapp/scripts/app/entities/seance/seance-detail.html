@@ -13,9 +13,25 @@
                     <div id="pouvoirs-container" class="tab-pane fade in active">
                         <div ng-if="dto.pouvoirs.length == 0">
                             <h3>Aucun pouvoir affecté à la séance</h3>
+                            <div class="row buttons">
+                                <div class="col-lg-12 align-right">
+                                    <button class="btn btn-primary" ui-sref="seance.detail.nouveauPouvoir">
+                                        <span class="glyphicon glyphicon-flash"></span>
+                                        <span>Créer un pouvoir</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div ng-if="dto.pouvoirs.length > 0">
                             <h3>Liste des pouvoirs de la séance</h3>
+                            <div class="row buttons">
+                                <div class="col-lg-12 align-right">
+                                    <button class="btn btn-primary" ui-sref="seance.detail.nouveauPouvoir">
+                                        <span class="glyphicon glyphicon-flash"></span>
+                                        <span>Créer un pouvoir</span>
+                                    </button>
+                                </div>
+                            </div>
                             <form class="form-horizontal">
                                 <div class="form-group col-md-6">
                                     <label class="control-label col-md-4" for="field_type">Filtrer :</label>
@@ -59,7 +75,7 @@
                                             <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
                                                 {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
                                                 <span ng-if="pvDto.eluCedeur.groupePolitique">
-                                        {{' (' + pvDto.eluCedeur.groupePolitique.nom + ')'}}
+                                        {{' (' + pvDto.eluCedeur.groupePolitique.nomCourt + ')'}}
                                     </span>
                                                 <span ng-if="pvDto.eluCedeur.groupePolitique == null">
                                         (sans groupe)
@@ -70,7 +86,7 @@
                                                 {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' +
                                                 pvDto.pouvoir.eluBeneficiaire.nom}}
                                                 <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
-                                        {{' (' + pvDto.eluBeneficiaire.groupePolitique.nom + ')'}}
+                                        {{' (' + pvDto.eluBeneficiaire.groupePolitique.nomCourt + ')'}}
                                     </span>
                                                 <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
                                         (sans groupe)

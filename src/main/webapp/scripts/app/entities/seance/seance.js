@@ -16,8 +16,7 @@ angular.module('babylone14166App')
                         controller: 'SeanceController'
                     }
                 },
-                resolve: {
-                }
+                resolve: {}
             })
             .state('seance.detail', {
                 parent: 'entity',
@@ -33,8 +32,8 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'Seance', function($stateParams, Seance) {
-                        return Seance.getDto({id : $stateParams.id});
+                    entity: ['$stateParams', 'Seance', function ($stateParams, Seance) {
+                        return Seance.getDto({id: $stateParams.id});
                     }]
                 }
             })
@@ -44,7 +43,7 @@ angular.module('babylone14166App')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/seance/seance-dialog.html',
                         controller: 'SeanceDialogController',
@@ -60,9 +59,9 @@ angular.module('babylone14166App')
                                 };
                             }
                         }
-                    }).result.then(function(result) {
+                    }).result.then(function (result) {
                         $state.go('seance.detail', {id: result.id});
-                    }, function() {
+                    }, function () {
                         $state.go('seance');
                     })
                 }]
@@ -73,19 +72,19 @@ angular.module('babylone14166App')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/seance/seance-dialog.html',
                         controller: 'SeanceDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: ['Seance', function(Seance) {
-                                return Seance.get({id : $stateParams.id});
+                            entity: ['Seance', function (Seance) {
+                                return Seance.get({id: $stateParams.id});
                             }]
                         }
-                    }).result.then(function(result) {
-                        $state.go('seance', null, { reload: true });
-                    }, function() {
+                    }).result.then(function (result) {
+                        $state.go('seance', null, {reload: true});
+                    }, function () {
                         $state.go('^');
                     })
                 }]
@@ -96,19 +95,48 @@ angular.module('babylone14166App')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/seance/seance-delete-dialog.html',
                         controller: 'SeanceDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Seance', function(Seance) {
-                                return Seance.get({id : $stateParams.id});
+                            entity: ['Seance', function (Seance) {
+                                return Seance.get({id: $stateParams.id});
                             }]
                         }
-                    }).result.then(function(result) {
-                        $state.go('seance', null, { reload: true });
-                    }, function() {
+                    }).result.then(function (result) {
+                        $state.go('seance', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('seance.detail.nouveauPouvoir', {
+                parent: 'seance.detail',
+                url: '/pouvoir/new',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/pouvoir/pouvoir-dialog.html',
+                        controller: 'PouvoirDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    dateDebut: null,
+                                    heureDebut: null,
+                                    dateFin: null,
+                                    heureFin: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
                         $state.go('^');
                     })
                 }]
@@ -119,19 +147,19 @@ angular.module('babylone14166App')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/pouvoir/pouvoir-dialog.html',
                         controller: 'PouvoirDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: ['Pouvoir', function(Pouvoir) {
-                                return Pouvoir.get({id : $stateParams.pouvoirId});
+                            entity: ['Pouvoir', function (Pouvoir) {
+                                return Pouvoir.get({id: $stateParams.pouvoirId});
                             }]
                         }
-                    }).result.then(function(result) {
-                        $state.go('^', null, { reload: true });
-                    }, function() {
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
                         $state.go('^');
                     })
                 }]
@@ -142,19 +170,19 @@ angular.module('babylone14166App')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/pouvoir/pouvoir-delete-dialog.html',
                         controller: 'PouvoirDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Pouvoir', function(Pouvoir) {
-                                return Pouvoir.get({id : $stateParams.pouvoirId});
+                            entity: ['Pouvoir', function (Pouvoir) {
+                                return Pouvoir.get({id: $stateParams.pouvoirId});
                             }]
                         }
-                    }).result.then(function(result) {
-                        $state.go('^', null, { reload: true });
-                    }, function() {
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
                         $state.go('^');
                     })
                 }]
