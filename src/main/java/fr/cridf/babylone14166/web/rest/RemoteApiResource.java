@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-
 @RestController
 @RequestMapping("/remote-api")
 public class RemoteApiResource {
@@ -19,21 +17,11 @@ public class RemoteApiResource {
     @Value("${fakeData}")
     private boolean fakeData;
 
-    @Value("${autoResetIndex}")
-    private boolean autoResetIndex;
-
     @Autowired
     private TestDataInjector testDataInjector;
 
     @Autowired
     private SearchService searchService;
-
-    @PostConstruct
-    public void init() {
-        if (autoResetIndex) {
-            searchService.resetIndex();
-        }
-    }
 
     @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
     @Timed
