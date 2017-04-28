@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static fr.cridf.babylone14166.domain.enumeration.NiveauConfidentialite.PUBLIABLE;
@@ -57,82 +60,82 @@ public class PublicDataWebservice {
             // TODO filter ?
             .filter(e -> !Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() != null)
             .map(e -> {
-            ConseillerDto d = new ConseillerDto();
-            // TODO
-            d.setMandature("");
-            d.setNom(e.getNom());
-            d.setActiviteProf(e.getProfession());
-            getPublishable(e.getAdressesPostales()).ifPresent(ap -> {
-                d.setAdresse(ap.getVoie());
-                d.setVille(ap.getVille());
-                d.setCodePostal(ap.getCodePostal());
-            });
-            if (e.getDateNaissance() != null) {
-                d.setDateNaissance(e.getDateNaissance().toString());
-            }
-            Optional<AppartenanceGroupePolitique> agp = e.getAppartenancesGroupePolitique().stream()
-                .filter(a -> a.getDateFin() == null)
-                .findFirst();
-            agp.ifPresent(g -> {
-                GroupePolitique gp = agp.get().getGroupePolitique();
-                if (gp != null) {
-                    d.setGroupeCourt(gp.getNomCourt());
-                    d.setGroupePolitique(gp.getNom());
+                ConseillerDto d = new ConseillerDto();
+                // TODO
+                d.setMandature("");
+                d.setNom(e.getNom());
+                d.setActiviteProf(e.getProfession());
+                getPublishable(e.getAdressesPostales()).ifPresent(ap -> {
+                    d.setAdresse(ap.getVoie());
+                    d.setVille(ap.getVille());
+                    d.setCodePostal(ap.getCodePostal());
+                });
+                if (e.getDateNaissance() != null) {
+                    d.setDateNaissance(e.getDateNaissance().toString());
                 }
-            });
-            // TODO
-            d.setListeCourt("");
-            // TODO
-            d.setListeElectorale("");
-            // TODO
-            d.setNbEnfants("");
-            // TODO
-            d.setNomJeuneFille("");
-            d.setAutresMandats("");
-            d.setSituationFamiliale("");
-            getPublishable(e.getNumerosTelephones()).ifPresent(nt -> d.setTelephone(nt.getNumero()));
-            getPublishable(e.getNumerosFax()).ifPresent(nf -> d.setFax(nf.getNumero()));
-            getPublishable(e.getAdressesMail()).ifPresent(am -> d.setMail(am.getMail()));
-            d.setValid('O');
-            // TODO
-            d.setCodeDepElection("");
-            d.setPrenom(e.getPrenom());
-            if (e.getCivilite() != null) {
-                d.setCivilite(e.getCivilite().label());
-            }
-            d.setVilleNaissance(e.getLieuNaissance());
-            // TODO différence avec setActiviteProf ?
-            d.setProfession(e.getProfession());
-            d.setUidConseiller(e.getUuid().toString());
-            // TODO
-            d.setDistinctions("");
-            // TODO
-            d.setDescription("");
-            d.setJpegphotoId(String.valueOf(e.getImage()));
-            // TODO
-            d.setSt(0F);
-            StringBuilder commissionsStringBuilder = new StringBuilder();
-            e.getAppartenancesCommissionsThematiques().stream()
-                .filter(a -> a.getDateFin() == null)
-                .forEach(a -> commissionsStringBuilder.append(", ").append(a.getCommissionThematique().getNom()));
-            d.setCommissions(commissionsStringBuilder.toString());
-            // TODO
-            d.setDesignations("");
-            Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
-                .filter(f -> f.getDateFin() == null)
-                .findFirst();
-            fe.ifPresent(fonctionExecutive -> d.setFonctionExecutif(fonctionExecutive.getFonction()));
-            // TODO
-            d.setPhonetique("");
-            d.setTwitter(getUrl(e, Twitter));
-            d.setFacebook(getUrl(e, Facebook));
-            d.setSiteInternet(getUrl(e, SiteInternet));
-            d.setBlog(getUrl(e, Blog));
-            // TODO
-            d.setAutre("");
+                Optional<AppartenanceGroupePolitique> agp = e.getAppartenancesGroupePolitique().stream()
+                    .filter(a -> a.getDateFin() == null)
+                    .findFirst();
+                agp.ifPresent(g -> {
+                    GroupePolitique gp = agp.get().getGroupePolitique();
+                    if (gp != null) {
+                        d.setGroupeCourt(gp.getNomCourt());
+                        d.setGroupePolitique(gp.getNom());
+                    }
+                });
+                // TODO
+                d.setListeCourt("");
+                // TODO
+                d.setListeElectorale("");
+                // TODO
+                d.setNbEnfants("");
+                // TODO
+                d.setNomJeuneFille("");
+                d.setAutresMandats("");
+                d.setSituationFamiliale("");
+                getPublishable(e.getNumerosTelephones()).ifPresent(nt -> d.setTelephone(nt.getNumero()));
+                getPublishable(e.getNumerosFax()).ifPresent(nf -> d.setFax(nf.getNumero()));
+                getPublishable(e.getAdressesMail()).ifPresent(am -> d.setMail(am.getMail()));
+                d.setValid('O');
+                // TODO
+                d.setCodeDepElection("");
+                d.setPrenom(e.getPrenom());
+                if (e.getCivilite() != null) {
+                    d.setCivilite(e.getCivilite().label());
+                }
+                d.setVilleNaissance(e.getLieuNaissance());
+                // TODO différence avec setActiviteProf ?
+                d.setProfession(e.getProfession());
+                d.setUidConseiller(e.getUuid().toString());
+                // TODO
+                d.setDistinctions("");
+                // TODO
+                d.setDescription("");
+                d.setJpegphotoId(String.valueOf(e.getImage()));
+                // TODO
+                d.setSt(0F);
+                StringBuilder commissionsStringBuilder = new StringBuilder();
+                e.getAppartenancesCommissionsThematiques().stream()
+                    .filter(a -> a.getDateFin() == null)
+                    .forEach(a -> commissionsStringBuilder.append(", ").append(a.getCommissionThematique().getNom()));
+                d.setCommissions(commissionsStringBuilder.toString());
+                // TODO
+                d.setDesignations("");
+                Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
+                    .filter(f -> f.getDateFin() == null)
+                    .findFirst();
+                fe.ifPresent(fonctionExecutive -> d.setFonctionExecutif(fonctionExecutive.getFonction()));
+                // TODO
+                d.setPhonetique("");
+                d.setTwitter(getUrl(e, Twitter));
+                d.setFacebook(getUrl(e, Facebook));
+                d.setSiteInternet(getUrl(e, SiteInternet));
+                d.setBlog(getUrl(e, Blog));
+                // TODO
+                d.setAutre("");
 
-            return d;
-        }).collect(Collectors.toList());
+                return d;
+            }).collect(Collectors.toList());
     }
 
     private <T extends Publishable> Optional<T> getPublishable(List<T> publishables) {
