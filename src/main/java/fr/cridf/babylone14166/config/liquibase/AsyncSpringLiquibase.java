@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.util.StopWatch;
@@ -45,7 +46,7 @@ public class AsyncSpringLiquibase extends SpringLiquibase {
     private boolean autoResetIndex;
 
     @Inject
-    private SearchService searchService;
+    private ApplicationContext applicationContext;
 
     @Override
     public void afterPropertiesSet() throws LiquibaseException {
@@ -75,7 +76,9 @@ public class AsyncSpringLiquibase extends SpringLiquibase {
         watch.stop();
         log.debug("Started Liquibase in {} ms", watch.getTotalTimeMillis());
         if (autoResetIndex) {
-            searchService.resetIndex();
+            // injecter SearchService pète les tests de façon assez mystique...
+            applicationContext.getBean(SearchService.class).resetIndex();
         }
     }
+
 }
