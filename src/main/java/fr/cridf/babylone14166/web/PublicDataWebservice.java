@@ -44,9 +44,15 @@ public class PublicDataWebservice {
     @RequestMapping(value = "/websitedata", method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public Map<String, Object> ensembles() {
-        List<Elu> elus = eluRepository.findAll();
+        List<Elu> elus = eluRepository.findAll()
+            .stream()
+            .filter(e -> Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() == null)
+            .collect(Collectors.toList());
         elus.forEach(e -> e.setUuid(String.valueOf(lastConseillerId++)));
-        List<GroupePolitique> groupesPolitiques = groupePolitiqueRepository.findAll();
+        List<GroupePolitique> groupesPolitiques = groupePolitiqueRepository.findAll()
+            .stream()
+            .filter(gp -> Strings.isNullOrEmpty(gp.getMotifFin()) && gp.getDateFin() == null)
+            .collect(Collectors.toList());
         groupesPolitiques.forEach(gp -> gp.setUuid(String.valueOf(lastEnsembleId++)));
         Map<String, Object> result = new HashMap<>();
         result.put("conseillers", getConseillers(elus));
@@ -57,8 +63,6 @@ public class PublicDataWebservice {
 
     private List<ConseillerDto> getConseillers(List<Elu> elus) {
         return elus.stream()
-            // TODO filter ?
-            .filter(e -> !Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() != null)
             .map(e -> {
                 ConseillerDto d = new ConseillerDto();
                 // TODO
