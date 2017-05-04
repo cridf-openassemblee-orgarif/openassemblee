@@ -23,10 +23,10 @@ spring:
             enabled: false
     datasource:
         driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/babylone14166?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://${MYSQL_ADDON_HOST}:${MYSQL_ADDON_PORT}/${MYSQL_ADDON_DB}?useUnicode=true&characterEncoding=utf8
         name:
-        username: root
-        password:
+        username: ${MYSQL_ADDON_USER}
+        password: ${MYSQL_ADDON_PASSWORD}
     jpa:
         database-platform: org.hibernate.dialect.MySQLInnoDBDialect
         database: MYSQL
