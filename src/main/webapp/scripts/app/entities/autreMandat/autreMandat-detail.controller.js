@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AutreMandatDetailController', function ($scope, $rootScope, $stateParams, entity, AutreMandat, Elu) {
         $scope.autreMandat = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.autreMandat = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:autreMandatUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:autreMandatUpdate', function(event, result) {
             $scope.autreMandat = result;
         });
         $scope.$on('$destroy', unsubscribe);

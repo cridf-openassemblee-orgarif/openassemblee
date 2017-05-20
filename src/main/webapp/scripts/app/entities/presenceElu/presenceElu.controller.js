@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('PresenceEluController', function ($scope, $state, $modal, PresenceElu, PresenceEluSearch, ParseLinks) {
-      
+
         $scope.presenceElus = [];
         $scope.page = 0;
         $scope.loadAll = function() {

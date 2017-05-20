@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AppartenanceOrganismeController', function ($scope, $state, $modal, AppartenanceOrganisme, AppartenanceOrganismeSearch) {
 
         $scope.appartenanceOrganismes = [];

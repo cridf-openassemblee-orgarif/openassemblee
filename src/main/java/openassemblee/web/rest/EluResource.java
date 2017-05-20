@@ -1,7 +1,7 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.cridf.babylone14166.domain.*;
+import fr.cridf.openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.search.EluSearchRepository;
 import openassemblee.service.AuditTrailService;

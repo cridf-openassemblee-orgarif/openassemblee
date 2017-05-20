@@ -2,7 +2,7 @@
 
 describe('Controllers Tests ', function () {
 
-    beforeEach(module('babylone14166App'));
+    beforeEach(module('openassembleeApp'));
 
     describe('LoginController', function () {
         var $scope;

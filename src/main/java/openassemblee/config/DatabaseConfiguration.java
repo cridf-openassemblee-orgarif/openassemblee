@@ -30,10 +30,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 @Configuration
-@EnableJpaRepositories("fr.cridf.babylone14166.repository")
+@EnableJpaRepositories("fr.cridf.openassemblee.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
-@EnableElasticsearchRepositories("fr.cridf.babylone14166.repository.search")
+@EnableElasticsearchRepositories("fr.cridf.openassemblee.repository.search")
 public class DatabaseConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('ReunionCaoDetailController', function ($scope, $rootScope, $stateParams, entity, ReunionCao) {
         $scope.reunion = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.reunion = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:reunionCaoUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:reunionCaoUpdate', function(event, result) {
             $scope.reunion = result;
         });
         $scope.$on('$destroy', unsubscribe);

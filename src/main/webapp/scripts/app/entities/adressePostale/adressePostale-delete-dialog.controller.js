@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('AdressePostaleDeleteController', function($scope, $modalInstance, entity, Elu) {
 
         $scope.adressePostale = entity;

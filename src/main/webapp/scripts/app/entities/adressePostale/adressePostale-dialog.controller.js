@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('AdressePostaleDialogController',
+angular.module('openassembleeApp').controller('AdressePostaleDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'AdressePostale', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, AdressePostale, Elu) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('AdressePostaleDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:adressePostaleUpdate', result);
+            $scope.$emit('openassembleeApp:adressePostaleUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

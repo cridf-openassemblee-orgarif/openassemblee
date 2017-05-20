@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('FonctionCommissionThematiqueController', function ($scope, $state, $modal, FonctionCommissionThematique, FonctionCommissionThematiqueSearch) {
-      
+
         $scope.fonctionCommissionThematiques = [];
         $scope.loadAll = function() {
             FonctionCommissionThematique.query(function(result) {

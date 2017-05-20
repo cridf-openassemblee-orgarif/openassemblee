@@ -9,11 +9,11 @@
         <relativePath />
     </parent>
 
-    <groupId>fr.cridf.babylone14166</groupId>
-    <artifactId>babylone14166</artifactId>
+    <groupId>fr.cridf.openassemblee</groupId>
+    <artifactId>openassemblee</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>babylone14166</name>
+    <name>openassemblee</name>
 
     <prerequisites>
         <maven>3.0.0</maven>
@@ -550,11 +550,11 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/babylone14166</url>
-                    <defaultSchemaName>babylone14166</defaultSchemaName>
+                    <url>jdbc:mysql://localhost:3306/openassemblee</url>
+                    <defaultSchemaName>openassemblee</defaultSchemaName>
                     <username>root</username>
                     <password />
-                    <referenceUrl>hibernate:spring:fr.cridf.babylone14166.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
+                    <referenceUrl>hibernate:spring:fr.cridf.openassemblee.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>

@@ -27,7 +27,7 @@
     </appender>
 -->
 
-    <logger name="fr.cridf.babylone14166" level="INFO"/>
+    <logger name="fr.cridf.openassemblee" level="INFO"/>
 
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>

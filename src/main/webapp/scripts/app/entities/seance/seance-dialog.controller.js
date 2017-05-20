@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('SeanceDialogController',
+angular.module('openassembleeApp').controller('SeanceDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Seance', 'PresenceElu',
         function ($scope, $stateParams, $modalInstance, entity, Seance, PresenceElu) {
 
@@ -13,7 +13,7 @@ angular.module('babylone14166App').controller('SeanceDialogController',
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:seanceUpdate', result);
+                $scope.$emit('openassembleeApp:seanceUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

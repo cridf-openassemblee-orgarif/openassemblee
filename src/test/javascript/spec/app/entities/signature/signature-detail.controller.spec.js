@@ -28,7 +28,7 @@ describe('Signature Detail Controller', function() {
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:signatureUpdate';
+            var eventType = 'openassembleeApp:signatureUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

@@ -21,7 +21,7 @@ var tempHours = function (reunion) {
     return tempHours;
 };
 
-angular.module('babylone14166App').controller('ReunionCaoDialogController',
+angular.module('openassembleeApp').controller('ReunionCaoDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'ReunionCao', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, ReunionCao, Elu) {
 
@@ -60,7 +60,7 @@ angular.module('babylone14166App').controller('ReunionCaoDialogController',
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:reunionCaoUpdate', result);
+                $scope.$emit('openassembleeApp:reunionCaoUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

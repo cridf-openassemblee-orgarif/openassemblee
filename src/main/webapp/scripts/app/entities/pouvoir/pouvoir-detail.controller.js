@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('PouvoirDetailController', function ($scope, $rootScope, $stateParams, entity, Pouvoir, Elu) {
         $scope.pouvoir = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.pouvoir = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:pouvoirUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:pouvoirUpdate', function(event, result) {
             $scope.pouvoir = result;
         });
         $scope.$on('$destroy', unsubscribe);

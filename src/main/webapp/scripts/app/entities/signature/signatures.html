@@ -35,7 +35,7 @@
                 <tr ng-repeat="signature in signatures track by signature.id">
                     <td><a ui-sref="signature.detail({id:signature.id})">{{signature.id}}</a></td>
                     <td>{{signature.position}}</td>
-                    <td translate="{{'babylone14166App.SignatureStatus.' + signature.statut}}">{{signature.statut}}</td>
+                    <td translate="{{'openassembleeApp.SignatureStatus.' + signature.statut}}">{{signature.statut}}</td>
                     <td>
                         <a ui-sref="presenceElu.detail({id:signature.presenceElu.id})">{{signature.presenceElu.id}}</a>
                     </td>

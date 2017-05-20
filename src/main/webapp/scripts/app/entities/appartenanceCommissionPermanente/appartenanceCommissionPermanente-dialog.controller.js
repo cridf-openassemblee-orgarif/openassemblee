@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('AppartenanceCommissionPermanenteDialogController',
+angular.module('openassembleeApp').controller('AppartenanceCommissionPermanenteDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'AppartenanceCommissionPermanente', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceCommissionPermanente, Elu) {
 
@@ -14,7 +14,7 @@ angular.module('babylone14166App').controller('AppartenanceCommissionPermanenteD
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:appartenanceCommissionPermanenteUpdate', result);
+                $scope.$emit('openassembleeApp:appartenanceCommissionPermanenteUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

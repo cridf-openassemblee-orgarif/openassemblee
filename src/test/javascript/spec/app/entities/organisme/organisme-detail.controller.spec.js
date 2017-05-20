@@ -28,7 +28,7 @@ describe('Organisme Detail Controller', function() {
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:organismeUpdate';
+            var eventType = 'openassembleeApp:organismeUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

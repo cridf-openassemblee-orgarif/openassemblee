@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('activeLink', function(location) {
         return {
             restrict: 'A',

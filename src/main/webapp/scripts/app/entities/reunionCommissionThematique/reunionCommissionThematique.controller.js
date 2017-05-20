@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('ReunionCommissionThematiqueController', function ($scope, $state, $modal, ReunionCommissionThematique, ReunionCommissionThematiqueSearch, ParseLinks) {
-      
+
         $scope.reunionCommissionThematiques = [];
         $scope.page = 0;
         $scope.loadAll = function() {

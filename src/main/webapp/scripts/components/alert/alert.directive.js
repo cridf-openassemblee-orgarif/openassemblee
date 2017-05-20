@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('jhAlert', function(AlertService) {
         return {
             restrict: 'E',
@@ -32,7 +32,7 @@ angular.module('babylone14166App')
 
                     $scope.alerts = [];
 
-                    var cleanHttpErrorListener = $rootScope.$on('babylone14166App.httpError', function (event, httpResponse) {
+                    var cleanHttpErrorListener = $rootScope.$on('openassembleeApp.httpError', function (event, httpResponse) {
                         var i;
                         event.stopPropagation();
                         switch (httpResponse.status) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('EluDetailController', function ($scope, $rootScope, $stateParams, entity) {
         $scope.dto = entity;
         $scope.$watch('dto', function () {

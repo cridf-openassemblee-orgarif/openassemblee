@@ -1,9 +1,9 @@
 package openassemblee.config.data;
 
-import fr.cridf.babylone14166.domain.*;
+import fr.cridf.openassemblee.domain.*;
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
-import fr.cridf.babylone14166.repository.*;
+import fr.cridf.openassemblee.repository.*;
 import openassemblee.repository.*;
 import openassemblee.service.SearchService;
 import liquibase.util.csv.opencsv.CSVReader;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('error', {
@@ -16,7 +16,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             })
             .state('accessdenied', {
@@ -31,7 +31,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });

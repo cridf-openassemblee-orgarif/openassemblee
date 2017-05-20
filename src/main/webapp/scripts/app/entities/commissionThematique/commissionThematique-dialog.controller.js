@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('CommissionThematiqueDialogController',
+angular.module('openassembleeApp').controller('CommissionThematiqueDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'CommissionThematique',
         function($scope, $stateParams, $modalInstance, entity, CommissionThematique) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('CommissionThematiqueDialogControl
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:commissionThematiqueUpdate', result);
+            $scope.$emit('openassembleeApp:commissionThematiqueUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

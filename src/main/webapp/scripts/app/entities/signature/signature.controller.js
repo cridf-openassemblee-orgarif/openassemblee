@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('SignatureController', function ($scope, $state, $modal, Signature, SignatureSearch, ParseLinks) {
-      
+
         $scope.signatures = [];
         $scope.page = 0;
         $scope.loadAll = function() {

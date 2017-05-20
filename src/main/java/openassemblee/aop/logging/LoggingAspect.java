@@ -26,7 +26,7 @@ public class LoggingAspect {
     @Inject
     private Environment env;
 
-    @Pointcut("within(fr.cridf.babylone14166.repository..*) || within(fr.cridf.babylone14166.service..*) || within(fr.cridf.babylone14166.web.rest..*)")
+    @Pointcut("within(fr.cridf.openassemblee.repository..*) || within(fr.cridf.openassemblee.service..*) || within(fr.cridf.openassemblee.web.rest..*)")
     public void loggingPointcut() {
     }
 

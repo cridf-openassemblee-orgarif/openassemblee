@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('PresenceElu', function ($resource, DateUtils) {
         return $resource('api/presenceElus/:id', {}, {
             'query': { method: 'GET', isArray: true},

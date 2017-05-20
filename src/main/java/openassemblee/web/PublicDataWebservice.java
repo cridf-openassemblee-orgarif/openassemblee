@@ -1,6 +1,6 @@
 package openassemblee.web;
 
-import fr.cridf.babylone14166.domain.*;
+import fr.cridf.openassemblee.domain.*;
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import openassemblee.publicdata.ConseillerDto;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('Signature', function ($resource, DateUtils) {
         return $resource('api/signatures/:id', {}, {
             'query': { method: 'GET', isArray: true},

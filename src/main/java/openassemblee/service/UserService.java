@@ -21,8 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cridf.babylone14166.domain.*;
-import fr.cridf.babylone14166.repository.*;
+import fr.cridf.openassemblee.domain.*;
+import fr.cridf.openassemblee.repository.*;
 import openassemblee.repository.search.UserSearchRepository;
 import openassemblee.security.SecurityUtils;
 

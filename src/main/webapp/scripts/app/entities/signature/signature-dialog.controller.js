@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('SignatureDialogController',
+angular.module('openassembleeApp').controller('SignatureDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Signature', 'PresenceElu',
         function($scope, $stateParams, $modalInstance, entity, Signature, PresenceElu) {
 
@@ -13,7 +13,7 @@ angular.module('babylone14166App').controller('SignatureDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:signatureUpdate', result);
+            $scope.$emit('openassembleeApp:signatureUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('SeanceDeleteController', function($scope, $modalInstance, entity, Seance) {
 
         $scope.seance = entity;

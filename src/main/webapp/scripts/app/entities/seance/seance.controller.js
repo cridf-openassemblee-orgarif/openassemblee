@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('SeanceController', function ($scope, $state, $modal, Seance, SeanceSearch, ParseLinks) {
 
         $scope.seances = [];

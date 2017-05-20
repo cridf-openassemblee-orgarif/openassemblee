@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('PresenceEluDetailController', function ($scope, $rootScope, $stateParams, entity, PresenceElu, Elu, Signature, Seance) {
         $scope.presenceElu = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.presenceElu = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:presenceEluUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:presenceEluUpdate', function(event, result) {
             $scope.presenceElu = result;
         });
         $scope.$on('$destroy', unsubscribe);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('GroupePolitiqueDialogController',
+angular.module('openassembleeApp').controller('GroupePolitiqueDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'GroupePolitique',
         function($scope, $stateParams, $modalInstance, entity, GroupePolitique) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('GroupePolitiqueDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:groupePolitiqueUpdate', result);
+            $scope.$emit('openassembleeApp:groupePolitiqueUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

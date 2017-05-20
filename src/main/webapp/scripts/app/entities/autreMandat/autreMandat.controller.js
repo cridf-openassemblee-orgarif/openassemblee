@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AutreMandatController', function ($scope, $state, $modal, AutreMandat, AutreMandatSearch) {
-      
+
         $scope.autreMandats = [];
         $scope.loadAll = function() {
             AutreMandat.query(function(result) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('GroupesPolitiquesController', function ($scope, $state, $modal, $http,
                                                          GroupePolitique, GroupePolitiqueSearch) {
 

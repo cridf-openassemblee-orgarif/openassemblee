@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('EluController', function ($scope, $state, $modal, Elu, EluSearch) {
 
         $scope.dtos = [];

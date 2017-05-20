@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('passwordStrengthBar', function () {
         return {
             replace: true,

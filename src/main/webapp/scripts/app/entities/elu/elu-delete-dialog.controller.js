@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('EluDeleteController', function($scope, $modalInstance, entity, Elu) {
 
         $scope.elu = entity;

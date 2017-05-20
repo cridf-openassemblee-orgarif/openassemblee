@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('AutreMandatDeleteController', function($scope, $modalInstance, entity, AutreMandat) {
 
         $scope.autreMandat = entity;

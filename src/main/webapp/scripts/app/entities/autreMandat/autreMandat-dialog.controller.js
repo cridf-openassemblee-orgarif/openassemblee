@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('AutreMandatDialogController',
+angular.module('openassembleeApp').controller('AutreMandatDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'title', 'entity', 'AutreMandat', 'Elu',
         function($scope, $stateParams, $modalInstance, title, entity, AutreMandat, Elu) {
 
@@ -8,7 +8,7 @@ angular.module('babylone14166App').controller('AutreMandatDialogController',
         $scope.autreMandat = entity;
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:autreMandatUpdate', result);
+            $scope.$emit('openassembleeApp:autreMandatUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

@@ -21,7 +21,7 @@ var tempHours = function (pouvoir) {
     return tempHours;
 };
 
-angular.module('babylone14166App').controller('PouvoirDialogController',
+angular.module('openassembleeApp').controller('PouvoirDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Pouvoir', 'Elu', 'Seance',
         function ($scope, $stateParams, $modalInstance, entity, Pouvoir, Elu, Seance) {
 
@@ -90,7 +90,7 @@ angular.module('babylone14166App').controller('PouvoirDialogController',
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:pouvoirUpdate', result);
+                $scope.$emit('openassembleeApp:pouvoirUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

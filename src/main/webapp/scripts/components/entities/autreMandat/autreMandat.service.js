@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('AutreMandat', function ($resource, DateUtils) {
         return $resource('api/autreMandats/:id', {}, {
             'query': { method: 'GET', isArray: true},

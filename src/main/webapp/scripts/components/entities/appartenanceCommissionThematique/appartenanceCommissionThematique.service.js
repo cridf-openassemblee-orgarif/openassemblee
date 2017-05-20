@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('AppartenanceCommissionThematique', function ($resource, DateUtils) {
         return $resource('api/appartenanceCommissionThematiques/:id', {}, {
             'query': { method: 'GET', isArray: true},

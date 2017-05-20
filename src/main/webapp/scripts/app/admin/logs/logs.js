@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('logs', {
@@ -17,7 +17,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });

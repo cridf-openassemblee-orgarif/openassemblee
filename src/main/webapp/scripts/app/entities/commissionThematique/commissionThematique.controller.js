@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('CommissionThematiqueController', function ($scope, $state, $modal, $http,
                                                             CommissionThematique, CommissionThematiqueSearch) {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('GroupePolitiqueDeleteController', function($scope, $modalInstance, entity, GroupePolitique) {
 
         $scope.groupePolitique = entity;

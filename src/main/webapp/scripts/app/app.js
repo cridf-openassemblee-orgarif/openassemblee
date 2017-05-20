@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
+angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster',
     'ngFileUpload', 'ui.bootstrap', 'ui.router', 'infinite-scroll', 'angular-loading-bar', 'siyfion.sfTypeahead',
     'mgcrea.ngStrap.datepicker', 'ngSanitize', 'jsonFormatter', 'ui.select'])
 
@@ -35,7 +35,7 @@ angular.module('babylone14166App', ['LocalStorageModule', 'ngResource', 'ngCooki
         });
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            var titleKey = 'babylone14166';
+            var titleKey = 'openassemblee';
 
             // Remember previous state unless we've been redirected to login or we've just
             // reset the state memory after logout. If we're redirected to login, our

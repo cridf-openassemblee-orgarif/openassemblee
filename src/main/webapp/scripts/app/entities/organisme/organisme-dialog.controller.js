@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('OrganismeDialogController',
+angular.module('openassembleeApp').controller('OrganismeDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Organisme',
         function ($scope, $stateParams, $modalInstance, entity, Organisme) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('OrganismeDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:organismeUpdate', result);
+            $scope.$emit('openassembleeApp:organismeUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

@@ -1,8 +1,8 @@
 {
   "generator-jhipster": {
-    "baseName": "babylone14166",
-    "packageName": "fr.cridf.babylone14166",
-    "packageFolder": "fr/cridf/babylone14166",
+    "baseName": "openassemblee",
+    "packageName": "fr.cridf.openassemblee",
+    "packageFolder": "fr/cridf/openassemblee",
     "authenticationType": "session",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": "no",

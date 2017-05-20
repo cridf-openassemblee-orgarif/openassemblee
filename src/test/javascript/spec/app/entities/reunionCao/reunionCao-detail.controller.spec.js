@@ -26,7 +26,7 @@ describe('ReunionCao Detail Controller', function() {
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:reunionCaoUpdate';
+            var eventType = 'openassembleeApp:reunionCaoUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

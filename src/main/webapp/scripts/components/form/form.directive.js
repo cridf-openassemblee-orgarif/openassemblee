@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('showValidation', function() {
         return {
             restrict: 'A',

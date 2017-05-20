@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('PouvoirController', function ($scope, $state, $modal, Pouvoir, PouvoirSearch, ParseLinks) {
 
         $scope.pouvoirs = [];

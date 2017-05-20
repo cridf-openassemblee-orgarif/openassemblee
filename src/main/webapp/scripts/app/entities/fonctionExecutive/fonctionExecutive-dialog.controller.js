@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('FonctionExecutiveDialogController',
+angular.module('openassembleeApp').controller('FonctionExecutiveDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'FonctionExecutive', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, FonctionExecutive, Elu) {
 
@@ -14,7 +14,7 @@ angular.module('babylone14166App').controller('FonctionExecutiveDialogController
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:fonctionExecutiveUpdate', result);
+                $scope.$emit('openassembleeApp:fonctionExecutiveUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

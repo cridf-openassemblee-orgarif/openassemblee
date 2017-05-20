@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('ReunionCaoController', function ($scope, $state, $modal, ReunionCao, ReunionCaoSearch, ParseLinks) {
-      
+
         $scope.reunionCaos = [];
         $scope.page = 0;
         $scope.loadAll = function() {

@@ -1,7 +1,7 @@
 {
-  "name": "babylone14166",
+  "name": "openassemblee",
   "version": "0.0.0",
-  "description": "Description for babylone14166",
+  "description": "Description for openassemblee",
   "private": true,
   "cacheDirectories": [
     "node_modules",

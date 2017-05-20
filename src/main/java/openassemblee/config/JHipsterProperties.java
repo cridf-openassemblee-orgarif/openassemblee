@@ -197,7 +197,7 @@ public class JHipsterProperties {
 
     public static class Mail {
 
-        private String from = "babylone14166@localhost";
+        private String from = "openassemblee@localhost";
 
         public String getFrom() {
             return from;
@@ -305,7 +305,7 @@ public class JHipsterProperties {
 
             private int port = 2003;
 
-            private String prefix = "babylone14166";
+            private String prefix = "openassemblee";
 
             public boolean isEnabled() {
                 return enabled;

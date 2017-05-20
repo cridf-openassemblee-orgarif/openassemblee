@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AuditTrailDetailController', function ($scope, $rootScope, $stateParams, entity, AuditTrail) {
         $scope.auditTrail = entity;
 
@@ -30,7 +30,7 @@ angular.module('babylone14166App')
                 jsonDetail();
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:auditTrailUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:auditTrailUpdate', function(event, result) {
             $scope.auditTrail = result;
         });
         $scope.$on('$destroy', unsubscribe);

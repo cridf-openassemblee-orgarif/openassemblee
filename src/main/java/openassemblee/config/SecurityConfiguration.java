@@ -20,7 +20,7 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import fr.cridf.babylone14166.security.*;
+import fr.cridf.openassemblee.security.*;
 
 @Configuration
 @EnableWebSecurity

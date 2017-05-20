@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('IdentiteInternet', function ($resource, DateUtils) {
         return $resource('api/identiteInternets/:id', {}, {
             'query': { method: 'GET', isArray: true},

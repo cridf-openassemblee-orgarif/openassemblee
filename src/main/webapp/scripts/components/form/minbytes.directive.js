@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('minbytes', function ($q) {
         function endsWith(suffix, str) {
             return str.indexOf(suffix, str.length - suffix.length) !== -1;

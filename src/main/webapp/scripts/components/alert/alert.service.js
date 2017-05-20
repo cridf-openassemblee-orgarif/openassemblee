@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .provider('AlertService', function () {
         this.toast = false;
 
@@ -19,7 +19,7 @@ angular.module('babylone14166App')
                 info: info,
                 warning : warning
             },
-            
+
             toast = this.toast,
             alertId = 0, // unique id for each alert. Starts from 0.
             alerts = [],

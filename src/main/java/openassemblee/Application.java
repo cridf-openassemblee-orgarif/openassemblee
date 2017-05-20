@@ -34,7 +34,7 @@ public class Application {
     private Environment env;
 
     /**
-     * Initializes babylone14166.
+     * Initializes openassemblee.
      * <p/>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
      * <p/>

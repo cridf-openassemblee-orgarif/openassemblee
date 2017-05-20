@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AuditTrailController', function ($scope, $state, $modal, AuditTrail, AuditTrailSearch, ParseLinks) {
-      
+
         $scope.auditTrails = [];
         $scope.page = 0;
         $scope.loadAll = function() {

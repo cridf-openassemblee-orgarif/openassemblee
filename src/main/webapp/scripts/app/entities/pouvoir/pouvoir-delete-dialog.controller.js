@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('PouvoirDeleteController', function($scope, $modalInstance, entity, Pouvoir) {
 
         $scope.pouvoir = entity;

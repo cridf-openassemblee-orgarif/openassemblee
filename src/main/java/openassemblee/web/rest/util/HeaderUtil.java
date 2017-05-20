@@ -10,8 +10,8 @@ public class HeaderUtil {
 
     public static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-babylone14166App-alert", message);
-        headers.add("X-babylone14166App-params", param);
+        headers.add("X-openassembleeApp-alert", message);
+        headers.add("X-openassembleeApp-params", param);
         return headers;
     }
 

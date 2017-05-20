@@ -1,7 +1,7 @@
 package openassemblee.service;
 
-import fr.cridf.babylone14166.repository.*;
-import fr.cridf.babylone14166.repository.search.*;
+import fr.cridf.openassemblee.repository.*;
+import fr.cridf.openassemblee.repository.search.*;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;
 import openassemblee.web.rest.dto.SearchResultDTO;

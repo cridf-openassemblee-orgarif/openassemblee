@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('ReunionCaoDeleteController', function($scope, $modalInstance, entity, ReunionCao) {
 
         $scope.reunionCao = entity;

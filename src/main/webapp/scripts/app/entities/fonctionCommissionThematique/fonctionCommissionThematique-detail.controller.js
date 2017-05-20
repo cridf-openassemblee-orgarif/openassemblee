@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('FonctionCommissionThematiqueDetailController', function ($scope, $rootScope, $stateParams, entity, FonctionCommissionThematique, Elu, CommissionThematique) {
         $scope.fonctionCommissionThematique = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.fonctionCommissionThematique = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:fonctionCommissionThematiqueUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:fonctionCommissionThematiqueUpdate', function(event, result) {
             $scope.fonctionCommissionThematique = result;
         });
         $scope.$on('$destroy', unsubscribe);

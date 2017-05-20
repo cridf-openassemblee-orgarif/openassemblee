@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('login', {
                 parent: 'account',
                 url: '/login',
                 data: {
-                    authorities: [], 
+                    authorities: [],
                     pageTitle: 'Sign in'
                 },
                 views: {
@@ -17,7 +17,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             });
     });

@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('babylone14166App').controller('AppartenanceOrganismeDialogController',
+angular.module('openassembleeApp').controller('AppartenanceOrganismeDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'AppartenanceOrganisme', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceOrganisme, Elu) {
 
             $scope.appartenanceOrganisme = entity;
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:appartenanceOrganismeUpdate', result);
+                $scope.$emit('openassembleeApp:appartenanceOrganismeUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

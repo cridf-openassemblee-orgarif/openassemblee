@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('SettingsController', function ($scope, Principal, Auth) {
         $scope.success = null;
         $scope.error = null;

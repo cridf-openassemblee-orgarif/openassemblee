@@ -28,7 +28,7 @@ describe('AutreMandat Detail Controller', function() {
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:autreMandatUpdate';
+            var eventType = 'openassembleeApp:autreMandatUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

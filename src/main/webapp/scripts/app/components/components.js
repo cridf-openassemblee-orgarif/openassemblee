@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .directive('adressesPostales', function () {
         return {
             restrict: 'E',

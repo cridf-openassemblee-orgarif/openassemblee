@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('FonctionCommissionPermanenteDialogController',
+angular.module('openassembleeApp').controller('FonctionCommissionPermanenteDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'FonctionCommissionPermanente', 'Elu',
         function($scope, $stateParams, $modalInstance, entity, FonctionCommissionPermanente, Elu) {
 
@@ -14,7 +14,7 @@ angular.module('babylone14166App').controller('FonctionCommissionPermanenteDialo
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:fonctionCommissionPermanenteUpdate', result);
+            $scope.$emit('openassembleeApp:fonctionCommissionPermanenteUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

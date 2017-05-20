@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('ConfigurationController', function ($scope, ConfigurationService) {
         ConfigurationService.get().then(function(configuration) {
             $scope.configuration = configuration;

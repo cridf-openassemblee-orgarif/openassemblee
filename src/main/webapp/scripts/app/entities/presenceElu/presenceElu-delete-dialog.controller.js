@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('PresenceEluDeleteController', function($scope, $modalInstance, entity, PresenceElu) {
 
         $scope.presenceElu = entity;

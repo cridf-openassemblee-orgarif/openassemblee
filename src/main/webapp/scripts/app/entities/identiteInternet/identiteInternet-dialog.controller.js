@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('IdentiteInternetDialogController',
+angular.module('openassembleeApp').controller('IdentiteInternetDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'IdentiteInternet', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, IdentiteInternet, Elu) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('IdentiteInternetDialogController'
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:identiteInternetUpdate', result);
+            $scope.$emit('openassembleeApp:identiteInternetUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

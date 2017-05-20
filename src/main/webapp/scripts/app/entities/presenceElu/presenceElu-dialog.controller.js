@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('PresenceEluDialogController',
+angular.module('openassembleeApp').controller('PresenceEluDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'PresenceElu', 'Elu', 'Signature', 'Seance',
         function($scope, $stateParams, $modalInstance, entity, PresenceElu, Elu, Signature, Seance) {
 
@@ -15,7 +15,7 @@ angular.module('babylone14166App').controller('PresenceEluDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:presenceEluUpdate', result);
+            $scope.$emit('openassembleeApp:presenceEluUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

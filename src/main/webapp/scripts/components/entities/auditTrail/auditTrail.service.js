@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .factory('AuditTrail', function ($resource, DateUtils) {
         return $resource('api/auditTrails/:id', {}, {
             'query': { method: 'GET', isArray: true},

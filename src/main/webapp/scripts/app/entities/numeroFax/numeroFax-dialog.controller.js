@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('NumeroFaxDialogController',
+angular.module('openassembleeApp').controller('NumeroFaxDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroFax', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, NumeroFax, Elu) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('NumeroFaxDialogController',
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('babylone14166App:numeroFaxUpdate', result);
+            $scope.$emit('openassembleeApp:numeroFaxUpdate', result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };

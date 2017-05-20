@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('SignatureDetailController', function ($scope, $rootScope, $stateParams, entity, Signature, PresenceElu) {
         $scope.signature = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.signature = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:signatureUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:signatureUpdate', function(event, result) {
             $scope.signature = result;
         });
         $scope.$on('$destroy', unsubscribe);

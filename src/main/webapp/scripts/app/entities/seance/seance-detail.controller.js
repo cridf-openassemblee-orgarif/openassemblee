@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
         $scope.dto = entity;
         $scope.signaturesArray = [];
@@ -71,7 +71,7 @@ angular.module('babylone14166App')
                 $scope.dto = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:seanceUpdate', function (event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:seanceUpdate', function (event, result) {
             $scope.seance = result;
         });
         $scope.$on('$destroy', unsubscribe);

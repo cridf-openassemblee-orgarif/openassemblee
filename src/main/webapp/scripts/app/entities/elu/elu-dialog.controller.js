@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('EluDialogController',
+angular.module('openassembleeApp').controller('EluDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'Elu',
         function ($scope, $stateParams, $modalInstance, entity, Elu) {
 
@@ -12,7 +12,7 @@ angular.module('babylone14166App').controller('EluDialogController',
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:eluUpdate', result);
+                $scope.$emit('openassembleeApp:eluUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

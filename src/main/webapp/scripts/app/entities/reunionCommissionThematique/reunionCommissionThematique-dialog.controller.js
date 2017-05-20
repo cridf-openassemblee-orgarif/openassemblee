@@ -21,7 +21,7 @@ var tempHours = function (reunion) {
     return tempHours;
 };
 
-angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialogController',
+angular.module('openassembleeApp').controller('ReunionCommissionThematiqueDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'ReunionCommissionThematique', 'CommissionThematique',
         function ($scope, $stateParams, $modalInstance, entity, ReunionCommissionThematique, CommissionThematique) {
 
@@ -48,7 +48,7 @@ angular.module('babylone14166App').controller('ReunionCommissionThematiqueDialog
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:reunionCommissionThematiqueUpdate', result);
+                $scope.$emit('openassembleeApp:reunionCommissionThematiqueUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

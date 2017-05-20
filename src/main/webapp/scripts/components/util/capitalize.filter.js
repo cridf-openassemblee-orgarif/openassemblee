@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .filter('capitalize', function () {
         return function (input, scope) {
             if (input != null)

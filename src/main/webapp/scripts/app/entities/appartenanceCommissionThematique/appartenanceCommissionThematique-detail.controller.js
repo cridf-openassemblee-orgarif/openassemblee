@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('AppartenanceCommissionThematiqueDetailController', function ($scope, $rootScope, $stateParams, entity, AppartenanceCommissionThematique, Elu, CommissionThematique) {
         $scope.appartenanceCommissionThematique = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.appartenanceCommissionThematique = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:appartenanceCommissionThematiqueUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:appartenanceCommissionThematiqueUpdate', function(event, result) {
             $scope.appartenanceCommissionThematique = result;
         });
         $scope.$on('$destroy', unsubscribe);

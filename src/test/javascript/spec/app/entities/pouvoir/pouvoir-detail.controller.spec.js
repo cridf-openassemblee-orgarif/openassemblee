@@ -28,7 +28,7 @@ describe('Pouvoir Detail Controller', function() {
 
     describe('Root Scope Listening', function() {
         it('Unregisters root scope listener upon scope destruction', function() {
-            var eventType = 'babylone14166App:pouvoirUpdate';
+            var eventType = 'openassembleeApp:pouvoirUpdate';
 
             createController();
             expect($rootScope.$$listenerCount[eventType]).toEqual(1);

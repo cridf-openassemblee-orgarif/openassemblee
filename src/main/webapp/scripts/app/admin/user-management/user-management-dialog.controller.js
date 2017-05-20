@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('babylone14166App').controller('UserManagementDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'User', 
+angular.module('openassembleeApp').controller('UserManagementDialogController',
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'User',
         function($scope, $stateParams, $modalInstance, entity, User) {
 
         $scope.user = entity;

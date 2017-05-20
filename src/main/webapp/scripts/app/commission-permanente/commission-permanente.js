@@ -1,4 +1,4 @@
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('commission-permanente', {

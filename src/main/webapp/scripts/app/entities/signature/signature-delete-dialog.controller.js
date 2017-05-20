@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
 	.controller('SignatureDeleteController', function($scope, $modalInstance, entity, Signature) {
 
         $scope.signature = entity;

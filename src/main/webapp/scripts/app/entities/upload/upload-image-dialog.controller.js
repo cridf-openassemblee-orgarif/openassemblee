@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('UploadImageEluDialogController',
+angular.module('openassembleeApp').controller('UploadImageEluDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'Upload', '$state',
         function ($scope, $stateParams, $modalInstance, Upload, $state) {
 

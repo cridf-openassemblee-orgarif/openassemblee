@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .controller('OrganismeDetailController', function ($scope, $rootScope, $stateParams, entity, Organisme) {
         $scope.dto = entity;
         $scope.load = function (id) {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 $scope.dto = result;
             });
         };
-        var unsubscribe = $rootScope.$on('babylone14166App:organismeUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('openassembleeApp:organismeUpdate', function(event, result) {
             $scope.organisme = result;
         });
         $scope.$on('$destroy', unsubscribe);

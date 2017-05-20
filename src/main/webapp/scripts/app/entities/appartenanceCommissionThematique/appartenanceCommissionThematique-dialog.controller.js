@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App').controller('AppartenanceCommissionThematiqueDialogController',
+angular.module('openassembleeApp').controller('AppartenanceCommissionThematiqueDialogController',
     ['$scope', '$stateParams', '$modalInstance', 'entity', 'AppartenanceCommissionThematique', 'Elu', 'CommissionThematique',
         function ($scope, $stateParams, $modalInstance, entity, AppartenanceCommissionThematique, Elu, CommissionThematique) {
 
@@ -15,7 +15,7 @@ angular.module('babylone14166App').controller('AppartenanceCommissionThematiqueD
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('babylone14166App:appartenanceCommissionThematiqueUpdate', result);
+                $scope.$emit('openassembleeApp:appartenanceCommissionThematiqueUpdate', result);
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };

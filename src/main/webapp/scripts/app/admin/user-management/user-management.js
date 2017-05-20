@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('babylone14166App')
+angular.module('openassembleeApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('user-management', {
@@ -8,7 +8,7 @@ angular.module('babylone14166App')
                 url: '/user-management',
                 data: {
                     authorities: ['ROLE_ADMIN'],
-                    pageTitle: 'babylone14166'
+                    pageTitle: 'openassemblee'
                 },
                 views: {
                     'content@': {
@@ -17,7 +17,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             })
             .state('user-management-detail', {
@@ -25,7 +25,7 @@ angular.module('babylone14166App')
                 url: '/user-management/:login',
                 data: {
                     authorities: ['ROLE_ADMIN'],
-                    pageTitle: 'babylone14166'
+                    pageTitle: 'openassemblee'
                 },
                 views: {
                     'content@': {
@@ -34,7 +34,7 @@ angular.module('babylone14166App')
                     }
                 },
                 resolve: {
-                    
+
                 }
             })
             .state('user-management.new', {
