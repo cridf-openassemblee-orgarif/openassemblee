@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,6 +73,9 @@ public class FonctionExecutiveResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restFonctionExecutiveMockMvc;
 
     private FonctionExecutive fonctionExecutive;
@@ -82,6 +86,7 @@ public class FonctionExecutiveResourceIntTest {
         FonctionExecutiveResource fonctionExecutiveResource = new FonctionExecutiveResource();
         ReflectionTestUtils.setField(fonctionExecutiveResource, "fonctionExecutiveRepository", fonctionExecutiveRepository);
         ReflectionTestUtils.setField(fonctionExecutiveResource, "fonctionExecutiveSearchRepository", fonctionExecutiveSearchRepository);
+        ReflectionTestUtils.setField(fonctionExecutiveResource, "auditTrailService", auditTrailService);
         this.restFonctionExecutiveMockMvc = MockMvcBuilders.standaloneSetup(fonctionExecutiveResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

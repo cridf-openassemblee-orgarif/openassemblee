@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.PresenceElu;
 import fr.cridf.babylone14166.repository.PresenceEluRepository;
 import fr.cridf.babylone14166.repository.search.PresenceEluSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +56,9 @@ public class PresenceEluResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restPresenceEluMockMvc;
 
     private PresenceElu presenceElu;
@@ -65,6 +69,7 @@ public class PresenceEluResourceIntTest {
         PresenceEluResource presenceEluResource = new PresenceEluResource();
         ReflectionTestUtils.setField(presenceEluResource, "presenceEluRepository", presenceEluRepository);
         ReflectionTestUtils.setField(presenceEluResource, "presenceEluSearchRepository", presenceEluSearchRepository);
+        ReflectionTestUtils.setField(presenceEluResource, "auditTrailService", auditTrailService);
         this.restPresenceEluMockMvc = MockMvcBuilders.standaloneSetup(presenceEluResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

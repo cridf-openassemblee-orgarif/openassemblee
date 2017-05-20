@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.AutreMandat;
 import fr.cridf.babylone14166.repository.AutreMandatRepository;
 import fr.cridf.babylone14166.repository.search.AutreMandatSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +75,9 @@ public class AutreMandatResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restAutreMandatMockMvc;
 
     private AutreMandat autreMandat;
@@ -79,6 +88,7 @@ public class AutreMandatResourceIntTest {
         AutreMandatResource autreMandatResource = new AutreMandatResource();
         ReflectionTestUtils.setField(autreMandatResource, "autreMandatRepository", autreMandatRepository);
         ReflectionTestUtils.setField(autreMandatResource, "autreMandatSearchRepository", autreMandatSearchRepository);
+        ReflectionTestUtils.setField(autreMandatResource, "auditTrailService", auditTrailService);
         this.restAutreMandatMockMvc = MockMvcBuilders.standaloneSetup(autreMandatResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -92,6 +102,10 @@ public class AutreMandatResourceIntTest {
         autreMandat.setDateDebut(DEFAULT_DATE_DEBUT);
         autreMandat.setDateFin(DEFAULT_DATE_FIN);
         autreMandat.setMotifFin(DEFAULT_MOTIF_FIN);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

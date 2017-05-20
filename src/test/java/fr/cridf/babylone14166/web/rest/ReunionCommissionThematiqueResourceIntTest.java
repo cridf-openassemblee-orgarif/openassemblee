@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.ReunionCommissionThematique;
 import fr.cridf.babylone14166.repository.ReunionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.ReunionCommissionThematiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.ReunionCommissionThematiqueService;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,9 @@ public class ReunionCommissionThematiqueResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restReunionCommissionThematiqueMockMvc;
 
     private ReunionCommissionThematique reunionCommissionThematique;
@@ -81,6 +85,7 @@ public class ReunionCommissionThematiqueResourceIntTest {
         ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueRepository", reunionCommissionThematiqueRepository);
         ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueSearchRepository", reunionCommissionThematiqueSearchRepository);
         ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "reunionCommissionThematiqueService", reunionCommissionThematiqueService);
+        ReflectionTestUtils.setField(reunionCommissionThematiqueResource, "auditTrailService", auditTrailService);
         this.restReunionCommissionThematiqueMockMvc = MockMvcBuilders.standaloneSetup(reunionCommissionThematiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

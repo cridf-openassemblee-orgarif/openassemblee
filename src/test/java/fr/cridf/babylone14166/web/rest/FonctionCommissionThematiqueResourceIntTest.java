@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.FonctionCommissionThematique;
 import fr.cridf.babylone14166.repository.FonctionCommissionThematiqueRepository;
 import fr.cridf.babylone14166.repository.search.FonctionCommissionThematiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,9 @@ public class FonctionCommissionThematiqueResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restFonctionCommissionThematiqueMockMvc;
 
     private FonctionCommissionThematique fonctionCommissionThematique;
@@ -77,6 +81,7 @@ public class FonctionCommissionThematiqueResourceIntTest {
         FonctionCommissionThematiqueResource fonctionCommissionThematiqueResource = new FonctionCommissionThematiqueResource();
         ReflectionTestUtils.setField(fonctionCommissionThematiqueResource, "fonctionCommissionThematiqueRepository", fonctionCommissionThematiqueRepository);
         ReflectionTestUtils.setField(fonctionCommissionThematiqueResource, "fonctionCommissionThematiqueSearchRepository", fonctionCommissionThematiqueSearchRepository);
+        ReflectionTestUtils.setField(fonctionCommissionThematiqueResource, "auditTrailService", auditTrailService);
         this.restFonctionCommissionThematiqueMockMvc = MockMvcBuilders.standaloneSetup(fonctionCommissionThematiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

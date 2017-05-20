@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.AppartenanceOrganisme;
 import fr.cridf.babylone14166.repository.AppartenanceOrganismeRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceOrganismeSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,6 +84,9 @@ public class AppartenanceOrganismeResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restAppartenanceOrganismeMockMvc;
 
     private AppartenanceOrganisme appartenanceOrganisme;
@@ -88,6 +97,7 @@ public class AppartenanceOrganismeResourceIntTest {
         AppartenanceOrganismeResource appartenanceOrganismeResource = new AppartenanceOrganismeResource();
         ReflectionTestUtils.setField(appartenanceOrganismeResource, "appartenanceOrganismeRepository", appartenanceOrganismeRepository);
         ReflectionTestUtils.setField(appartenanceOrganismeResource, "appartenanceOrganismeSearchRepository", appartenanceOrganismeSearchRepository);
+        ReflectionTestUtils.setField(appartenanceOrganismeResource, "auditTrailService", auditTrailService);
         this.restAppartenanceOrganismeMockMvc = MockMvcBuilders.standaloneSetup(appartenanceOrganismeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -105,6 +115,10 @@ public class AppartenanceOrganismeResourceIntTest {
         appartenanceOrganisme.setReference(DEFAULT_REFERENCE);
         appartenanceOrganisme.setType(DEFAULT_TYPE);
         appartenanceOrganisme.setLienPiece(DEFAULT_LIEN_PIECE);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

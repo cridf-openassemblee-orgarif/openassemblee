@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.FonctionGroupePolitique;
 import fr.cridf.babylone14166.repository.FonctionGroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.FonctionGroupePolitiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,9 @@ public class FonctionGroupePolitiqueResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restFonctionGroupePolitiqueMockMvc;
 
     private FonctionGroupePolitique fonctionGroupePolitique;
@@ -77,6 +81,7 @@ public class FonctionGroupePolitiqueResourceIntTest {
         FonctionGroupePolitiqueResource fonctionGroupePolitiqueResource = new FonctionGroupePolitiqueResource();
         ReflectionTestUtils.setField(fonctionGroupePolitiqueResource, "fonctionGroupePolitiqueRepository", fonctionGroupePolitiqueRepository);
         ReflectionTestUtils.setField(fonctionGroupePolitiqueResource, "fonctionGroupePolitiqueSearchRepository", fonctionGroupePolitiqueSearchRepository);
+        ReflectionTestUtils.setField(fonctionGroupePolitiqueResource, "auditTrailService", auditTrailService);
         this.restFonctionGroupePolitiqueMockMvc = MockMvcBuilders.standaloneSetup(fonctionGroupePolitiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

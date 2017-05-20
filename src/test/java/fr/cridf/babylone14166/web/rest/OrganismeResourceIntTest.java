@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.Organisme;
 import fr.cridf.babylone14166.repository.OrganismeRepository;
 import fr.cridf.babylone14166.repository.search.OrganismeSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +76,9 @@ public class OrganismeResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restOrganismeMockMvc;
 
     private Organisme organisme;
@@ -85,6 +89,7 @@ public class OrganismeResourceIntTest {
         OrganismeResource organismeResource = new OrganismeResource();
         ReflectionTestUtils.setField(organismeResource, "organismeRepository", organismeRepository);
         ReflectionTestUtils.setField(organismeResource, "organismeSearchRepository", organismeSearchRepository);
+        ReflectionTestUtils.setField(organismeResource, "auditTrailService", auditTrailService);
         this.restOrganismeMockMvc = MockMvcBuilders.standaloneSetup(organismeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

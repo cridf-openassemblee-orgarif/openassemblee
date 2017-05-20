@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.AppartenanceGroupePolitique;
 import fr.cridf.babylone14166.repository.AppartenanceGroupePolitiqueRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceGroupePolitiqueSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,6 +71,9 @@ public class AppartenanceGroupePolitiqueResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restAppartenanceGroupePolitiqueMockMvc;
 
     private AppartenanceGroupePolitique appartenanceGroupePolitique;
@@ -75,6 +84,7 @@ public class AppartenanceGroupePolitiqueResourceIntTest {
         AppartenanceGroupePolitiqueResource appartenanceGroupePolitiqueResource = new AppartenanceGroupePolitiqueResource();
         ReflectionTestUtils.setField(appartenanceGroupePolitiqueResource, "appartenanceGroupePolitiqueRepository", appartenanceGroupePolitiqueRepository);
         ReflectionTestUtils.setField(appartenanceGroupePolitiqueResource, "appartenanceGroupePolitiqueSearchRepository", appartenanceGroupePolitiqueSearchRepository);
+        ReflectionTestUtils.setField(appartenanceGroupePolitiqueResource, "auditTrailService", auditTrailService);
         this.restAppartenanceGroupePolitiqueMockMvc = MockMvcBuilders.standaloneSetup(appartenanceGroupePolitiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -86,6 +96,10 @@ public class AppartenanceGroupePolitiqueResourceIntTest {
         appartenanceGroupePolitique.setDateDebut(DEFAULT_DATE_DEBUT);
         appartenanceGroupePolitique.setDateFin(DEFAULT_DATE_FIN);
         appartenanceGroupePolitique.setMotifFin(DEFAULT_MOTIF_FIN);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

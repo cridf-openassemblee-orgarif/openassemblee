@@ -1,9 +1,11 @@
 package fr.cridf.babylone14166.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import fr.cridf.babylone14166.domain.Pouvoir;
 import fr.cridf.babylone14166.domain.Signature;
 import fr.cridf.babylone14166.repository.SignatureRepository;
 import fr.cridf.babylone14166.repository.search.SignatureSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.web.rest.util.HeaderUtil;
 import fr.cridf.babylone14166.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -41,6 +43,9 @@ public class SignatureResource {
     @Inject
     private SignatureSearchRepository signatureSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /signatures -> Create a new signature.
      */
@@ -55,6 +60,7 @@ public class SignatureResource {
         }
         Signature result = signatureRepository.save(signature);
         signatureSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/signatures/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("signature", result.getId().toString()))
             .body(result);
@@ -74,6 +80,7 @@ public class SignatureResource {
         }
         Signature result = signatureRepository.save(signature);
         signatureSearchRepository.save(signature);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("signature", signature.getId().toString()))
             .body(result);
@@ -120,6 +127,7 @@ public class SignatureResource {
         log.debug("REST request to delete Signature : {}", id);
         signatureRepository.delete(id);
         signatureSearchRepository.delete(id);
+        auditTrailService.logDeletion(Pouvoir.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("signature", id.toString())).build();
     }
 

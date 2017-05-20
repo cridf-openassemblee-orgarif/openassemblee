@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +79,9 @@ public class GroupePolitiqueResourceIntTest {
     @Inject
     private GroupePolitiqueService groupePolitiqueService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restGroupePolitiqueMockMvc;
 
     private GroupePolitique groupePolitique;
@@ -90,6 +94,7 @@ public class GroupePolitiqueResourceIntTest {
         ReflectionTestUtils.setField(groupePolitiqueResource, "groupePolitiqueSearchRepository",
             groupePolitiqueSearchRepository);
         ReflectionTestUtils.setField(groupePolitiqueResource, "groupePolitiqueService", groupePolitiqueService);
+        ReflectionTestUtils.setField(groupePolitiqueResource, "auditTrailService", auditTrailService);
         this.restGroupePolitiqueMockMvc = MockMvcBuilders.standaloneSetup(groupePolitiqueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

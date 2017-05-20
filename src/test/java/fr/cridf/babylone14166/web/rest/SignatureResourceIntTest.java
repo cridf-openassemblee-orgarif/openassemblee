@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.Signature;
 import fr.cridf.babylone14166.repository.SignatureRepository;
 import fr.cridf.babylone14166.repository.search.SignatureSearchRepository;
 
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -24,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +69,9 @@ private static final SignatureStatus DEFAULT_STATUT = SignatureStatus.PRESENT;
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restSignatureMockMvc;
 
     private Signature signature;
@@ -73,6 +82,7 @@ private static final SignatureStatus DEFAULT_STATUT = SignatureStatus.PRESENT;
         SignatureResource signatureResource = new SignatureResource();
         ReflectionTestUtils.setField(signatureResource, "signatureRepository", signatureRepository);
         ReflectionTestUtils.setField(signatureResource, "signatureSearchRepository", signatureSearchRepository);
+        ReflectionTestUtils.setField(signatureResource, "auditTrailService", auditTrailService);
         this.restSignatureMockMvc = MockMvcBuilders.standaloneSetup(signatureResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -83,6 +93,10 @@ private static final SignatureStatus DEFAULT_STATUT = SignatureStatus.PRESENT;
         signature = new Signature();
         signature.setPosition(DEFAULT_POSITION);
         signature.setStatut(DEFAULT_STATUT);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test

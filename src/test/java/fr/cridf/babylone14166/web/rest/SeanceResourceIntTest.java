@@ -5,6 +5,7 @@ import fr.cridf.babylone14166.domain.Seance;
 import fr.cridf.babylone14166.domain.enumeration.TypeSeance;
 import fr.cridf.babylone14166.repository.SeanceRepository;
 import fr.cridf.babylone14166.repository.search.SeanceSearchRepository;
+import fr.cridf.babylone14166.service.AuditTrailService;
 import fr.cridf.babylone14166.service.SeanceService;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,6 +73,9 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restSeanceMockMvc;
 
     private Seance seance;
@@ -83,6 +87,7 @@ private static final TypeSeance DEFAULT_TYPE = TypeSeance.PLENIERE;
         ReflectionTestUtils.setField(seanceResource, "seanceRepository", seanceRepository);
         ReflectionTestUtils.setField(seanceResource, "seanceSearchRepository", seanceSearchRepository);
         ReflectionTestUtils.setField(seanceResource, "seanceService", seanceService);
+        ReflectionTestUtils.setField(seanceResource, "auditTrailService", auditTrailService);
         this.restSeanceMockMvc = MockMvcBuilders.standaloneSetup(seanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

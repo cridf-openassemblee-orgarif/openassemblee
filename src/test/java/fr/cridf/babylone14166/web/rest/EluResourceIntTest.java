@@ -230,6 +230,7 @@ public class EluResourceIntTest {
                 .andExpect(status().isNotFound());
     }
 
+
     @Test
     @Transactional
     public void updateElu() throws Exception {

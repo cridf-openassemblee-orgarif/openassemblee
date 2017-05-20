@@ -4,17 +4,20 @@ import fr.cridf.babylone14166.Application;
 import fr.cridf.babylone14166.domain.AppartenanceCommissionPermanente;
 import fr.cridf.babylone14166.repository.AppartenanceCommissionPermanenteRepository;
 import fr.cridf.babylone14166.repository.search.AppartenanceCommissionPermanenteSearchRepository;
-
+import fr.cridf.babylone14166.service.AuditTrailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,9 +29,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -65,6 +70,9 @@ public class AppartenanceCommissionPermanenteResourceIntTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     private MockMvc restAppartenanceCommissionPermanenteMockMvc;
 
     private AppartenanceCommissionPermanente appartenanceCommissionPermanente;
@@ -75,6 +83,7 @@ public class AppartenanceCommissionPermanenteResourceIntTest {
         AppartenanceCommissionPermanenteResource appartenanceCommissionPermanenteResource = new AppartenanceCommissionPermanenteResource();
         ReflectionTestUtils.setField(appartenanceCommissionPermanenteResource, "appartenanceCommissionPermanenteRepository", appartenanceCommissionPermanenteRepository);
         ReflectionTestUtils.setField(appartenanceCommissionPermanenteResource, "appartenanceCommissionPermanenteSearchRepository", appartenanceCommissionPermanenteSearchRepository);
+        ReflectionTestUtils.setField(appartenanceCommissionPermanenteResource, "auditTrailService", auditTrailService);
         this.restAppartenanceCommissionPermanenteMockMvc = MockMvcBuilders.standaloneSetup(appartenanceCommissionPermanenteResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -86,6 +95,10 @@ public class AppartenanceCommissionPermanenteResourceIntTest {
         appartenanceCommissionPermanente.setDateDebut(DEFAULT_DATE_DEBUT);
         appartenanceCommissionPermanente.setDateFin(DEFAULT_DATE_FIN);
         appartenanceCommissionPermanente.setMotifFin(DEFAULT_MOTIF_FIN);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(new User("admin", "admin", Collections.emptyList()), "admin"));
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
