@@ -17,23 +17,23 @@
             overflowToDisk="false"
             />
 
-    <cache name="fr.cridf.babylone14166.domain.User"
+    <cache name="openassemblee.domain.User"
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="fr.cridf.babylone14166.domain.Authority"
+    <cache name="openassemblee.domain.Authority"
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="fr.cridf.babylone14166.domain.User.authorities"
+    <cache name="openassemblee.domain.User.authorities"
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="fr.cridf.babylone14166.domain.PersistentToken"
+    <cache name="openassemblee.domain.PersistentToken"
            timeToLiveSeconds="3600">
     </cache>
 
-    <cache name="fr.cridf.babylone14166.domain.User.persistentTokens"
+    <cache name="openassemblee.domain.User.persistentTokens"
            timeToLiveSeconds="3600">
     </cache>
     </ehcache>
