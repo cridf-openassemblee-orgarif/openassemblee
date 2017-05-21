@@ -9,7 +9,7 @@
         <relativePath />
     </parent>
 
-    <groupId>fr.cridf.openassemblee</groupId>
+    <groupId>openassemblee</groupId>
     <artifactId>openassemblee</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -554,7 +554,7 @@
                     <defaultSchemaName>openassemblee</defaultSchemaName>
                     <username>root</username>
                     <password />
-                    <referenceUrl>hibernate:spring:fr.cridf.openassemblee.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
+                    <referenceUrl>hibernate:spring:openassemblee.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>

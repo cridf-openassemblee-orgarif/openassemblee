@@ -1,7 +1,5 @@
 package openassemblee.service;
 
-import fr.cridf.openassemblee.repository.*;
-import fr.cridf.openassemblee.repository.search.*;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;
 import openassemblee.web.rest.dto.SearchResultDTO;

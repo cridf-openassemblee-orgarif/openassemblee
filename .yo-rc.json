@@ -1,8 +1,8 @@
 {
   "generator-jhipster": {
     "baseName": "openassemblee",
-    "packageName": "fr.cridf.openassemblee",
-    "packageFolder": "fr/cridf/openassemblee",
+    "packageName": "openassemblee",
+    "packageFolder": "openassemblee",
     "authenticationType": "session",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": "no",

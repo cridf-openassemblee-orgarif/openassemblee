@@ -1,12 +1,10 @@
 package openassemblee.config.data;
 
-import fr.cridf.openassemblee.domain.*;
+import liquibase.util.csv.opencsv.CSVReader;
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
-import fr.cridf.openassemblee.repository.*;
 import openassemblee.repository.*;
 import openassemblee.service.SearchService;
-import liquibase.util.csv.opencsv.CSVReader;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

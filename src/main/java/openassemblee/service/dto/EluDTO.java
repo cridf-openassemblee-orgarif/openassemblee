@@ -2,7 +2,7 @@ package openassemblee.service.dto;
 
 import java.util.Map;
 
-import fr.cridf.openassemblee.domain.*;
+import openassemblee.domain.*;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.Elu;
 import openassemblee.domain.GroupePolitique;

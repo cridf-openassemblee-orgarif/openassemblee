@@ -1,8 +1,8 @@
 package openassemblee.service;
 
-import fr.cridf.openassemblee.domain.*;
-import fr.cridf.openassemblee.repository.*;
-import fr.cridf.openassemblee.repository.search.*;
+import openassemblee.domain.*;
+import openassemblee.repository.*;
+import openassemblee.repository.search.*;
 import openassemblee.domain.*;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;

@@ -1,7 +1,7 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.cridf.openassemblee.domain.*;
+import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.search.EluSearchRepository;
 import openassemblee.service.AuditTrailService;
@@ -11,7 +11,6 @@ import openassemblee.service.ImageService;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.web.rest.util.HeaderUtil;
-import openassemblee.domain.*;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;

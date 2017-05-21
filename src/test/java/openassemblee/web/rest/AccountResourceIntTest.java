@@ -317,7 +317,7 @@ public class AccountResourceIntTest {
 
         Optional<User> userDup = userRepository.findOneByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
-        StrictAssertions.assertThat(userDup.get().getAuthorities()).hasSize(1)
+        assertThat(userDup.get().getAuthorities()).hasSize(1)
             .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));
     }
 }

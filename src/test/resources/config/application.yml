@@ -21,7 +21,7 @@ spring:
         username:
         password:
     jpa:
-        database-platform: fr.cridf.openassemblee.domain.util.FixedH2Dialect
+        database-platform: openassemblee.domain.util.FixedH2Dialect
         database: H2
         open-in-view: false
         show_sql: true
