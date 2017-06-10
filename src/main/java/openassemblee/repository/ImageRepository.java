@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StreamUtils;
 
 import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +53,7 @@ public class ImageRepository {
                 Blob blob = rs.getBlob("data");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try {
-                    Streams.copy(blob.getBinaryStream(), baos);
+                    StreamUtils.copy(blob.getBinaryStream(), baos);
                 } catch (IOException e) {
                     // TODO exception
                     throw new RuntimeException(e);

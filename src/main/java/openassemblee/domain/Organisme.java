@@ -1,13 +1,13 @@
 package openassemblee.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.*;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A Organisme.
@@ -45,6 +45,9 @@ public class Organisme implements Serializable {
 
     @Column(name = "motif_fin")
     private String motifFin;
+
+    @Column(name = "import_uid")
+    private String importUid;
 
     @OneToOne
     private AdressePostale adressePostale;
@@ -119,6 +122,14 @@ public class Organisme implements Serializable {
 
     public void setMotifFin(String motifFin) {
         this.motifFin = motifFin;
+    }
+
+    public String getImportUid() {
+        return importUid;
+    }
+
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
     }
 
     public AdressePostale getAdressePostale() {

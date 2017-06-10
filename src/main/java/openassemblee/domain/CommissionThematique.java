@@ -2,11 +2,11 @@ package openassemblee.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -36,6 +36,9 @@ public class CommissionThematique implements Serializable {
 
     @Column(name = "motif_fin")
     private String motifFin;
+
+    @Column(name = "import_uid")
+    private String importUid;
 
     public Long getId() {
         return id;
@@ -83,6 +86,14 @@ public class CommissionThematique implements Serializable {
 
     public void setMotifFin(String motifFin) {
         this.motifFin = motifFin;
+    }
+
+    public String getImportUid() {
+        return importUid;
+    }
+
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
     }
 
     @Override

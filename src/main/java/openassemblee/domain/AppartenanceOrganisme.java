@@ -54,6 +54,9 @@ public class AppartenanceOrganisme implements Serializable {
     @Column(name = "lien_piece")
     private String lienPiece;
 
+    @Column(name = "import_uid")
+    private String importUid;
+
     @ManyToOne
     @JoinColumn(name = "elu_id")
     @JsonSerialize(using = JacksonEluIdSerializer.class)
@@ -145,6 +148,14 @@ public class AppartenanceOrganisme implements Serializable {
 
     public void setLienPiece(String lienPiece) {
         this.lienPiece = lienPiece;
+    }
+
+    public String getImportUid() {
+        return importUid;
+    }
+
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
     }
 
     public Elu getElu() {

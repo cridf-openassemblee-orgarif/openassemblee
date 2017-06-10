@@ -26,8 +26,9 @@
             <column name="date_fin" type="date"/>
             <column name="motif_fin" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
+            <column name="import_uid" type="varchar(255)"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_id"
                                  baseTableName="fonction_executive"
                                  constraintName="fk_fonctionexecutive_elu_id"

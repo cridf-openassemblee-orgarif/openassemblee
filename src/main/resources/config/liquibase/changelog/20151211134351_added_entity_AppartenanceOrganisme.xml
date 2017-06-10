@@ -32,6 +32,7 @@
             <column name="type" type="varchar(255)"/>
             <column name="lien_piece" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
+            <column name="import_uid" type="varchar(255)"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="elu_id"

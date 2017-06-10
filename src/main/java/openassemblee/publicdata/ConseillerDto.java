@@ -30,7 +30,6 @@ public class ConseillerDto {
     private String distinctions;
     private String description;
     private String jpegphotoId;
-    private byte[] jpegphoto;
     private Float st;
     private String commissions;
     private String designations;
@@ -272,14 +271,6 @@ public class ConseillerDto {
 
     public void setJpegphotoId(String jpegphotoId) {
         this.jpegphotoId = jpegphotoId;
-    }
-
-    public byte[] getJpegphoto() {
-        return jpegphoto;
-    }
-
-    public void setJpegphoto(byte[] jpegphoto) {
-        this.jpegphoto = jpegphoto;
     }
 
     public Float getSt() {

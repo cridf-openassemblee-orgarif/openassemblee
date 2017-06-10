@@ -1,18 +1,16 @@
 package openassemblee.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
+import openassemblee.domain.jackson.JacksonGroupePolitiqueIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import openassemblee.domain.jackson.JacksonGroupePolitiqueIdSerializer;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A AppartenanceGroupePolitique.
@@ -35,6 +33,9 @@ public class AppartenanceGroupePolitique implements Serializable {
 
     @Column(name = "motif_fin")
     private String motifFin;
+
+    @Column(name = "import_uid")
+    private String importUid;
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
@@ -76,6 +77,14 @@ public class AppartenanceGroupePolitique implements Serializable {
 
     public void setMotifFin(String motifFin) {
         this.motifFin = motifFin;
+    }
+
+    public String getImportUid() {
+        return importUid;
+    }
+
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
     }
 
     public Elu getElu() {

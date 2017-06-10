@@ -30,10 +30,6 @@ public class GroupePolitique implements Serializable {
     @Column(name = "nom_court")
     private String nomCourt;
 
-    // for public WS only
-    @Transient
-    private String uuid;
-
     @OneToOne
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private AdressePostale adressePostale;
@@ -61,6 +57,9 @@ public class GroupePolitique implements Serializable {
 
     @Column(name = "fax")
     private String fax;
+
+    @Column(name = "import_uid")
+    private String importUid;
 
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
@@ -166,6 +165,14 @@ public class GroupePolitique implements Serializable {
         this.fax = fax;
     }
 
+    public String getImportUid() {
+        return importUid;
+    }
+
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
+    }
+
     public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {
         return appartenancesGroupePolitique;
     }
@@ -180,14 +187,6 @@ public class GroupePolitique implements Serializable {
 
     public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Override

@@ -45,6 +45,9 @@ public class Elu implements Serializable {
     @Column(name = "lieu_naissance")
     private String lieuNaissance;
 
+    @Column(name = "code_departement")
+    private String codeDepartement;
+
     @Column(name = "departement")
     private String departement;
 
@@ -57,9 +60,14 @@ public class Elu implements Serializable {
     @Column(name = "date_demission")
     private LocalDate dateDemission;
 
-    // for public WS only
-    @Transient
-    private String uuid;
+    @Column(name = "import_uid")
+    private String importUid;
+
+    @Column(name = "liste_electorale")
+    private String listeElectorale;
+
+    @Column(name = "liste_court")
+    private String listeCourt;
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -203,6 +211,14 @@ public class Elu implements Serializable {
 
     public void setLieuNaissance(String lieuNaissance) {
         this.lieuNaissance = lieuNaissance;
+    }
+
+    public String getCodeDepartement() {
+        return codeDepartement;
+    }
+
+    public void setCodeDepartement(String codeDepartement) {
+        this.codeDepartement = codeDepartement;
     }
 
     public String getDepartement() {
@@ -351,12 +367,28 @@ public class Elu implements Serializable {
         this.autreMandats = autreMandats;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getImportUid() {
+        return importUid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setImportUid(String importUid) {
+        this.importUid = importUid;
+    }
+
+    public String getListeElectorale() {
+        return listeElectorale;
+    }
+
+    public void setListeElectorale(String listeElectorale) {
+        this.listeElectorale = listeElectorale;
+    }
+
+    public String getListeCourt() {
+        return listeCourt;
+    }
+
+    public void setListeCourt(String listeCourt) {
+        this.listeCourt = listeCourt;
     }
 
     public String civiliteComplete() {

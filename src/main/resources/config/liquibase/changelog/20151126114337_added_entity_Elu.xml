@@ -28,10 +28,14 @@
             <column name="profession" type="varchar(255)"/>
             <column name="date_naissance" type="date"/>
             <column name="lieu_naissance" type="varchar(255)"/>
+            <column name="code_departement" type="varchar(255)"/>
             <column name="departement" type="varchar(255)"/>
             <column name="image" type="bigint"/>
             <column name="motif_demission" type="varchar(255)"/>
             <column name="date_demission" type="date"/>
+            <column name="import_uid" type="varchar(255)"/>
+            <column name="liste_electorale" type="varchar(255)"/>
+            <column name="liste_court" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

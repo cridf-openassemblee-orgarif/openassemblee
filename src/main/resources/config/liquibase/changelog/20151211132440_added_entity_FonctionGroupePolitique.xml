@@ -27,8 +27,9 @@
             <column name="motif_fin" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
             <column name="groupe_politique_id" type="bigint"/>
+            <column name="import_uid" type="varchar(255)"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_id"
                                  baseTableName="fonction_groupe_politique"
                                  constraintName="fk_fonctiongroupepolitique_elu_id"

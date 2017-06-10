@@ -26,7 +26,8 @@
             <column name="date_debut" type="date"/>
             <column name="date_fin" type="date"/>
             <column name="motif_fin" type="varchar(255)"/>
+            <column name="import_uid" type="varchar(255)"/>
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

@@ -32,6 +32,7 @@
             <column name="phone" type="varchar(255)"/>
             <column name="mail" type="varchar(255)"/>
             <column name="fax" type="varchar(255)"/>
+            <column name="import_uid" type="varchar(255)"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="adresse_postale_id" baseTableName="groupe_politique"
                                  constraintName="FK_grlgx614prmrh9u08c10mmie2" deferrable="false"
