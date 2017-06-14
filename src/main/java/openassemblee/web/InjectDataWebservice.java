@@ -99,17 +99,17 @@ public class InjectDataWebservice {
             .map(this::buildGroupePolitique)
             .collect(Collectors.toMap(GroupePolitique::getImportUid, it -> it));
         logger.info(gps.size() + " groupes politiques");
-        Map<String, Organisme> organismes = data.getEnsembles().stream()
-            .filter(e -> e.getType().equals("organisme"))
-            .map(this::buildOrganisme)
-            .collect(Collectors.toMap(Organisme::getImportUid, it -> it));
-        logger.info(organismes.size() + " organismes");
         Map<String, CommissionThematique> cts = data.getEnsembles().stream()
             .filter(e -> e.getType().equals("commission"))
             .filter(e -> e.getTypeCommission().equals("Thématique"))
             .map(this::buildCommissionThematique)
             .collect(Collectors.toMap(CommissionThematique::getImportUid, it -> it));
         logger.info(cts.size() + " commissions thématiques");
+        Map<String, Organisme> organismes = data.getEnsembles().stream()
+            .filter(e -> e.getType().equals("organisme"))
+            .map(this::buildOrganisme)
+            .collect(Collectors.toMap(Organisme::getImportUid, it -> it));
+        logger.info(organismes.size() + " organismes");
 
         // appartenances commission permanente
 //        String CP = data.getEnsembles().stream()
@@ -130,12 +130,12 @@ public class InjectDataWebservice {
 
         // appartenances groupe politique
         data.getMembres().stream()
-            .filter(m -> m.getType().equals("Groupe politique"))
+            .filter(m -> m.getType().equals("groupe politique"))
             .forEach(m -> buildAppartenanceGroupePolitique(m, elus, gps));
 
         // appartenances commission thématique
         data.getMembres().stream()
-            .filter(m -> m.getType().equals("Commission"))
+            .filter(m -> m.getType().equals("commission"))
             .filter(m -> gps.containsKey(m.getUidEnsemble()))
             .forEach(m -> buildAppartenanceCommissionThematique(m, elus, cts));
 
@@ -171,7 +171,7 @@ public class InjectDataWebservice {
         elu.setNomJeuneFille(c.getNomJeuneFille());
         elu.setProfession(c.getProfession());
         elu.setDateNaissance(parseDate(c.getDateNaissance()));
-        elu.setLieuNaissance(c.getVilleNaissance());
+        elu.setLieuNaissance(c.getVilleNaissance().trim());
         elu.setListeCourt(c.getListeCourt());
         elu.setListeElectorale(c.getListeElectorale());
         elu.setDepartement(c.getDepElection());
@@ -262,7 +262,7 @@ public class InjectDataWebservice {
         gp.setNomCourt(e.getLibCourt());
         gp.setDateDebut(parseDate(e.getDateCreation()));
         gp.setDateFin(parseDate(e.getDateFin()));
-        gp.setMotifFin(e.getMotifFin());
+        gp.setMotifFin(e.getMotifFin().trim());
 
         AdressePostale ap = new AdressePostale();
         ap.setVoie(e.getAdresse());
