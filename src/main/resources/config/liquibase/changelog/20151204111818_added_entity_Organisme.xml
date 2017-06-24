@@ -31,6 +31,12 @@
             <column name="motif_fin" type="varchar(255)"/>
             <column name="adresse_postale_id" type="BIGINT"/>
             <column name="import_uid" type="varchar(255)"/>
+            <column name="telephone" type="varchar(255)"/>
+            <column name="fax" type="varchar(255)"/>
+            <column name="phonetique" type="varchar(255)"/>
+            <column name="departement" type="varchar(255)"/>
+            <column name="description" type="text"/>
+            <column name="status" type="varchar(255)"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="adresse_postale_id" baseTableName="organisme"
                                  constraintName="FK_grlgx614prmrh9u08c10mm452" deferrable="false"

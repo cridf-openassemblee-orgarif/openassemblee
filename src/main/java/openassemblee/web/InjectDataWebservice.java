@@ -171,7 +171,7 @@ public class InjectDataWebservice {
         elu.setNomJeuneFille(c.getNomJeuneFille());
         elu.setProfession(c.getProfession());
         elu.setDateNaissance(parseDate(c.getDateNaissance()));
-        elu.setLieuNaissance(c.getVilleNaissance().trim());
+        elu.setLieuNaissance(trimOrNull(c.getVilleNaissance()));
         elu.setListeCourt(c.getListeCourt());
         elu.setListeElectorale(c.getListeElectorale());
         elu.setDepartement(c.getDepElection());
@@ -262,7 +262,7 @@ public class InjectDataWebservice {
         gp.setNomCourt(e.getLibCourt());
         gp.setDateDebut(parseDate(e.getDateCreation()));
         gp.setDateFin(parseDate(e.getDateFin()));
-        gp.setMotifFin(e.getMotifFin().trim());
+        gp.setMotifFin(trimOrNull(e.getMotifFin()));
 
         AdressePostale ap = new AdressePostale();
         ap.setVoie(e.getAdresse());
@@ -286,12 +286,21 @@ public class InjectDataWebservice {
 
     private Organisme buildOrganisme(EnsembleDto e) {
         Organisme o = new Organisme();
-        o.setCodeRNE(e.getCodeRne());
+        o.setCodeRNE(trimOrNull(e.getCodeRne()));
+        // TODO Solveig ?
+        o.setSigle(e.getLibCourt());
         o.setNom(e.getLibLong());
         o.setSecteur(e.getSecteur());
         o.setDateDebut(parseDate(e.getDateCreation()));
         o.setDateFin(parseDate(e.getDateFin()));
-        o.setMotifFin(e.getMotifFin());
+        o.setMotifFin(trimOrNull(e.getMotifFin()));
+        o.setTelephone(e.getTelephone());
+        o.setFax(e.getFax());
+        o.setPhonetique(e.getPhonetique());
+        o.setDepartement(e.getDepartement());
+        o.setDescription(trimOrNull(e.getDescription()));
+        o.setStatus(e.getStatus());
+
         AdressePostale ap = new AdressePostale();
         ap.setVoie(e.getAdresse());
         ap.setCodePostal(e.getCodePostal());
@@ -313,7 +322,7 @@ public class InjectDataWebservice {
         ct.setNomCourt(e.getLibCourt());
         ct.setDateDebut(parseDate(e.getDateCreation()));
         ct.setDateFin(parseDate(e.getDateFin()));
-        ct.setMotifFin(e.getMotifFin());
+        ct.setMotifFin(trimOrNull(e.getMotifFin()));
 
         ct.setImportUid(e.getUidEnsemble());
         commissionThematiqueRepository.save(ct);
@@ -326,7 +335,7 @@ public class InjectDataWebservice {
         agp.setGroupePolitique(gps.get(m.getUidEnsemble()));
         agp.setDateDebut(parseDate(m.getDateDebut()));
         agp.setDateFin(parseDate(m.getDateFin()));
-        agp.setMotifFin(m.getMotifFin());
+        agp.setMotifFin(trimOrNull(m.getMotifFin()));
         agp.setImportUid(m.getUidMembre());
         appartenanceGroupePolitiqueRepository.save(agp);
     }
@@ -337,7 +346,7 @@ public class InjectDataWebservice {
         act.setCommissionThematique(cts.get(m.getUidEnsemble()));
         act.setDateDebut(parseDate(m.getDateDebut()));
         act.setDateFin(parseDate(m.getDateFin()));
-        act.setMotifFin(m.getMotifFin());
+        act.setMotifFin(trimOrNull(m.getMotifFin()));
         act.setImportUid(m.getUidMembre());
         appartenanceCommissionThematiqueRepository.save(act);
     }
@@ -351,8 +360,12 @@ public class InjectDataWebservice {
         ao.setDateNomination(parseDate(m.getDateNomination()));
         ao.setDateDebut(parseDate(m.getDateDebut()));
         ao.setDateFin(parseDate(m.getDateFin()));
-        ao.setMotifFin(m.getMotifFin());
+        ao.setMotifFin(trimOrNull(m.getMotifFin()));
         ao.setImportUid(m.getUidMembre());
         appartenanceOrganismeRepository.save(ao);
+    }
+
+    private String trimOrNull(String label) {
+        return label != null && !label.trim().equals("") ? label : null;
     }
 }

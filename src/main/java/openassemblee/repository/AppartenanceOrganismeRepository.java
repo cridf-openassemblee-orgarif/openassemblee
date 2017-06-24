@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface AppartenanceOrganismeRepository extends JpaRepository<AppartenanceOrganisme, Long> {
 
+    // TODO mais du coup quand on avait pas le code RNE ? Quel est l'usage de ce truc ?
     List<AppartenanceOrganisme> findAllByCodeRNE(String codeRNE);
 
 }

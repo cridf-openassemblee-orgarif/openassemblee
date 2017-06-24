@@ -26,6 +26,7 @@ import static openassemblee.domain.enumeration.TypeIdentiteInternet.*;
 public class PublicDataWebservice {
 
     private static final String NON_RENSEIGNE = "- non renseigné -";
+    private static final String MANDATURE = "18";
 
     @Autowired
     private EluRepository eluRepository;
@@ -44,6 +45,9 @@ public class PublicDataWebservice {
 
     @Autowired
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
+
+    @Autowired
+    private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
 
     @RequestMapping(value = "/websitedata", method = RequestMethod.GET)
     @Transactional(readOnly = true)
@@ -90,10 +94,9 @@ public class PublicDataWebservice {
                 ConseillerDto d = new ConseillerDto();
                 d.setUidConseiller(e.getImportUid());
                 // TODO Solveig
-                d.setMandature("18");
+                d.setMandature(MANDATURE);
                 d.setNom(e.getNom());
-                // TODO PDE espace ?
-                d.setActiviteProf(" ");
+                d.setActiviteProf(stringOrSpace(null));
                 d.setProfession(e.getProfession());
                 getPublishable(e.getAdressesPostales()).ifPresent(ap -> {
                     d.setAdresse(ap.getVoie());
@@ -104,6 +107,9 @@ public class PublicDataWebservice {
                 Optional<AppartenanceGroupePolitique> agp = e.getAppartenancesGroupePolitique().stream()
                     .filter(a -> a.getDateFin() == null)
                     .findFirst();
+                // first set to empty
+                d.setGroupeCourt("");
+                d.setGroupePolitique("");
                 agp.ifPresent(g -> {
                     GroupePolitique gp = agp.get().getGroupePolitique();
                     if (gp != null) {
@@ -129,7 +135,7 @@ public class PublicDataWebservice {
                     d.setCivilite(e.getCivilite() == Civilite.MONSIEUR ? "M." : "Mme");
                 }
                 // TODO PDE espace ?
-                d.setVilleNaissance(!Strings.isNullOrEmpty(e.getLieuNaissance()) ? e.getLieuNaissance() : " ");
+                d.setVilleNaissance(stringOrSpace(e.getLieuNaissance()));
                 // TODO PDE gné
                 d.setDescription(".");
                 d.setJpegphotoId(String.valueOf(e.getImage()));
@@ -161,7 +167,7 @@ public class PublicDataWebservice {
         List<EnsembleDto> result = new ArrayList<>();
         EnsembleDto cp = new EnsembleDto();
         // TODO Solveig
-        cp.setMandature("18");
+        cp.setMandature(MANDATURE);
         cp.setUidEnsemble("COM002");
         cp.setLibCourt("CP");
         cp.setDateCreation("18/12/2015");
@@ -175,10 +181,27 @@ public class PublicDataWebservice {
         cp.setSt(1f);
         cp.setValid('1');
         cp.setDescription(NON_RENSEIGNE);
+
+        cp.setStatus(stringOrSpace(null));
+        cp.setDescription(NON_RENSEIGNE);
+        cp.setDateFin(stringOrSpace(null));
+        cp.setCodeRne(stringOrSpace(null));
+        cp.setDepartement(stringOrSpace(null));
+        cp.setMotifFin(stringOrSpace(null));
+        cp.setSecteur(stringOrSpace(null));
+        cp.setTelephone(stringOrSpace(null));
+        cp.setFax(stringOrSpace(null));
+        cp.setAdresse(stringOrSpace(null));
+        cp.setCodePostal(stringOrSpace(null));
+        cp.setVille(stringOrSpace(null));
+        cp.setMail(stringOrSpace(null));
+        cp.setPhonetique(stringOrSpace(null));
+
         result.add(cp);
+
         EnsembleDto exec = new EnsembleDto();
         // TODO Solveig
-        exec.setMandature("18");
+        exec.setMandature(MANDATURE);
         exec.setUidEnsemble("COM003");
         exec.setLibCourt("VP");
         exec.setDateCreation("18/12/2015");
@@ -192,10 +215,26 @@ public class PublicDataWebservice {
         exec.setSt(2f);
         exec.setValid('1');
         exec.setDescription(NON_RENSEIGNE);
+
+        exec.setStatus(stringOrSpace(null));
+        exec.setDateFin(stringOrSpace(null));
+        exec.setCodeRne(stringOrSpace(null));
+        exec.setDepartement(stringOrSpace(null));
+        exec.setMotifFin(stringOrSpace(null));
+        exec.setSecteur(stringOrSpace(null));
+        exec.setTelephone(stringOrSpace(null));
+        exec.setFax(stringOrSpace(null));
+        exec.setAdresse(stringOrSpace(null));
+        exec.setCodePostal(stringOrSpace(null));
+        exec.setVille(stringOrSpace(null));
+        exec.setMail(stringOrSpace(null));
+        exec.setPhonetique(stringOrSpace(null));
+
         result.add(exec);
+
         EnsembleDto deleg = new EnsembleDto();
         // TODO Solveig
-        deleg.setMandature("18");
+        deleg.setMandature(MANDATURE);
         deleg.setUidEnsemble("COM004");
         deleg.setLibCourt("Délégués spéciaux");
         deleg.setDateCreation("22/12/2015");
@@ -209,6 +248,22 @@ public class PublicDataWebservice {
         deleg.setSt(3f);
         deleg.setValid('1');
         deleg.setDescription(NON_RENSEIGNE);
+
+        deleg.setDescription(NON_RENSEIGNE);
+        deleg.setStatus(stringOrSpace(null));
+        deleg.setDateFin(stringOrSpace(null));
+        deleg.setCodeRne(stringOrSpace(null));
+        deleg.setDepartement(stringOrSpace(null));
+        deleg.setMotifFin(stringOrSpace(null));
+        deleg.setSecteur(stringOrSpace(null));
+        deleg.setTelephone(stringOrSpace(null));
+        deleg.setFax(stringOrSpace(null));
+        deleg.setAdresse(stringOrSpace(null));
+        deleg.setCodePostal(stringOrSpace(null));
+        deleg.setVille(stringOrSpace(null));
+        deleg.setMail(stringOrSpace(null));
+        deleg.setPhonetique(stringOrSpace(null));
+
         result.add(deleg);
         return result;
     }
@@ -217,35 +272,45 @@ public class PublicDataWebservice {
         return groupePolitiques.stream().map(gp -> {
             EnsembleDto e = new EnsembleDto();
             e.setUidEnsemble(gp.getImportUid());
-            e.setMandature("");
+            e.setMandature(MANDATURE);
             e.setLibCourt(gp.getNomCourt());
             e.setDateCreation(formatDate(gp.getDateDebut()));
             e.setType("groupe politique");
-            e.setTypeCommission("");
+            e.setTypeCommission(stringOrSpace(null));
             e.setNbMembre(gp.getAppartenancesGroupePolitique().stream()
                 .filter(g -> g.getDateFin() == null)
                 .count());
             e.setNbTitulaire(0L);
             e.setNbSuppleant(0L);
-            e.setValid('O');
+            e.setValid('1');
             e.setLibLong(gp.getNom());
             e.setSt(0F);
             e.setDateFin(formatDate(gp.getDateFin()));
-            e.setDescription("");
-            e.setCodeRne("");
-            e.setDepartement("");
-            e.setMotifFin(gp.getMotifFin().trim());
-            e.setSecteur("");
+            e.setMotifFin(stringOrSpace(gp.getMotifFin()));
             e.setTelephone(gp.getPhone());
-            e.setFax(gp.getFax());
+
+            e.setDescription(NON_RENSEIGNE);
+            if(e.getLibLong().equals("Non Inscrits")) {
+                e.setDescription(stringOrSpace(null));
+            }
+            e.setCodeRne(stringOrSpace(null));
+            e.setDepartement(stringOrSpace(null));
+            e.setSecteur(stringOrSpace(null));
+            e.setTelephone(stringOrSpace(null));
+            e.setFax(stringOrSpace(null));
+            e.setAdresse(stringOrSpace(null));
+            e.setCodePostal(stringOrSpace(null));
+            e.setVille(stringOrSpace(null));
+            e.setMail(stringOrSpace(null));
+            e.setPhonetique(stringOrSpace(null));
+
             if (gp.getAdressePostale() != null) {
                 e.setAdresse(gp.getAdressePostale().getVoie());
                 e.setCodePostal(gp.getAdressePostale().getCodePostal());
                 e.setVille(gp.getAdressePostale().getVille());
             }
-            e.setStatus("");
+            e.setStatus(stringOrSpace(null));
             e.setMail(gp.getMail());
-            e.setPhonetique("");
             return e;
         }).collect(Collectors.toList());
     }
@@ -254,33 +319,51 @@ public class PublicDataWebservice {
         return organismes.stream().map(o -> {
             EnsembleDto e = new EnsembleDto();
             e.setUidEnsemble(o.getImportUid());
-            e.setMandature("");
-            e.setLibCourt("");
+            e.setMandature(MANDATURE);
+            // TODO Solveig
+            e.setLibCourt(o.getSigle());
             e.setDateCreation(formatDate(o.getDateDebut()));
             e.setType("organisme");
-            e.setTypeCommission("");
-            e.setNbMembre(0L);
+            e.setTypeCommission(stringOrSpace(null));
+            if (!Strings.isNullOrEmpty(o.getCodeRNE())) {
+                List<AppartenanceOrganisme> aos = appartenanceOrganismeRepository.findAllByCodeRNE(o.getCodeRNE())
+                    .stream()
+                    .filter(ao -> Strings.isNullOrEmpty(ao.getMotifFin()) && ao.getDateFin() == null)
+                    .collect(Collectors.toList());
+                e.setNbMembre((long) aos.size());
+            } else {
+                e.setNbMembre(0L);
+            }
             e.setNbTitulaire(0L);
             e.setNbSuppleant(0L);
-            e.setValid('O');
+            e.setValid('1');
             e.setLibLong(o.getNom());
             e.setSt(0F);
             e.setDateFin(formatDate(o.getDateFin()));
-            e.setDescription("");
-            e.setCodeRne("");
-            e.setDepartement("");
-            e.setMotifFin(o.getMotifFin().trim());
-            e.setSecteur("");
-            e.setTelephone("");
-            e.setFax("");
+            e.setDescription(stringOrSpace(o.getDescription()));
+            e.setCodeRne(stringOrSpace(o.getCodeRNE()));
+            // TODO Solveig
+            e.setSecteur(stringOrSpace(o.getSecteur()));
+            e.setMotifFin(stringOrSpace(o.getMotifFin()));
+            e.setSecteur(o.getSecteur());
+            e.setTelephone(o.getTelephone());
+            e.setFax(o.getFax());
+            e.setPhonetique(o.getPhonetique());
+            e.setDepartement(stringOrSpace(o.getDepartement()));
+            e.setMail(stringOrSpace(null));
+            e.setPhonetique(stringOrSpace(o.getPhonetique()));
             if (o.getAdressePostale() != null) {
                 e.setAdresse(o.getAdressePostale().getVoie());
                 e.setCodePostal(o.getAdressePostale().getCodePostal());
                 e.setVille(o.getAdressePostale().getVille());
             }
-            e.setStatus("");
-            e.setMail("");
-            e.setPhonetique("");
+            // TODO PDE Solveig ? suppression
+            // non cohérence
+            e.setStatus(o.getStatus());
+            // TODO remove ?
+//            if(e.getUidEnsemble().equals("ORG2156")) {
+//                e.setStatus("O");
+//            }
             return e;
         }).collect(Collectors.toList());
     }
@@ -288,7 +371,7 @@ public class PublicDataWebservice {
     private List<EnsembleDto> getEnsemblesCommissionsThematiques(List<CommissionThematique> cts) {
         return cts.stream().map(ct -> {
             EnsembleDto e = new EnsembleDto();
-            e.setMandature("18");
+            e.setMandature(MANDATURE);
             e.setUidEnsemble(ct.getImportUid());
             e.setLibCourt(ct.getNomCourt());
             e.setDateCreation(formatDate(ct.getDateDebut()));
@@ -301,12 +384,30 @@ public class PublicDataWebservice {
             e.setNbTitulaire(nbMembres);
             // TODO Solveig on a pas prévu de suppléants
             e.setNbSuppleant(0L);
-            e.setLibLong("Vice-président(e)s");
+            e.setLibLong(ct.getNom());
             // TODO Solveig on a pas d'ordre dans Siger
             // on peut mettre en dur dans la base maintenant, mais c'est la merde à la première modification
-            e.setSt(4f);
             e.setValid('1');
             e.setDescription(NON_RENSEIGNE);
+            e.setSt(0f);
+            e.setDateFin(formatDate(ct.getDateFin()));
+            e.setDescription(NON_RENSEIGNE);
+            e.setCodeRne(stringOrSpace(null));
+            e.setDepartement(stringOrSpace(null));
+            e.setMotifFin(stringOrSpace(ct.getMotifFin()));
+            e.setSecteur(stringOrSpace(null));
+            e.setTelephone(stringOrSpace(null));
+            e.setFax(stringOrSpace(null));
+            e.setAdresse(stringOrSpace(null));
+            e.setCodePostal(stringOrSpace(null));
+            e.setVille(stringOrSpace(null));
+            e.setMail(stringOrSpace(null));
+            e.setPhonetique(stringOrSpace(null));
+            if(ct.getDateFin() != null) {
+                e.setStatus("F");
+            } else {
+                e.setStatus(" ");
+            }
             return e;
         }).collect(Collectors.toList());
     }
@@ -360,6 +461,10 @@ public class PublicDataWebservice {
         } else {
             return " ";
         }
+    }
+
+    private String stringOrSpace(String label) {
+        return label != null ? label : " ";
     }
 
 }

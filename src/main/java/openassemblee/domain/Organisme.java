@@ -49,6 +49,24 @@ public class Organisme implements Serializable {
     @Column(name = "import_uid")
     private String importUid;
 
+    @Column(name = "telephone")
+    private String telephone;
+
+    @Column(name = "fax")
+    private String fax;
+
+    @Column(name = "phonetique")
+    private String phonetique;
+
+    @Column(name = "departement")
+    private String departement;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "status")
+    private String status;
+
     @OneToOne
     private AdressePostale adressePostale;
 
@@ -130,6 +148,54 @@ public class Organisme implements Serializable {
 
     public void setImportUid(String importUid) {
         this.importUid = importUid;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getPhonetique() {
+        return phonetique;
+    }
+
+    public void setPhonetique(String phonetique) {
+        this.phonetique = phonetique;
+    }
+
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public AdressePostale getAdressePostale() {
