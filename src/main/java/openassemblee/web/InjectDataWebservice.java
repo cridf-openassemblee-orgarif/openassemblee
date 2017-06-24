@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -67,6 +69,16 @@ public class InjectDataWebservice {
     private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
     @Autowired
     private IdentiteInternetRepository identiteInternetRepository;
+    @Autowired
+    private AppartenanceCommissionPermanenteRepository appartenanceCommissionPermanenteRepository;
+    @Autowired
+    private FonctionExecutiveRepository fonctionExecutiveRepository;
+    @Autowired
+    private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
+    @Autowired
+    private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
+    @Autowired
+    private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     public String ping() {
@@ -82,6 +94,9 @@ public class InjectDataWebservice {
         appartenanceOrganismeRepository.deleteAll();
         appartenanceCommissionThematiqueRepository.deleteAll();
         appartenanceGroupePolitiqueRepository.deleteAll();
+        appartenanceCommissionPermanenteRepository.deleteAll();
+        fonctionCommissionPermanenteRepository.deleteAll();
+        fonctionExecutiveRepository.deleteAll();
         groupePolitiqueRepository.deleteAll();
         eluRepository.deleteAll();
         adressePostaleRepository.deleteAll();
@@ -89,6 +104,8 @@ public class InjectDataWebservice {
         numeroTelephoneRepository.deleteAll();
         numeroFaxRepository.deleteAll();
         eluRepository.deleteAll();
+        fonctionGroupePolitiqueRepository.deleteAll();
+        fonctionGroupePolitiqueRepository.deleteAll();
 
         Map<String, Elu> elus = data.getConseillers().stream()
             .map(this::buildElu)
@@ -112,38 +129,94 @@ public class InjectDataWebservice {
         logger.info(organismes.size() + " organismes");
 
         // appartenances commission permanente
-//        String CP = data.getEnsembles().stream()
-//            .filter(e -> e.getType().equals("commission"))
-//            .filter(e -> e.getTypeCommission().equals("Permanente"))
-//            .findAny().get().getUidEnsemble();
-//
-//        // appartenances executif
+        String cp = data.getEnsembles().stream()
+            .filter(e -> e.getType().equals("commission"))
+            .filter(e -> e.getTypeCommission().equals("Permanente"))
+            .findAny().get().getUidEnsemble();
+
+        // appartenances executif
 //        String executif = data.getEnsembles().stream()
 //            .filter(e -> e.getType().equals("commission"))
 //            .filter(e -> e.getTypeCommission().equals("Exécutif"))
 //            .findAny().get().getUidEnsemble();
-//
-//        String deleguesSpeciaux = data.getEnsembles().stream()
-//            .filter(e -> e.getType().equals("commission"))
-//            .filter(e -> e.getTypeCommission().equals("Délégués spéciaux"))
-//            .findAny().get().getUidEnsemble();
+
+        String deleguesSpeciaux = data.getEnsembles().stream()
+            .filter(e -> e.getType().equals("commission"))
+            .filter(e -> e.getTypeCommission().equals("Délégués spéciaux"))
+            .findAny().get().getUidEnsemble();
+
+        List<String> uidsTraites = new ArrayList<>();
+        // appartenances commission permanent
+        List<MembreDto> m1 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Commissions"))
+            .filter(m -> m.getUidEnsemble().equals(cp))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m1.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbCp = m1.stream()
+            .map(m -> buildAppartenanceCommissionPermanente(m, elus))
+            .count();
+        System.out.println("Commission permanente membres : " + nbCp);
+
+        // fonctions executives
+        List<MembreDto> m2 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Exécutif"))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m2.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbE = m2.stream()
+            .map(m -> buildFonctionExecutive(m, elus))
+            .count();
+        System.out.println("Exécutif : " + nbE);
+
+        // fonctions CP
+        List<MembreDto> m3 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Commissions"))
+            .filter(m -> m.getUidEnsemble().equals(deleguesSpeciaux))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m3.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbFcp = m3.stream()
+            .map(m -> buildFonctionCommissionPermanente(m, elus))
+            .count();
+        System.out.println("Fonctions CP : " + nbFcp);
 
         // appartenances groupe politique
-        data.getMembres().stream()
-            .filter(m -> m.getType().equals("groupe politique"))
-            .forEach(m -> buildAppartenanceGroupePolitique(m, elus, gps));
+        List<MembreDto> m4 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Groupe politique"))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m4.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbAgp = m4.stream()
+            .map(m -> buildAppartenanceGroupePolitique(m, elus, gps))
+            .count();
+        System.out.println("Appartenances GP : " + nbAgp);
 
         // appartenances commission thématique
-        data.getMembres().stream()
-            .filter(m -> m.getType().equals("commission"))
-            .filter(m -> gps.containsKey(m.getUidEnsemble()))
-            .forEach(m -> buildAppartenanceCommissionThematique(m, elus, cts));
+        List<MembreDto> m5 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Commissions"))
+            .filter(m -> cts.containsKey(m.getUidEnsemble()))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m5.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbAct = m5.stream()
+            .map(m -> buildAppartenanceCommissionThematique(m, elus, cts))
+            .count();
+        System.out.println("Appartenances CT : " + nbAct);
 
         // appartenances organismes
-        data.getMembres().stream()
-            .filter(m -> m.getType().equals("organisme"))
-            .filter(m -> gps.containsKey(m.getUidEnsemble()))
-            .forEach(m -> buildAppartenanceOrganisme(m, elus, organismes));
+        List<MembreDto> m6 = data.getMembres().stream()
+            .filter(m -> m.getType().equals("Organisme"))
+            .collect(Collectors.toList());
+        uidsTraites.addAll(m6.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
+        long nbAo = m6.stream()
+            .map(m -> buildAppartenanceOrganisme(m, elus, organismes))
+            .count();
+        System.out.println("Appartenances organismes : " + nbAo);
+
+        List<String> manquants = data.getMembres().stream()
+            .map(MembreDto::getUidMembre)
+            .filter(id -> !uidsTraites.contains(id))
+            .collect(Collectors.toList());
+
+        System.out.println("Membres : " + data.getMembres().size());
+//        System.out.println("Membres reconstitués : " + uidsTraites.size());
+//        System.out.println(manquants);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
@@ -329,7 +402,37 @@ public class InjectDataWebservice {
         return ct;
     }
 
-    private void buildAppartenanceGroupePolitique(MembreDto m, Map<String, Elu> elus, Map<String, GroupePolitique> gps) {
+    private AppartenanceCommissionPermanente buildAppartenanceCommissionPermanente(MembreDto m, Map<String, Elu> elus) {
+        AppartenanceCommissionPermanente acp = new AppartenanceCommissionPermanente();
+        acp.setElu(elus.get(m.getUidConseiller()));
+        acp.setDateDebut(parseDate(m.getDateDebut()));
+        acp.setDateFin(parseDate(m.getDateFin()));
+        acp.setMotifFin(trimOrNull(m.getMotifFin()));
+        acp.setImportUid(m.getUidMembre());
+        return appartenanceCommissionPermanenteRepository.save(acp);
+    }
+
+    private FonctionExecutive buildFonctionExecutive(MembreDto m, Map<String, Elu> elus) {
+        FonctionExecutive fe = new FonctionExecutive();
+        fe.setElu(elus.get(m.getUidConseiller()));
+        fe.setDateDebut(parseDate(m.getDateDebut()));
+        fe.setDateFin(parseDate(m.getDateFin()));
+        fe.setMotifFin(trimOrNull(m.getMotifFin()));
+        fe.setImportUid(m.getUidMembre());
+        return fonctionExecutiveRepository.save(fe);
+    }
+
+    private FonctionCommissionPermanente buildFonctionCommissionPermanente(MembreDto m, Map<String, Elu> elus) {
+        FonctionCommissionPermanente fcp = new FonctionCommissionPermanente();
+        fcp.setElu(elus.get(m.getUidConseiller()));
+        fcp.setDateDebut(parseDate(m.getDateDebut()));
+        fcp.setDateFin(parseDate(m.getDateFin()));
+        fcp.setMotifFin(trimOrNull(m.getMotifFin()));
+        fcp.setImportUid(m.getUidMembre());
+        return fonctionCommissionPermanenteRepository.save(fcp);
+    }
+
+    private AppartenanceGroupePolitique buildAppartenanceGroupePolitique(MembreDto m, Map<String, Elu> elus, Map<String, GroupePolitique> gps) {
         AppartenanceGroupePolitique agp = new AppartenanceGroupePolitique();
         agp.setElu(elus.get(m.getUidConseiller()));
         agp.setGroupePolitique(gps.get(m.getUidEnsemble()));
@@ -337,10 +440,10 @@ public class InjectDataWebservice {
         agp.setDateFin(parseDate(m.getDateFin()));
         agp.setMotifFin(trimOrNull(m.getMotifFin()));
         agp.setImportUid(m.getUidMembre());
-        appartenanceGroupePolitiqueRepository.save(agp);
+        return appartenanceGroupePolitiqueRepository.save(agp);
     }
 
-    private void buildAppartenanceCommissionThematique(MembreDto m, Map<String, Elu> elus, Map<String, CommissionThematique> cts) {
+    private AppartenanceCommissionThematique buildAppartenanceCommissionThematique(MembreDto m, Map<String, Elu> elus, Map<String, CommissionThematique> cts) {
         AppartenanceCommissionThematique act = new AppartenanceCommissionThematique();
         act.setElu(elus.get(m.getUidConseiller()));
         act.setCommissionThematique(cts.get(m.getUidEnsemble()));
@@ -348,10 +451,10 @@ public class InjectDataWebservice {
         act.setDateFin(parseDate(m.getDateFin()));
         act.setMotifFin(trimOrNull(m.getMotifFin()));
         act.setImportUid(m.getUidMembre());
-        appartenanceCommissionThematiqueRepository.save(act);
+        return appartenanceCommissionThematiqueRepository.save(act);
     }
 
-    private void buildAppartenanceOrganisme(MembreDto m, Map<String, Elu> elus, Map<String, Organisme> organismes) {
+    private AppartenanceOrganisme buildAppartenanceOrganisme(MembreDto m, Map<String, Elu> elus, Map<String, Organisme> organismes) {
         Organisme o = organismes.get(m.getUidEnsemble());
         AppartenanceOrganisme ao = new AppartenanceOrganisme();
         ao.setElu(elus.get(m.getUidConseiller()));
@@ -362,7 +465,7 @@ public class InjectDataWebservice {
         ao.setDateFin(parseDate(m.getDateFin()));
         ao.setMotifFin(trimOrNull(m.getMotifFin()));
         ao.setImportUid(m.getUidMembre());
-        appartenanceOrganismeRepository.save(ao);
+        return appartenanceOrganismeRepository.save(ao);
     }
 
     private String trimOrNull(String label) {

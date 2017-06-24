@@ -18,6 +18,42 @@ import java.util.Objects;
 @Document(indexName = "organisme")
 public class Organisme implements Serializable {
 
+    public static class UniqueRneOrganisme {
+        public Organisme organisme;
+
+        public UniqueRneOrganisme(Organisme organisme) {
+            this.organisme = organisme;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return organisme.getCodeRNE().equals(((UniqueRneOrganisme) o).organisme.getCodeRNE());
+        }
+
+        @Override
+        public int hashCode() {
+            return organisme.getCodeRNE().hashCode();
+        }
+    }
+
+    public static class UniqueNomOrganisme {
+        public Organisme organisme;
+
+        public UniqueNomOrganisme(Organisme organisme) {
+            this.organisme = organisme;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return organisme.getNom().equals(((UniqueNomOrganisme) o).organisme.getNom());
+        }
+
+        @Override
+        public int hashCode() {
+            return organisme.getNom().hashCode();
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
