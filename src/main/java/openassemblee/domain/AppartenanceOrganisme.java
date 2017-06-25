@@ -24,6 +24,9 @@ public class AppartenanceOrganisme implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "fonction")
+    private String fonction;
+
     @Column(name = "statut")
     private String statut;
 
@@ -68,6 +71,14 @@ public class AppartenanceOrganisme implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFonction() {
+        return fonction;
+    }
+
+    public void setFonction(String fonction) {
+        this.fonction = fonction;
     }
 
     public String getStatut() {
