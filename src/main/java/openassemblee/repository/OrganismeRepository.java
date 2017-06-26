@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface OrganismeRepository extends JpaRepository<Organisme,Long> {
 
-    Organisme findOneByCodeRNE(String codeRNE);
+    Organisme findFirstByCodeRNE(String codeRNE);
 
 }

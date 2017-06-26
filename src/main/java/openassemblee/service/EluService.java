@@ -3,9 +3,6 @@ package openassemblee.service;
 import openassemblee.domain.*;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;
-import openassemblee.domain.*;
-import openassemblee.repository.*;
-import openassemblee.repository.search.*;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
 import org.hibernate.Hibernate;
@@ -159,7 +156,7 @@ public class EluService {
             .filter(r -> r != null && !r.equals(""))
             .distinct()
             // anti-NPE
-            .map(rne -> new Object[]{rne, organismeRepository.findOneByCodeRNE(rne)})
+            .map(rne -> new Object[]{rne, organismeRepository.findFirstByCodeRNE(rne)})
             .filter(o -> o[1] != null)
             .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
