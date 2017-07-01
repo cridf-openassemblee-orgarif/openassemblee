@@ -80,7 +80,9 @@ public class AuditTrailService {
             at.setParentEntityId(parentEntityId);
         }
         at.setAction(action);
-        at.setUser(SecurityUtils.getCurrentUser().getUsername());
+        if(SecurityUtils.isAuthenticated()) {
+            at.setUser(SecurityUtils.getCurrentUser().getUsername());
+        }
         at.setDate(ZonedDateTime.now());
         try {
             String jsonEntity = objectMapper.writeValueAsString(entity);

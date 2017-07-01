@@ -5,6 +5,7 @@ import openassemblee.domain.enumeration.Civilite;
 import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import openassemblee.publicdata.*;
 import openassemblee.repository.*;
+import openassemblee.service.AuditTrailService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,8 @@ public class InjectDataWebservice {
     private AutreMandatRepository autreMandatRepository;
     @Autowired
     private DistinctionHonorifiqueRepository distinctionHonorifiqueRepository;
+    @Autowired
+    private AuditTrailService auditTrailService;
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     public String ping() {
@@ -284,6 +287,7 @@ public class InjectDataWebservice {
                 Long imageId = imageRepository.saveImage(image);
                 elu.setImage(imageId);
                 eluRepository.save(elu);
+                auditTrailService.logUpdate(elu, elu.getId());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -312,21 +316,28 @@ public class InjectDataWebservice {
         ap.setAdresseDeCorrespondance(true);
         ap.setPublicationAnnuaire(true);
         adressePostaleRepository.save(ap);
+        auditTrailService.logCreation(ap, ap.getId());
         elu.getAdressesPostales().add(ap);
 
-        NumeroTelephone nt = new NumeroTelephone();
-        nt.setNumero(trimOrNull(c.getTelephone()));
-        nt.setNiveauConfidentialite(PUBLIABLE);
-        nt.setPublicationAnnuaire(true);
-        numeroTelephoneRepository.save(nt);
-        elu.getNumerosTelephones().add(nt);
+        if (trimOrNull(c.getTelephone()) != null) {
+            NumeroTelephone nt = new NumeroTelephone();
+            nt.setNumero(trimOrNull(c.getTelephone()));
+            nt.setNiveauConfidentialite(PUBLIABLE);
+            nt.setPublicationAnnuaire(true);
+            numeroTelephoneRepository.save(nt);
+            auditTrailService.logCreation(nt, nt.getId());
+            elu.getNumerosTelephones().add(nt);
+        }
 
-        NumeroFax nf = new NumeroFax();
-        nf.setNumero(trimOrNull(c.getFax()));
-        nf.setNiveauConfidentialite(PUBLIABLE);
-        nf.setPublicationAnnuaire(true);
-        numeroFaxRepository.save(nf);
-        elu.getNumerosFax().add(nf);
+        if (trimOrNull(c.getFax()) != null) {
+            NumeroFax nf = new NumeroFax();
+            nf.setNumero(trimOrNull(c.getFax()));
+            nf.setNiveauConfidentialite(PUBLIABLE);
+            nf.setPublicationAnnuaire(true);
+            numeroFaxRepository.save(nf);
+            auditTrailService.logCreation(nf, nf.getId());
+            elu.getNumerosFax().add(nf);
+        }
 
         AdresseMail am = new AdresseMail();
         am.setMail(c.getMail());
@@ -334,12 +345,14 @@ public class InjectDataWebservice {
         am.setNiveauConfidentialite(PUBLIABLE);
         am.setPublicationAnnuaire(true);
         adresseMailRepository.save(am);
+        auditTrailService.logCreation(am, am.getId());
         elu.getAdressesMail().add(am);
         if (trimToNull(c.getTwitter()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Twitter);
             ii.setUrl(trimOrNull(c.getTwitter()));
             identiteInternetRepository.save(ii);
+            auditTrailService.logCreation(ii, ii.getId());
             elu.getIdentitesInternet().add(ii);
         }
         if (trimToNull(c.getFacebook()) != null) {
@@ -347,6 +360,7 @@ public class InjectDataWebservice {
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Facebook);
             ii.setUrl(trimOrNull(c.getFacebook()));
             identiteInternetRepository.save(ii);
+            auditTrailService.logCreation(ii, ii.getId());
             elu.getIdentitesInternet().add(ii);
         }
         if (trimToNull(c.getSiteInternet()) != null) {
@@ -354,6 +368,7 @@ public class InjectDataWebservice {
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.SiteInternet);
             ii.setUrl(trimOrNull(c.getSiteInternet()));
             identiteInternetRepository.save(ii);
+            auditTrailService.logCreation(ii, ii.getId());
             elu.getIdentitesInternet().add(ii);
         }
         if (trimToNull(c.getBlog()) != null) {
@@ -361,6 +376,7 @@ public class InjectDataWebservice {
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Blog);
             ii.setUrl(trimOrNull(c.getBlog()));
             identiteInternetRepository.save(ii);
+            auditTrailService.logCreation(ii, ii.getId());
             elu.getIdentitesInternet().add(ii);
         }
         if (trimToNull(c.getAutre()) != null) {
@@ -368,11 +384,13 @@ public class InjectDataWebservice {
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Autre);
             ii.setUrl(trimOrNull(c.getAutre()));
             identiteInternetRepository.save(ii);
+            auditTrailService.logCreation(ii, ii.getId());
             elu.getIdentitesInternet().add(ii);
         }
 
         elu.setImportUid(c.getUidConseiller());
         eluRepository.save(elu);
+        auditTrailService.logCreation(elu, elu.getId());
 
         List<List<String>> autresMandats = parseItems(c.getAutresMandats(), 4);
         List<List<String>> distinctions = parseItems(c.getDistinctions(), 2);
@@ -385,12 +403,18 @@ public class InjectDataWebservice {
         if (autresMandats.size() > 0) {
             autresMandats.stream()
                 .map(mandat -> new AutreMandat(getFromListOrNull(mandat, 1), getFromListOrNull(mandat, 0), getFromListOrNull(mandat, 2), elu))
-                .forEach(mandat -> autreMandatRepository.save(mandat));
+                .forEach(mandat -> {
+                    autreMandatRepository.save(mandat);
+                    auditTrailService.logCreation(mandat, mandat.getId());
+                });
         }
         if (distinctions.size() > 0) {
             distinctions.stream()
                 .map(d -> new DistinctionHonorifique(getFromListOrNull(d, 0), getFromListOrNull(d, 1), elu))
-                .forEach(d -> distinctionHonorifiqueRepository.save(d));
+                .forEach(d -> {
+                    distinctionHonorifiqueRepository.save(d);
+                    auditTrailService.logCreation(d, d.getId());
+                });
         }
 
         return elu;
@@ -398,7 +422,7 @@ public class InjectDataWebservice {
 
     private static List<List<String>> parseItems(String asString, int fieldsNumber) {
         asString = asString.trim();
-        if(asString.equals("")) {
+        if (asString.equals("")) {
             return new ArrayList<>();
         }
         int itemsNumber = StringUtils.countMatches(asString, "|");
@@ -436,15 +460,18 @@ public class InjectDataWebservice {
         gp.setDateFin(parseDate(e.getDateFin()));
         gp.setMotifFin(trimOrNull(e.getMotifFin()));
 
-        AdressePostale ap = new AdressePostale();
-        ap.setVoie(trimOrNull(e.getAdresse()));
-        ap.setCodePostal(trimOrNull(e.getCodePostal()));
-        ap.setVille(trimOrNull(e.getVille()));
-        ap.setNiveauConfidentialite(PUBLIABLE);
-        ap.setAdresseDeCorrespondance(true);
-        ap.setPublicationAnnuaire(true);
-        adressePostaleRepository.save(ap);
-        gp.setAdressePostale(ap);
+        if (trimOrNull(e.getAdresse()) != null || trimOrNull(e.getVille()) != null || trimOrNull(e.getCodePostal()) != null) {
+            AdressePostale ap = new AdressePostale();
+            ap.setVoie(trimOrNull(e.getAdresse()));
+            ap.setCodePostal(trimOrNull(e.getCodePostal()));
+            ap.setVille(trimOrNull(e.getVille()));
+            ap.setNiveauConfidentialite(PUBLIABLE);
+            ap.setAdresseDeCorrespondance(true);
+            ap.setPublicationAnnuaire(true);
+            adressePostaleRepository.save(ap);
+            auditTrailService.logCreation(ap, ap.getId());
+            gp.setAdressePostale(ap);
+        }
 
         gp.setFax(trimOrNull(e.getFax()));
         gp.setMail(trimOrNull(e.getMail()));
@@ -453,6 +480,7 @@ public class InjectDataWebservice {
         gp.setImportUid(e.getUidEnsemble());
         // TODO faire les audit trails
         groupePolitiqueRepository.save(gp);
+        auditTrailService.logCreation(gp, gp.getId());
         return gp;
     }
 
@@ -481,10 +509,12 @@ public class InjectDataWebservice {
         ap.setAdresseDeCorrespondance(true);
         ap.setPublicationAnnuaire(true);
         adressePostaleRepository.save(ap);
+        auditTrailService.logCreation(ap, ap.getId());
         o.setAdressePostale(ap);
 
         o.setImportUid(e.getUidEnsemble());
         organismeRepository.save(o);
+        auditTrailService.logCreation(o, o.getId());
         return o;
     }
 
@@ -498,6 +528,7 @@ public class InjectDataWebservice {
 
         ct.setImportUid(e.getUidEnsemble());
         commissionThematiqueRepository.save(ct);
+        auditTrailService.logCreation(ct, ct.getId());
         return ct;
     }
 
@@ -508,7 +539,9 @@ public class InjectDataWebservice {
         acp.setDateFin(parseDate(m.getDateFin()));
         acp.setMotifFin(trimOrNull(m.getMotifFin()));
         acp.setImportUid(m.getUidMembre());
-        return appartenanceCommissionPermanenteRepository.save(acp);
+        appartenanceCommissionPermanenteRepository.save(acp);
+        auditTrailService.logCreation(acp, acp.getId());
+        return acp;
     }
 
     private FonctionExecutive buildFonctionExecutive(MembreDto m, Map<String, Elu> elus) {
@@ -519,7 +552,9 @@ public class InjectDataWebservice {
         fe.setMotifFin(trimOrNull(m.getMotifFin()));
         fe.setImportUid(m.getUidMembre());
         fe.setFonction(m.getFonction());
-        return fonctionExecutiveRepository.save(fe);
+        fonctionExecutiveRepository.save(fe);
+        auditTrailService.logCreation(fe, fe.getId());
+        return fe;
     }
 
     private FonctionCommissionPermanente buildFonctionCommissionPermanente(MembreDto m, Map<String, Elu> elus) {
@@ -530,7 +565,9 @@ public class InjectDataWebservice {
         fcp.setMotifFin(trimOrNull(m.getMotifFin()));
         fcp.setImportUid(m.getUidMembre());
         fcp.setFonction(m.getFonction());
-        return fonctionCommissionPermanenteRepository.save(fcp);
+        fonctionCommissionPermanenteRepository.save(fcp);
+        auditTrailService.logCreation(fcp, fcp.getId());
+        return fcp;
     }
 
     private AppartenanceGroupePolitique buildAppartenanceGroupePolitique(MembreDto m, Map<String, Elu> elus, Map<String, GroupePolitique> gps) {
@@ -541,7 +578,9 @@ public class InjectDataWebservice {
         agp.setDateFin(parseDate(m.getDateFin()));
         agp.setMotifFin(trimOrNull(m.getMotifFin()));
         agp.setImportUid(m.getUidMembre());
-        return appartenanceGroupePolitiqueRepository.save(agp);
+        appartenanceGroupePolitiqueRepository.save(agp);
+        auditTrailService.logCreation(agp, agp.getId());
+        return agp;
     }
 
     private FonctionGroupePolitique buildFonctionGroupePolitigue(MembreDto m, Map<String, Elu> elus, Map<String, GroupePolitique> gps) {
@@ -553,7 +592,9 @@ public class InjectDataWebservice {
         fgp.setMotifFin(trimOrNull(m.getMotifFin()));
         fgp.setImportUid(m.getUidMembre());
         fgp.setFonction(m.getFonction());
-        return fonctionGroupePolitiqueRepository.save(fgp);
+        fonctionGroupePolitiqueRepository.save(fgp);
+        auditTrailService.logCreation(fgp, fgp.getId());
+        return fgp;
     }
 
     private AppartenanceCommissionThematique buildAppartenanceCommissionThematique(MembreDto m, Map<String, Elu> elus, Map<String, CommissionThematique> cts) {
@@ -564,7 +605,9 @@ public class InjectDataWebservice {
         act.setDateFin(parseDate(m.getDateFin()));
         act.setMotifFin(trimOrNull(m.getMotifFin()));
         act.setImportUid(m.getUidMembre());
-        return appartenanceCommissionThematiqueRepository.save(act);
+        appartenanceCommissionThematiqueRepository.save(act);
+        auditTrailService.logCreation(act, act.getId());
+        return act;
     }
 
     private FonctionCommissionThematique buildFonctionCommissionThematique(MembreDto m, Map<String, Elu> elus, Map<String, CommissionThematique> cts) {
@@ -576,7 +619,9 @@ public class InjectDataWebservice {
         fct.setMotifFin(trimOrNull(m.getMotifFin()));
         fct.setImportUid(m.getUidMembre());
         fct.setFonction(trimOrNull(m.getFonction()));
-        return fonctionCommissionThematiqueRepository.save(fct);
+        fonctionCommissionThematiqueRepository.save(fct);
+        auditTrailService.logCreation(fct, fct.getId());
+        return fct;
     }
 
     private AppartenanceOrganisme buildAppartenanceOrganisme(MembreDto m, Map<String, Elu> elus, Map<String, Organisme> organismes) {
@@ -599,7 +644,9 @@ public class InjectDataWebservice {
         // TODO Solveig type == nomination ?
         ao.setType(trimOrNull(m.getNomination()));
         ao.setDateNomination(parseDate(m.getDateNomination()));
-        return appartenanceOrganismeRepository.save(ao);
+        appartenanceOrganismeRepository.save(ao);
+        auditTrailService.logCreation(ao, ao.getId());
+        return ao;
     }
 
     private String trimOrNull(String label) {
