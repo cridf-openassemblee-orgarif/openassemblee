@@ -1,0 +1,26 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "titre",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "date",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170701140152",
+    "dto": "no",
+    "pagination": "no"
+}
