@@ -3,7 +3,7 @@ package openassemblee.web.rest.dto;
 public class SearchResultDTO {
 
     public enum ResultType {
-        ELU, GROUPE_POLITIQUE, COMMISSION_THEMATIQUE;
+        ELU, GROUPE_POLITIQUE, COMMISSION_THEMATIQUE, ORGANISME
     }
 
     private ResultType resultType;

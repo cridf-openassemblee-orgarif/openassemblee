@@ -96,6 +96,12 @@ public class SearchService {
                         .map(f -> eluRepository.getOne(f.getElu().getId()))
                         .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
                         .collect(Collectors.toList()));
+                    if (results.size() < 20) {
+                        results.addAll(StreamSupport
+                            .stream(organismeSearchRepository.search(qb).spliterator(), false)
+                            .map(o -> new SearchResultDTO(ORGANISME, o.getId(), o.getNom(), null))
+                            .collect(Collectors.toList()));
+                    }
                 }
             }
         }
