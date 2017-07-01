@@ -55,9 +55,6 @@ public class PublicDataWebservice {
     private OrganismeRepository organismeRepository;
 
     @Autowired
-    private ImageRepository imageRepository;
-
-    @Autowired
     private CommissionThematiqueRepository commissionThematiqueRepository;
 
     @Autowired
@@ -83,8 +80,24 @@ public class PublicDataWebservice {
         List<Organisme> organismes = organismeRepository.findAll();
         List<CommissionThematique> commissionsThematiques = commissionThematiqueRepository.findAll();
 
+        Map<String, Organisme> organismeMapRNE = organismes.stream()
+            .filter(o -> o.getCodeRNE() != null)
+            .map(Organisme.UniqueRneOrganisme::new)
+//            .filter(o -> !o.getNom().equals("Greta des métiers de l'hôtellerie - lycée jean drouant"))
+//            .filter(o -> !o.getNom().equals("Cfa quincaillerie-vente de produits pour l'habitat (vth)"))
+            .distinct()
+            .map(o -> o.organisme)
+            .collect(Collectors.toMap(Organisme::getCodeRNE, Function.identity()));
+        Map<String, Organisme> organismeMapNom = organismes.stream()
+            .filter(o -> o.getCodeRNE() == null)
+            .filter(o -> o.getNom() != null)
+            .map(Organisme.UniqueNomOrganisme::new)
+            .distinct()
+            .map(o -> o.organisme)
+            .collect(Collectors.toMap(Organisme::getNom, Function.identity()));
+
         Map<String, Object> result = new HashMap<>();
-        result.put("conseillers", getConseillers(elus));
+        result.put("conseillers", getConseillers(elus, organismeMapNom, organismeMapRNE));
 
         List<EnsembleDto> ensembles = new ArrayList<>();
         ensembles.addAll(getCommissionPermanente());
@@ -93,11 +106,12 @@ public class PublicDataWebservice {
         ensembles.addAll(getEnsemblesOrganismes(organismes));
         result.put("ensembles", ensembles);
 
-        result.put("membres", getMembres(elus, organismes));
+        result.put("membres", getMembres(elus, organismes, organismeMapNom, organismeMapRNE));
         return result;
     }
 
-    private List<ConseillerDto> getConseillers(List<Elu> elus) {
+    private List<ConseillerDto> getConseillers(List<Elu> elus, Map<String, Organisme> organismeMapNom,
+                                               Map<String, Organisme> organismeMapRNE) {
         return elus.stream()
             .map(e -> {
                 ConseillerDto d = new ConseillerDto();
@@ -153,19 +167,31 @@ public class PublicDataWebservice {
                 d.setJpegphotoId(String.valueOf(e.getImage()));
                 d.setSt(0F);
                 // TODO putain de non cohérence entre les membres et ce truc
-//                StringBuilder commissionsStringBuilder = new StringBuilder();
-//                e.getAppartenancesCommissionPermanente()
-//                    .forEach(a -> commissionsStringBuilder.append("|").append(COMMISSION_PERMANENTE));
-////                e.getFonctionsExecutives()
-////                    .forEach(a -> commissionsStringBuilder.append("|").append(EXECUTIF));
-//                e.getFonctionsCommissionPermanente()
-//                    .forEach(a -> commissionsStringBuilder.append("|").append(DELEGUES_SPECIAUX));
-//                e.getAppartenancesCommissionsThematiques().stream()
-//                    .filter(a -> a.getDateFin() == null)
+                StringBuilder commissionsStringBuilder = new StringBuilder();
+                e.getAppartenancesCommissionPermanente()
+                    .forEach(a -> commissionsStringBuilder.append("|").append(COMMISSION_PERMANENTE));
+//                e.getFonctionsExecutives()
+//                    .forEach(a -> commissionsStringBuilder.append("|").append(EXECUTIF));
+                e.getFonctionsCommissionPermanente()
+                    .forEach(a -> commissionsStringBuilder.append("|").append(DELEGUES_SPECIAUX));
+                e.getAppartenancesCommissionsThematiques().stream()
+                    .filter(a -> a.getDateFin() == null)
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
-//                    .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().getImportUid()));
-                d.setCommissions(EMPTY_STRING);
-                d.setDesignations(EMPTY_STRING);
+                    .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().getImportUid()));
+                d.setCommissions(IS_TEST_IMPORT ? EMPTY_STRING : commissionsStringBuilder.toString());
+                StringBuilder organismesStringBuilder = new StringBuilder();
+                e.getAppartenancesOrganismes()
+                    .forEach(a -> {
+                        Organisme o = organismeMapNom.get(a.getOrganisme());
+                        if (o == null) {
+                            o = organismeMapRNE.get(a.getCodeRNE());
+                        }
+                        if (o == null) {
+                            throw new RuntimeException("Organisme should have been found");
+                        }
+                        organismesStringBuilder.append("|").append(o.getImportUid());
+                    });
+                d.setDesignations(IS_TEST_IMPORT ? EMPTY_STRING : organismesStringBuilder.toString());
 
                 d.setDistinctions(SPACE);
                 if (e.getDistinctionHonorifiques().size() > 0 && !IS_TEST_IMPORT) {
@@ -311,9 +337,6 @@ public class PublicDataWebservice {
             e.setNbMembre(gp.getAppartenancesGroupePolitique().stream()
                 .filter(g -> g.getDateFin() == null)
                 .count());
-            e.setNbMembre(e.getNbMembre() + gp.getFonctionsGroupePolitique().stream()
-                .filter(g -> g.getDateFin() == null)
-                .count());
             e.setNbTitulaire(0L);
             e.setNbSuppleant(0L);
             e.setValid('1');
@@ -456,7 +479,8 @@ public class PublicDataWebservice {
         }).collect(Collectors.toList());
     }
 
-    private List<MembreDto> getMembres(List<Elu> elus, List<Organisme> organismes) {
+    private List<MembreDto> getMembres(List<Elu> elus, List<Organisme> organismes,
+                                       Map<String, Organisme> organismeMapNom, Map<String, Organisme> organismeMapRNE) {
         List<MembreDto> m1 = elus.stream().flatMap(e -> e.getAppartenancesCommissionPermanente().stream().map(acp -> {
             MembreDto m = new MembreDto();
             m.setUidMembre(acp.getImportUid());
@@ -528,28 +552,9 @@ public class PublicDataWebservice {
             m.setDescription(stringOrSpace(null));
             return m;
         })).collect(Collectors.toList());
-        List<MembreDto> m4 = elus.stream().flatMap(e -> e.getAppartenancesCommissionsThematiques().stream().map(act -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(act.getImportUid());
-            m.setUidEnsemble(act.getCommissionThematique().getImportUid());
-            m.setUidConseiller(e.getImportUid());
-
-            m.setMandature(MANDATURE);
-            m.setType("Commissions");
-            m.setDateDebut(formatDate(act.getDateDebut()));
-            m.setDateFin(formatDate(act.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(null));
-            m.setBureau('0');
-            m.setMotifFin(stringOrSpace(act.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+        List<String> fonctionsCT = new ArrayList<>();
         List<MembreDto> m5 = elus.stream().flatMap(e -> e.getFonctionsCommissionsThematiques().stream().map(fct -> {
+            fonctionsCT.add(fct.getImportUid());
             MembreDto m = new MembreDto();
             m.setUidMembre(fct.getImportUid());
             m.setUidEnsemble(fct.getCommissionThematique().getImportUid());
@@ -570,31 +575,32 @@ public class PublicDataWebservice {
             m.setDescription(stringOrSpace(null));
             return m;
         })).collect(Collectors.toList());
-        List<MembreDto> m6 = elus.stream().flatMap(e -> e.getAppartenancesGroupePolitique().stream().map(agp -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(agp.getImportUid());
-            m.setUidEnsemble(agp.getGroupePolitique().getImportUid());
-            m.setUidConseiller(e.getImportUid());
+        List<MembreDto> m4 = elus.stream().flatMap(e -> e.getAppartenancesCommissionsThematiques().stream()
+            .filter(act -> !fonctionsCT.contains(act.getImportUid()))
+            .map(act -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(act.getImportUid());
+                m.setUidEnsemble(act.getCommissionThematique().getImportUid());
+                m.setUidConseiller(e.getImportUid());
 
-            m.setMandature(MANDATURE);
-            if (agp.getGroupePolitique() != null) {
-                m.setUidEnsemble(agp.getGroupePolitique().getImportUid());
-            }
-            m.setType("Groupe politique");
-            m.setDateDebut(formatDate(agp.getDateDebut()));
-            m.setDateFin(formatDate(agp.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(null));
-            m.setBureau('0');
-            m.setMotifFin(stringOrSpace(agp.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Commissions");
+                m.setDateDebut(formatDate(act.getDateDebut()));
+                m.setDateFin(formatDate(act.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(null));
+                m.setBureau('0');
+                m.setMotifFin(stringOrSpace(act.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
+        List<String> fonctionsGP = new ArrayList<>();
         List<MembreDto> m7 = elus.stream().flatMap(e -> e.getFonctionsGroupePolitique().stream().map(fgp -> {
+            fonctionsGP.add(fgp.getImportUid());
             MembreDto m = new MembreDto();
             m.setUidMembre(fgp.getImportUid());
             m.setUidEnsemble(fgp.getGroupePolitique().getImportUid());
@@ -615,25 +621,36 @@ public class PublicDataWebservice {
             m.setDescription(stringOrSpace(null));
             return m;
         })).collect(Collectors.toList());
+        List<MembreDto> m6 = elus.stream().flatMap(e -> e.getAppartenancesGroupePolitique().stream()
+            .filter(agp -> !fonctionsGP.contains(agp.getImportUid()))
+            .map(agp -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(agp.getImportUid());
+                m.setUidEnsemble(agp.getGroupePolitique().getImportUid());
+                m.setUidConseiller(e.getImportUid());
+
+                m.setMandature(MANDATURE);
+                if (agp.getGroupePolitique() != null) {
+                    m.setUidEnsemble(agp.getGroupePolitique().getImportUid());
+                }
+                m.setType("Groupe politique");
+                m.setDateDebut(formatDate(agp.getDateDebut()));
+                m.setDateFin(formatDate(agp.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(null));
+                m.setBureau('0');
+                m.setMotifFin(stringOrSpace(agp.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
         // TODO code rne en double : "0750708M", "0751451V  "...
 //        List<String> doublons = Arrays.asList("0750708M", "0751451V", "0754471C", "0754476H", "0754679D", "0754718W",
 //            "0754811X", "0754815B", "0754816C", "0754850P", "0771654E", "0772241T", "0772447S", "0772468P", "0782058N",
 //            "0782059P", "0783430E", "0922451P", "0932217E", "0932305A", "0951848T", "0951963T");
-        Map<String, Organisme> organismeMapRNE = organismes.stream()
-            .filter(o -> o.getCodeRNE() != null)
-            .map(Organisme.UniqueRneOrganisme::new)
-//            .filter(o -> !o.getNom().equals("Greta des métiers de l'hôtellerie - lycée jean drouant"))
-//            .filter(o -> !o.getNom().equals("Cfa quincaillerie-vente de produits pour l'habitat (vth)"))
-            .distinct()
-            .map(o -> o.organisme)
-            .collect(Collectors.toMap(Organisme::getCodeRNE, Function.identity()));
-        Map<String, Organisme> organismeMapNom = organismes.stream()
-            .filter(o -> o.getCodeRNE() == null)
-            .filter(o -> o.getNom() != null)
-            .map(Organisme.UniqueNomOrganisme::new)
-            .distinct()
-            .map(o -> o.organisme)
-            .collect(Collectors.toMap(Organisme::getNom, Function.identity()));
         List<MembreDto> m8 = elus.stream().flatMap(e -> e.getAppartenancesOrganismes().stream().map(ao -> {
             MembreDto m = new MembreDto();
             m.setUidMembre(ao.getImportUid());

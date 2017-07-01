@@ -201,7 +201,7 @@ public class InjectDataWebservice {
         // appartenances groupe politique
         List<MembreDto> m4 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Groupe politique"))
-            .filter(m -> trimToNull(m.getFonction()) == null)
+//            .filter(m -> trimToNull(m.getFonction()) == null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m4.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbAgp = m4.stream()
@@ -228,7 +228,7 @@ public class InjectDataWebservice {
         List<MembreDto> m6 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
             .filter(m -> cts.containsKey(m.getUidEnsemble()))
-            .filter(m -> trimToNull(m.getFonction()) == null)
+//            .filter(m -> trimToNull(m.getFonction()) == null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m6.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbAct = m6.stream()
