@@ -143,6 +143,10 @@ public class Elu implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<AutreMandat> autreMandats = new HashSet<>();
 
+    @OneToMany(mappedBy = "elu")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private Set<DistinctionHonorifique> distinctionHonorifiques = new HashSet<>();
+
     public Elu() {
     }
 
@@ -390,6 +394,14 @@ public class Elu implements Serializable {
 
     public void setListeCourt(String listeCourt) {
         this.listeCourt = listeCourt;
+    }
+
+    public Set<DistinctionHonorifique> getDistinctionHonorifiques() {
+        return distinctionHonorifiques;
+    }
+
+    public void setDistinctionHonorifiques(Set<DistinctionHonorifique> distinctionHonorifiques) {
+        this.distinctionHonorifiques = distinctionHonorifiques;
     }
 
     public String civiliteComplete() {

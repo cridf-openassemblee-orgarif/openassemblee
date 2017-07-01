@@ -1,13 +1,13 @@
 package openassemblee.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -31,6 +31,7 @@ public class DistinctionHonorifique implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "elu_id")
+    @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
     public Long getId() {
