@@ -34,6 +34,15 @@ public class DistinctionHonorifique implements Serializable {
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
+    public DistinctionHonorifique() {
+    }
+
+    public DistinctionHonorifique(String titre, String date, Elu elu) {
+        this.titre = titre;
+        this.date = date;
+        this.elu = elu;
+    }
+
     public Long getId() {
         return id;
     }

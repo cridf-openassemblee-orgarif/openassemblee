@@ -137,7 +137,6 @@ public class PublicDataWebservice {
                 d.setListeElectorale(e.getListeElectorale());
                 d.setNbEnfants(EMPTY_STRING);
                 d.setNomJeuneFille(EMPTY_STRING);
-                d.setAutresMandats(EMPTY_STRING);
                 d.setSituationFamiliale(EMPTY_STRING);
                 d.setTelephone(getPublishable(e.getNumerosTelephones()).map(NumeroTelephone::getNumero).orElse(SPACE));
                 d.setFax(getPublishable(e.getNumerosFax()).map(NumeroFax::getNumero).orElse(SPACE));
@@ -166,8 +165,24 @@ public class PublicDataWebservice {
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
 //                    .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().getImportUid()));
                 d.setCommissions(EMPTY_STRING);
-                d.setDistinctions(EMPTY_STRING);
                 d.setDesignations(EMPTY_STRING);
+
+                d.setDistinctions(SPACE);
+                if (e.getDistinctionHonorifiques().size() > 0 && !IS_TEST_IMPORT) {
+                    d.setDistinctions("|" + String.join("|", e.getDistinctionHonorifiques()
+                        .stream()
+                        .map(dh -> stringOrEmpty(dh.getTitre()) + "$" + stringOrEmpty(dh.getDate()))
+                        .collect(Collectors.toSet())));
+                }
+                d.setAutresMandats(SPACE);
+                if (e.getAutreMandats().size() > 0 && !IS_TEST_IMPORT) {
+                    d.setAutresMandats("|" + String.join("|", e.getAutreMandats()
+                        .stream()
+                        .map(mandat -> stringOrEmpty(mandat.getFonction()) + "$"
+                            + stringOrEmpty(mandat.getCollectiviteOuOrganisme()) + "$"
+                            + stringOrEmpty(mandat.getDateDebutString()) + "$")
+                        .collect(Collectors.toSet())));
+                }
 
                 Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
                     .filter(f -> f.getDateFin() == null)
@@ -687,6 +702,10 @@ public class PublicDataWebservice {
     // TODO ici checker qu'il n'y a pas d'espace au départ
     private String stringOrSpace(String label) {
         return label != null ? label : SPACE;
+    }
+
+    private String stringOrEmpty(String label) {
+        return label != null ? label : EMPTY_STRING;
     }
 
     private char bureau(String fonction) {

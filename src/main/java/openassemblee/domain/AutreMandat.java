@@ -30,6 +30,9 @@ public class AutreMandat implements Serializable {
     @Column(name = "fonction")
     private String fonction;
 
+    @Column(name = "date_debut_string")
+    private String dateDebutString;
+
     @Column(name = "date_debut")
     private LocalDate dateDebut;
 
@@ -43,6 +46,16 @@ public class AutreMandat implements Serializable {
     @JoinColumn(name = "elu_id")
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
+
+    public AutreMandat() {
+    }
+
+    public AutreMandat(String collectiviteOuOrganisme, String fonction, String dateDebutString, Elu elu) {
+        this.collectiviteOuOrganisme = collectiviteOuOrganisme;
+        this.fonction = fonction;
+        this.dateDebutString = dateDebutString;
+        this.elu = elu;
+    }
 
     public Long getId() {
         return id;
@@ -66,6 +79,14 @@ public class AutreMandat implements Serializable {
 
     public void setFonction(String fonction) {
         this.fonction = fonction;
+    }
+
+    public String getDateDebutString() {
+        return dateDebutString;
+    }
+
+    public void setDateDebutString(String dateDebutString) {
+        this.dateDebutString = dateDebutString;
     }
 
     public LocalDate getDateDebut() {

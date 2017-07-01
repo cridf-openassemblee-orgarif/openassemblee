@@ -23,12 +23,13 @@
             </column>
             <column name="collectivite_ou_organisme" type="varchar(255)"/>
             <column name="fonction" type="varchar(255)"/>
+            <column name="date_debut_string" type="varchar(255)"/>
             <column name="date_debut" type="date"/>
             <column name="date_fin" type="date"/>
             <column name="motif_fin" type="varchar(255)"/>
             <column name="elu_id" type="bigint"/>
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="elu_id"
                                  baseTableName="autre_mandat"
                                  constraintName="fk_autremandat_elu_id"

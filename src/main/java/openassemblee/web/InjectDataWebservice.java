@@ -5,6 +5,7 @@ import openassemblee.domain.enumeration.Civilite;
 import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import openassemblee.publicdata.*;
 import openassemblee.repository.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,6 +80,10 @@ public class InjectDataWebservice {
     private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
     @Autowired
     private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
+    @Autowired
+    private AutreMandatRepository autreMandatRepository;
+    @Autowired
+    private DistinctionHonorifiqueRepository distinctionHonorifiqueRepository;
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     public String ping() {
@@ -87,6 +93,8 @@ public class InjectDataWebservice {
     @RequestMapping(value = "/data", method = RequestMethod.POST)
     @Transactional
     public void data(@RequestBody DataBag data) {
+        autreMandatRepository.deleteAll();
+        distinctionHonorifiqueRepository.deleteAll();
         identiteInternetRepository.deleteAll();
         organismeRepository.deleteAll();
         commissionThematiqueRepository.deleteAll();
@@ -362,9 +370,54 @@ public class InjectDataWebservice {
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
+
         elu.setImportUid(c.getUidConseiller());
         eluRepository.save(elu);
+
+        List<List<String>> autresMandats = parseItems(c.getAutresMandats(), 4);
+        List<List<String>> distinctions = parseItems(c.getDistinctions(), 2);
+        autresMandats.forEach(mandat -> {
+            // format étonnant, du coup
+            if (mandat.size() > 3) {
+                System.out.println(mandat.get(3));
+            }
+        });
+        if (autresMandats.size() > 0) {
+            autresMandats.stream()
+                .map(mandat -> new AutreMandat(getFromListOrNull(mandat, 1), getFromListOrNull(mandat, 0), getFromListOrNull(mandat, 2), elu))
+                .forEach(mandat -> autreMandatRepository.save(mandat));
+        }
+        if (distinctions.size() > 0) {
+            distinctions.stream()
+                .map(d -> new DistinctionHonorifique(getFromListOrNull(d, 0), getFromListOrNull(d, 1), elu))
+                .forEach(d -> distinctionHonorifiqueRepository.save(d));
+        }
+
         return elu;
+    }
+
+    private static List<List<String>> parseItems(String asString, int fieldsNumber) {
+        asString = asString.trim();
+        if(asString.equals("")) {
+            return new ArrayList<>();
+        }
+        int itemsNumber = StringUtils.countMatches(asString, "|");
+        int subItemsNumber = StringUtils.countMatches(asString, "$");
+        if (subItemsNumber != itemsNumber * (fieldsNumber - 1)) {
+            throw new IllegalArgumentException("pb de parseItems " + itemsNumber + " parties et " + subItemsNumber + " : " + asString);
+        }
+        return Arrays.asList(asString.split("\\|"))
+            .stream()
+            .filter(s -> !s.equals(""))
+            .map(s -> Arrays.asList(s.split("\\$")))
+            .collect(Collectors.toList());
+    }
+
+    private String getFromListOrNull(List<String> list, int item) {
+        if (list.size() > item) {
+            return list.get(item);
+        }
+        return null;
     }
 
     private LocalDate parseDate(String date) {
