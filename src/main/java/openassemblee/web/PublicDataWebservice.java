@@ -36,6 +36,12 @@ public class PublicDataWebservice {
     public static final String EXECUTIF = "COM003";
     public static final String DELEGUES_SPECIAUX = "COM004";
 
+    public static final boolean USE_SPACE = true;
+    public static final String SPACE = USE_SPACE ? " " : "";
+    // TODO PDE say j'ai aussi viré les ""
+    public static final boolean USE_EMPTY_STRING = true;
+    public static final String EMPTY_STRING = USE_EMPTY_STRING ? "" : null;
+
     @Autowired
     private EluRepository eluRepository;
 
@@ -99,11 +105,11 @@ public class PublicDataWebservice {
                 d.setMandature(MANDATURE);
                 d.setNom(e.getNom());
                 d.setActiviteProf(stringOrSpace(null));
-                d.setProfession(e.getProfession());
+                d.setProfession(stringOrSpace(e.getProfession()));
                 getPublishable(e.getAdressesPostales()).ifPresent(ap -> {
-                    d.setAdresse(ap.getVoie());
-                    d.setVille(ap.getVille());
-                    d.setCodePostal(ap.getCodePostal());
+                    d.setAdresse(stringOrSpace(ap.getVoie()));
+                    d.setVille(stringOrSpace(ap.getVille()));
+                    d.setCodePostal(stringOrSpace(ap.getCodePostal()));
                 });
                 d.setDateNaissance(formatDate(e.getDateNaissance()));
                 Optional<AppartenanceGroupePolitique> agp = e.getAppartenancesGroupePolitique().stream()
@@ -113,8 +119,8 @@ public class PublicDataWebservice {
                     .filter(a -> a.getDateFin() == null)
                     .findFirst();
                 // first set to empty
-                d.setGroupeCourt("");
-                d.setGroupePolitique("");
+                d.setGroupeCourt(SPACE);
+                d.setGroupePolitique(SPACE);
                 agp.ifPresent(g -> {
                     GroupePolitique gp = agp.get().getGroupePolitique();
                     d.setGroupeCourt(gp.getNomCourt());
@@ -129,13 +135,13 @@ public class PublicDataWebservice {
                 }
                 d.setListeCourt(e.getListeCourt());
                 d.setListeElectorale(e.getListeElectorale());
-                d.setNbEnfants("");
-                d.setNomJeuneFille("");
-                d.setAutresMandats("");
-                d.setSituationFamiliale("");
-                d.setTelephone(getPublishable(e.getNumerosTelephones()).map(NumeroTelephone::getNumero).orElse(""));
-                d.setFax(getPublishable(e.getNumerosFax()).map(NumeroFax::getNumero).orElse(""));
-                d.setMail(getPublishable(e.getAdressesMail()).map(AdresseMail::getMail).orElse(""));
+                d.setNbEnfants(EMPTY_STRING);
+                d.setNomJeuneFille(EMPTY_STRING);
+                d.setAutresMandats(EMPTY_STRING);
+                d.setSituationFamiliale(EMPTY_STRING);
+                d.setTelephone(getPublishable(e.getNumerosTelephones()).map(NumeroTelephone::getNumero).orElse(SPACE));
+                d.setFax(getPublishable(e.getNumerosFax()).map(NumeroFax::getNumero).orElse(SPACE));
+                d.setMail(getPublishable(e.getAdressesMail()).map(AdresseMail::getMail).orElse(SPACE));
                 d.setValid('1');
                 // TODO le naming de notre cote a ptet une lacune
                 d.setDepElection(e.getDepartement());
@@ -163,10 +169,10 @@ public class PublicDataWebservice {
 //                    .filter(a -> a.getDateFin() == null)
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
 //                    .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().getImportUid()));
-                d.setCommissions("");
+                d.setCommissions(EMPTY_STRING);
 //                d.setCommissions(commissionsStringBuilder.toString());
-                d.setDistinctions("");
-                d.setDesignations("");
+                d.setDistinctions(EMPTY_STRING);
+                d.setDesignations(EMPTY_STRING);
                 Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
                     .filter(f -> f.getDateFin() == null)
                     .findFirst();
@@ -199,7 +205,6 @@ public class PublicDataWebservice {
         cp.setLibLong("Commission permanente");
         cp.setSt(1f);
         cp.setValid('1');
-        cp.setDescription(NON_RENSEIGNE);
 
         cp.setStatus(stringOrSpace(null));
         cp.setDescription(NON_RENSEIGNE);
@@ -266,7 +271,6 @@ public class PublicDataWebservice {
         deleg.setLibLong("Délégués spéciaux");
         deleg.setSt(3f);
         deleg.setValid('1');
-        deleg.setDescription(NON_RENSEIGNE);
 
         deleg.setDescription(NON_RENSEIGNE);
         deleg.setStatus(stringOrSpace(null));
@@ -313,7 +317,7 @@ public class PublicDataWebservice {
 
             e.setDescription(NON_RENSEIGNE);
             if (e.getLibLong().equals("Non Inscrits")) {
-                e.setDescription(stringOrSpace(null));
+                e.setDescription(NON_RENSEIGNE);
             }
             e.setCodeRne(stringOrSpace(null));
             e.setDepartement(stringOrSpace(null));
@@ -323,16 +327,15 @@ public class PublicDataWebservice {
             e.setAdresse(stringOrSpace(null));
             e.setCodePostal(stringOrSpace(null));
             e.setVille(stringOrSpace(null));
-            e.setMail(stringOrSpace(null));
             e.setPhonetique(stringOrSpace(null));
 
             if (gp.getAdressePostale() != null) {
-                e.setAdresse(gp.getAdressePostale().getVoie());
-                e.setCodePostal(gp.getAdressePostale().getCodePostal());
-                e.setVille(gp.getAdressePostale().getVille());
+                e.setAdresse(stringOrSpace(gp.getAdressePostale().getVoie()));
+                e.setCodePostal(stringOrSpace(gp.getAdressePostale().getCodePostal()));
+                e.setVille(stringOrSpace(gp.getAdressePostale().getVille()));
             }
             e.setStatus(stringOrSpace(null));
-            e.setMail(gp.getMail());
+            e.setMail(stringOrSpace(gp.getMail()));
             return e;
         }).collect(Collectors.toList());
     }
@@ -343,7 +346,7 @@ public class PublicDataWebservice {
             e.setUidEnsemble(o.getImportUid());
             e.setMandature(MANDATURE);
             // TODO Solveig
-            e.setLibCourt(o.getSigle());
+            e.setLibCourt(stringOrSpace(o.getSigle()));
             e.setDateCreation(formatDate(o.getDateDebut()));
             e.setType("organisme");
             e.setTypeCommission(stringOrSpace(null));
@@ -378,21 +381,24 @@ public class PublicDataWebservice {
             // TODO Solveig
             e.setSecteur(stringOrSpace(o.getSecteur()));
             e.setMotifFin(stringOrSpace(o.getMotifFin()));
-            e.setSecteur(o.getSecteur());
-            e.setTelephone(o.getTelephone());
-            e.setFax(o.getFax());
+            e.setSecteur(stringOrSpace(o.getSecteur()));
+            e.setTelephone(stringOrSpace(o.getTelephone()));
+            e.setFax(stringOrSpace(o.getFax()));
             e.setPhonetique(o.getPhonetique());
             e.setDepartement(stringOrSpace(o.getDepartement()));
             e.setMail(stringOrSpace(null));
             e.setPhonetique(stringOrSpace(o.getPhonetique()));
+            e.setAdresse(stringOrSpace(null));
+            e.setCodePostal(stringOrSpace(null));
+            e.setVille(stringOrSpace(null));
             if (o.getAdressePostale() != null) {
-                e.setAdresse(o.getAdressePostale().getVoie());
-                e.setCodePostal(o.getAdressePostale().getCodePostal());
-                e.setVille(o.getAdressePostale().getVille());
+                e.setAdresse(stringOrSpace(o.getAdressePostale().getVoie()));
+                e.setCodePostal(stringOrSpace(o.getAdressePostale().getCodePostal()));
+                e.setVille(stringOrSpace(o.getAdressePostale().getVille()));
             }
             // TODO PDE Solveig ? suppression
             // non cohérence
-            e.setStatus(o.getStatus());
+            e.setStatus(stringOrSpace(o.getStatus()));
             // TODO remove ?
 //            if(e.getUidEnsemble().equals("ORG2156")) {
 //                e.setStatus("O");
@@ -445,7 +451,7 @@ public class PublicDataWebservice {
             if (ct.getDateFin() != null) {
                 e.setStatus("F");
             } else {
-                e.setStatus(" ");
+                e.setStatus(SPACE);
             }
             return e;
         }).collect(Collectors.toList());
@@ -650,9 +656,9 @@ public class PublicDataWebservice {
             m.setType("Organisme");
             m.setDateDebut(formatDate(ao.getDateDebut()));
             m.setDateFin(formatDate(ao.getDateFin()));
-            m.setNumeroNomination(ao.getReference());
-            m.setStatus(ao.getStatut());
-            m.setNomination(ao.getType());
+            m.setNumeroNomination(stringOrSpace(ao.getReference()));
+            m.setStatus(stringOrSpace(ao.getStatut()));
+            m.setNomination(stringOrSpace(ao.getType()));
             m.setSt(0f);
             m.setFonction(stringOrSpace(ao.getFonction()));
             m.setBureau(bureau(ao.getFonction()));
@@ -685,20 +691,20 @@ public class PublicDataWebservice {
             .filter(i -> i.getTypeIdentiteInternet() == typeIdentiteInternet)
             .findFirst();
         // TODO PDE wtf cet espace
-        return ii.map(IdentiteInternet::getUrl).orElse(" ");
+        return ii.map(IdentiteInternet::getUrl).orElse(SPACE);
     }
 
     private String formatDate(LocalDate date) {
         if (date != null) {
             return date.format(InjectDataWebservice.DATE_FORMATTER);
         } else {
-            return " ";
+            return SPACE;
         }
     }
 
     // TODO ici checker qu'il n'y a pas d'espace au départ
     private String stringOrSpace(String label) {
-        return label != null ? label : " ";
+        return label != null ? label : SPACE;
     }
 
     private char bureau(String fonction) {

@@ -5,7 +5,6 @@ import openassemblee.domain.enumeration.Civilite;
 import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import openassemblee.publicdata.*;
 import openassemblee.repository.*;
-import org.elasticsearch.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +149,7 @@ public class InjectDataWebservice {
         List<MembreDto> m1 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
             .filter(m -> m.getUidEnsemble().equals(cp))
-            .filter(m -> m.getFonction() == null || Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) == null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m1.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbCp = m1.stream()
@@ -183,8 +182,7 @@ public class InjectDataWebservice {
         List<MembreDto> m3bis = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
             .filter(m -> m.getUidEnsemble().equals(cp))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction()))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) != null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m3bis.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbFcpBis = m3bis.stream()
@@ -195,7 +193,7 @@ public class InjectDataWebservice {
         // appartenances groupe politique
         List<MembreDto> m4 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Groupe politique"))
-            .filter(m -> m.getFonction() == null || Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) == null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m4.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbAgp = m4.stream()
@@ -206,8 +204,7 @@ public class InjectDataWebservice {
         // fonctions groupe politique
         List<MembreDto> m5 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Groupe politique"))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction()))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) != null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m5.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbFgp = m5.stream()
@@ -223,7 +220,7 @@ public class InjectDataWebservice {
         List<MembreDto> m6 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
             .filter(m -> cts.containsKey(m.getUidEnsemble()))
-            .filter(m -> m.getFonction() == null || Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) == null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m6.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbAct = m6.stream()
@@ -235,8 +232,7 @@ public class InjectDataWebservice {
         List<MembreDto> m7 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
             .filter(m -> cts.containsKey(m.getUidEnsemble()))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction()))
-            .filter(m -> !Strings.isNullOrEmpty(m.getFonction().trim()))
+            .filter(m -> trimToNull(m.getFonction()) != null)
             .collect(Collectors.toList());
         uidsTraites.addAll(m7.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbFct = m7.stream()
@@ -291,19 +287,19 @@ public class InjectDataWebservice {
         elu.setCivilite(c.getCivilite().equals("M.") ? Civilite.MONSIEUR : Civilite.MADAME);
         elu.setNom(c.getNom());
         elu.setPrenom(c.getPrenom());
-        elu.setNomJeuneFille(c.getNomJeuneFille());
-        elu.setProfession(c.getProfession());
+        elu.setNomJeuneFille(trimOrNull(c.getNomJeuneFille()));
+        elu.setProfession(trimOrNull(c.getProfession()));
         elu.setDateNaissance(parseDate(c.getDateNaissance()));
         elu.setLieuNaissance(trimOrNull(c.getVilleNaissance()));
-        elu.setListeCourt(c.getListeCourt());
-        elu.setListeElectorale(c.getListeElectorale());
-        elu.setDepartement(c.getDepElection());
-        elu.setCodeDepartement(c.getCodeDepElection());
+        elu.setListeCourt(trimOrNull(c.getListeCourt()));
+        elu.setListeElectorale(trimOrNull(c.getListeElectorale()));
+        elu.setDepartement(trimOrNull(c.getDepElection()));
+        elu.setCodeDepartement(trimOrNull(c.getCodeDepElection()));
 
         AdressePostale ap = new AdressePostale();
-        ap.setVoie(c.getAdresse());
-        ap.setCodePostal(c.getCodePostal());
-        ap.setVille(c.getVille());
+        ap.setVoie(trimOrNull(c.getAdresse()));
+        ap.setCodePostal(trimOrNull(c.getCodePostal()));
+        ap.setVille(trimOrNull(c.getVille()));
         ap.setNiveauConfidentialite(PUBLIABLE);
         ap.setAdresseDeCorrespondance(true);
         ap.setPublicationAnnuaire(true);
@@ -311,14 +307,14 @@ public class InjectDataWebservice {
         elu.getAdressesPostales().add(ap);
 
         NumeroTelephone nt = new NumeroTelephone();
-        nt.setNumero(c.getTelephone());
+        nt.setNumero(trimOrNull(c.getTelephone()));
         nt.setNiveauConfidentialite(PUBLIABLE);
         nt.setPublicationAnnuaire(true);
         numeroTelephoneRepository.save(nt);
         elu.getNumerosTelephones().add(nt);
 
         NumeroFax nf = new NumeroFax();
-        nf.setNumero(c.getFax());
+        nf.setNumero(trimOrNull(c.getFax()));
         nf.setNiveauConfidentialite(PUBLIABLE);
         nf.setPublicationAnnuaire(true);
         numeroFaxRepository.save(nf);
@@ -331,38 +327,38 @@ public class InjectDataWebservice {
         am.setPublicationAnnuaire(true);
         adresseMailRepository.save(am);
         elu.getAdressesMail().add(am);
-        if (!Strings.isNullOrEmpty(c.getTwitter())) {
+        if (trimToNull(c.getTwitter()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Twitter);
-            ii.setUrl(c.getTwitter());
+            ii.setUrl(trimOrNull(c.getTwitter()));
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
-        if (!Strings.isNullOrEmpty(c.getFacebook())) {
+        if (trimToNull(c.getFacebook()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Facebook);
-            ii.setUrl(c.getFacebook());
+            ii.setUrl(trimOrNull(c.getFacebook()));
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
-        if (!Strings.isNullOrEmpty(c.getSiteInternet())) {
+        if (trimToNull(c.getSiteInternet()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.SiteInternet);
-            ii.setUrl(c.getSiteInternet());
+            ii.setUrl(trimOrNull(c.getSiteInternet()));
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
-        if (!Strings.isNullOrEmpty(c.getBlog())) {
+        if (trimToNull(c.getBlog()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Blog);
-            ii.setUrl(c.getBlog());
+            ii.setUrl(trimOrNull(c.getBlog()));
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
-        if (!Strings.isNullOrEmpty(c.getAutre())) {
+        if (trimToNull(c.getAutre()) != null) {
             IdentiteInternet ii = new IdentiteInternet();
             ii.setTypeIdentiteInternet(TypeIdentiteInternet.Autre);
-            ii.setUrl(c.getAutre());
+            ii.setUrl(trimOrNull(c.getAutre()));
             identiteInternetRepository.save(ii);
             elu.getIdentitesInternet().add(ii);
         }
@@ -372,7 +368,7 @@ public class InjectDataWebservice {
     }
 
     private LocalDate parseDate(String date) {
-        if (!Strings.isNullOrEmpty(date) && !date.equals(" ")) {
+        if (trimToNull(date) != null) {
             return LocalDate.parse(date, DATE_FORMATTER);
         } else {
             return null;
@@ -381,25 +377,25 @@ public class InjectDataWebservice {
 
     private GroupePolitique buildGroupePolitique(EnsembleDto e) {
         GroupePolitique gp = new GroupePolitique();
-        gp.setNom(e.getLibLong());
-        gp.setNomCourt(e.getLibCourt());
+        gp.setNom(trimOrNull(e.getLibLong()));
+        gp.setNomCourt(trimOrNull(e.getLibCourt()));
         gp.setDateDebut(parseDate(e.getDateCreation()));
         gp.setDateFin(parseDate(e.getDateFin()));
         gp.setMotifFin(trimOrNull(e.getMotifFin()));
 
         AdressePostale ap = new AdressePostale();
-        ap.setVoie(e.getAdresse());
-        ap.setCodePostal(e.getCodePostal());
-        ap.setVille(e.getVille());
+        ap.setVoie(trimOrNull(e.getAdresse()));
+        ap.setCodePostal(trimOrNull(e.getCodePostal()));
+        ap.setVille(trimOrNull(e.getVille()));
         ap.setNiveauConfidentialite(PUBLIABLE);
         ap.setAdresseDeCorrespondance(true);
         ap.setPublicationAnnuaire(true);
         adressePostaleRepository.save(ap);
         gp.setAdressePostale(ap);
 
-        gp.setFax(e.getFax());
-        gp.setMail(e.getMail());
-        gp.setPhone(e.getTelephone());
+        gp.setFax(trimOrNull(e.getFax()));
+        gp.setMail(trimOrNull(e.getMail()));
+        gp.setPhone(trimOrNull(e.getTelephone()));
 
         gp.setImportUid(e.getUidEnsemble());
         // TODO faire les audit trails
@@ -411,23 +407,23 @@ public class InjectDataWebservice {
         Organisme o = new Organisme();
         o.setCodeRNE(trimOrNull(e.getCodeRne()));
         // TODO Solveig ?
-        o.setSigle(e.getLibCourt());
-        o.setNom(e.getLibLong());
-        o.setSecteur(e.getSecteur());
+        o.setSigle(trimOrNull(e.getLibCourt()));
+        o.setNom(trimOrNull(e.getLibLong()));
+        o.setSecteur(trimOrNull(e.getSecteur()));
         o.setDateDebut(parseDate(e.getDateCreation()));
         o.setDateFin(parseDate(e.getDateFin()));
         o.setMotifFin(trimOrNull(e.getMotifFin()));
-        o.setTelephone(e.getTelephone());
-        o.setFax(e.getFax());
-        o.setPhonetique(e.getPhonetique());
-        o.setDepartement(e.getDepartement());
+        o.setTelephone(trimOrNull(e.getTelephone()));
+        o.setFax(trimOrNull(e.getFax()));
+        o.setPhonetique(trimOrNull(e.getPhonetique()));
+        o.setDepartement(trimOrNull(e.getDepartement()));
         o.setDescription(trimOrNull(e.getDescription()));
-        o.setStatus(e.getStatus());
+        o.setStatus(trimOrNull(e.getStatus()));
 
         AdressePostale ap = new AdressePostale();
-        ap.setVoie(e.getAdresse());
-        ap.setCodePostal(e.getCodePostal());
-        ap.setVille(e.getVille());
+        ap.setVoie(trimOrNull(e.getAdresse()));
+        ap.setCodePostal(trimOrNull(e.getCodePostal()));
+        ap.setVille(trimOrNull(e.getVille()));
         ap.setNiveauConfidentialite(PUBLIABLE);
         ap.setAdresseDeCorrespondance(true);
         ap.setPublicationAnnuaire(true);
@@ -534,8 +530,8 @@ public class InjectDataWebservice {
         Organisme o = organismes.get(m.getUidEnsemble());
         AppartenanceOrganisme ao = new AppartenanceOrganisme();
         ao.setElu(elus.get(m.getUidConseiller()));
-        ao.setCodeRNE(o.getCodeRNE());
-        ao.setOrganisme(o.getNom());
+        ao.setCodeRNE(trimOrNull(o.getCodeRNE()));
+        ao.setOrganisme(trimOrNull(o.getNom()));
         ao.setDateNomination(parseDate(m.getDateNomination()));
         ao.setDateDebut(parseDate(m.getDateDebut()));
         ao.setDateFin(parseDate(m.getDateFin()));
@@ -545,15 +541,26 @@ public class InjectDataWebservice {
         ao.setFonction(trimOrNull(m.getFonction()));
 
         // TODO Solveig reference == numero nomination ?
-        ao.setReference(m.getNumeroNomination());
-        ao.setStatut(m.getStatus());
+        ao.setReference(trimOrNull(m.getNumeroNomination()));
+        ao.setStatut(trimOrNull(m.getStatus()));
         // TODO Solveig type == nomination ?
-        ao.setType(m.getNomination());
+        ao.setType(trimOrNull(m.getNomination()));
         ao.setDateNomination(parseDate(m.getDateNomination()));
         return appartenanceOrganismeRepository.save(ao);
     }
 
     private String trimOrNull(String label) {
         return label != null && !label.trim().equals("") ? label : null;
+    }
+
+    private String trimToNull(String label) {
+        if (label == null) {
+            return null;
+        }
+        String trim = label.trim();
+        if (trim.equals("")) {
+            return null;
+        }
+        return trim;
     }
 }
