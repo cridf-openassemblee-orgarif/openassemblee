@@ -32,15 +32,18 @@ public class PublicDataWebservice {
 
     private static final String NON_RENSEIGNE = "- non renseigné -";
     private static final String MANDATURE = "18";
-    public static final String COMMISSION_PERMANENTE = "COM002";
-    public static final String EXECUTIF = "COM003";
-    public static final String DELEGUES_SPECIAUX = "COM004";
+    private static final String COMMISSION_PERMANENTE = "COM002";
+    private static final String EXECUTIF = "COM003";
+    private static final String DELEGUES_SPECIAUX = "COM004";
 
-    public static final boolean USE_SPACE = true;
-    public static final String SPACE = USE_SPACE ? " " : "";
-    // TODO PDE say j'ai aussi viré les ""
-    public static final boolean USE_EMPTY_STRING = true;
-    public static final String EMPTY_STRING = USE_EMPTY_STRING ? "" : null;
+    private static final boolean IS_TEST_IMPORT = true;
+
+    // est obligatoire en fait, champs ne peuvent être null
+    private static final String EMPTY_STRING = "";
+    private static final boolean USE_SPACE = IS_TEST_IMPORT;
+    private static final String SPACE = USE_SPACE ? " " : EMPTY_STRING;
+    private static final boolean USE_DOT = IS_TEST_IMPORT;
+    private static final String DOT = USE_DOT ? "." : EMPTY_STRING;
 
     @Autowired
     private EluRepository eluRepository;
@@ -72,8 +75,6 @@ public class PublicDataWebservice {
         // TODO attention pour tous les trucs où on compte, à bien utiliser les trucs filtrés !
         // une solution pour implem simple des demissionnaire est d'utiliser un boolean
         // ou un systeme ou tu dois préciser la data, WS envoie tjs avec la data d'ajd
-        // TODO Solveig confirmation qu'on ne filtre PAS par motif/date fin !? pour autres qu'élu
-        // check que par contre les "nombre" sont cohérent avec les demissions
         List<Elu> elus = eluRepository.findAll()
             .stream()
             .filter(e -> Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() == null)
@@ -101,7 +102,6 @@ public class PublicDataWebservice {
             .map(e -> {
                 ConseillerDto d = new ConseillerDto();
                 d.setUidConseiller(e.getImportUid());
-                // TODO Solveig
                 d.setMandature(MANDATURE);
                 d.setNom(e.getNom());
                 d.setActiviteProf(stringOrSpace(null));
@@ -143,19 +143,15 @@ public class PublicDataWebservice {
                 d.setFax(getPublishable(e.getNumerosFax()).map(NumeroFax::getNumero).orElse(SPACE));
                 d.setMail(getPublishable(e.getAdressesMail()).map(AdresseMail::getMail).orElse(SPACE));
                 d.setValid('1');
-                // TODO le naming de notre cote a ptet une lacune
                 d.setDepElection(e.getDepartement());
                 d.setCodeDepElection(e.getCodeDepartement());
                 d.setPrenom(e.getPrenom());
                 if (e.getCivilite() != null) {
                     d.setCivilite(e.getCivilite() == Civilite.MONSIEUR ? "M." : "Mme");
                 }
-                // TODO PDE espace ?
                 d.setVilleNaissance(stringOrSpace(e.getLieuNaissance()));
-                // TODO PDE gné
-                d.setDescription(".");
+                d.setDescription(DOT);
                 d.setJpegphotoId(String.valueOf(e.getImage()));
-                // TODO PDE gné
                 d.setSt(0F);
                 // TODO putain de non cohérence entre les membres et ce truc
 //                StringBuilder commissionsStringBuilder = new StringBuilder();
@@ -170,9 +166,9 @@ public class PublicDataWebservice {
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
 //                    .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().getImportUid()));
                 d.setCommissions(EMPTY_STRING);
-//                d.setCommissions(commissionsStringBuilder.toString());
                 d.setDistinctions(EMPTY_STRING);
                 d.setDesignations(EMPTY_STRING);
+
                 Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
                     .filter(f -> f.getDateFin() == null)
                     .findFirst();
@@ -191,14 +187,13 @@ public class PublicDataWebservice {
     private List<EnsembleDto> getCommissionPermanente() {
         List<EnsembleDto> result = new ArrayList<>();
         EnsembleDto cp = new EnsembleDto();
-        // TODO Solveig
         cp.setMandature(MANDATURE);
         cp.setUidEnsemble(COMMISSION_PERMANENTE);
         cp.setLibCourt("CP");
         cp.setDateCreation("18/12/2015");
         cp.setType("commission");
         cp.setTypeCommission("Permanente");
-        // TODO Solveig diff entre les deux ? + suppléants
+        // TODO
         cp.setNbMembre(60L);
         cp.setNbTitulaire(60L);
         cp.setNbSuppleant(0L);
@@ -224,14 +219,13 @@ public class PublicDataWebservice {
         result.add(cp);
 
         EnsembleDto exec = new EnsembleDto();
-        // TODO Solveig
         exec.setMandature(MANDATURE);
         exec.setUidEnsemble(EXECUTIF);
         exec.setLibCourt("VP");
         exec.setDateCreation("18/12/2015");
         exec.setType("commission");
         exec.setTypeCommission("Exécutif");
-        // TODO Solveig diff entre les deux ? + suppléants
+        // TODO
         exec.setNbMembre(0L);
         exec.setNbTitulaire(16L);
         exec.setNbSuppleant(0L);
@@ -257,14 +251,13 @@ public class PublicDataWebservice {
         result.add(exec);
 
         EnsembleDto deleg = new EnsembleDto();
-        // TODO Solveig
         deleg.setMandature(MANDATURE);
         deleg.setUidEnsemble(DELEGUES_SPECIAUX);
         deleg.setLibCourt("Délégués spéciaux");
         deleg.setDateCreation("22/12/2015");
         deleg.setType("commission");
         deleg.setTypeCommission("Délégués spéciaux");
-        // TODO Solveig diff entre les deux ? + suppléants
+        // TODO TODO
         deleg.setNbMembre(10L);
         deleg.setNbTitulaire(10L);
         deleg.setNbSuppleant(0L);
@@ -345,7 +338,6 @@ public class PublicDataWebservice {
             EnsembleDto e = new EnsembleDto();
             e.setUidEnsemble(o.getImportUid());
             e.setMandature(MANDATURE);
-            // TODO Solveig
             e.setLibCourt(stringOrSpace(o.getSigle()));
             e.setDateCreation(formatDate(o.getDateDebut()));
             e.setType("organisme");
@@ -366,7 +358,7 @@ public class PublicDataWebservice {
                     e.setNbMembre(e.getNbMembre() + (long) aos.size());
                 }
             }
-            // TODO REMOVE
+            // TODO
             e.setNbMembre(0L);
             e.setNbTitulaire(0L);
             e.setNbSuppleant(0L);
@@ -375,11 +367,7 @@ public class PublicDataWebservice {
             e.setSt(0F);
             e.setDateFin(formatDate(o.getDateFin()));
             e.setDescription(stringOrSpace(o.getDescription()));
-            // TODO fou => pas besoin de trimer ??
-            // checker qu'effectivement c'est bon putain
             e.setCodeRne(stringOrSpace(o.getCodeRNE()));
-            // TODO Solveig
-            e.setSecteur(stringOrSpace(o.getSecteur()));
             e.setMotifFin(stringOrSpace(o.getMotifFin()));
             e.setSecteur(stringOrSpace(o.getSecteur()));
             e.setTelephone(stringOrSpace(o.getTelephone()));
@@ -423,15 +411,11 @@ public class PublicDataWebservice {
                 .filter(a -> a.getDateFin() == null)
                 .count());
             e.setNbTitulaire(e.getNbMembre());
-            // TODO REMOVE
+            // TODO
             e.setNbMembre(0L);
-            // TODO REMOVE
             e.setNbTitulaire(0L);
-            // TODO Solveig on a pas prévu de suppléants
             e.setNbSuppleant(0L);
             e.setLibLong(ct.getNom());
-            // TODO Solveig on a pas d'ordre dans Siger
-            // on peut mettre en dur dans la base maintenant, mais c'est la merde à la première modification
             e.setValid('1');
             e.setDescription(NON_RENSEIGNE);
             e.setSt(0f);
@@ -457,8 +441,6 @@ public class PublicDataWebservice {
         }).collect(Collectors.toList());
     }
 
-    // TODO Solveig pour info, dans l'export actuel, tous les liens entre un elu et un organismes sont par code rne
-    // select data_membre.uid_membre from data_membre, data_ensemble where data_membre.uid_ensemble = data_ensemble.uid_ensemble and data_ensemble.code_rne is null;
     private List<MembreDto> getMembres(List<Elu> elus, List<Organisme> organismes) {
         List<MembreDto> m1 = elus.stream().flatMap(e -> e.getAppartenancesCommissionPermanente().stream().map(acp -> {
             MembreDto m = new MembreDto();

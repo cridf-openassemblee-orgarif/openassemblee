@@ -406,9 +406,9 @@ public class InjectDataWebservice {
     private Organisme buildOrganisme(EnsembleDto e) {
         Organisme o = new Organisme();
         o.setCodeRNE(trimOrNull(e.getCodeRne()));
-        // TODO Solveig ?
         o.setSigle(trimOrNull(e.getLibCourt()));
         o.setNom(trimOrNull(e.getLibLong()));
+        // TODO type vs secteur
         o.setSecteur(trimOrNull(e.getSecteur()));
         o.setDateDebut(parseDate(e.getDateCreation()));
         o.setDateFin(parseDate(e.getDateFin()));

@@ -48,6 +48,7 @@ public class Elu implements Serializable {
     @Column(name = "code_departement")
     private String codeDepartement;
 
+    // FIXME rename departementElection
     @Column(name = "departement")
     private String departement;
 
