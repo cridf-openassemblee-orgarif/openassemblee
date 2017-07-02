@@ -36,7 +36,7 @@ public class PublicDataWebservice {
     private static final String EXECUTIF = "COM003";
     private static final String DELEGUES_SPECIAUX = "COM004";
 
-    private static final boolean IS_TEST_IMPORT = true;
+    private static final boolean IS_TEST_IMPORT = false;
 
     // est obligatoire en fait, champs ne peuvent être null
     private static final String EMPTY_STRING = "";
