@@ -9,6 +9,7 @@ angular.module('openassembleeApp')
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
                     data.dateNaissance = DateUtils.convertLocaleDateFromServer(data.dateNaissance);
+                    data.dateDemission = DateUtils.convertLocaleDateFromServer(data.dateDemission);
                     return data;
                 }
             },
@@ -16,6 +17,7 @@ angular.module('openassembleeApp')
                 method: 'PUT',
                 transformRequest: function (data) {
                     data.dateNaissance = DateUtils.convertLocaleDateToServer(data.dateNaissance);
+                    data.dateDemission = DateUtils.convertLocaleDateToServer(data.dateDemission);
                     return angular.toJson(data);
                 }
             },
@@ -23,6 +25,7 @@ angular.module('openassembleeApp')
                 method: 'POST',
                 transformRequest: function (data) {
                     data.dateNaissance = DateUtils.convertLocaleDateToServer(data.dateNaissance);
+                    data.dateDemission = DateUtils.convertLocaleDateToServer(data.dateDemission);
                     return angular.toJson(data);
                 }
             },
