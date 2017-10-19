@@ -223,8 +223,7 @@ public class EluResource {
         if (elu.getId() == null) {
             return createElu(elu);
         }
-        Elu result = eluRepository.save(elu);
-        eluSearchRepository.save(elu);
+        Elu result = eluService.saveElu(elu);
         auditTrailService.logUpdate(elu, elu.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("elu", elu.getId().toString()))

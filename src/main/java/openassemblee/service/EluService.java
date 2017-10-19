@@ -49,6 +49,15 @@ public class EluService {
     private IdentiteInternetSearchRepository identiteInternetSearchRepository;
 
     @Inject
+    private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
+
+    @Inject
+    private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
+
+    @Inject
+    private AppartenanceCommissionPermanenteRepository appartenanceCommissionPermanenteRepository;
+
+    @Inject
     private OrganismeRepository organismeRepository;
 
     @Inject
@@ -161,6 +170,35 @@ public class EluService {
             .filter(o -> o[1] != null)
             .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
         return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
+    }
+
+    @Transactional
+    public Elu saveElu(Elu elu) {
+        Elu result = eluRepository.save(elu);
+        eluSearchRepository.save(elu);
+        if(elu.getDateDemission() != null) {
+            elu.getAppartenancesCommissionPermanente().forEach(a -> {
+                a.setDateFin(elu.getDateDemission());
+                a.setMotifFin(elu.getMotifDemission());
+                appartenanceCommissionPermanenteRepository.save(a);
+            });
+            elu.getAppartenancesOrganismes().forEach(a -> {
+                a.setDateFin(elu.getDateDemission());
+                a.setMotifFin(elu.getMotifDemission());
+                appartenanceOrganismeRepository.save(a);
+            });
+            elu.getAppartenancesCommissionsThematiques().forEach(a -> {
+                a.setDateFin(elu.getDateDemission());
+                a.setMotifFin(elu.getMotifDemission());
+                appartenanceCommissionThematiqueRepository.save(a);
+            });
+            elu.getAppartenancesGroupePolitique().forEach(a -> {
+                a.setDateFin(elu.getDateDemission());
+                a.setMotifFin(elu.getMotifDemission());
+                appartenanceGroupePolitiqueRepository.save(a);
+            });
+        }
+        return result;
     }
 
     @Transactional
