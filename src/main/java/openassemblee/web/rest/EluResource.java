@@ -322,8 +322,11 @@ public class EluResource {
     public void getAllElusExport(HttpServletResponse response) {
         log.debug("REST request to get all GroupePolitiques");
         List<EluListDTO> dtos = eluService.getAll();
-        List<List<String>> lines = new ArrayList<>();
-        lines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
+        List<List<String>> elusActifsLines = new ArrayList<>();
+        elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
+            "Date de naissance"));
+        List<List<String>> elusInactifsLines = new ArrayList<>();
+        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
             "Date de naissance"));
         for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
@@ -332,10 +335,16 @@ public class EluResource {
                 "Aucun groupe politique";
             String dateNaissance = e.getDateNaissance() != null ?
                 e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
-            lines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                e.getLieuNaissance(), dateNaissance));
+            if (dto.getElu().getDateDemission() == null) {
+                elusActifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
+                    e.getLieuNaissance(), dateNaissance));
+            } else {
+                elusInactifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
+                    e.getLieuNaissance(), dateNaissance));
+            }
         }
-        byte[] export = exportService.exportToExcel("Élus", lines);
+        byte[] export = exportService.exportToExcel(new ExportService.Entry("Élus", elusActifsLines),
+            new ExportService.Entry("Élus démissionnaires", elusInactifsLines));
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-disposition", "attachment; filename=elus.xlsx");
