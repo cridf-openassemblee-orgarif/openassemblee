@@ -24,7 +24,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
+            <div class="col-md-4 col-sm-6 col-xs-12"
+                 ng-repeat="dto in dtos"
+                 ng-if="!dto.elu.dateDemission">
                 <div class="info-box entity-component" ui-sref="elu.detail({id:dto.elu.id})">
                     <span class="info-box-photo">
                         <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}"/>
@@ -39,6 +41,46 @@
                         <span class="info-box-info" ng-if="dto.groupePolitique == null">
                             Sans groupe
                         </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Anciens élus</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-xs-12"
+                                 ng-repeat="dto in dtos"
+                                 ng-if="dto.elu.dateDemission">
+                                <div class="info-box entity-component" ui-sref="elu.detail({id:dto.elu.id})">
+                                <span class="info-box-photo">
+                                    <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}"/>
+                                </span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-titre">
+                                            {{dto.elu.civilite | civilite}} {{dto.elu.prenom}} {{dto.elu.nom}}
+                                        </span>
+                                        <span class="info-box-info" ng-if="dto.groupePolitique">
+                                            {{dto.groupePolitique.nomCourt}}
+                                        </span>
+                                        <span class="info-box-info" ng-if="dto.groupePolitique == null">
+                                            Sans groupe
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
