@@ -14,8 +14,7 @@ angular.module('openassembleeApp')
         });
         var updateScope = function () {
             $scope.eluEnCommissionPermanente = check('appartenancesCommissionPermanente');
-            $scope.eluEnCommissionPermanenteOuFonction = check('appartenancesCommissionPermanente', 'fonctionsExecutives',
-                'fonctionsCommissionPermanente');
+            $scope.eluEnCommissionPermanenteOuFonction = check('appartenancesCommissionPermanente');
             $scope.eluAGroupePolitique = check('appartenancesGroupePolitique');
             $scope.eluAGroupePolitiqueOuFonction = check('appartenancesGroupePolitique', 'fonctionsGroupePolitique');
             $scope.eluACommissionThematiqueOuFonction = check('appartenancesCommissionsThematiques',

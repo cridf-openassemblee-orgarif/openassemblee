@@ -12,52 +12,27 @@
                     <i class="fa fa-pencil"></i>
                 </div>
             </div>
-            <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
-                 ng-if="f.dateFin == null">
-                <div class="unit-bloc action-bloc"
-                     ui-sref="elu.detail.finFonctionCommissionPermanente({fonctionId: f.id})">
-                    <span class="grey">Fonction :</span> {{f.fonction}}
-                    <span class="grey">depuis le</span> {{f.dateDebut}}
-                    <i class="fa fa-pencil"></i>
-                </div>
-            </div>
-            <div ng-repeat="f in dto.elu.fonctionsExecutives"
-                 ng-if="f.dateFin == null">
-                <div class="unit-bloc action-bloc"
-                     ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
-                    <span class="grey">Fonction exécutive :</span> {{f.fonction}}
-                    <span class="grey">depuis le</span> {{f.dateDebut}}
-                    <i class="fa fa-pencil"></i>
-                </div>
-            </div>
             <div class="unit-bloc" ng-if="!eluEnCommissionPermanenteOuFonction">
                 Non membre de la commission
             </div>
         </div>
-        <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                    aria-expanded="false">
-                <span class="caret"></span>
+        <div class="btn-group elu-action" ng-if="!eluEnCommissionPermanenteOuFonction">
+            <button type="button" class="btn btn-default"
+                    ui-sref="elu.detail.ajouterCommissionPermanente"
+                    ng-if="!eluEnCommissionPermanenteOuFonction">
+                <span class="fa fa-plus"></span>
             </button>
-            <ul class="dropdown-menu pull-right">
-                <li ng-if="!eluEnCommissionPermanente">
-                    <a href="#" ui-sref="elu.detail.ajouterCommissionPermanente">
-                        Ajouter à la commission permanente
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                       ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
-                        Ajouter une fonction à la commission permanente
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                       ui-sref="elu.detail.nouvelleFonctionExecutive">
-                        Ajouter une fonction exécutive
-                    </a>
-                </li>
-            </ul>
         </div>
+        <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"-->
+        <!--aria-expanded="false">-->
+        <!--<span class="caret"></span>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu pull-right">-->
+        <!--<li ng-if="!eluEnCommissionPermanente">-->
+        <!--<a href="#" ui-sref="elu.detail.ajouterCommissionPermanente">-->
+        <!--Ajouter à la commission permanente-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
     </div>
 </div>

@@ -29,6 +29,25 @@
                                 <span class="lg">Élu non actif, cause :</span> {{dto.elu.motifDemission}}
                                 <span class="lg">depuis le</span> {{dto.elu.dateDemission | date:'mediumDate'}}
                             </div>
+                            <br />
+                            <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+                                  ng-if="f.dateFin == null">
+                                <div class="action-bloc"
+                                     ui-sref="elu.detail.finFonctionCommissionPermanente({fonctionId: f.id})">
+                                    <span class="grey">Fonction :</span> {{f.fonction}}
+                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
+                            <div ng-repeat="f in dto.elu.fonctionsExecutives"
+                                 ng-if="f.dateFin == null">
+                                <div class="action-bloc"
+                                     ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
+                                    <span class="grey">Fonction exécutive :</span> {{f.fonction}}
+                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
                         </span>
                         <div class="btn-group elu-action">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -40,6 +59,18 @@
                                     <a href="#" ui-sref="elu.edit({id:dto.elu.id})">
                                         <span class="fa fa-pencil"></span>
                                         Éditer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
+                                        Ajouter une fonction à la commission permanente
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                       ui-sref="elu.detail.nouvelleFonctionExecutive">
+                                        Ajouter une fonction exécutive
                                     </a>
                                 </li>
                                 <li>
