@@ -327,7 +327,7 @@ public class EluResource {
             "Date de naissance"));
         List<List<String>> elusInactifsLines = new ArrayList<>();
         elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-            "Date de naissance"));
+            "Date de naissance", "Date de démission"));
         for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
             String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
@@ -339,8 +339,9 @@ public class EluResource {
                 elusActifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
                     e.getLieuNaissance(), dateNaissance));
             } else {
+                String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
                 elusInactifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance));
+                    e.getLieuNaissance(), dateNaissance, dateDemission));
             }
         }
         byte[] export = exportService.exportToExcel(new ExportService.Entry("Élus", elusActifsLines),

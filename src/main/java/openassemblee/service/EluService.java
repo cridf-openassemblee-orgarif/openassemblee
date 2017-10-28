@@ -63,6 +63,18 @@ public class EluService {
     @Inject
     private AppartenanceGroupePolitiqueRepository appartenanceGroupePolitiqueRepository;
 
+    @Inject
+    private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
+
+    @Inject
+    private FonctionExecutiveRepository fonctionExecutiveRepository;
+
+    @Inject
+    private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
+
+    @Inject
+    private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
+
     @Transactional(readOnly = true)
     public List<Elu> getActifsAssemblee() {
         // FIXME pour le moment tous les élus sont actifs, wtf...
@@ -176,7 +188,7 @@ public class EluService {
     public Elu saveElu(Elu elu) {
         Elu result = eluRepository.save(elu);
         eluSearchRepository.save(elu);
-        if(elu.getDateDemission() != null) {
+        if (elu.getDateDemission() != null) {
             elu.getAppartenancesCommissionPermanente().forEach(a -> {
                 a.setDateFin(elu.getDateDemission());
                 a.setMotifFin(elu.getMotifDemission());
@@ -196,6 +208,26 @@ public class EluService {
                 a.setDateFin(elu.getDateDemission());
                 a.setMotifFin(elu.getMotifDemission());
                 appartenanceGroupePolitiqueRepository.save(a);
+            });
+            elu.getFonctionsCommissionPermanente().forEach(fct -> {
+                fct.setDateFin(elu.getDateDemission());
+                fct.setMotifFin(elu.getMotifDemission());
+                fonctionCommissionPermanenteRepository.save(fct);
+            });
+            elu.getFonctionsExecutives().forEach(fct -> {
+                fct.setDateFin(elu.getDateDemission());
+                fct.setMotifFin(elu.getMotifDemission());
+                fonctionExecutiveRepository.save(fct);
+            });
+            elu.getFonctionsGroupePolitique().forEach(fct -> {
+                fct.setDateFin(elu.getDateDemission());
+                fct.setMotifFin(elu.getMotifDemission());
+                fonctionGroupePolitiqueRepository.save(fct);
+            });
+            elu.getFonctionsCommissionsThematiques().forEach(fct -> {
+                fct.setDateFin(elu.getDateDemission());
+                fct.setMotifFin(elu.getMotifDemission());
+                fonctionCommissionThematiqueRepository.save(fct);
             });
         }
         return result;
