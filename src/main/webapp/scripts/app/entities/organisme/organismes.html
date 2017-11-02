@@ -11,6 +11,17 @@
                 <button class="btn btn-sm btn-primary" ui-sref="organisme.new">
                     <span class="glyphicon glyphicon-plus"></span> <span>Créer un nouvel organisme</span>
                 </button>
+                <br />
+                <br />
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery"
+                               placeholder="Recherche">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span>
+                        <span>Chercher</span>
+                    </button>
+                </form>
             </div>
         </div>
 
