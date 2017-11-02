@@ -2,6 +2,12 @@
     <section>
         <div class="container">
             <h1>{{dto.organisme.nom}}</h1>
+            <button type="submit"
+                    ui-sref="organisme.edit({id:dto.organisme.id})"
+                    class="btn btn-sm btn-primary btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
+            </button>
+            <br/>
             <br/>
             <div class="table-responsive info-box table-info-box">
                 <table class="table table-striped">

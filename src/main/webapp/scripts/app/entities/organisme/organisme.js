@@ -72,8 +72,8 @@ angular.module('openassembleeApp')
                 }]
             })
             .state('organisme.edit', {
-                parent: 'organisme',
-                url: '/{id}/edit',
+                parent: 'organisme.detail',
+                url: '/edit',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
@@ -88,7 +88,7 @@ angular.module('openassembleeApp')
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('organisme', null, { reload: true });
+                        $state.go('^', null, {reload: true});
                     }, function() {
                         $state.go('^');
                     })
