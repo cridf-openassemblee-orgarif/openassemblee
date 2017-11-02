@@ -8,8 +8,7 @@
                  ng-repeat="a in dto.elu.appartenancesOrganismes"
                  ng-if="a.dateFin == null"
                  ui-sref="elu.detail.finAppartenanceOrganisme({appartenanceId: a.id})">
-                {{dto.organismes[a.codeRNE].nom}}
-                <span ng-if="!dto.organismes[a.codeRNE]">Organisme inconnu</span>
+                {{a.organisme}}
                 <i class="fa fa-pencil"></i>
                 <br/>
                 <span class="lg"><span class="grey">Statut :</span> {{a.statut}}</span>
