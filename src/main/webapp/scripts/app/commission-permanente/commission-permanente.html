@@ -9,10 +9,10 @@
     <!-- Main content -->
     <section class="content">
         <div class="container">
-            <h2 ng-if="!comm.appartenances.length && !comm.fonctions.length && !comm.fonctionsExecutives.length">
+            <h2 ng-if="!comm.appartenances.length && !comm.fonctionsExecutives.length">
                 Aucun membre à la commission permanente
             </h2>
-            <div ng-if="comm.appartenances.length || comm.fonctions.length || comm.fonctionsExecutives.length">
+            <div ng-if="comm.appartenances.length || comm.fonctionsExecutives.length">
                 <div class="row">
                     <div class="col-md-12 align-right">
                         <a class="btn btn-sm btn-primary" href="api/commission-permanente/export">
