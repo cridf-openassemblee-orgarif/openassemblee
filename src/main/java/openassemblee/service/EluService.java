@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,6 +75,9 @@ public class EluService {
 
     @Inject
     private FonctionGroupePolitiqueRepository fonctionGroupePolitiqueRepository;
+
+    @Inject
+    private CommissionPermanenteService commissionPermanenteService;
 
     @Transactional(readOnly = true)
     public List<Elu> getActifsAssemblee() {
@@ -320,4 +324,35 @@ public class EluService {
         numeroTelephoneSearchRepository.save(numeroTelephone);
     }
 
+    @Transactional(readOnly = true)
+    public ExportService.Entry[] getExportEntries() {
+        List<EluListDTO> dtos = getAll();
+        List<List<String>> elusActifsLines = new ArrayList<>();
+        elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
+            "Date de naissance"));
+        List<List<String>> elusInactifsLines = new ArrayList<>();
+        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
+            "Date de naissance", "Date de démission"));
+        for (EluListDTO dto : dtos) {
+            Elu e = dto.getElu();
+            String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
+            String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
+                "Aucun groupe politique";
+            String dateNaissance = e.getDateNaissance() != null ?
+                e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
+            if (dto.getElu().getDateDemission() == null) {
+                elusActifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
+                    e.getLieuNaissance(), dateNaissance));
+            } else {
+                String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
+                elusInactifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
+                    e.getLieuNaissance(), dateNaissance, dateDemission));
+            }
+        }
+        return new ExportService.Entry[]{
+            new ExportService.Entry("Élus", elusActifsLines),
+            new ExportService.Entry("Élus démissionnaires", elusInactifsLines),
+            commissionPermanenteService.getFonctionsEntry(dtos)
+        };
+    }
 }

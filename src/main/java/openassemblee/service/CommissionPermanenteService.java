@@ -132,12 +132,9 @@ public class CommissionPermanenteService {
             .flatMap(e -> e.getFonctionsExecutives().stream()).collect(Collectors.toList());
         List<AppartenanceCommissionPermanente> acps = elus.stream()
             .flatMap(e -> e.getAppartenancesCommissionPermanente().stream()).collect(Collectors.toList());
-        List<FonctionCommissionPermanente> fcps = elus.stream()
-            .flatMap(e -> e.getFonctionsCommissionPermanente().stream()).collect(Collectors.toList());
         ExportService.Entry[] entries = new ExportService.Entry[]{
             new ExportService.Entry("Fonctions éxécutives", getFonctionExecutivesLines(fes)),
             new ExportService.Entry("Membres", getAppartenancesLines(acps)),
-            new ExportService.Entry("Fonctions", getFonctionsLines(fcps))
         };
         return entries;
     }
@@ -155,5 +152,12 @@ public class CommissionPermanenteService {
     public static boolean isFonctionExecutiveCourante(FonctionExecutive f) {
         // plus tard : || f.getDateFin().isAfter(LocalDate.now())
         return f.getDateFin() == null;
+    }
+
+    public ExportService.Entry getFonctionsEntry(List<EluListDTO> dtos) {
+        List<FonctionCommissionPermanente> fcps = dtos.stream()
+            .map(EluListDTO::getElu)
+            .flatMap(e -> e.getFonctionsCommissionPermanente().stream()).collect(Collectors.toList());
+        return new ExportService.Entry("Fonctions", getFonctionsLines(fcps));
     }
 }

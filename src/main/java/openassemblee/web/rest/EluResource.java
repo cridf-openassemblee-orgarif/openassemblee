@@ -4,10 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.search.EluSearchRepository;
-import openassemblee.service.AuditTrailService;
-import openassemblee.service.EluService;
-import openassemblee.service.ExportService;
-import openassemblee.service.ImageService;
+import openassemblee.service.*;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -320,32 +317,9 @@ public class EluResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void getAllElusExport(HttpServletResponse response) {
-        log.debug("REST request to get all GroupePolitiques");
-        List<EluListDTO> dtos = eluService.getAll();
-        List<List<String>> elusActifsLines = new ArrayList<>();
-        elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-            "Date de naissance"));
-        List<List<String>> elusInactifsLines = new ArrayList<>();
-        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-            "Date de naissance", "Date de démission"));
-        for (EluListDTO dto : dtos) {
-            Elu e = dto.getElu();
-            String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
-            String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
-                "Aucun groupe politique";
-            String dateNaissance = e.getDateNaissance() != null ?
-                e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
-            if (dto.getElu().getDateDemission() == null) {
-                elusActifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance));
-            } else {
-                String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
-                elusInactifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance, dateDemission));
-            }
-        }
-        byte[] export = exportService.exportToExcel(new ExportService.Entry("Élus", elusActifsLines),
-            new ExportService.Entry("Élus démissionnaires", elusInactifsLines));
+        log.debug("REST request to get elus export");
+        ExportService.Entry[] entries = eluService.getExportEntries();
+        byte[] export = exportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-disposition", "attachment; filename=elus.xlsx");
@@ -356,7 +330,6 @@ public class EluResource {
             e.printStackTrace();
         }
     }
-
 
     /**
      * DELETE  /elus/:id -> delete the "id" elu.
