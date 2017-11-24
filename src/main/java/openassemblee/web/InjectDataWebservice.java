@@ -181,7 +181,7 @@ public class InjectDataWebservice {
         // fonctions CP
         List<MembreDto> m3 = data.getMembres().stream()
             .filter(m -> m.getType().equals("Commissions"))
-            .filter(m -> m.getUidEnsemble().equals(deleguesSpeciaux))
+//            .filter(m -> m.getUidEnsemble().equals(deleguesSpeciaux))
             .collect(Collectors.toList());
         uidsTraites.addAll(m3.stream().map(MembreDto::getUidMembre).collect(Collectors.toList()));
         long nbFcp = m3.stream()
