@@ -13,7 +13,7 @@
                     <div class="info-box-content-elu">
                         <span class="info-box-info-elu">
                             <div>
-                                <span class="lg">Née le</span> {{dto.elu.dateNaissance}}
+                                <span class="lg">{{dto.elu.civilite | neOuNee}} le</span> {{dto.elu.dateNaissance}}
                                 <span class="lg">à</span> {{dto.elu.lieuNaissance}}
                             </div>
                             <div ng-if="dto.elu.nomJeuneFille">
@@ -45,6 +45,16 @@
                                      ui-sref="elu.detail.finFonctionExecutive({fonctionId: f.id})">
                                     <span class="grey">Fonction exécutive :</span> {{f.fonction}}
                                     <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                            </div>
+                            <br/>
+                            <div ng-repeat="d in dto.elu.distinctionHonorifiques">
+                                <div class="action-bloc"
+                                     ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})">
+                                    <span class="lg">Titre :</span> {{d.titre}}
+                                    <br/>
+                                    <span class="lg">Date :</span> {{d.date}}
                                     <i class="fa fa-pencil"></i>
                                 </div>
                             </div>

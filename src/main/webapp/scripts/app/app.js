@@ -180,6 +180,17 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
             return '';
         };
     }])
+    .filter('neOuNee', [function () {
+        return function (value) {
+            switch (value) {
+                case 'MADAME':
+                    return 'Née';
+                case 'MONSIEUR':
+                    return 'Né';
+            }
+            return '';
+        };
+    }])
     .filter('properso', [function () {
         return function (value) {
             switch (value) {
