@@ -5,7 +5,11 @@
         </div>
         <div class="box-body">
             <div class="unit-bloc" ng-repeat="a in dto.elu.adressesPostales">
-                <div class="action-bloc" ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})">
+                <div class="info-bloc">
+                    <div class="edition-buttons-bloc">
+                        <edit-button ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})"></edit-button>
+                        <delete-button ui-sref="elu.detail.supprimerAdressePostale({adressePostaleId: a.id})"></delete-button>
+                    </div>
                     {{a.oneline}}
                     <br/>
                     <span class="lg">
@@ -20,7 +24,6 @@
                         {{a.publicationAnnuaire | ouinon}}
                     </span>
                 </div>
-                <a ui-sref="elu.detail.supprimerAdressePostale({adressePostaleId: a.id})">Supprimer</a>
             </div>
             <div ng-hide="dto.elu.adressesPostales.length">Aucune adresse connue</div>
         </div>

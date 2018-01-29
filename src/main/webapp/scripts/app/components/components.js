@@ -1,6 +1,18 @@
 'use strict';
 
 angular.module('openassembleeApp')
+    .directive('editButton', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/edit-button.html'
+        }
+    })
+    .directive('deleteButton', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/app/components/delete-button.html'
+        }
+    })
     .directive('adressesPostales', function () {
         return {
             restrict: 'E',

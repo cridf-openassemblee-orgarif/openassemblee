@@ -8,7 +8,6 @@
              ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
             <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
-            <i class="fa fa-pencil"></i>
             <br/>
             <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
         </div>
@@ -17,7 +16,6 @@
              ui-sref="elu.detail.finFonctionGroupePolitique({fonctionId: f.id})">
             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
             {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
-            <i class="fa fa-pencil"></i>
             <br/>
             <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
         </div>

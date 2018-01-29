@@ -9,7 +9,6 @@
                  ng-if="a.dateFin == null"
                  ui-sref="elu.detail.finAppartenanceCommissionThematique({appartenanceId: a.id})">
                 {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
-                <i class="fa fa-pencil"></i>
                 <br/>
                 <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
             </div>
@@ -18,7 +17,6 @@
                  ui-sref="elu.detail.finFonctionCommissionThematique({fonctionId: f.id})">
                 <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
                 {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
-                <i class="fa fa-pencil"></i>
                 <br/>
                 <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
             </div>

@@ -706,6 +706,32 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerAdresseMail', {
+                parent: 'elu.detail',
+                url: '/adresseMail/{adresseMailId}/delete',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/adresseMail/adresseMail-delete-dialog.html',
+                        controller: 'AdresseMailDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    eluId: $stateParams.id,
+                                    adresseMailId: $stateParams.adresseMailId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterNumeroFax', {
                 parent: 'elu.detail',
                 url: '/numeroFax',
@@ -743,6 +769,32 @@ angular.module('openassembleeApp')
                         resolve: {
                             entity: ['NumeroFax', function(NumeroFax) {
                                 return NumeroFax.get({id : $stateParams.numeroFaxId});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.supprimerNumeroFax', {
+                parent: 'elu.detail',
+                url: '/numeroFax/{numeroFaxId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroFax/numeroFax-delete-dialog.html',
+                        controller: 'NumeroFaxDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    eluId: $stateParams.id,
+                                    numeroFaxId: $stateParams.numeroFaxId
+                                }
                             }]
                         }
                     }).result.then(function(result) {
@@ -798,6 +850,32 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerNumeroTelephone', {
+                parent: 'elu.detail',
+                url: '/numeroTelephone/{numeroTelephoneId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/numeroTelephone/numeroTelephone-delete-dialog.html',
+                        controller: 'NumeroTelephoneDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    eluId: $stateParams.id,
+                                    numeroTelephoneId: $stateParams.numeroTelephoneId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterIdentiteInternet', {
                 parent: 'elu.detail',
                 url: '/identiteInternet',
@@ -843,5 +921,31 @@ angular.module('openassembleeApp')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('elu.detail.supprimerIdentiteInternet', {
+                parent: 'elu.detail',
+                url: '/identiteInternet/{identiteInternetId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/identiteInternet/identiteInternet-delete-dialog.html',
+                        controller: 'IdentiteInternetDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    eluId: $stateParams.id,
+                                    identiteInternetId: $stateParams.identiteInternetId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
             });
-    })
+    });

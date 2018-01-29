@@ -4,8 +4,11 @@
             <h3 class="box-title"><i class="fa fa-fax"></i> Numéros de fax</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.numerosFax"
-                 ui-sref="elu.detail.editerNumeroFax({numeroFaxId: a.id})">
+            <div class="info-bloc" ng-repeat="a in dto.elu.numerosFax">
+                <div class="edition-buttons-bloc">
+                    <edit-button ui-sref="elu.detail.editerNumeroFax({numeroFaxId: a.id})"></edit-button>
+                    <delete-button ui-sref="elu.detail.supprimerNumeroFax({numeroFaxId: a.id})"></delete-button>
+                </div>
                 {{a.numero}}
                 <br/>
                 <span class="lg">

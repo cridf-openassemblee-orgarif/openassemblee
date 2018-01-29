@@ -64,6 +64,13 @@ angular.module('openassembleeApp')
                     return angular.toJson(data);
                 }
             },
+            'deleteAdresseMail': {
+                method: 'DELETE',
+                url: 'api/elus/:eluId/adresseMail/:adresseMailId',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveIdentiteInternet': {
                 method: 'POST',
                 url: 'api/elus/:id/identiteInternet',
@@ -74,6 +81,13 @@ angular.module('openassembleeApp')
             'updateIdentiteInternet': {
                 method: 'PUT',
                 url: 'api/elus/:id/identiteInternet',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'deleteIdentiteInternet': {
+                method: 'DELETE',
+                url: 'api/elus/:eluId/identiteInternet/:identiteInternetId',
                 transformRequest: function (data) {
                     return angular.toJson(data);
                 }
@@ -92,6 +106,13 @@ angular.module('openassembleeApp')
                     return angular.toJson(data);
                 }
             },
+            'deleteNumeroFax': {
+                method: 'DELETE',
+                url: 'api/elus/:eluId/numeroFax/:numeroFaxId',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
             'saveNumeroTelephone': {
                 method: 'POST',
                 url: 'api/elus/:id/numeroTelephone',
@@ -102,6 +123,13 @@ angular.module('openassembleeApp')
             'updateNumeroTelephone': {
                 method: 'PUT',
                 url: 'api/elus/:id/numeroTelephone',
+                transformRequest: function (data) {
+                    return angular.toJson(data);
+                }
+            },
+            'deleteNumeroTelephone': {
+                method: 'DELETE',
+                url: 'api/elus/:eluId/numeroTelephone/:numeroTelephoneId',
                 transformRequest: function (data) {
                     return angular.toJson(data);
                 }

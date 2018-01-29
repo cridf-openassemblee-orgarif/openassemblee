@@ -253,6 +253,18 @@ public class EluService {
     }
 
     @Transactional
+    public void deleteAdresseMail(Long eluId, Long adresseMailId) {
+        Elu elu = eluRepository.getOne(eluId);
+        // TODO ça mérite un test car on dépend de l'impl equals là
+        AdresseMail am = new AdresseMail();
+        am.setId(adresseMailId);
+        elu.getAdressesMail().remove(am);
+        eluRepository.save(elu);
+        adresseMailRepository.delete(adresseMailId);
+        adresseMailSearchRepository.delete(adresseMailId);
+    }
+
+    @Transactional
     public void saveAdressePostale(long id, AdressePostale adressePostale) {
         adressePostaleRepository.save(adressePostale);
         adressePostaleSearchRepository.save(adressePostale);
@@ -295,6 +307,18 @@ public class EluService {
     }
 
     @Transactional
+    public void deleteIdentiteInternet(Long eluId, Long identiteInternetId) {
+        Elu elu = eluRepository.getOne(eluId);
+        // TODO ça mérite un test car on dépend de l'impl equals là
+        IdentiteInternet ii = new IdentiteInternet();
+        ii.setId(identiteInternetId);
+        elu.getIdentitesInternet().remove(ii);
+        eluRepository.save(elu);
+        identiteInternetRepository.delete(identiteInternetId);
+        identiteInternetSearchRepository.delete(identiteInternetId);
+    }
+
+    @Transactional
     public void saveNumeroFax(Long id, NumeroFax numeroFax) {
         numeroFaxRepository.save(numeroFax);
         numeroFaxSearchRepository.save(numeroFax);
@@ -310,6 +334,18 @@ public class EluService {
     }
 
     @Transactional
+    public void deleteNumeroFax(Long eluId, Long numeroFaxId) {
+        Elu elu = eluRepository.getOne(eluId);
+        // TODO ça mérite un test car on dépend de l'impl equals là
+        NumeroFax nf = new NumeroFax();
+        nf.setId(numeroFaxId);
+        elu.getNumerosFax().remove(nf);
+        eluRepository.save(elu);
+        numeroFaxRepository.delete(numeroFaxId);
+        numeroFaxSearchRepository.delete(numeroFaxId);
+    }
+
+    @Transactional
     public void saveNumeroTelephone(Long id, NumeroTelephone numeroTelephone) {
         numeroTelephoneRepository.save(numeroTelephone);
         numeroTelephoneSearchRepository.save(numeroTelephone);
@@ -322,6 +358,18 @@ public class EluService {
     public void updateNumeroTelephone(NumeroTelephone numeroTelephone) {
         numeroTelephoneRepository.save(numeroTelephone);
         numeroTelephoneSearchRepository.save(numeroTelephone);
+    }
+
+    @Transactional
+    public void deleteNumeroTelephone(Long eluId, Long numeroTelephoneId) {
+        Elu elu = eluRepository.getOne(eluId);
+        // TODO ça mérite un test car on dépend de l'impl equals là
+        NumeroTelephone nt = new NumeroTelephone();
+        nt.setId(numeroTelephoneId);
+        elu.getNumerosTelephones().remove(nt);
+        eluRepository.save(elu);
+        numeroTelephoneRepository.delete(numeroTelephoneId);
+        numeroTelephoneSearchRepository.delete(numeroTelephoneId);
     }
 
     @Transactional(readOnly = true)

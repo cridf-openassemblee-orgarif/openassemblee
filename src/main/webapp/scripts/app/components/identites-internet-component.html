@@ -4,8 +4,11 @@
             <h3 class="box-title"><i class="fa fa-twitter"></i> Identités Internet</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.identitesInternet"
-                 ui-sref="elu.detail.editerIdentiteInternet({identiteInternetId: a.id})">
+            <div class="info-bloc" ng-repeat="a in dto.elu.identitesInternet">
+                <div class="edition-buttons-bloc">
+                    <edit-button ui-sref="elu.detail.editerIdentiteInternet({identiteInternetId: a.id})"></edit-button>
+                    <delete-button ui-sref="elu.detail.supprimerIdentiteInternet({identiteInternetId: a.id})"></delete-button>
+                </div>
                 {{a.url}}
                 <span ng-bind-html="a.typeIdentiteInternet | typeIdentiteInternet"></span>
             </div>

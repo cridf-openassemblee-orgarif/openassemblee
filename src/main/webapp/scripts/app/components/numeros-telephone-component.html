@@ -4,8 +4,11 @@
             <h3 class="box-title"><i class="fa fa-phone"></i> Numéros de téléphone</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.numerosTelephones"
-                 ui-sref="elu.detail.editerNumeroTelephone({numeroTelephoneId: a.id})">
+            <div class="info-bloc" ng-repeat="a in dto.elu.numerosTelephones">
+                <div class="edition-buttons-bloc">
+                    <edit-button ui-sref="elu.detail.editerNumeroTelephone({numeroTelephoneId: a.id})"></edit-button>
+                    <delete-button ui-sref="elu.detail.supprimerNumeroTelephone({numeroTelephoneId: a.id})"></delete-button>
+                </div>
                 {{a.numero}}
                 <br/>
                 <span class="lg">

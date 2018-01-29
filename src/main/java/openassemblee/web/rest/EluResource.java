@@ -128,6 +128,17 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/elus/{eluId}/adresseMail/{adresseMailId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteAdresseMail(@PathVariable Long eluId, @PathVariable Long adresseMailId) {
+        log.debug("REST request to delete AdresseMail : {} for elu {}", adresseMailId, eluId);
+        eluService.deleteAdresseMail(eluId, adresseMailId);
+        auditTrailService.logDeletion(AdresseMail.class, adresseMailId, Elu.class, eluId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("adresseMail", adresseMailId.toString())).build();
+    }
+
     @RequestMapping(value = "/elus/{eluId}/identiteInternet", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long eluId, @RequestBody IdentiteInternet
@@ -145,6 +156,17 @@ public class EluResource {
         eluService.updateIdentiteInternet(identiteInternet);
         auditTrailService.logUpdate(identiteInternet, identiteInternet.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{eluId}/identiteInternet/{identiteInternetId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteIdentiteInternet(@PathVariable Long eluId, @PathVariable Long identiteInternetId) {
+        log.debug("REST request to delete IdentiteInternet : {} for elu {}", identiteInternetId, eluId);
+        eluService.deleteIdentiteInternet(eluId, identiteInternetId);
+        auditTrailService.logDeletion(IdentiteInternet.class, identiteInternetId, Elu.class, eluId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("identiteInternet", identiteInternetId.toString())).build();
     }
 
     @RequestMapping(value = "/elus/{eluId}/numeroFax", method = RequestMethod.POST)
@@ -165,6 +187,17 @@ public class EluResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/elus/{eluId}/numeroFax/{numeroFaxId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteNumeroFax(@PathVariable Long eluId, @PathVariable Long numeroFaxId) {
+        log.debug("REST request to delete NumeroFax : {} for elu {}", numeroFaxId, eluId);
+        eluService.deleteNumeroFax(eluId, numeroFaxId);
+        auditTrailService.logDeletion(NumeroFax.class, numeroFaxId, Elu.class, eluId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("numeroFax", numeroFaxId.toString())).build();
+    }
+
     @RequestMapping(value = "/elus/{eluId}/numeroTelephone", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long eluId, @RequestBody NumeroTelephone
@@ -182,6 +215,17 @@ public class EluResource {
         eluService.updateNumeroTelephone(numeroTelephone);
         auditTrailService.logUpdate(numeroTelephone, numeroTelephone.getId(), Elu.class, eluId);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/elus/{eluId}/numeroTelephone/{numeroTelephoneId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteNumeroTelephone(@PathVariable Long eluId, @PathVariable Long numeroTelephoneId) {
+        log.debug("REST request to delete NumeroTelephone : {} for elu {}", numeroTelephoneId, eluId);
+        eluService.deleteNumeroTelephone(eluId, numeroTelephoneId);
+        auditTrailService.logDeletion(NumeroTelephone.class, numeroTelephoneId, Elu.class, eluId);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("numeroTelephone", numeroTelephoneId.toString())).build();
     }
 
     /**
