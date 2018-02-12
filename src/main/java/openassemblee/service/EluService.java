@@ -114,7 +114,9 @@ public class EluService {
             } else {
                 return new EluListDTO(e);
             }
-        }).collect(Collectors.toList());
+        })
+            .sorted(Comparator.comparing(e -> e.getElu().getNom()))
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
