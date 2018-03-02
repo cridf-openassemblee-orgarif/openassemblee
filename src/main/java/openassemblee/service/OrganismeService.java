@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +32,14 @@ public class OrganismeService {
         if (organisme == null) {
             return null;
         }
-        List<AppartenanceOrganismeDTO> appartenances = appartenanceOrganismeRepository.findAllByCodeRNE(organisme.getCodeRNE()).stream()
-            .map(a -> new AppartenanceOrganismeDTO(a, eluService.getEluListDTO(a.getElu().getId())))
-            .collect(Collectors.toList());
-        return new OrganismeDTO(organisme, appartenances);
+        if (organisme.getCodeRNE() != null) {
+            List<AppartenanceOrganismeDTO> appartenances = appartenanceOrganismeRepository
+                .findAllByCodeRNE(organisme.getCodeRNE()).stream()
+                .map(a -> new AppartenanceOrganismeDTO(a, eluService.getEluListDTO(a.getElu().getId())))
+                .collect(Collectors.toList());
+            return new OrganismeDTO(organisme, appartenances);
+        }
+        return new OrganismeDTO(organisme, new ArrayList<>());
     }
 
 }
