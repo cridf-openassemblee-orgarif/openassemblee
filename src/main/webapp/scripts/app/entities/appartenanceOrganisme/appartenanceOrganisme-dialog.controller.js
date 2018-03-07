@@ -22,9 +22,10 @@ angular.module('openassembleeApp').controller('AppartenanceOrganismeDialogContro
                 if(typeof $scope.organisme === 'object') {
                     $scope.appartenanceOrganisme.organisme = $scope.organisme.nom;
                     $scope.appartenanceOrganisme.codeRNE = $scope.organisme.codeRNE;
-                } else {
+                } else if(typeof $scope.organisme === 'string') {
                     $scope.appartenanceOrganisme.organisme = $scope.organisme;
-                }
+                } // else NE PAS TOUCHER sinon organisme est supprimé dans l'appartenance de départ
+                // lorsqu'on édite une fin d'appartenance ($scope.organisme est null)
                 if ($scope.appartenanceOrganisme.id != null) {
                     AppartenanceOrganisme.update($scope.appartenanceOrganisme, onSaveSuccess, onSaveError);
                 } else {

@@ -77,11 +77,11 @@
              ng-repeat="a in dto.elu.appartenancesOrganismes"
              ng-if="a.dateFin != null">
             {{a.organisme}}
-            <span ng-if="!dto.organismes[a.organisme.id]">Organisme inconnu</span>
             <br/>
             <span class="lg"><span class="grey">Statut :</span> {{a.statut}}</span>
-            <br/>
-            <span class="lg"><span class="grey">Code RNE :</span> {{a.codeRNE}}</span>
+            <span ng-if="a.codeRNE">
+                (<span class="lg"><span class="grey">Code RNE :</span> {{a.codeRNE}}</span>)
+            </span>
             <br/>
             <span class="lg">
                 <span class="grey">Du</span> {{a.dateDebut}}
