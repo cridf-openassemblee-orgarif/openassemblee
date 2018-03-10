@@ -68,7 +68,7 @@ public class PublicDataWebservice {
 
     @RequestMapping(value = "/websitedata", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public Map<String, Object> ensembles() {
+    public Map<String, Object> websitedata() {
         // TODO attention pour tous les trucs où on compte, à bien utiliser les trucs filtrés !
         // une solution pour implem simple des demissionnaire est d'utiliser un boolean
         // ou un systeme ou tu dois préciser la data, WS envoie tjs avec la data d'ajd
