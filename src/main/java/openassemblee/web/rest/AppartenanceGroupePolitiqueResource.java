@@ -14,10 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,6 +43,8 @@ public class AppartenanceGroupePolitiqueResource {
     @Inject
     private AuditTrailService auditTrailService;
 
+    private Random random = new Random();
+
     /**
      * POST  /appartenanceGroupePolitiques -> Create a new appartenanceGroupePolitique.
      */
@@ -53,6 +57,7 @@ public class AppartenanceGroupePolitiqueResource {
         if (appartenanceGroupePolitique.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new appartenanceGroupePolitique cannot already have an ID").body(null);
         }
+        appartenanceGroupePolitique.setImportUid(new BigInteger(50, random).toString(16));
         AppartenanceGroupePolitique result = appartenanceGroupePolitiqueRepository.save(appartenanceGroupePolitique);
         appartenanceGroupePolitiqueSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
