@@ -94,6 +94,10 @@ public class FonctionGroupePolitique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "FGP" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

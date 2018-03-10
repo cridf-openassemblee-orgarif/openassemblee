@@ -83,6 +83,10 @@ public class AppartenanceCommissionThematique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "ACT" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

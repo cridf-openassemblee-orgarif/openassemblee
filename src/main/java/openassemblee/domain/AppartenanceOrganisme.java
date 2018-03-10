@@ -165,6 +165,10 @@ public class AppartenanceOrganisme implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "AO" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

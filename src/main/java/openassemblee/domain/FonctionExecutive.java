@@ -89,6 +89,10 @@ public class FonctionExecutive implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "FE" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

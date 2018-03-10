@@ -89,6 +89,10 @@ public class FonctionCommissionPermanente implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "FCP" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

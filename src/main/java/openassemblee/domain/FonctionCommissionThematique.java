@@ -94,6 +94,10 @@ public class FonctionCommissionThematique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "FCT" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

@@ -92,6 +92,10 @@ public class CommissionThematique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "CT" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

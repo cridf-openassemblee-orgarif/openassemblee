@@ -169,6 +169,10 @@ public class GroupePolitique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "GP" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

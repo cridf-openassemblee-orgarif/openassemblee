@@ -182,6 +182,10 @@ public class Organisme implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "ORG" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

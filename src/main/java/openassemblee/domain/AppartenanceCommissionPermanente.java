@@ -77,6 +77,10 @@ public class AppartenanceCommissionPermanente implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "ACP" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

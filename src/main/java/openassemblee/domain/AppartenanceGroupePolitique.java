@@ -83,6 +83,10 @@ public class AppartenanceGroupePolitique implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "AGP" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }

@@ -376,6 +376,10 @@ public class Elu implements Serializable {
         return importUid;
     }
 
+    public String exportUid() {
+        return "ELU" + id;
+    }
+
     public void setImportUid(String importUid) {
         this.importUid = importUid;
     }
