@@ -24,6 +24,7 @@ angular.module('openassembleeApp').controller('DistinctionHonorifiqueDialogContr
 
         $scope.save = function () {
             $scope.isSaving = true;
+            $scope.distinctionHonorifique.elu = {id: $stateParams.id};
             if ($scope.distinctionHonorifique.id != null) {
                 DistinctionHonorifique.update($scope.distinctionHonorifique, onSaveSuccess, onSaveError);
             } else {

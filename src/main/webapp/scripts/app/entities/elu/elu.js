@@ -150,6 +150,33 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.ajoutDistinctionHonorifique', {
+                parent: 'elu.detail',
+                url: '/distinction-honorifique',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/distinctionHonorifique/distinctionHonorifique-dialog.html',
+                        controller: 'DistinctionHonorifiqueDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    titre: null,
+                                    date: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.editionDistinctionHonorifique', {
                 parent: 'elu.detail',
                 url: '/distinction-honorifique/{distinctionHonorifiqueId}',

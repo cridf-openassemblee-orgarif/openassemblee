@@ -12,5 +12,4 @@ angular.module('openassembleeApp')
             $scope.distinctionHonorifique = result;
         });
         $scope.$on('$destroy', unsubscribe);
-
     });
