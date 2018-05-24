@@ -141,16 +141,24 @@
                     </div>
                     <div id="signatures-container" class="tab-pane fade">
                         <h3>Signatures de la séance</h3>
+                        <div>
+                            <select class="form-control" name="type" ng-model="options.filter">
+                                <option value="no-filter">Pas de filtre</option>
+                                <option value="filter-missing-signature">Filtrer par signature manquante</option>
+                            </select>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped signature-table">
                                 <thead>
                                 <tr>
                                     <th class="elu">Élus</th>
-                                    <th ng-repeat="index in signaturesArray">Signature {{index}}</th>
+                                    <th ng-repeat="index in signaturesArray">
+                                        Signature {{index}}
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="presenceElu in dto.seance.presenceElus track by presenceElu.id">
+                                <tr ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: options) track by presenceElu.id">
                                     <td class="elu">
                                         <a ui-sref="elu.detail({id:presenceElu.elu.id})">
                                             {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
@@ -159,8 +167,7 @@
                                         </a>
                                     </td>
                                     <td ng-repeat="index in signaturesArray" class="signature-td">
-                                        <signature-seance
-                                            signature="{{getSignature(presenceElu, index)}}"></signature-seance>
+                                        <signature-seance></signature-seance>
                                     </td>
                                 </tr>
                                 </tbody>

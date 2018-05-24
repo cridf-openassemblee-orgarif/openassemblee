@@ -101,18 +101,43 @@ angular.module('openassembleeApp')
                 }
                 return '#bbb';
             };
+
             $scope.requesting = false;
-            $scope.setSignature = function (signature) {
+
+            $scope.$watch('presenteElu', function () {
+                $scope.signature = $scope.presenceElu.signatures.find(function (s) {
+                    return s.position === $scope.index;
+                });
+            });
+
+            $scope.setSignature = function (statut) {
                 $scope.requesting = true;
-                if (signature.id) {
-                    Signature.update(signature).$promise.then(function (result) {
+                // $scope.signature peut être déjà un objet, et si était inexistant, alors angular l'a instancié du fait
+                // du binding
+                if ($scope.signature.id) {
+                    Signature.update($scope.signature).$promise.then(function (result) {
                         $scope.requesting = false;
-                        $scope.signature.id = result.id;
+                        // $scope.signature est une construction locale, on remet son état dans le presenceElu qui est
+                        // le "vrai" model, notamment pour que le filtre sur les signature dans le tableau global puisse
+                        // fontionner (ainsi que les comptes...)
+                        $scope.presenceElu.signatures.forEach(function (s) {
+                            if (s.id === $scope.signature.id) {
+                                s.statut = $scope.signature.statut
+                            }
+                        });
                     });
                 } else {
+                    // $scope.signature a été instancié mais ne contient pas pour autant la bonne position, le bon
+                    // id élu...
+                    var signature = $scope.signature;
+                    signature.position = $scope.index;
+                    signature.presenceElu = {id: $scope.presenceElu.id};
                     Signature.save(signature).$promise.then(function (result) {
                         $scope.requesting = false;
                         $scope.signature.id = result.id;
+                        // de la même façon que dans le cas où la signature existait il fallait remettre l'état
+                        // dans le "vrai" model, ici il faut rajouter la signature dans ce model
+                        $scope.presenceElu.signatures.push(result);
                     });
                 }
             };

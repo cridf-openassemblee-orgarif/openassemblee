@@ -1,31 +1,16 @@
 <form ng-style="{'background-color': color(signature.statut)}">
 <label>
-    <input type="radio" ng-model="signature.statut" value="PRESENT" ng-change="setSignature({
-        id: signature.id,
-        position: index,
-        statut: 'PRESENT',
-        presenceElu: {id: presenceElu.id}
-    })" ng-disabled="requesting">
+    <input type="radio" ng-model="signature.statut" value="PRESENT" ng-change="setSignature('PRESENT')" ng-disabled="requesting">
     présent
 </label>
 <br/>
 <label>
-    <input type="radio" ng-model="signature.statut" value="ABSENT" ng-change="setSignature({
-        id: signature.id,
-        position: index,
-        statut: 'ABSENT',
-        presenceElu: {id: presenceElu.id}
-    })" ng-disabled="requesting">
+    <input type="radio" ng-model="signature.statut" value="ABSENT" ng-change="setSignature('ABSENT')" ng-disabled="requesting">
     absent
 </label>
 <br/>
 <label>
-    <input type="radio" ng-model="signature.statut" value="EXCUSE" ng-change="setSignature({
-        id: signature.id,
-        position: index,
-        statut: 'EXCUSE',
-        presenceElu: {id: presenceElu.id}
-    })" ng-disabled="requesting">
+    <input type="radio" ng-model="signature.statut" value="EXCUSE" ng-change="setSignature('EXCUSE')" ng-disabled="requesting">
     excusé
 </label>
 </form>

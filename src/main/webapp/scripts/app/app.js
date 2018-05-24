@@ -291,5 +291,21 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
             }
             return out;
         };
+    }])
+    .filter('signatureFilter', [function () {
+        return function (items, filter) {
+            if(filter.filter === 'no-filter') {
+                return items;
+            }
+            if(filter.filter === 'filter-missing-signature' && angular.isArray(items)) {
+                var out = [];
+                items.forEach(function (item) {
+                    if(item.signatures.length !== filter.signaturesNumber) {
+                        out.push(item);
+                    }
+                });
+                return out;
+            }
+            return items;
+        };
     }]);
-

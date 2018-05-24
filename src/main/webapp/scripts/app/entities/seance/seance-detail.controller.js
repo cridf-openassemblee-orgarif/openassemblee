@@ -4,11 +4,16 @@ angular.module('openassembleeApp')
     .controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
         $scope.dto = entity;
         $scope.signaturesArray = [];
+        $scope.options = {
+            filter: 'no-filter',
+            signaturesNumber: 0
+        };
 
         var initSignaturesArray = function () {
             for (var i = 1; i <= entity.seance.nombreSignatures; i++) {
                 $scope.signaturesArray.push(i);
             }
+            $scope.options.signaturesNumber = entity.seance.nombreSignatures;
         };
 
         if (entity.$promise) {
@@ -18,12 +23,6 @@ angular.module('openassembleeApp')
         } else {
             initSignaturesArray()
         }
-
-        $scope.getSignature = function (presenceElu, position) {
-            return presenceElu.signatures.find(function (s) {
-                return s.position == position;
-            });
-        };
 
         $scope.computeGroupesPolitiques = function () {
             var groupesPolitiques = {};
