@@ -8,6 +8,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a showtab="" href="#pouvoirs-container">Pouvoirs</a></li>
                     <li><a showtab="" href="#signatures-container">Signatures</a></li>
+                    <li><a showtab="" href="#registre-container">Registre de présence</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="pouvoirs-container" class="tab-pane fade in active">
@@ -178,6 +179,35 @@
                                     </td>
                                 </tr>
                                 </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="registre-container" class="tab-pane fade">
+                        <h3>Registre de présence</h3>
+                        <br/>
+                        <div>
+                            {{signaturesCount.totalMissing}} signatures manquantes
+                        </div>
+                        <br/>
+                        <table class="table table-striped signature-table">
+                            <tr ng-repeat="index in signaturesArray">
+                                <td>Signature {{index}}</td>
+                                <td>{{signaturesCount.stats[index]['PRESENT']}} présents</td>
+                                <td>{{signaturesCount.stats[index]['ABSENT']}} absents</td>
+                                <td>{{signaturesCount.stats[index]['EXCUSE']}} excusés</td>
+                                <td>{{signaturesCount.stats[index]['missing']}} manquants</td>
+                            </tr>
+                        </table>
+                        <div ng-repeat="gp in dto.groupePolitiques">
+                            <h2>{{gp.nom}}</h2>
+                            <table class="table table-striped signature-table">
+                                <tr ng-repeat="index in signaturesArray">
+                                    <td>Signature {{index}}</td>
+                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['PRESENT']}} présents</td>
+                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['ABSENT']}} absents</td>
+                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['EXCUSE']}} excusés</td>
+                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['missing']}} manquants</td>
+                                </tr>
                             </table>
                         </div>
                     </div>
