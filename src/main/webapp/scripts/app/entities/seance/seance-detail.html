@@ -36,7 +36,7 @@
                                 <div class="form-group col-md-6">
                                     <label class="control-label col-md-4" for="field_type">Filtrer :</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" name="type" ng-model="filtre.state"
+                                        <select class="form-control" name="type" ng-model="pouvoirsOptions.filter"
                                                 id="field_type">
                                             <option value="tous">Tous (pas de filtre)</option>
                                             <option value="actifs">Actifs maintenant</option>
@@ -47,10 +47,11 @@
                                 <div class="form-group col-md-6">
                                     <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" name="type" ng-model="filtre.groupePolitique"
+                                        <select class="form-control" name="type"
+                                                ng-model="pouvoirsOptions.groupePolitique"
                                                 id="field_type">
                                             <option value="tous">Tous (pas de filtre)</option>
-                                            <option ng-repeat="gp in computeGroupesPolitiques() track by gp.id"
+                                            <option ng-repeat="gp in filteredGroupePolitiques track by gp.id"
                                                     value="{{gp.id}}">
                                                 {{gp.nom}}
                                             </option>
@@ -70,7 +71,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="pvDto in computePouvoirs() track by pvDto.pouvoir.id">
+                                    <tr ng-repeat="pvDto in (dto.pouvoirs | pouvoirsFilter: pouvoirsOptions) track by pvDto.pouvoir.id">
                                         <td>
                                             <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
                                                 {{pvDto.pouvoir.eluCedeur.prenom + ' ' + pvDto.pouvoir.eluCedeur.nom}}
@@ -142,12 +143,36 @@
                     <div id="signatures-container" class="tab-pane fade">
                         <h3>Signatures de la séance</h3>
                         <div>
-                            <select class="form-control" name="type" ng-model="options.filter">
-                                <option value="no-filter">Pas de filtre</option>
-                                <option value="filter-missing-signature">Filtrer par signature manquante</option>
-                            </select>
+                            <form class="form-horizontal">
+                                <div class="form-group col-md-6">
+                                    <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="type" ng-model="signaturesOptions.filter">
+                                            <option value="no-filter">Tous (pas de filtre)</option>
+                                            <option value="filter-missing-signature">Par signature manquante</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="type"
+                                                ng-model="signaturesOptions.groupePolitique"
+                                                id="field_type">
+                                            <option value="no-filter">Tous (pas de filtre)</option>
+                                            <option ng-repeat="gp in dto.groupePolitiques track by gp.id"
+                                                    value="{{gp.nomCourt}}">
+                                                {{gp.nom}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="table-responsive">
+                        <div>
+
+                        </div>
+                        <div class="table-responsive info-box table-info-box">
                             <table class="table table-striped signature-table">
                                 <thead>
                                 <tr>
@@ -158,7 +183,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: options) track by presenceElu.id">
+                                <tr ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions) track by presenceElu.id">
                                     <td class="elu">
                                         <a ui-sref="elu.detail({id:presenceElu.elu.id})">
                                             {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
@@ -180,10 +205,12 @@
                                     <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
                                     <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
                                     <li class="active"><a>{{page + 1}}</a></li>
-                                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a>
+                                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)">
+                                        <a>{{page + 2}}</a>
                                     </li>
-                                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page +
-                                        3}}</a></li>
+                                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)">
+                                        <a>{{page + 3}}</a>
+                                    </li>
                                     <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
                                     <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a>
                                     </li>

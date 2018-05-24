@@ -1,8 +1,10 @@
 package openassemblee.service;
 
 import openassemblee.domain.Elu;
+import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.PresenceElu;
 import openassemblee.domain.Seance;
+import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.PouvoirRepository;
 import openassemblee.repository.PresenceEluRepository;
 import openassemblee.repository.SeanceRepository;
@@ -36,6 +38,8 @@ public class SeanceService {
     private SeanceSearchRepository seanceSearchRepository;
     @Inject
     private PresenceEluRepository presenceEluRepository;
+    @Inject
+    private GroupePolitiqueRepository groupePolitiqueRepository;
 
     @Transactional(readOnly = true)
     public SeanceDTO get(Long id) {
@@ -53,7 +57,8 @@ public class SeanceService {
                 EluListDTO eluBeneficiaire = eluService.getEluListDTO(p.getEluBeneficiaire().getId());
                 return new PouvoirListDTO(p, eluCedeur, eluBeneficiaire);
             }).collect(Collectors.toList());
-        return new SeanceDTO(seance, pouvoirs);
+        List<GroupePolitique> groupePolitiques = groupePolitiqueRepository.findAll();
+        return new SeanceDTO(seance, pouvoirs, groupePolitiques);
     }
 
     @Transactional

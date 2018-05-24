@@ -292,19 +292,36 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
         return out;
     };
 }])
-.filter('signatureFilter', [function () {
-    return function (items, filter) {
-        if (filter.filter === 'no-filter') {
+.filter('pouvoirsFilter', [function () {
+    return function (items, options) {
+        if (options.filter === 'tous' && options.groupePolitique === 'tous') {
             return items;
         }
-        if (filter.filter === 'filter-missing-signature' && angular.isArray(items)) {
-            var out = [];
-            items.forEach(function (item) {
-                if (item.signatures.length !== filter.signaturesNumber) {
-                    out.push(item);
-                }
+        return items.filter(function (i) {
+            var filter = options.filter === 'tous' ||
+                (options.filter === 'actifs' && (!i.pouvoir.dateFin || !i.pouvoir.heureFin)) ||
+                (options.filter === 'nonActifs' && (i.pouvoir.dateFin && i.pouvoir.heureFin));
+            var gpId = options.groupePolitique;
+            var gp = options.groupePolitique === 'tous' ||
+                (i.eluCedeur.groupePolitique != null && i.eluCedeur.groupePolitique.id == gpId) ||
+                (i.eluBeneficiaire.groupePolitique != null && i.eluBeneficiaire.groupePolitique.id == gpId)
+            return filter && gp;
+        });
+    };
+}])
+.filter('signatureFilter', [function () {
+    return function (items, options) {
+        if (options.filter === 'no-filter' && options.groupePolitique === 'no-filter') {
+            return items;
+        }
+        if (angular.isArray(items)) {
+            return items.filter(function (item) {
+                var filter = options.filter === 'no-filter' ||
+                    item.signatures.length !== options.signaturesNumber;
+                var gp = options.groupePolitique === 'no-filter' ||
+                    (item.elu.groupePolitique === options.groupePolitique);
+                return filter && gp;
             });
-            return out;
         }
         return items;
     };
