@@ -186,7 +186,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions) track by presenceElu.id">
+                                <tr ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions | orderBy:'elu.nom') track by presenceElu.id">
                                     <td class="elu">
                                         <a ui-sref="elu.detail({id:presenceElu.elu.id})">
                                             {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
