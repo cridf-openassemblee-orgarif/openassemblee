@@ -14,6 +14,9 @@
             </div>
             <div class="table-responsive info-box table-info-box">
                 <h3>Signatures de la réunion</h3>
+                <div class="clearfix">
+                    {{signaturesCount.totalMissing}} signatures manquantes
+                </div>
                 <table class="table table-striped signature-table">
                     <thead>
                     <tr>
@@ -31,8 +34,7 @@
                             </a>
                         </td>
                         <td class="signature-td">
-                            <signature-seance
-                                signature="{{presenceElu.signatures[0]}}"></signature-seance>
+                            <signature-seance ng-init="index = 0"></signature-seance>
                         </td>
                     </tr>
                     </tbody>
