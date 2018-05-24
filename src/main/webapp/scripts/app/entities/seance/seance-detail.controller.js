@@ -15,6 +15,10 @@ angular.module('openassembleeApp')
         signaturesNumber: 0,
         groupePolitique: 'no-filter'
     };
+    $scope.signaturesCount = {
+        totalMissing: 0,
+        stats: {}
+    };
 
     var initGroupePolitiques = function () {
         var groupesPolitiques = {};
@@ -40,9 +44,21 @@ angular.module('openassembleeApp')
         }
     };
 
+    $scope.updateSignaturesCount = function () {
+        if(entity.seance) {
+            var signaturesCountTotal = 0;
+            var awaited = entity.seance.presenceElus.length * entity.seance.nombreSignatures;
+            entity.seance.presenceElus.forEach(function (pe) {
+                signaturesCountTotal += pe.signatures.length;
+            });
+            $scope.signaturesCount.totalMissing = awaited - signaturesCountTotal;
+        }
+    };
+
     $scope.$watch('dto.pouvoirs', function () {
         initGroupePolitiques();
         initSignaturesArray();
+        $scope.updateSignaturesCount();
     });
 
     $scope.load = function (id) {

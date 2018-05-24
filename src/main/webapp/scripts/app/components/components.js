@@ -125,6 +125,7 @@ angular.module('openassembleeApp')
                                 s.statut = $scope.signature.statut
                             }
                         });
+                        $scope.updateSignaturesCount();
                     });
                 } else {
                     // $scope.signature a été instancié mais ne contient pas pour autant la bonne position, le bon
@@ -138,6 +139,7 @@ angular.module('openassembleeApp')
                         // de la même façon que dans le cas où la signature existait il fallait remettre l'état
                         // dans le "vrai" model, ici il faut rajouter la signature dans ce model
                         $scope.presenceElu.signatures.push(result);
+                        $scope.updateSignaturesCount();
                     });
                 }
             };

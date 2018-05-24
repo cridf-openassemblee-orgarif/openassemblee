@@ -142,19 +142,22 @@
                     </div>
                     <div id="signatures-container" class="tab-pane fade">
                         <h3>Signatures de la séance</h3>
-                        <div>
+                        <div class="clearfix">
                             <form class="form-horizontal">
                                 <div class="form-group col-md-6">
                                     <label class="control-label col-md-4" for="field_type">Filtrer :</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" name="type" ng-model="signaturesOptions.filter">
+                                        <select class="form-control" name="type"
+                                                ng-model="signaturesOptions.filter">
                                             <option value="no-filter">Tous (pas de filtre)</option>
-                                            <option value="filter-missing-signature">Par signature manquante</option>
+                                            <option value="filter-missing-signature">Par signature manquante
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                    <label class="control-label col-md-4" for="field_type">Groupe politique
+                                        :</label>
                                     <div class="col-md-8">
                                         <select class="form-control" name="type"
                                                 ng-model="signaturesOptions.groupePolitique"
@@ -169,8 +172,8 @@
                                 </div>
                             </form>
                         </div>
-                        <div>
-
+                        <div class="clearfix">
+                            {{signaturesCount.totalMissing}} signatures manquantes
                         </div>
                         <div class="table-responsive info-box table-info-box">
                             <table class="table table-striped signature-table">
@@ -212,7 +215,8 @@
                                         <a>{{page + 3}}</a>
                                     </li>
                                     <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a>
+                                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])">
+                                        <a>&gt;&gt;</a>
                                     </li>
                                 </ul>
                             </nav>
