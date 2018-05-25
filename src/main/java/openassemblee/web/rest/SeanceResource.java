@@ -1,14 +1,19 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.Pouvoir;
+import openassemblee.domain.PresenceElu;
 import openassemblee.domain.Seance;
+import openassemblee.domain.Signature;
 import openassemblee.repository.SeanceRepository;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.service.ExportService;
 import openassemblee.service.SeanceService;
 import openassemblee.service.dto.SeanceDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
+import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,10 +25,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -49,6 +56,9 @@ public class SeanceResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private ExportService exportService;
 
     /**
      * POST  /seances -> Create a new seance.
@@ -118,6 +128,111 @@ public class SeanceResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @RequestMapping(value = "/seances/{id}/export-pouvoirs",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void getPouvoirsExport(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to get Elu : {}", id);
+        List<Pouvoir> pouvoirs = seanceService.getPouvoirsFromSeanceId(id);
+        List<List<String>> result = new ArrayList<>();
+        result.add(Arrays.asList(
+            "Civilité élu cédeur",
+            "Prénom élu cédeur",
+            "Nom élu cédeur",
+            "Civilité élu bénéficiaire",
+            "Nom élu bénéficiaire",
+            "Prénom élu bénéficiaire",
+            "Date de début",
+            "Heure de début",
+            "Date de fin",
+            "Heure de fin"
+        ));
+        for (Pouvoir pv : pouvoirs) {
+            String dateDebut = pv.getDateDebut() != null ?
+                pv.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+            String dateFin = pv.getDateFin() != null ?
+                pv.getDateFin().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+            result.add(Arrays.asList(
+                pv.getEluCedeur().getCiviliteLabel(),
+                pv.getEluCedeur().getPrenom(),
+                pv.getEluCedeur().getNom(),
+                pv.getEluBeneficiaire().getCiviliteLabel(),
+                pv.getEluBeneficiaire().getNom(),
+                pv.getEluBeneficiaire().getPrenom(),
+                dateDebut,
+                pv.getHeureDebut(),
+                dateFin,
+                pv.getHeureFin()
+            ));
+        }
+        ExportService.Entry entry = new ExportService.Entry("Pouvoirs", result);
+
+        byte[] export = exportService.exportToExcel(entry);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        String filename = "siger-export-pouvoirs-seance-" + id;
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
+        try {
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e1) {
+            // TODO exception
+            e1.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/seances/{id}/export-signatures",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void getSignaturesExport(@PathVariable Long id, HttpServletResponse response) {
+        log.debug("REST request to get Elu : {}", id);
+        Seance seance = seanceService.get(id);
+        List<PresenceElu> presenceElus = seance != null ?
+            seance.getPresenceElus().stream()
+                .sorted(Comparator.comparing(p -> p.getElu().getNom()))
+                .collect(Collectors.toList())
+            : Collections.emptyList();
+        List<List<String>> result = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+        headers.addAll(Arrays.asList(
+            "Civilité élu",
+            "Nom élu",
+            "Prénom élu"
+        ));
+        for (int i = 1; i <= (seance != null ? seance.getNombreSignatures() : 0); i++) {
+            headers.add("Signature " + i);
+        }
+        result.add(headers);
+        for (PresenceElu pe : presenceElus) {
+            List<String> line = new ArrayList<>();
+            line.addAll(Arrays.asList(
+                pe.getElu().getCiviliteLabel(),
+                pe.getElu().getPrenom(),
+                pe.getElu().getNom()
+            ));
+            for (int i = 1; i <= seance.getNombreSignatures(); i++) {
+                Integer position = i;
+                Optional<Signature> s = pe.getSignatures().stream().filter(it -> it.getPosition() == position).findFirst();
+                line.add(s.isPresent() ? s.get().getStatut().name() : "");
+            }
+            result.add(line);
+        }
+        ExportService.Entry entry = new ExportService.Entry("Pouvoirs", result);
+
+        byte[] export = exportService.exportToExcel(entry);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        String filename = "siger-export-signatures-seance-" + id;
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
+        try {
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e1) {
+            // TODO exception
+            e1.printStackTrace();
+        }
+    }
+
     /**
      * GET  /seances/:id -> get the "id" seance.
      */
@@ -127,7 +242,7 @@ public class SeanceResource {
     @Timed
     public ResponseEntity<SeanceDTO> getSeanceDTO(@PathVariable Long id) {
         log.debug("REST request to get Seance : {}", id);
-        return Optional.ofNullable(seanceService.get(id))
+        return Optional.ofNullable(seanceService.getDto(id))
             .map(seance -> new ResponseEntity<>(
                 seance,
                 HttpStatus.OK))

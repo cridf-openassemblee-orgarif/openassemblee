@@ -385,7 +385,7 @@ public class EluService {
             "Date de naissance", "Date de démission"));
         for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
-            String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
+            String civilite = e.getCiviliteLabel();
             String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
                 "Aucun groupe politique";
             String dateNaissance = e.getDateNaissance() != null ?

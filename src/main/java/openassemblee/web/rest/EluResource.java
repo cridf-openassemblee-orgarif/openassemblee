@@ -4,7 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.search.EluSearchRepository;
-import openassemblee.service.*;
+import openassemblee.service.AuditTrailService;
+import openassemblee.service.EluService;
+import openassemblee.service.ExportService;
+import openassemblee.service.ImageService;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -309,7 +312,7 @@ public class EluResource {
         EluDTO eluDTO = eluService.get(id);
         if (eluDTO != null) {
             Elu e = eluDTO.getElu();
-            String civilite = e.getCivilite() != null ? e.getCivilite().label() : "Civilité non connue";
+            String civilite = e.getCiviliteLabel();
             String dateNaissance = e.getDateNaissance() != null ?
                 e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
             ExportService.Entry entry1 = new ExportService.Entry("Élu", Arrays.asList(
@@ -345,7 +348,8 @@ public class EluResource {
             byte[] export = exportService.exportToExcel(entry1, entry2, entry3);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-disposition", "attachment; filename=elu-" + id + ".xlsx");
+            String filename = "siger-export-elu-" + id;
+            response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
             try {
                 Streams.copy(export, response.getOutputStream());
             } catch (IOException e1) {
@@ -366,7 +370,8 @@ public class EluResource {
         byte[] export = exportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-disposition", "attachment; filename=elus.xlsx");
+        String filename = "siger-export-elus";
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {

@@ -33,6 +33,12 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="align-right" style="margin: 5px 0;">
+                                <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-pouvoirs">
+                                    <span class="fa fa-table"></span>
+                                    <span>Export Excel</span>
+                                </a>
+                            </div>
                             <form class="form-horizontal">
                                 <div class="form-group col-md-6">
                                     <label class="control-label col-md-4" for="field_type">Filtrer :</label>
@@ -122,6 +128,14 @@
                     </div>
                     <div id="signatures-container" class="tab-pane fade">
                         <h3>Signatures de la séance</h3>
+                        <div class="align-right">
+                            <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-signatures">
+                                <span class="fa fa-table"></span>
+                                <span>Export Excel</span>
+                            </a>
+                            <br />
+                            <br />
+                        </div>
                         <div class="clearfix">
                             <form class="form-horizontal">
                                 <div class="form-group col-md-6">

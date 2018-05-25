@@ -169,7 +169,8 @@ public class GroupePolitiqueResource {
         }
         byte[] export = exportService.exportToExcel("Groupes politiques", lines);
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-disposition", "attachment; filename=groupes-politiques.xlsx");
+        String filename = "siger-export-groupes-politiques";
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {

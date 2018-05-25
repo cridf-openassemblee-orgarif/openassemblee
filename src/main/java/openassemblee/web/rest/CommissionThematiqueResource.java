@@ -135,7 +135,8 @@ public class CommissionThematiqueResource {
         byte[] export = exportService.exportToExcel("Commission thématiques", lines);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-disposition", "attachment; filename=commissions-thematiques.xlsx");
+        String filename = "siger-export-commissions-thematiques";
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {
@@ -181,7 +182,8 @@ public class CommissionThematiqueResource {
         byte[] export = exportService.exportToExcel("Commission thématique", lines);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-disposition", "attachment; filename=commission-thematique-" + id + ".xlsx");
+        String filename = "siger-export-commission-thematique-" + id;
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package openassemblee.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import openassemblee.domain.enumeration.Civilite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -441,5 +442,10 @@ public class Elu implements Serializable {
             ", prenom='" + prenom + "'" +
             ", nomJeuneFille='" + nomJeuneFille + "'" +
             '}';
+    }
+
+    @JsonIgnore
+    public String getCiviliteLabel() {
+        return civilite != null ? civilite.label() : "Civilité non connue";
     }
 }

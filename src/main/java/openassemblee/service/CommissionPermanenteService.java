@@ -114,7 +114,7 @@ public class CommissionPermanenteService {
     }
 
     private List<String> getEluLine(Elu elu) {
-        String civilite = elu.getCivilite() != null ? elu.getCivilite().label() : "Civilité non connue";
+        String civilite = elu.getCiviliteLabel();
         EluListDTO dto = eluService.eluToEluListDTO(elu);
         String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
             "Aucun groupe politique";

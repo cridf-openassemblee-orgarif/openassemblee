@@ -1,9 +1,7 @@
 package openassemblee.service;
 
-import openassemblee.domain.Elu;
-import openassemblee.domain.GroupePolitique;
-import openassemblee.domain.PresenceElu;
-import openassemblee.domain.Seance;
+import openassemblee.domain.*;
+import openassemblee.domain.enumeration.TypeSeance;
 import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.PouvoirRepository;
 import openassemblee.repository.PresenceEluRepository;
@@ -12,12 +10,12 @@ import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.dto.PouvoirListDTO;
 import openassemblee.service.dto.SeanceDTO;
-import openassemblee.domain.enumeration.TypeSeance;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +40,17 @@ public class SeanceService {
     private GroupePolitiqueRepository groupePolitiqueRepository;
 
     @Transactional(readOnly = true)
-    public SeanceDTO get(Long id) {
+    public Seance get(Long id) {
+        Seance seance = seanceRepository.findOne(id);
+        seance.getPresenceElus().forEach(pe -> {
+            Hibernate.initialize(pe.getElu().getAppartenancesGroupePolitique());
+            Hibernate.initialize(pe.getSignatures());
+        });
+        return seance;
+    }
+
+    @Transactional(readOnly = true)
+    public SeanceDTO getDto(Long id) {
         Seance seance = seanceRepository.findOne(id);
         if (seance == null) {
             return null;
@@ -57,8 +65,18 @@ public class SeanceService {
                 EluListDTO eluBeneficiaire = eluService.getEluListDTO(p.getEluBeneficiaire().getId());
                 return new PouvoirListDTO(p, eluCedeur, eluBeneficiaire);
             }).collect(Collectors.toList());
+
         List<GroupePolitique> groupePolitiques = groupePolitiqueRepository.findAll();
         return new SeanceDTO(seance, pouvoirs, groupePolitiques);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Pouvoir> getPouvoirsFromSeanceId(Long id) {
+        Seance seance = seanceRepository.findOne(id);
+        if (seance == null) {
+            return new ArrayList<>();
+        }
+        return pouvoirRepository.findAllBySeance(seance);
     }
 
     @Transactional
