@@ -224,6 +224,18 @@
                                 </tr>
                             </table>
                         </div>
+                        <div>
+                            <h2>Sans groupe</h2>
+                            <table class="table table-striped signature-table">
+                                <tr ng-repeat="index in signaturesArray">
+                                    <td>Signature {{index}}</td>
+                                    <td>{{signaturesCount.stats['sans_groupe'][index]['PRESENT']}} présents</td>
+                                    <td>{{signaturesCount.stats['sans_groupe'][index]['ABSENT']}} absents</td>
+                                    <td>{{signaturesCount.stats['sans_groupe'][index]['EXCUSE']}} excusés</td>
+                                    <td>{{signaturesCount.stats['sans_groupe'][index]['missing']}} manquants</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

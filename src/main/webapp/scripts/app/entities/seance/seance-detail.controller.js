@@ -1,5 +1,7 @@
 'use strict';
 
+const SANS_GROUPE = 'sans_groupe';
+
 angular.module('openassembleeApp')
 .controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
     $scope.dto = entity;
@@ -52,6 +54,7 @@ angular.module('openassembleeApp')
             entity.groupePolitiques.forEach(function (gp) {
                 stats[gp.nomCourt] = {}
             });
+            stats[SANS_GROUPE] = {}
             for (var i = 1; i <= entity.seance.nombreSignatures; i++) {
                 stats[i] = {};
                 stats[i]['PRESENT'] = 0;
@@ -59,12 +62,17 @@ angular.module('openassembleeApp')
                 stats[i]['EXCUSE'] = 0;
                 stats[i]['missing'] = 0;
                 entity.groupePolitiques.forEach(function (gp) {
-                    stats[gp.nomCourt][i] = {}
+                    stats[gp.nomCourt][i] = {};
                     stats[gp.nomCourt][i]['PRESENT'] = 0;
                     stats[gp.nomCourt][i]['ABSENT'] = 0;
                     stats[gp.nomCourt][i]['EXCUSE'] = 0;
                     stats[gp.nomCourt][i]['missing'] = 0;
                 });
+                stats[SANS_GROUPE][i] = {};
+                stats[SANS_GROUPE][i]['PRESENT'] = 0;
+                stats[SANS_GROUPE][i]['ABSENT'] = 0;
+                stats[SANS_GROUPE][i]['EXCUSE'] = 0;
+                stats[SANS_GROUPE][i]['missing'] = 0;
             }
             entity.seance.presenceElus.forEach(function (pe) {
                 if (!stats[pe.elu.groupePolitique]) {
@@ -73,16 +81,31 @@ angular.module('openassembleeApp')
                 signaturesCountTotal += pe.signatures.length;
                 pe.signatures.forEach(function (s) {
                     stats[s.position][s.statut]++;
-                    stats[pe.elu.groupePolitique][s.position][s.statut]++;
+                    var gp = pe.elu.groupePolitique && pe.elu.groupePolitique !== '' ? pe.elu.groupePolitique :
+                        SANS_GROUPE;
+                    stats[gp][s.position][s.statut]++;
                 });
             });
+            var expectedSignatures = {};
+            entity.groupePolitiques.forEach(function (gp) {
+                expectedSignatures[gp.nomCourt] = entity.seance.presenceElus
+                .filter(function (pe) {
+                    return pe.elu.groupePolitique === gp.nomCourt;
+                }).length;
+            });
+            expectedSignatures[SANS_GROUPE] = entity.seance.presenceElus
+            .filter(function (pe) {
+                return !pe.elu.groupePolitique;
+            }).length;
             for (var i = 1; i <= entity.seance.nombreSignatures; i++) {
                 stats[i]['missing'] = entity.seance.presenceElus.length -
                     (stats[i]['PRESENT'] + stats[i]['ABSENT'] + stats[i]['EXCUSE']);
                 entity.groupePolitiques.forEach(function (gp) {
-                    stats[gp.nomCourt][i]['missing'] = entity.seance.presenceElus.length -
+                    stats[gp.nomCourt][i]['missing'] = expectedSignatures[gp.nomCourt] -
                         (stats[gp.nomCourt][i]['PRESENT'] + stats[gp.nomCourt][i]['ABSENT'] + stats[gp.nomCourt][i]['EXCUSE']);
                 });
+                stats[SANS_GROUPE][i]['missing'] = expectedSignatures[SANS_GROUPE] -
+                    (stats[SANS_GROUPE][i]['PRESENT'] + stats[SANS_GROUPE][i]['ABSENT'] + stats[SANS_GROUPE][i]['EXCUSE']);
             }
             $scope.signaturesCount.totalMissing = awaited - signaturesCountTotal;
             $scope.signaturesCount.stats = stats;
