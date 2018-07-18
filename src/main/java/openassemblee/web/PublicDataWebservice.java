@@ -187,6 +187,8 @@ public class PublicDataWebservice {
                             o = organismeMapRNE.get(a.getCodeRNE());
                         }
                         if (o == null) {
+                            // TODO faire un log pour identifier plus facilement le souci !
+//                            logger.error
                             throw new RuntimeException("Organisme should have been found");
                         }
                         organismesStringBuilder.append("|").append(o.exportUid());
