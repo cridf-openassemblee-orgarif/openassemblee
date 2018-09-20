@@ -58,11 +58,11 @@ public class SearchService {
     public void resetIndex() {
         logger.debug("Reset search index");
         resetRepository(eluRepository, eluSearchRepository);
-        resetRepository(groupePolitiqueRepository, groupePolitiqueSearchRepository);
-        resetRepository(organismeRepository, organismeSearchRepository);
-        resetRepository(commissionThematiqueRepository, commissionThematiqueSearchRepository);
-        resetRepository(fonctionExecutiveRepository, fonctionExecutiveSearchRepository);
-        resetRepository(auditTrailRepository, auditTrailSearchRepository);
+//        resetRepository(groupePolitiqueRepository, groupePolitiqueSearchRepository);
+//        resetRepository(organismeRepository, organismeSearchRepository);
+//        resetRepository(commissionThematiqueRepository, commissionThematiqueSearchRepository);
+//        resetRepository(fonctionExecutiveRepository, fonctionExecutiveSearchRepository);
+//        resetRepository(auditTrailRepository, auditTrailSearchRepository);
     }
 
     private <T> void resetRepository(JpaRepository<T, Long> jpaRepository,
@@ -74,7 +74,9 @@ public class SearchService {
     }
 
     public List<SearchResultDTO> search(String searchToken) {
-        QueryStringQueryBuilder qb = new QueryStringQueryBuilder(searchToken + "*");
+//        QueryStringQueryBuilder qb = new QueryStringQueryBuilder(searchToken + "*");
+        QueryStringQueryBuilder qb = new QueryStringQueryBuilder(searchToken);
+//        qb.analyzer("french");
         List<SearchResultDTO> results = new ArrayList<>();
         results.addAll(StreamSupport
             .stream(eluSearchRepository.search(qb).spliterator(), false)
