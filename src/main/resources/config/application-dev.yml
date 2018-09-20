@@ -45,6 +45,9 @@ spring:
                 path:
                   logs: target/elasticsearch/log
                   data: target/elasticsearch/data
+            index:
+                analysis:
+                    analyzer: french
     mail:
         host: localhost
     messages:
