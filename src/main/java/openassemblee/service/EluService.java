@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class EluService {
 
-    private List<EluDTO> all;
     @Inject
     private EluRepository eluRepository;
     @Inject
