@@ -1,14 +1,13 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import openassemblee.domain.Pouvoir;
-import openassemblee.domain.PresenceElu;
-import openassemblee.domain.Seance;
-import openassemblee.domain.Signature;
+import com.itextpdf.text.DocumentException;
+import openassemblee.domain.*;
 import openassemblee.repository.SeanceRepository;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.ExportService;
+import openassemblee.service.PdfService;
 import openassemblee.service.SeanceService;
 import openassemblee.service.dto.SeanceDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -59,6 +58,9 @@ public class SeanceResource {
 
     @Inject
     private ExportService exportService;
+
+    @Inject
+    private PdfService pdfService;
 
     /**
      * POST  /seances -> Create a new seance.
@@ -225,6 +227,32 @@ public class SeanceResource {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-signatures-seance-" + id;
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
+        try {
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e1) {
+            // TODO exception
+            e1.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/seances/{id}/feuille-emargement",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void getFeuilleEmargement(@PathVariable Long id, HttpServletResponse response) throws DocumentException {
+        Seance seance = seanceService.get(id);
+        List<Elu> elus = seance != null ?
+            seance.getPresenceElus().stream()
+                .map(p -> p.getElu())
+                .sorted(Comparator.comparing(Elu::getNom))
+                .collect(Collectors.toList())
+            : Collections.emptyList();
+
+        byte[] export = pdfService.export(elus, seance.getNombreSignatures());
+
+        response.setContentType("application/pdf");
+        String filename = "siger-feuille-emargement-seance-" + id;
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".pdf");
         try {
             Streams.copy(export, response.getOutputStream());
         } catch (IOException e1) {
