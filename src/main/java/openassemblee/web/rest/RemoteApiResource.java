@@ -6,9 +6,12 @@ import openassemblee.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.jms.TextMessage;
 
 @RestController
 @RequestMapping("/remote-api")
@@ -56,6 +59,19 @@ public class RemoteApiResource {
         if (fakeData) {
             testDataInjector.injectOrganismes();
         }
+        return ResponseEntity.ok().build();
+    }
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @RequestMapping(value = "/jms", method = RequestMethod.GET)
+    public ResponseEntity<Void> jms() {
+        jmsTemplate.send("someQueue", session -> {
+            TextMessage message = session.createTextMessage();
+            message.setText("coucou loulou");
+            return message;
+        });
         return ResponseEntity.ok().build();
     }
 

@@ -28,7 +28,10 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
-
+    artemis:
+        mode: embedded
+        user: admin
+        password: secret
 security:
     basic:
         enabled: false
