@@ -28,7 +28,7 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
-    activemq:
+    artemis:
         mode: native
         host: 127.0.0.1
         port: 61616

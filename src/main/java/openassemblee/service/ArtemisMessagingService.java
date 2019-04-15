@@ -3,11 +3,17 @@ package openassemblee.service;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.core.config.Configuration;
 import org.apache.activemq.artemis.core.config.impl.ConfigurationImpl;
-import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyAcceptorFactory;
+import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
+import org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-//@Service
+@Service
 public class ArtemisMessagingService {
 
 //    @Autowired
@@ -15,17 +21,46 @@ public class ArtemisMessagingService {
 
     @PostConstruct
     public void init() throws Exception {
-        Configuration config = new ConfigurationImpl();
 
-//        config.addAcceptorConfiguration("in-vm", "vm://0");
-        TransportConfiguration tc = new TransportConfiguration();
-        tc.getParams().put("tcp", "tcp://127.0.0.1:61616");
-        config.addAcceptorConfiguration(tc);
+        Configuration configuration = new ConfigurationImpl();
 
-        EmbeddedActiveMQ server = new EmbeddedActiveMQ();
-        server.setConfiguration(config);
+        configuration.setPersistenceEnabled(true);
+        configuration.setSecurityEnabled(false);
 
+        Map<String, Object> connectionParams = new HashMap<String, Object>();
+        connectionParams.put(
+            org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.PORT_PROP_NAME, 61616);
+
+        File storeFolder = new File("/Users/mlo/temp/artemis-test-remove");
+
+        configuration.setBindingsDirectory(storeFolder.getAbsolutePath());
+        configuration.setJournalDirectory(storeFolder.getAbsolutePath());
+        configuration.setLargeMessagesDirectory(storeFolder.getAbsolutePath());
+        configuration.setPagingDirectory(storeFolder.getAbsolutePath());
+
+        configuration.addAcceptorConfiguration(
+            new TransportConfiguration(NettyAcceptorFactory.class.getName(), connectionParams));
+        configuration.addConnectorConfiguration("connector",
+            new TransportConfiguration(NettyConnectorFactory.class.getName(), connectionParams));
+
+
+        ActiveMQServerImpl server = new ActiveMQServerImpl(configuration);
         server.start();
+
+//        Configuration config = new ConfigurationImpl();
+//
+////        config.addAcceptorConfiguration("in-vm", "vm://0");
+//        TransportConfiguration tc = new TransportConfiguration();
+//        tc.getParams().put("tcp", "tcp://127.0.0.1:61616");
+//        config.addAcceptorConfiguration(tc);
+//
+////        EmbeddedActiveMQ server = new EmbeddedActiveMQ();
+////        server.setConfiguration(config);
+//
+////        server.start();
+//
+//        ActiveMQServer server = new ActiveMQServerImpl(config);
+//        server.start();
 
 //        jmsTemplate.send("someQueue", session -> {
 //            TextMessage message = session.createTextMessage();
