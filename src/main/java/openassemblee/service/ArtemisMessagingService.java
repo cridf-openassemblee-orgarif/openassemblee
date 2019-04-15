@@ -1,16 +1,12 @@
 package openassemblee.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 
-@Service
+//@Service
 public class ArtemisMessagingService {
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+//    @Autowired
+//    private JmsTemplate jmsTemplate;
 
     @PostConstruct
     public void init() throws Exception {
