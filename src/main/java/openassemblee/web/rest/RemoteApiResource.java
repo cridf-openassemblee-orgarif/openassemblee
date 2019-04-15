@@ -68,12 +68,12 @@ public class RemoteApiResource {
     @RequestMapping(value = "/jms", method = RequestMethod.GET)
     public ResponseEntity<Void> jms() {
         System.out.println("jms call");
-        jmsTemplate.send("someQueue", session -> {
+        jmsTemplate.send("some.queue", session -> {
             TextMessage message = session.createTextMessage();
             message.setText("coucou loulou");
             return message;
         });
-        jmsTemplate.convertAndSend("someQueue", "coucou numero 2");
+        jmsTemplate.convertAndSend("some.queue", "coucou numero 2");
         return ResponseEntity.ok().build();
     }
 
