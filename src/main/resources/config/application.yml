@@ -30,10 +30,13 @@ spring:
         mode: XHTML
     artemis:
         mode: embedded
-        host: localhost
+        host: 127.0.0.1
         port: 9876
         user: admin
         password: secret
+        embedded:
+            enabled: true
+            queues: someQueue
 security:
     basic:
         enabled: false
