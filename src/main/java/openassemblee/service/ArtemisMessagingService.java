@@ -24,8 +24,10 @@ public class ArtemisMessagingService {
 
         Configuration configuration = new ConfigurationImpl();
 
-        configuration.setPersistenceEnabled(true);
+        configuration.setPersistenceEnabled(false);
         configuration.setSecurityEnabled(false);
+//        configuration.setClusterUser("test");
+//        configuration.setClusterPassword("pwd");
 
         Map<String, Object> connectionParams = new HashMap<String, Object>();
         connectionParams.put(
