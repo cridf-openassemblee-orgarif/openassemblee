@@ -1,5 +1,10 @@
 package openassemblee.service;
 
+import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.core.config.Configuration;
+import org.apache.activemq.artemis.core.config.impl.ConfigurationImpl;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+
 import javax.annotation.PostConstruct;
 
 //@Service
@@ -10,6 +15,18 @@ public class ArtemisMessagingService {
 
     @PostConstruct
     public void init() throws Exception {
+        Configuration config = new ConfigurationImpl();
+
+//        config.addAcceptorConfiguration("in-vm", "vm://0");
+        TransportConfiguration tc = new TransportConfiguration();
+        tc.getParams().put("tcp", "tcp://127.0.0.1:61616");
+        config.addAcceptorConfiguration(tc);
+
+        EmbeddedActiveMQ server = new EmbeddedActiveMQ();
+        server.setConfiguration(config);
+
+        server.start();
+
 //        jmsTemplate.send("someQueue", session -> {
 //            TextMessage message = session.createTextMessage();
 //            message.setText("coucou loulou");
