@@ -121,6 +121,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/elus/**").permitAll()
             .antMatchers("/api/search/**").permitAll()
             .antMatchers("/api/commission-permanente/**").permitAll()
+            .antMatchers("/api/executif/**").permitAll()
             .antMatchers("/api/groupePolitiques/**").permitAll()
             .antMatchers("/api/groupePolitiques-dtos").permitAll()
             .antMatchers("/api/commissionThematiques/**").permitAll()
