@@ -27,7 +27,8 @@
                 </div>
             </div>
             <div ng-if="comm.fonctionsExecutives.length">
-                <h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>
+                <br />
+                <!--<h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>-->
                 <div class="row" ng-init="chunks = _.chunk(comm.fonctionsExecutives, 3)">
                     <div class="col-md-12 col-sm-12 col-xs-12"
                          ng-repeat="fonctionsExecutives in chunks">
