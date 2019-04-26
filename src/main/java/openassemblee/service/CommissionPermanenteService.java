@@ -38,17 +38,19 @@ public class CommissionPermanenteService {
 
     @Transactional(readOnly = true)
     public ExecutifDTO getExecutif() {
-        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isFonctionCourante)
-            .sorted(Comparator.comparing(f -> f.getElu().getNom()))
-            .collect(Collectors.toList());
         List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll().stream()
             .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
             .sorted(this::sortFonctionExecutives)
             .collect(Collectors.toList());
+        Set<Elu> elusFeIds = fe.stream().map(FonctionExecutive::getElu).collect(Collectors.toSet());
+        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
+            .filter(CommissionPermanenteService::isFonctionCourante)
+            .filter(f -> !elusFeIds.contains(f.getElu()))
+            .sorted(Comparator.comparing(f -> f.getElu().getNom()))
+            .collect(Collectors.toList());
         Set<Long> elusIds = new HashSet<>();
-        elusIds.addAll(fcp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         elusIds.addAll(fe.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
+        elusIds.addAll(fcp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         Map<Long, Elu> elus = eluRepository.findAll(elusIds).stream().collect(Collectors.toMap(Elu::getId,
             Function.identity()));
         return new ExecutifDTO(fcp, fe, elus);
