@@ -1,46 +1,49 @@
 <ul class="sidebar-menu" role="navigation" ng-switch="isAuthenticated()">
-    <li class="header" ng-switch-when="true">Gestion des élus</li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li class="header">Les élus</li>
+    <li ui-sref-active="active">
         <a ui-sref="home"><i class="glyphicon glyphicon-home"></i> <span>Accueil</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li ui-sref-active="active">
         <a ui-sref="elu"> <i class="fa fa-user"></i> <span>Élus</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li ui-sref-active="active">
+        <a ui-sref="executif"> <i class="fa fa-certificate"></i> <span>Exécutif</span></a>
+    </li>
+    <li ui-sref-active="active">
         <a ui-sref="groupesPolitiques"> <i class="fa fa-bookmark"></i> <span>Groupes politiques</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li ui-sref-active="active">
         <a ui-sref="commission-permanente"> <i class="fa fa-users"></i> <span>Commission permanente</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li ui-sref-active="active">
         <a ui-sref="commissionThematique"> <i class="fa fa-quote-left"></i> <span>Commissions thématiques</span></a>
     </li>
     <li ui-sref-active="active" ng-switch-when="true">
         <a ui-sref="organisme"> <i class="fa fa-building"></i> <span>Organismes</span></a>
     </li>
-    <li class="header" ng-switch-when="true">Gestion des séances</li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li class="header" ng-switch-when="true" has-authority="ROLE_ADMIN">Gestion des séances</li>
+    <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="seance"> <i class="fa fa-calendar"></i> <span>Séances</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
-        <a ui-sref="pouvoir"> <i class="glyphicon glyphicon-hand-right"></i> <span>Pouvoirs</span></a>
-    </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <!--<li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">-->
+        <!--<a ui-sref="pouvoir"> <i class="glyphicon glyphicon-hand-right"></i> <span>Pouvoirs</span></a>-->
+    <!--</li>-->
+    <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="reunionCommissionThematique"> <i class="fa fa-calendar"></i> <span>Réunion de CT</span></a>
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="reunionCao"> <i class="fa fa-calendar"></i> <span>Réunion de CAO</span></a>
     </li>
-    <li class="header" ng-switch-when="true">Administration</li>
-    <li ui-sref-active="active" ng-switch-when="true">
+    <li class="header" ng-switch-when="true" has-authority="ROLE_ADMIN">Administration</li>
+    <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="auditTrail"> <i class="fa fa-book"></i> <span>Logs d'activité</span></a>
     </li>
-    <li class="header" ng-switch-when="true">Comptes</li>
+    <li class="header">Comptes</li>
     <li ui-sref-active="active" ng-switch-when="false">
         <a ui-sref="login"><i class="fa fa-sign-in"></i>&#xA0;<span>Me connecter</span></a>
     </li>
     <li ui-sref-active="active" ng-switch-when="true">
-     <a ui-sref="password"><i class="fa fa-key"></i>&#xA0;<span>Changer mon mot de passe</span></a>
+        <a ui-sref="password"><i class="fa fa-key"></i>&#xA0;<span>Changer mon mot de passe</span></a>
     </li>
     <li ui-sref-active="active" ng-switch-when="true">
         <a href="" ng-click="logout()" id="logout">

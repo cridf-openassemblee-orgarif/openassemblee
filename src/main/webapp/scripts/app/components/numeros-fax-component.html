@@ -5,7 +5,7 @@
         </div>
         <div class="box-body">
             <div class="info-bloc" ng-repeat="a in dto.elu.numerosFax">
-                <div class="edition-buttons-bloc">
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
                     <edit-button ui-sref="elu.detail.editerNumeroFax({numeroFaxId: a.id})"></edit-button>
                     <delete-button ui-sref="elu.detail.supprimerNumeroFax({numeroFaxId: a.id})"></delete-button>
                 </div>
@@ -24,7 +24,8 @@
             <div ng-hide="dto.elu.numerosFax.length">Aucun numéro connu</div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterNumeroFax">
+            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterNumeroFax"
+                    has-authority="ROLE_ADMIN">
                 <span class="fa fa-plus"></span>
             </button>
         </div>

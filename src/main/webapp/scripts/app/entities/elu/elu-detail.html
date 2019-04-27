@@ -63,25 +63,25 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
-                                <li>
+                                <li has-authority="ROLE_ADMIN">
                                     <a href="#" ui-sref="elu.edit({id:dto.elu.id})">
                                         <span class="fa fa-pencil"></span>
                                         Éditer
                                     </a>
                                 </li>
-                                <li>
+                                <li has-authority="ROLE_ADMIN">
                                     <a href="#"
                                        ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
                                         Ajouter une fonction (délégué etc.)
                                     </a>
                                 </li>
-                                <li>
+                                <li has-authority="ROLE_ADMIN">
                                     <a href="#"
                                        ui-sref="elu.detail.nouvelleFonctionExecutive">
                                         Ajouter une fonction exécutive
                                     </a>
                                 </li>
-                                <li>
+                                <li has-authority="ROLE_ADMIN">
                                     <a href="#"
                                        ui-sref="elu.detail.ajoutDistinctionHonorifique">
                                         Ajouter une distinction honorifique
@@ -105,7 +105,8 @@
                     <div class="info-box-photo-big">
                         <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}" ui-sref="elu.detail.uploadImage"/>
                         <button ng-if="dto.elu.image == null" class="btn btn-sm btn-primary"
-                                ui-sref="elu.detail.uploadImage">
+                                ui-sref="elu.detail.uploadImage"
+                                has-authority="ROLE_ADMIN">
                             Ajouter une image
                         </button>
                     </div>

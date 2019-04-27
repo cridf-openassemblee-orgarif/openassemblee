@@ -7,7 +7,6 @@ angular.module('openassembleeApp')
                 parent: 'entity',
                 url: '/elus',
                 data: {
-                    authorities: ['ROLE_USER'],
                     // TODO mlo keep ça en fait ?
                     pageTitle: 'Élus'
                 },
@@ -60,7 +59,6 @@ angular.module('openassembleeApp')
                 // FIXME nommer le paramètre ici eluId eut été malin au départ...
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
                     pageTitle: 'Élu'
                 },
                 views: {

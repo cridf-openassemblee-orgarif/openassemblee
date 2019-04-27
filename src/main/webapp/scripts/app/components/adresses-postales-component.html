@@ -6,7 +6,7 @@
         <div class="box-body">
             <div class="unit-bloc" ng-repeat="a in dto.elu.adressesPostales">
                 <div class="info-bloc">
-                    <div class="edition-buttons-bloc">
+                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
                         <edit-button ui-sref="elu.detail.editerAdressePostale({adressePostaleId: a.id})"></edit-button>
                         <delete-button ui-sref="elu.detail.supprimerAdressePostale({adressePostaleId: a.id})"></delete-button>
                     </div>
@@ -28,7 +28,8 @@
             <div ng-hide="dto.elu.adressesPostales.length">Aucune adresse connue</div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterAdressePostale">
+            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterAdressePostale"
+                    has-authority="ROLE_ADMIN">
                 <span class="fa fa-plus"></span>
             </button>
         </div>

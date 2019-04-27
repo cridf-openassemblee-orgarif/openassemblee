@@ -39,7 +39,8 @@
                             </div>
                         </span>
                         <div class="btn-group elu-action">
-                            <button type="button" class="btn btn-default" ui-sref="groupesPolitiques.detail.edit">
+                            <button type="button" class="btn btn-default" ui-sref="groupesPolitiques.detail.edit"
+                                    has-authority="ROLE_ADMIN">
                                 <span class="fa fa-pencil"></span>
                             </button>
                         </div>
@@ -52,7 +53,8 @@
                         <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
                              ui-sref="groupesPolitiques.detail.uploadImage"/>
                         <button ng-if="dto.groupePolitique.image == null" class="btn btn-sm btn-primary"
-                                ui-sref="groupesPolitiques.detail.uploadImage">
+                                ui-sref="groupesPolitiques.detail.uploadImage"
+                                has-authority="ROLE_ADMIN">
                             Ajouter une image
                         </button>
                     </div>

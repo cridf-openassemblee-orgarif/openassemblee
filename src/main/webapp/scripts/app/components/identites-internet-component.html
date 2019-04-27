@@ -5,7 +5,7 @@
         </div>
         <div class="box-body">
             <div class="info-bloc" ng-repeat="a in dto.elu.identitesInternet">
-                <div class="edition-buttons-bloc">
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
                     <edit-button ui-sref="elu.detail.editerIdentiteInternet({identiteInternetId: a.id})"></edit-button>
                     <delete-button ui-sref="elu.detail.supprimerIdentiteInternet({identiteInternetId: a.id})"></delete-button>
                 </div>
@@ -15,7 +15,8 @@
             <div ng-hide="dto.elu.identitesInternet.length">Aucune identité connue</div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterIdentiteInternet">
+            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterIdentiteInternet"
+                    has-authority="ROLE_ADMIN">
                 <span class="fa fa-plus"></span>
             </button>
         </div>

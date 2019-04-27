@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row buttons">
             <div class="col-lg-12 align-right">
-                <button class="btn btn-primary" ui-sref="seance.new">
+                <button class="btn btn-primary" ui-sref="seance.new" has-authority="ROLE_ADMIN">
                     <span class="glyphicon glyphicon-flash"></span> <span>Nouvelle séance</span>
                 </button>
             </div>
@@ -33,12 +33,14 @@
                     <td>
                         <button type="submit"
                                 ui-sref="seance.edit({id:seance.id})"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary btn-sm"
+                                has-authority="ROLE_ADMIN">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
                         </button>
                         <button type="submit"
                                 ui-sref="seance.delete({id:seance.id})"
-                                class="btn btn-danger btn-sm">
+                                class="btn btn-danger btn-sm"
+                                has-authority="ROLE_ADMIN">
                             <span class="glyphicon glyphicon-remove"></span>&nbsp;<span> Supprimer</span>
                         </button>
                     </td>

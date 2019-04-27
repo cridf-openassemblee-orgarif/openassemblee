@@ -7,7 +7,6 @@ angular.module('openassembleeApp')
                 parent: 'site',
                 url: '/groupes-politiques',
                 data: {
-                    authorities: ['ROLE_USER'],
                     // TODO mlo keep ça en fait ?
                     pageTitle: 'Groupes politiques'
                 },
@@ -63,7 +62,6 @@ angular.module('openassembleeApp')
                 parent: 'groupesPolitiques',
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
                     pageTitle: 'Groupe politique'
                 },
                 views: {

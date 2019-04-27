@@ -1,7 +1,5 @@
 package openassemblee.config;
 
-import javax.inject.Inject;
-
 import openassemblee.security.*;
 import openassemblee.web.filter.CsrfCookieGeneratorFilter;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
+
+import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
@@ -116,6 +116,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/publicdata/**").permitAll()
             .antMatchers("/api/inject/**").permitAll()
+
+            // pour "publication"
+            .antMatchers("/api/elus/**").permitAll()
+            .antMatchers("/api/search/**").permitAll()
+            .antMatchers("/api/commission-permanente/**").permitAll()
+            .antMatchers("/api/groupePolitiques/**").permitAll()
+            .antMatchers("/api/groupePolitiques-dtos").permitAll()
+            .antMatchers("/api/commissionThematiques/**").permitAll()
+            .antMatchers("/api/commissionThematiques-dtos").permitAll()
+
             .antMatchers("/api/**").authenticated()
             .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)

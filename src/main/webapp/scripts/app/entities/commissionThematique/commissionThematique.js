@@ -7,7 +7,6 @@ angular.module('openassembleeApp')
                 parent: 'entity',
                 url: '/commissions-thematiques',
                 data: {
-                    authorities: ['ROLE_USER'],
                     pageTitle: 'CommissionThematiques'
                 },
                 views: {
@@ -52,7 +51,6 @@ angular.module('openassembleeApp')
                 parent: 'commissionThematique',
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
                     pageTitle: 'CommissionThematique'
                 },
                 views: {
