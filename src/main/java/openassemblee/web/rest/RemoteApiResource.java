@@ -2,6 +2,8 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
+import openassemblee.repository.AppartenanceOrganismeRepository;
+import openassemblee.repository.OrganismeRepository;
 import openassemblee.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,12 @@ public class RemoteApiResource {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private OrganismeRepository organismeRepository;
+
+    @Autowired
+    private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
 
     @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
     @Timed
@@ -59,4 +67,11 @@ public class RemoteApiResource {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/clean-organismes", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<String> cleanOrganismes() {
+        appartenanceOrganismeRepository.deleteAll();
+        organismeRepository.deleteAll();
+        return ResponseEntity.ok("ok");
+    }
 }
