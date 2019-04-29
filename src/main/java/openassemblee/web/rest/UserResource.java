@@ -1,25 +1,6 @@
 package openassemblee.web.rest;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.*;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import openassemblee.domain.Authority;
 import openassemblee.domain.User;
 import openassemblee.repository.AuthorityRepository;
@@ -30,6 +11,28 @@ import openassemblee.service.UserService;
 import openassemblee.web.rest.dto.ManagedUserDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.

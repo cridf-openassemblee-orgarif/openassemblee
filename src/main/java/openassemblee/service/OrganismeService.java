@@ -35,7 +35,7 @@ public class OrganismeService {
         if (organisme.getCodeRNE() != null) {
             List<AppartenanceOrganismeDTO> appartenances = appartenanceOrganismeRepository
                 .findAllByCodeRNE(organisme.getCodeRNE()).stream()
-                .map(a -> new AppartenanceOrganismeDTO(a, eluService.getEluListDTO(a.getElu().getId())))
+                .map(a -> new AppartenanceOrganismeDTO(a, eluService.getEluListDTO(a.getElu().getId(), false, false)))
                 .collect(Collectors.toList());
             return new OrganismeDTO(organisme, appartenances);
         }

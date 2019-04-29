@@ -10,7 +10,7 @@
     <section class="content">
         <div class="row">
             <div class="col-md-4">
-                <h2>{{dtos.length}} élus</h2>
+                <h2>{{nombreElus}} élus</h2>
             </div>
             <div class="col-md-8 align-right">
                 <button class="btn btn-sm btn-primary" ui-sref="elu.new" has-authority="ROLE_ADMIN">
@@ -20,6 +20,10 @@
                 <a class="btn btn-sm btn-primary" href="api/elus/export">
                     <span class="fa fa-table"></span>
                     <span>Export Excel</span>
+                </a>
+                <a class="btn btn-sm btn-primary" href="api/elus/export-pdf">
+                    <span class="fa fa-file-text"></span>
+                    <span>Export PDF</span>
                 </a>
             </div>
         </div>

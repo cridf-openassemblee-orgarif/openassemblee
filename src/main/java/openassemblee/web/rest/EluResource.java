@@ -1,15 +1,14 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.itextpdf.text.DocumentException;
 import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.search.EluSearchRepository;
-import openassemblee.service.AuditTrailService;
-import openassemblee.service.EluService;
-import openassemblee.service.ExportService;
-import openassemblee.service.ImageService;
+import openassemblee.service.*;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
+import openassemblee.service.util.SecurityUtil;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.io.Streams;
@@ -18,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,10 +57,13 @@ public class EluResource {
     private ImageService imageService;
 
     @Inject
-    private ExportService exportService;
+    private ExcelExportService excelExportService;
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private PdfExportService pdfExportService;
 
     /**
      * POST  /elus -> Create a new elu.
@@ -68,6 +72,7 @@ public class EluResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Elu> createElu(@RequestBody Elu elu) throws URISyntaxException {
         log.debug("REST request to save Elu : {}", elu);
         if (elu.getId() != null) {
@@ -83,6 +88,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/adressePostale", method = RequestMethod.POST)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> createAdressePostale(@PathVariable Long eluId, @RequestBody AdressePostale adressePostale)
         throws URISyntaxException {
         eluService.saveAdressePostale(eluId, adressePostale);
@@ -92,6 +98,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/adressePostale", method = RequestMethod.PUT)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> updateAdressePostale(@PathVariable Long eluId, @RequestBody AdressePostale adressePostale)
         throws URISyntaxException {
         eluService.updateAdressePostale(adressePostale);
@@ -106,6 +113,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteAdressePostale(@PathVariable Long eluId, @PathVariable Long adressePostaleId) {
         log.debug("REST request to delete AdressePostale : {} for elu {}", adressePostaleId, eluId);
         eluService.deleteAdressePostale(eluId, adressePostaleId);
@@ -115,6 +123,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/adresseMail", method = RequestMethod.POST)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> createAdresseMail(@PathVariable Long eluId, @RequestBody AdresseMail adresseMail)
         throws URISyntaxException {
         eluService.saveAdresseMail(eluId, adresseMail);
@@ -124,6 +133,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/adresseMail", method = RequestMethod.PUT)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> updateAdresseMail(@PathVariable Long eluId, @RequestBody AdresseMail adresseMail)
         throws URISyntaxException {
         eluService.updateAdresseMail(adresseMail);
@@ -135,6 +145,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteAdresseMail(@PathVariable Long eluId, @PathVariable Long adresseMailId) {
         log.debug("REST request to delete AdresseMail : {} for elu {}", adresseMailId, eluId);
         eluService.deleteAdresseMail(eluId, adresseMailId);
@@ -144,6 +155,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/identiteInternet", method = RequestMethod.POST)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> createIdentiteInternet(@PathVariable Long eluId, @RequestBody IdentiteInternet
         identiteInternet)
         throws URISyntaxException {
@@ -154,6 +166,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/identiteInternet", method = RequestMethod.PUT)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> updateIdentiteInternet(@PathVariable Long eluId, @RequestBody IdentiteInternet identiteInternet)
         throws URISyntaxException {
         eluService.updateIdentiteInternet(identiteInternet);
@@ -165,6 +178,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteIdentiteInternet(@PathVariable Long eluId, @PathVariable Long identiteInternetId) {
         log.debug("REST request to delete IdentiteInternet : {} for elu {}", identiteInternetId, eluId);
         eluService.deleteIdentiteInternet(eluId, identiteInternetId);
@@ -174,6 +188,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/numeroFax", method = RequestMethod.POST)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> createNumeroFax(@PathVariable Long eluId, @RequestBody NumeroFax numeroFax)
         throws URISyntaxException {
         eluService.saveNumeroFax(eluId, numeroFax);
@@ -183,6 +198,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/numeroFax", method = RequestMethod.PUT)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> updateNumeroFax(@PathVariable Long eluId, @RequestBody NumeroFax numeroFax)
         throws URISyntaxException {
         eluService.updateNumeroFax(numeroFax);
@@ -194,6 +210,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteNumeroFax(@PathVariable Long eluId, @PathVariable Long numeroFaxId) {
         log.debug("REST request to delete NumeroFax : {} for elu {}", numeroFaxId, eluId);
         eluService.deleteNumeroFax(eluId, numeroFaxId);
@@ -203,6 +220,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/numeroTelephone", method = RequestMethod.POST)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> createNumeroTelephone(@PathVariable Long eluId, @RequestBody NumeroTelephone
         numeroTelephone)
         throws URISyntaxException {
@@ -213,6 +231,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{eluId}/numeroTelephone", method = RequestMethod.PUT)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> updateNumeroTelephone(@PathVariable Long eluId, @RequestBody NumeroTelephone numeroTelephone)
         throws URISyntaxException {
         eluService.updateNumeroTelephone(numeroTelephone);
@@ -224,6 +243,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteNumeroTelephone(@PathVariable Long eluId, @PathVariable Long numeroTelephoneId) {
         log.debug("REST request to delete NumeroTelephone : {} for elu {}", numeroTelephoneId, eluId);
         eluService.deleteNumeroTelephone(eluId, numeroTelephoneId);
@@ -236,6 +256,7 @@ public class EluResource {
      */
     @RequestMapping(value = "/elus/{id}/image", method = RequestMethod.POST, consumes = "multipart/form-data")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
         URISyntaxException {
         log.debug("REST upload image");
@@ -262,6 +283,7 @@ public class EluResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Elu> updateElu(@RequestBody Elu elu) throws URISyntaxException {
         log.debug("REST request to update Elu : {}", elu);
         if (elu.getId() == null) {
@@ -283,7 +305,7 @@ public class EluResource {
     @Timed
     public List<EluListDTO> getAllElus() {
         log.debug("REST request to get all Elus");
-        return eluService.getAll();
+        return eluService.getAll(false, false);
     }
 
     /**
@@ -294,9 +316,9 @@ public class EluResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     // TODO tester jsonview annotations + doc
     @Timed
-    public ResponseEntity<EluDTO> getElu(@PathVariable Long id) {
+    public ResponseEntity<EluDTO> getElu(@PathVariable Long id, Authentication auth) {
         log.debug("REST request to get Elu : {}", id);
-        EluDTO eluDTO = eluService.get(id);
+        EluDTO eluDTO = eluService.get(id, !SecurityUtil.isAdmin(auth));
         if (eluDTO != null) {
             return new ResponseEntity<>(eluDTO, HttpStatus.OK);
         }
@@ -307,15 +329,15 @@ public class EluResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void getEluExport(@PathVariable Long id, HttpServletResponse response) {
+    public void getEluExport(@PathVariable Long id, HttpServletResponse response, Authentication auth) {
         log.debug("REST request to get Elu : {}", id);
-        EluDTO eluDTO = eluService.get(id);
+        EluDTO eluDTO = eluService.get(id, !SecurityUtil.isAdmin(auth));
         if (eluDTO != null) {
             Elu e = eluDTO.getElu();
             String civilite = e.getCiviliteLabel();
             String dateNaissance = e.getDateNaissance() != null ?
                 e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
-            ExportService.Entry entry1 = new ExportService.Entry("Élu", Arrays.asList(
+            ExcelExportService.Entry entry1 = new ExcelExportService.Entry("Élu", Arrays.asList(
                 Arrays.asList("Civilité", "Prénom", "Nom", "Profession", "Lieu de naissance", "Date de naissance"),
                 Arrays.asList(civilite, e.getPrenom(), e.getNom(), e.getProfession(), e.getLieuNaissance(),
                     dateNaissance)));
@@ -331,7 +353,7 @@ public class EluResource {
                     ap.getAdresseDeCorrespondance() != null && ap.getAdresseDeCorrespondance() ? "Oui" : "Non",
                     ap.getPublicationAnnuaire() != null && ap.getPublicationAnnuaire() ? "Oui" : "Non"));
             }
-            ExportService.Entry entry2 = new ExportService.Entry("Adresses postales", adressesPostales);
+            ExcelExportService.Entry entry2 = new ExcelExportService.Entry("Adresses postales", adressesPostales);
             List<List<String>> groupesPolitiques = new ArrayList<>();
             groupesPolitiques.add(Arrays.asList("Groupe", "Date de début", "Date de fin", "Motif de fin"));
             for (AppartenanceGroupePolitique agp : e.getAppartenancesGroupePolitique()) {
@@ -343,9 +365,9 @@ public class EluResource {
                 String motifFin = agp.getMotifFin() != null ? agp.getMotifFin() : "";
                 groupesPolitiques.add(Arrays.asList(gp.getNom(), dateDebut, dateFin, motifFin));
             }
-            ExportService.Entry entry3 = new ExportService.Entry("Groupes politiques", groupesPolitiques);
+            ExcelExportService.Entry entry3 = new ExcelExportService.Entry("Groupes politiques", groupesPolitiques);
 
-            byte[] export = exportService.exportToExcel(entry1, entry2, entry3);
+            byte[] export = excelExportService.exportToExcel(entry1, entry2, entry3);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             String filename = "siger-export-elu-" + id;
@@ -359,15 +381,34 @@ public class EluResource {
         }
     }
 
+    @RequestMapping(value = "/elus/export-pdf",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
+        List<EluListDTO> elus = eluService.getAll(true, !SecurityUtil.isAdmin(auth));
+
+        byte[] export = pdfExportService.exportElus(elus);
+
+        response.setContentType("application/pdf");
+        String filename = "export-elus";
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".pdf");
+        try {
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e1) {
+            // TODO exception
+            e1.printStackTrace();
+        }
+    }
 
     @RequestMapping(value = "/elus/export",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void getAllElusExport(HttpServletResponse response) {
+    public void getAllElusExport(HttpServletResponse response, Authentication auth) {
         log.debug("REST request to get elus export");
-        ExportService.Entry[] entries = eluService.getExportEntries();
-        byte[] export = exportService.exportToExcel(entries);
+        ExcelExportService.Entry[] entries = eluService.getExportEntries(!SecurityUtil.isAdmin(auth));
+        byte[] export = excelExportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-elus";
@@ -387,6 +428,7 @@ public class EluResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteElu(@PathVariable Long id) {
         log.debug("REST request to delete Elu : {}", id);
         eluRepository.delete(id);

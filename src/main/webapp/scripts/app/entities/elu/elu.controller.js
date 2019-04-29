@@ -7,6 +7,7 @@ angular.module('openassembleeApp')
         $scope.loadAll = function () {
             Elu.query(function (dtos) {
                 $scope.dtos = dtos;
+                $scope.nombreElus = dtos.filter(function(dto) { return !dto.elu.dateDemission }).length
             });
         };
         $scope.loadAll();

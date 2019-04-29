@@ -6,8 +6,8 @@ import openassemblee.domain.*;
 import openassemblee.repository.SeanceRepository;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.AuditTrailService;
-import openassemblee.service.ExportService;
-import openassemblee.service.PdfService;
+import openassemblee.service.ExcelExportService;
+import openassemblee.service.PdfExportService;
 import openassemblee.service.SeanceService;
 import openassemblee.service.dto.SeanceDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -57,10 +57,10 @@ public class SeanceResource {
     private AuditTrailService auditTrailService;
 
     @Inject
-    private ExportService exportService;
+    private ExcelExportService excelExportService;
 
     @Inject
-    private PdfService pdfService;
+    private PdfExportService pdfExportService;
 
     /**
      * POST  /seances -> Create a new seance.
@@ -168,9 +168,9 @@ public class SeanceResource {
                 pv.getHeureFin()
             ));
         }
-        ExportService.Entry entry = new ExportService.Entry("Pouvoirs", result);
+        ExcelExportService.Entry entry = new ExcelExportService.Entry("Pouvoirs", result);
 
-        byte[] export = exportService.exportToExcel(entry);
+        byte[] export = excelExportService.exportToExcel(entry);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-pouvoirs-seance-" + id;
@@ -220,9 +220,9 @@ public class SeanceResource {
             }
             result.add(line);
         }
-        ExportService.Entry entry = new ExportService.Entry("Pouvoirs", result);
+        ExcelExportService.Entry entry = new ExcelExportService.Entry("Pouvoirs", result);
 
-        byte[] export = exportService.exportToExcel(entry);
+        byte[] export = excelExportService.exportToExcel(entry);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-signatures-seance-" + id;
@@ -235,20 +235,22 @@ public class SeanceResource {
         }
     }
 
-    @RequestMapping(value = "/seances/{id}/feuille-emargement",
+    @RequestMapping(value = "/seances/{id}/feuille-emargement/{nombreSignatures}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void getFeuilleEmargement(@PathVariable Long id, HttpServletResponse response) throws DocumentException {
+    public void getFeuilleEmargement(@PathVariable Long id,
+                                     @PathVariable Integer nombreSignatures,
+                                     HttpServletResponse response) throws DocumentException {
         Seance seance = seanceService.get(id);
         List<Elu> elus = seance != null ?
             seance.getPresenceElus().stream()
-                .map(p -> p.getElu())
+                .map(PresenceElu::getElu)
                 .sorted(Comparator.comparing(Elu::getNom))
                 .collect(Collectors.toList())
             : Collections.emptyList();
 
-        byte[] export = pdfService.export(elus, seance.getNombreSignatures());
+        byte[] export = pdfExportService.feuilleEmargement(elus, nombreSignatures);
 
         response.setContentType("application/pdf");
         String filename = "siger-feuille-emargement-seance-" + id;

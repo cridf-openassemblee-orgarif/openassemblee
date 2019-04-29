@@ -6,7 +6,7 @@ import openassemblee.domain.Image;
 import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.search.GroupePolitiqueSearchRepository;
 import openassemblee.service.AuditTrailService;
-import openassemblee.service.ExportService;
+import openassemblee.service.ExcelExportService;
 import openassemblee.service.GroupePolitiqueService;
 import openassemblee.service.ImageService;
 import openassemblee.service.dto.GroupePolitiqueDTO;
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,7 +57,7 @@ public class GroupePolitiqueResource {
     private ImageService imageService;
 
     @Inject
-    private ExportService exportService;
+    private ExcelExportService excelExportService;
 
     @Inject
     private AuditTrailService auditTrailService;
@@ -68,6 +69,7 @@ public class GroupePolitiqueResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<GroupePolitique> createGroupePolitique(@RequestBody GroupePolitique groupePolitique) throws
         URISyntaxException {
         log.debug("REST request to save GroupePolitique : {}", groupePolitique);
@@ -88,6 +90,7 @@ public class GroupePolitiqueResource {
     @RequestMapping(value = "/groupePolitiques/{id}/image", method = RequestMethod.POST, consumes =
         "multipart/form-data")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestBody MultipartFile file) throws
         URISyntaxException {
         log.debug("REST upload image");
@@ -113,6 +116,7 @@ public class GroupePolitiqueResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<GroupePolitique> updateGroupePolitique(@RequestBody GroupePolitique groupePolitique) throws
         URISyntaxException {
         log.debug("REST request to update GroupePolitique : {}", groupePolitique);
@@ -167,7 +171,7 @@ public class GroupePolitiqueResource {
             String adresse = gp.getAdressePostale() != null ? gp.getAdressePostale().getOneline() : "Pas d'adresse";
             lines.add(Arrays.asList(gp.getNom(), gp.getNomCourt(), gpDto.getCount() + " membres", adresse));
         }
-        byte[] export = exportService.exportToExcel("Groupes politiques", lines);
+        byte[] export = excelExportService.exportToExcel("Groupes politiques", lines);
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-groupes-politiques";
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
@@ -202,6 +206,7 @@ public class GroupePolitiqueResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteGroupePolitique(@PathVariable Long id) {
         log.debug("REST request to delete GroupePolitique : {}", id);
         groupePolitiqueRepository.delete(id);

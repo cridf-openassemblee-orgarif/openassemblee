@@ -1,6 +1,7 @@
 package openassemblee.service;
 
 import openassemblee.domain.*;
+import openassemblee.domain.enumeration.NiveauConfidentialite;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;
 import openassemblee.service.dto.EluDTO;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class EluService {
 
-    private List<EluDTO> all;
     @Inject
     private EluRepository eluRepository;
     @Inject
@@ -101,7 +101,7 @@ public class EluService {
     }
 
     @Transactional(readOnly = true)
-    public List<EluListDTO> getAll() {
+    public List<EluListDTO> getAll(Boolean loadAdresses, Boolean filterAdresses) {
         List<Elu> elus = eluRepository.findAll();
         return elus.stream().map(e -> {
             Optional<GroupePolitique> groupePolitique = e.getAppartenancesGroupePolitique().stream()
@@ -110,9 +110,9 @@ public class EluService {
                 .filter(Objects::nonNull)
                 .findFirst();
             if (groupePolitique.isPresent()) {
-                return new EluListDTO(e, groupePolitique.get());
+                return new EluListDTO(e, groupePolitique.get(), loadAdresses, filterAdresses);
             } else {
-                return new EluListDTO(e);
+                return new EluListDTO(e, loadAdresses, filterAdresses);
             }
         })
             .sorted(Comparator.comparing(e -> e.getElu().getNom()))
@@ -120,20 +120,21 @@ public class EluService {
     }
 
     @Transactional(readOnly = true)
-    public EluListDTO getEluListDTO(Long id) {
-        return eluToEluListDTO(eluRepository.findOne(id));
+    public EluListDTO getEluListDTO(Long id, Boolean loadAdresses, Boolean filterAdresses) {
+        return eluToEluListDTO(eluRepository.findOne(id), loadAdresses, filterAdresses);
     }
 
-    public EluListDTO eluToEluListDTO(Elu elu) {
+    public EluListDTO eluToEluListDTO(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
         Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .findFirst();
-        return groupePolitique.map(groupePolitique1 -> new EluListDTO(elu, groupePolitique1)).orElseGet(() -> new EluListDTO(elu));
+        return groupePolitique.map(groupePolitique1 -> new EluListDTO(elu, groupePolitique1, loadAdresses, filterAdresses)).orElseGet(() ->
+            new EluListDTO(elu, loadAdresses, filterAdresses));
     }
 
     @Transactional(readOnly = true)
-    public EluDTO get(Long id) {
+    public EluDTO get(Long id, Boolean filterAdresses) {
         Elu elu = eluRepository.findOne(id);
         if (elu == null) {
             return null;
@@ -187,7 +188,7 @@ public class EluService {
             .map(rne -> new Object[]{rne, organismeRepository.findFirstByCodeRNE(rne)})
             .filter(o -> o[1] != null)
             .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
-        return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes);
+        return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes, true, filterAdresses);
     }
 
     @Transactional
@@ -375,34 +376,61 @@ public class EluService {
     }
 
     @Transactional(readOnly = true)
-    public ExportService.Entry[] getExportEntries() {
-        List<EluListDTO> dtos = getAll();
+    public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses) {
+        List<EluListDTO> dtos = getAll(true, filterAdresses);
         List<List<String>> elusActifsLines = new ArrayList<>();
-        elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-            "Date de naissance"));
+        elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession",
+            "Lieu de naissance", "Date de naissance", "Département", "Adresses postales", "Emails", "Numéros publics",
+            "Numéros internes ou confidentiels"));
         List<List<String>> elusInactifsLines = new ArrayList<>();
-        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession", "Lieu de naissance",
-            "Date de naissance", "Date de démission"));
+        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Date de démission",
+            "Motif de démission", "Profession", "Lieu de naissance", "Date de naissance", "Département",
+            "Adresses postales", "Emails", "Numéros publics", "Numéros internes ou confidentiels"));
         for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
-            String civilite = e.getCiviliteLabel();
-            String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
-                "Aucun groupe politique";
-            String dateNaissance = e.getDateNaissance() != null ?
-                e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
-            if (dto.getElu().getDateDemission() == null) {
-                elusActifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance));
+            GroupePolitique gp = dto.getGroupePolitique();
+            if (e.getDateDemission() == null) {
+                elusActifsLines.add(xlsEluLine(e, gp, false));
             } else {
-                String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
-                elusInactifsLines.add(Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, e.getProfession(),
-                    e.getLieuNaissance(), dateNaissance, dateDemission));
+                elusActifsLines.add(xlsEluLine(e, gp, true));
             }
         }
-        return new ExportService.Entry[]{
-            new ExportService.Entry("Élus", elusActifsLines),
-            new ExportService.Entry("Élus démissionnaires", elusInactifsLines),
-            commissionPermanenteService.getFonctionsEntry(dtos)
+        return new ExcelExportService.Entry[]{
+            new ExcelExportService.Entry("Élus", elusActifsLines),
+            new ExcelExportService.Entry("Élus démissionnaires", elusInactifsLines),
+            new ExcelExportService.Entry("Fonctions", commissionPermanenteService.getFonctionsEntry(dtos))
         };
+    }
+
+    public List<String> xlsEluLine(Elu e, GroupePolitique gp, Boolean demissionaire) {
+        String civilite = e.getCiviliteLabel();
+        String groupePolitique = gp != null ? gp.getNom() :
+            "Aucun groupe politique";
+        String dateNaissance = e.getDateNaissance() != null ?
+            e.getDateNaissance().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de naissance inconnue";
+        String adressePostales = e.getAdressesPostales().stream()
+            .map(ap -> ap.getOneline())
+            .reduce("", (a1, a2) -> a1 + (a1.equals("") ? "" : ", ") + a2);
+        String emails = e.getAdressesMail().stream()
+            .map(ap -> ap.getMail())
+            .reduce("", (a1, a2) -> a1 + (a1.equals("") ? "" : ", ") + a2);
+        String numerosPublics = e.getNumerosTelephones().stream()
+            .filter(n -> n.getNiveauConfidentialite() == NiveauConfidentialite.PUBLIABLE)
+            .map(n -> n.getNumero() + (n.getNatureProPerso() != null ? "(" + n.getNatureProPerso().name() + ")" : ""))
+            .reduce("", (n1, n2) -> n1 + (n1.equals("") ? "" : ", ") + n2);
+        String numerosInternesOuConfidentiels = e.getNumerosTelephones().stream()
+            .filter(n -> n.getNiveauConfidentialite() == NiveauConfidentialite.INTERNE || n.getNiveauConfidentialite() == NiveauConfidentialite.CONFIDENTIEL)
+            .map(n -> n.getNumero() + "(" + n.getNiveauConfidentialite().name() + (n.getNatureProPerso() != null ? "," + n.getNatureProPerso().name() : "") + ")")
+            .reduce("", (n1, n2) -> n1 + (n1.equals("") ? "" : ", ") + n2);
+        if (!demissionaire) {
+            return Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique,
+                e.getProfession(), e.getLieuNaissance(), dateNaissance, e.getDepartement(), adressePostales, emails,
+                numerosPublics, numerosInternesOuConfidentiels);
+        } else {
+            String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
+            return Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, dateDemission,
+                e.getMotifDemission(), e.getProfession(), e.getLieuNaissance(), dateNaissance, e.getDepartement(),
+                adressePostales, emails, numerosPublics, numerosInternesOuConfidentiels);
+        }
     }
 }

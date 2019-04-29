@@ -61,8 +61,8 @@ public class SeanceService {
         });
         List<PouvoirListDTO> pouvoirs = pouvoirRepository.findAllBySeance(seance)
             .stream().map(p -> {
-                EluListDTO eluCedeur = eluService.getEluListDTO(p.getEluCedeur().getId());
-                EluListDTO eluBeneficiaire = eluService.getEluListDTO(p.getEluBeneficiaire().getId());
+                EluListDTO eluCedeur = eluService.getEluListDTO(p.getEluCedeur().getId(), false, false);
+                EluListDTO eluBeneficiaire = eluService.getEluListDTO(p.getEluBeneficiaire().getId(), false, false);
                 return new PouvoirListDTO(p, eluCedeur, eluBeneficiaire);
             }).collect(Collectors.toList());
 

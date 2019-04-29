@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ExportService {
+public class ExcelExportService {
 
     public static class Entry {
         private String sheetName;

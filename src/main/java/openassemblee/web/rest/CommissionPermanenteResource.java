@@ -1,21 +1,28 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.itextpdf.text.DocumentException;
 import openassemblee.service.CommissionPermanenteService;
-import openassemblee.service.ExportService;
-import openassemblee.service.ExportService.Entry;
+import openassemblee.service.ExcelExportService;
+import openassemblee.service.ExcelExportService.Entry;
+import openassemblee.service.PdfExportService;
 import openassemblee.service.dto.CommissionPermanenteDTO;
+import openassemblee.service.dto.EluEnFonctionDTO;
+import openassemblee.service.dto.ExecutifDTO;
+import openassemblee.service.util.SecurityUtil;
 import org.elasticsearch.common.io.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -26,7 +33,17 @@ public class CommissionPermanenteResource {
     private CommissionPermanenteService commissionPermanenteService;
 
     @Autowired
-    private ExportService exportService;
+    private ExcelExportService excelExportService;
+    @Autowired
+    private PdfExportService pdfExportService;
+
+    @RequestMapping(value = "/executif",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ExecutifDTO> getExecutif() {
+        return new ResponseEntity<>(commissionPermanenteService.getExecutif(), HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/commission-permanente",
         method = RequestMethod.GET,
@@ -42,7 +59,7 @@ public class CommissionPermanenteResource {
     @Timed
     public void export(HttpServletResponse response) {
         Entry[] entries = commissionPermanenteService.getExportEntries();
-        byte[] export = exportService.exportToExcel(entries);
+        byte[] export = excelExportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-elus";
@@ -52,6 +69,27 @@ public class CommissionPermanenteResource {
         } catch (IOException e) {
             // TODO exception
             e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/commission-permanente/export-pdf",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
+        List<EluEnFonctionDTO> fes = commissionPermanenteService.getFonctionExecutivesCommissionPermanenteDtos(!SecurityUtil.isAdmin(auth));
+        List<EluEnFonctionDTO> as = commissionPermanenteService.getAppartenancesCommissionPermanenteDtos(!SecurityUtil.isAdmin(auth));
+
+        byte[] export = pdfExportService.exportCommissionPermanente(fes, as);
+
+        response.setContentType("application/pdf");
+        String filename = "commission-permanente";
+        response.setHeader("Content-disposition", "attachment; filename=" + filename + ".pdf");
+        try {
+            Streams.copy(export, response.getOutputStream());
+        } catch (IOException e1) {
+            // TODO exception
+            e1.printStackTrace();
         }
     }
 

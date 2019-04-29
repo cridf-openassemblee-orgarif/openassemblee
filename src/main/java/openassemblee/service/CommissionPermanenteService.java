@@ -9,7 +9,9 @@ import openassemblee.repository.EluRepository;
 import openassemblee.repository.FonctionCommissionPermanenteRepository;
 import openassemblee.repository.FonctionExecutiveRepository;
 import openassemblee.service.dto.CommissionPermanenteDTO;
+import openassemblee.service.dto.EluEnFonctionDTO;
 import openassemblee.service.dto.EluListDTO;
+import openassemblee.service.dto.ExecutifDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,23 +37,56 @@ public class CommissionPermanenteService {
     private EluService eluService;
 
     @Transactional(readOnly = true)
-    public CommissionPermanenteDTO getCommissionPermanente() {
-        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isAppartenanceCourante)
-            .collect(Collectors.toList());
+    public ExecutifDTO getExecutif() {
         List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
             .filter(CommissionPermanenteService::isFonctionCourante)
+            .sorted(Comparator.comparing(f -> f.getElu().getNom()))
             .collect(Collectors.toList());
         List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll().stream()
             .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
+            .sorted(this::sortFonctionExecutives)
             .collect(Collectors.toList());
         Set<Long> elusIds = new HashSet<>();
-        elusIds.addAll(acp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         elusIds.addAll(fcp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         elusIds.addAll(fe.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
         Map<Long, Elu> elus = eluRepository.findAll(elusIds).stream().collect(Collectors.toMap(Elu::getId,
             Function.identity()));
-        return new CommissionPermanenteDTO(acp, fcp, fe, elus);
+        return new ExecutifDTO(fcp, fe, elus);
+    }
+
+    @Transactional(readOnly = true)
+    public CommissionPermanenteDTO getCommissionPermanente() {
+        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
+            .filter(CommissionPermanenteService::isAppartenanceCourante)
+            .sorted(Comparator.comparing(a -> a.getElu().getNom()))
+            .collect(Collectors.toList());
+        Set<Long> elusIds = new HashSet<>();
+        elusIds.addAll(acp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
+        Map<Long, Elu> elus = eluRepository.findAll(elusIds).stream().collect(Collectors.toMap(Elu::getId,
+            Function.identity()));
+        return new CommissionPermanenteDTO(acp, elus);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EluEnFonctionDTO> getFonctionExecutivesCommissionPermanenteDtos(Boolean filterAdresses) {
+        return fonctionExecutiveRepository.findAll().stream()
+            .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
+            .sorted(this::sortFonctionExecutives)
+            .map(f -> {
+                EluListDTO eluDTO = eluService.eluToEluListDTO(f.getElu(), true, filterAdresses);
+                return new EluEnFonctionDTO(eluDTO.getElu(), eluDTO.getGroupePolitique(), f.getFonction());
+            }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EluEnFonctionDTO> getAppartenancesCommissionPermanenteDtos(Boolean filterAdresses) {
+        return appartenanceCommissionPermanenteRepository.findAll().stream()
+            .filter(CommissionPermanenteService::isAppartenanceCourante)
+            .sorted(Comparator.comparing(a -> a.getElu().getNom()))
+            .map(a -> {
+                EluListDTO eluDTO = eluService.eluToEluListDTO(a.getElu(), true, filterAdresses);
+                return new EluEnFonctionDTO(eluDTO.getElu(), eluDTO.getGroupePolitique(), null);
+            }).collect(Collectors.toList());
     }
 
     private List<List<String>> getFonctionExecutivesLines(List<FonctionExecutive> fes) {
@@ -61,7 +96,7 @@ public class CommissionPermanenteService {
         for (FonctionExecutive fe : fes) {
             List<String> line = new ArrayList<>();
             line.add(fe.getFonction());
-            line.addAll(getEluLine(fe.getElu()));
+            line.addAll(getEluLine(fe.getElu(), false, false));
             String dateDebut = fe.getDateDebut() != null ?
                 fe.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de début inconnue";
             String dateFin = fe.getDateDebut() != null ?
@@ -80,7 +115,7 @@ public class CommissionPermanenteService {
             "Date de naissance", "Date de début", "Date de fin", "Motif de fin"));
         for (AppartenanceCommissionPermanente acp : acps) {
             List<String> line = new ArrayList<>();
-            line.addAll(getEluLine(acp.getElu()));
+            line.addAll(getEluLine(acp.getElu(), false, false));
             lines.add(line);
             String dateDebut = acp.getDateDebut() != null ?
                 acp.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de début inconnue";
@@ -100,7 +135,7 @@ public class CommissionPermanenteService {
         for (FonctionCommissionPermanente fcp : fcps) {
             List<String> line = new ArrayList<>();
             line.add(fcp.getFonction());
-            line.addAll(getEluLine(fcp.getElu()));
+            line.addAll(getEluLine(fcp.getElu(), false, false));
             lines.add(line);
             String dateDebut = fcp.getDateDebut() != null ?
                 fcp.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de début inconnue";
@@ -113,9 +148,9 @@ public class CommissionPermanenteService {
         return lines;
     }
 
-    private List<String> getEluLine(Elu elu) {
+    private List<String> getEluLine(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
         String civilite = elu.getCiviliteLabel();
-        EluListDTO dto = eluService.eluToEluListDTO(elu);
+        EluListDTO dto = eluService.eluToEluListDTO(elu, loadAdresses, filterAdresses);
         String groupePolitique = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() :
             "Aucun groupe politique";
         String dateNaissance = elu.getDateNaissance() != null ?
@@ -125,16 +160,18 @@ public class CommissionPermanenteService {
     }
 
     @Transactional(readOnly = true)
-    public ExportService.Entry[] getExportEntries() {
+    public ExcelExportService.Entry[] getExportEntries() {
         List<Elu> elus = eluRepository.findAll();
 
         List<FonctionExecutive> fes = elus.stream()
-            .flatMap(e -> e.getFonctionsExecutives().stream()).collect(Collectors.toList());
+            .flatMap(e -> e.getFonctionsExecutives().stream())
+            .sorted(this::sortFonctionExecutives)
+            .collect(Collectors.toList());
         List<AppartenanceCommissionPermanente> acps = elus.stream()
             .flatMap(e -> e.getAppartenancesCommissionPermanente().stream()).collect(Collectors.toList());
-        ExportService.Entry[] entries = new ExportService.Entry[]{
-            new ExportService.Entry("Fonctions éxécutives", getFonctionExecutivesLines(fes)),
-            new ExportService.Entry("Membres", getAppartenancesLines(acps)),
+        ExcelExportService.Entry[] entries = new ExcelExportService.Entry[]{
+            new ExcelExportService.Entry("Fonctions éxécutives", getFonctionExecutivesLines(fes)),
+            new ExcelExportService.Entry("Membres", getAppartenancesLines(acps)),
         };
         return entries;
     }
@@ -154,10 +191,27 @@ public class CommissionPermanenteService {
         return f.getDateFin() == null;
     }
 
-    public ExportService.Entry getFonctionsEntry(List<EluListDTO> dtos) {
+    public List<List<String>> getFonctionsEntry(List<EluListDTO> dtos) {
         List<FonctionCommissionPermanente> fcps = dtos.stream()
             .map(EluListDTO::getElu)
             .flatMap(e -> e.getFonctionsCommissionPermanente().stream()).collect(Collectors.toList());
-        return new ExportService.Entry("Fonctions", getFonctionsLines(fcps));
+        return getFonctionsLines(fcps);
+    }
+
+    public int sortFonctionExecutives(FonctionExecutive fe1, FonctionExecutive fe2) {
+        return fonctionScore(fe1) - fonctionScore(fe2);
+    }
+
+    public int fonctionScore(FonctionExecutive fe) {
+        if (fe.getFonction().startsWith("Président")) {
+            return 0;
+        } else {
+            Scanner scanner = new Scanner(fe.getFonction()).useDelimiter("[^0-9]+");
+            if (scanner.hasNextInt()) {
+                return scanner.nextInt();
+            } else {
+                return 100;
+            }
+        }
     }
 }

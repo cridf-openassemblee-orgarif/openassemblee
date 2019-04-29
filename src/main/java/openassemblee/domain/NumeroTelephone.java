@@ -42,6 +42,17 @@ public class NumeroTelephone implements Publishable, Serializable {
     @Column(name = "publication_annuaire")
     private Boolean publicationAnnuaire;
 
+    public NumeroTelephone() {
+    }
+
+    public NumeroTelephone(NatureProPerso natureProPerso, NatureFixeMobile natureFixeMobile, String numero, NiveauConfidentialite niveauConfidentialite, Boolean publicationAnnuaire) {
+        this.natureProPerso = natureProPerso;
+        this.natureFixeMobile = natureFixeMobile;
+        this.numero = numero;
+        this.niveauConfidentialite = niveauConfidentialite;
+        this.publicationAnnuaire = publicationAnnuaire;
+    }
+
     public Long getId() {
         return id;
     }

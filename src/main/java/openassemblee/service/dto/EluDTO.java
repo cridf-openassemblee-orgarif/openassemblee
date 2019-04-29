@@ -1,12 +1,12 @@
 package openassemblee.service.dto;
 
-import java.util.Map;
-
-import openassemblee.domain.*;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.Elu;
 import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.Organisme;
+import openassemblee.service.util.ConfidentialiteUtil;
+
+import java.util.Map;
 
 public class EluDTO {
 
@@ -16,9 +16,11 @@ public class EluDTO {
     private Map<String, Organisme> organismes;
 
     public EluDTO(Elu elu, Map<Long, GroupePolitique> groupesPolitiques,
-        Map<Long, CommissionThematique> commissionsThematiques,
-        Map<String, Organisme> organismes) {
+                  Map<Long, CommissionThematique> commissionsThematiques,
+                  Map<String, Organisme> organismes,
+                  Boolean loadAdresses, Boolean filterAdresses) {
         this.elu = elu;
+        ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.groupesPolitiques = groupesPolitiques;
         this.commissionsThematiques = commissionsThematiques;
         this.organismes = organismes;
