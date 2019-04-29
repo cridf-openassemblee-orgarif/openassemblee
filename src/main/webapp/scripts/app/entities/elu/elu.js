@@ -33,7 +33,7 @@ angular.module('openassembleeApp')
                             entity: function () {
                                 return {
                                     elu: {
-                                        civilite: null,
+                                        civilite: 'MADAME',
                                         nom: null,
                                         prenom: null,
                                         nomJeuneFille: null,
@@ -626,7 +626,15 @@ angular.module('openassembleeApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {};
+                                return {
+                                    natureProPerso: 'PRO',
+                                    voie: '',
+                                    codePostal: '',
+                                    ville: '',
+                                    niveauConfidentialite: 'INTERNE',
+                                    adresseDeCorrespondance: false,
+                                    publicationAnnuaire: false
+                                };
                             }
                         }
                     }).result.then(function (result) {
@@ -698,7 +706,13 @@ angular.module('openassembleeApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {};
+                                return {
+                                    natureProPerso: 'PRO',
+                                    mail: '',
+                                    niveauConfidentialite: 'INTERNE',
+                                    adresseDeCorrespondance: false,
+                                    publicationAnnuaire: false
+                                };
                             }
                         }
                     }).result.then(function (result) {
@@ -770,7 +784,12 @@ angular.module('openassembleeApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {};
+                                return {
+                                    natureProPerso: 'PRO',
+                                    numero: '',
+                                    niveauConfidentialite: 'INTERNE',
+                                    publicationAnnuaire: false
+                                };
                             }
                         }
                     }).result.then(function (result) {
@@ -842,7 +861,13 @@ angular.module('openassembleeApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {};
+                                return {
+                                    natureProPerso: 'PRO',
+                                    natureFixeMobile: 'MOBILE',
+                                    numero: '',
+                                    niveauConfidentialite: 'INTERNE',
+                                    publicationAnnuaire: false
+                                };
                             }
                         }
                     }).result.then(function (result) {

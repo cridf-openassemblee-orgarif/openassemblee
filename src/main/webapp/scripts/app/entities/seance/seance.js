@@ -52,7 +52,7 @@ angular.module('openassembleeApp')
                             entity: function () {
                                 return {
                                     intitule: null,
-                                    type: null,
+                                    type: 'PLENIERE',
                                     date: null,
                                     nombreSignatures: '2',
                                     id: null
