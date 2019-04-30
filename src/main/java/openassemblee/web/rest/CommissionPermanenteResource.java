@@ -85,7 +85,7 @@ public class CommissionPermanenteResource {
         byte[] export = pdfExportService.exportCommissionPermanente(fes, as);
 
         response.setContentType("application/pdf");
-        String filename = "commission-permanente";
+        String filename = "siger-commission-permanente";
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".pdf");
         try {
             Streams.copy(export, response.getOutputStream());

@@ -391,7 +391,7 @@ public class EluResource {
         byte[] export = pdfExportService.exportElus(elus);
 
         response.setContentType("application/pdf");
-        String filename = "export-elus";
+        String filename = "siger-export-elus";
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".pdf");
         try {
             Streams.copy(export, response.getOutputStream());
