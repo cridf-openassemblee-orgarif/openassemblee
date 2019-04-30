@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +28,8 @@ public class PdfExportServiceTest {
     @Ignore
     @Test
     public void testFeuilleEmargement() throws IOException, DocumentException {
-
-        byte[] pdf = pdfExportService.feuilleEmargement(elus(), 2);
+        LocalDate today = LocalDate.now(ZoneId.of("Europe/Paris"));
+        byte[] pdf = pdfExportService.feuilleEmargement(today, elus(), 2);
         IOUtils.copy(new ByteArrayInputStream(pdf),
             new FileOutputStream("/Users/mlo/git/openassemblee/test.pdf"));
     }

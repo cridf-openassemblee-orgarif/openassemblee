@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
@@ -124,7 +123,7 @@ public class PdfExportService {
         return output.toByteArray();
     }
 
-    public byte[] feuilleEmargement(List<Elu> elus, int signatureNumber) throws DocumentException {
+    public byte[] feuilleEmargement(LocalDate date, List<Elu> elus, int signatureNumber) throws DocumentException {
         Document document = new Document(PageSize.A4.rotate());
 //        document.setPageSize(PageSize.LETTER.rotate());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -132,10 +131,7 @@ public class PdfExportService {
 
         document.open();
 
-        // FIXMENOW pas today mais date de la séance coco ?
-        LocalDate today = LocalDate.now(ZoneId.of("Europe/Paris"));
-
-        document.add(mainTitle("Feuille d'émargement - " + dateFormatter.format(today)));
+        document.add(mainTitle("Feuille d'émargement - " + dateFormatter.format(date)));
 
         int columnsNumber = 2 + signatureNumber;
         PdfPTable table = new PdfPTable(columnsNumber);

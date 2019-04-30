@@ -250,7 +250,7 @@ public class SeanceResource {
                 .collect(Collectors.toList())
             : Collections.emptyList();
 
-        byte[] export = pdfExportService.feuilleEmargement(elus, nombreSignatures);
+        byte[] export = pdfExportService.feuilleEmargement(seance.getDate(), elus, nombreSignatures);
 
         response.setContentType("application/pdf");
         String filename = "siger-feuille-emargement-seance-" + id;
