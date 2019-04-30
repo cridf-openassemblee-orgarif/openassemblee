@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label>Élu cédeur</label>
+            <label>Élu mandant</label>
             <ui-select ng-model="pouvoir.eluCedeur">
                 <ui-select-match>
                     <span
@@ -20,7 +20,7 @@
             </ui-select>
         </div>
         <div class="form-group">
-            <label>Élu bénéficiaire</label>
+            <label>Élu mandataire</label>
             <ui-select ng-model="pouvoir.eluBeneficiaire">
                 <ui-select-match>
                     <span
@@ -73,7 +73,7 @@
     </div>
     <div class="super-error-message"
          ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
-        Attention, l'élu cédeur et l'élu bénéficiaire déclarés sont la même personne !
+        Attention, l'élu mandant et l'élu mandataire déclarés sont la même personne !
     </div>
     <div
         ng-if="pouvoirsDejaExistant.length > 0 && pouvoir.dateFin == null && pouvoirsDejaExistant[0].id != pouvoir.id"
