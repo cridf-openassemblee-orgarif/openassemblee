@@ -210,8 +210,8 @@ public class SeanceResource {
             List<String> line = new ArrayList<>();
             line.addAll(Arrays.asList(
                 pe.getElu().getCiviliteLabel(),
-                pe.getElu().getPrenom(),
-                pe.getElu().getNom()
+                pe.getElu().getNom(),
+                pe.getElu().getPrenom()
             ));
             for (int i = 1; i <= seance.getNombreSignatures(); i++) {
                 Integer position = i;
