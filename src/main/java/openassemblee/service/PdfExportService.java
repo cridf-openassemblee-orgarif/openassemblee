@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PdfExportService {
@@ -115,9 +116,11 @@ public class PdfExportService {
         document.add(mainTitle("Export de la commission thématique \"" + commissionThematique.getNom() + "\""));
 
         document.add(subTitle2("Les élus ayant une fonction"));
-        addCtElus(document, fonctions);
+        addCtElus(document, fonctions.stream()
+            .sorted(Comparator.comparing(f -> f.getElu().getNom())).collect(Collectors.toList()));
         document.add(subTitle2("Les membres de la commission"));
-        addCtElus(document, appartenances);
+        addCtElus(document, appartenances.stream()
+            .sorted(Comparator.comparing(a -> a.getElu().getNom())).collect(Collectors.toList()));
 
         document.close();
         return output.toByteArray();

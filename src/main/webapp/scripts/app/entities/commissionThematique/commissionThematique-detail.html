@@ -67,7 +67,7 @@
             <div class="col-md-12" ng-if="dto.appartenanceCommissionThematiqueDTOs.length">
                 <h2>Les élus dans la commission</h2>
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs | orderBy:'elu.nom'"
                          ng-if="a.appartenanceCommissionThematique.dateFin == null">
                         <div class="info-box entity-component"
                              ui-sref="elu.detail({id:a.elu.id})">
@@ -90,7 +90,7 @@
             <div class="col-md-12" ng-if="dto.fonctionCommissionThematiqueDTOs.length">
                 <h2>Les élus en fonction dans la commission</h2>
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
+                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs | orderBy:'elu.nom'"
                          ng-if="a.fonctionCommissionThematique.dateFin == null">
                         <div class="info-box entity-component"
                              ui-sref="elu.detail({id:a.elu.id})">
@@ -125,7 +125,7 @@
                     <div class="box-body" style="display: none;">
                         <h2>Anciens élus</h2>
                         <div class="row">
-                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs"
+                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs | orderBy:'elu.nom'"
                                  ng-if="a.appartenanceCommissionThematique.dateFin != null">
                                 <div class="info-box entity-component"
                                      ui-sref="elu.detail({id:a.elu.id})">
@@ -145,7 +145,7 @@
                         </div>
                         <h2>Anciens élus en fonction</h2>
                         <div class="row">
-                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs"
+                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs | orderBy:'elu.nom'"
                                  ng-if="a.fonctionCommissionThematique.dateFin != null">
                                 <div class="info-box entity-component"
                                      ui-sref="elu.detail({id:a.elu.id})">
