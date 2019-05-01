@@ -57,8 +57,26 @@ public class PdfExportService {
         return output.toByteArray();
     }
 
-    public byte[] exportCommissionPermanente(List<EluEnFonctionDTO> fonctionExecutives,
-                                             List<EluEnFonctionDTO> appartenances) throws DocumentException {
+    public byte[] exportExecutif(List<EluEnFonctionDTO> executif, List<EluEnFonctionDTO> fonctions) throws DocumentException {
+        Document document = new Document();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, output);
+
+        document.open();
+
+        document.add(mainTitle("Export de l'exécutif"));
+
+        document.add(subTitle2("L'exécutif"));
+        addCpElus(document, executif);
+
+        document.add(subTitle2("Les élus avec une fonction"));
+        addCpElus(document, fonctions);
+
+        document.close();
+        return output.toByteArray();
+    }
+
+    public byte[] exportCommissionPermanente(List<EluEnFonctionDTO> elus) throws DocumentException {
         Document document = new Document();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, output);
@@ -67,10 +85,8 @@ public class PdfExportService {
 
         document.add(mainTitle("Export des élus de la commission permanente"));
 
-        document.add(subTitle2("Les élus ayant une fonction exécutive"));
-        addCpElus(document, fonctionExecutives);
         document.add(subTitle2("Les membres de la commission"));
-        addCpElus(document, appartenances);
+        addCpElus(document, elus);
 
         document.close();
         return output.toByteArray();

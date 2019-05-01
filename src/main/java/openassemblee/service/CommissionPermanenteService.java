@@ -161,18 +161,22 @@ public class CommissionPermanenteService {
             elu.getLieuNaissance(), dateNaissance);
     }
 
+    public ExcelExportService.Entry[] getExecutifExportEntries() {
+        ExecutifDTO dto = getExecutif();
+        ExcelExportService.Entry[] entries = new ExcelExportService.Entry[]{
+            new ExcelExportService.Entry("Exécutif", getFonctionExecutivesLines(dto.getFonctionsExecutives())),
+            new ExcelExportService.Entry("Fonctions", getFonctionsLines(dto.getFonctions())),
+        };
+        return entries;
+    }
+
     @Transactional(readOnly = true)
-    public ExcelExportService.Entry[] getExportEntries() {
+    public ExcelExportService.Entry[] getCommissionPermanenteExportEntries() {
         List<Elu> elus = eluRepository.findAll();
 
-        List<FonctionExecutive> fes = elus.stream()
-            .flatMap(e -> e.getFonctionsExecutives().stream())
-            .sorted(this::sortFonctionExecutives)
-            .collect(Collectors.toList());
         List<AppartenanceCommissionPermanente> acps = elus.stream()
             .flatMap(e -> e.getAppartenancesCommissionPermanente().stream()).collect(Collectors.toList());
         ExcelExportService.Entry[] entries = new ExcelExportService.Entry[]{
-            new ExcelExportService.Entry("Fonctions éxécutives", getFonctionExecutivesLines(fes)),
             new ExcelExportService.Entry("Membres", getAppartenancesLines(acps)),
         };
         return entries;
