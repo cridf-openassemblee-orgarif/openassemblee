@@ -12,6 +12,7 @@ import openassemblee.service.dto.CommissionPermanenteDTO;
 import openassemblee.service.dto.EluEnFonctionDTO;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.dto.ExecutifDTO;
+import openassemblee.service.util.EluNomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class CommissionPermanenteService {
         List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
             .filter(CommissionPermanenteService::isFonctionCourante)
             .filter(f -> !elusFeIds.contains(f.getElu()))
-            .sorted(Comparator.comparing(f -> f.getElu().getNom()))
+            .sorted(EluNomComparator.comparing(FonctionCommissionPermanente::getElu))
             .collect(Collectors.toList());
         Set<Long> elusIds = new HashSet<>();
         elusIds.addAll(fe.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
@@ -60,7 +61,7 @@ public class CommissionPermanenteService {
     public CommissionPermanenteDTO getCommissionPermanente() {
         List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
             .filter(CommissionPermanenteService::isAppartenanceCourante)
-            .sorted(Comparator.comparing(a -> a.getElu().getNom()))
+            .sorted(EluNomComparator.comparing(AppartenanceCommissionPermanente::getElu))
             .collect(Collectors.toList());
         Set<Long> elusIds = new HashSet<>();
         elusIds.addAll(acp.stream().map(f -> f.getElu().getId()).collect(Collectors.toList()));
@@ -84,7 +85,7 @@ public class CommissionPermanenteService {
     public List<EluEnFonctionDTO> getAppartenancesCommissionPermanenteDtos(Boolean filterAdresses) {
         return appartenanceCommissionPermanenteRepository.findAll().stream()
             .filter(CommissionPermanenteService::isAppartenanceCourante)
-            .sorted(Comparator.comparing(a -> a.getElu().getNom()))
+            .sorted(EluNomComparator.comparing(AppartenanceCommissionPermanente::getElu))
             .map(a -> {
                 EluListDTO eluDTO = eluService.eluToEluListDTO(a.getElu(), true, filterAdresses);
                 return new EluEnFonctionDTO(eluDTO.getElu(), eluDTO.getGroupePolitique(), null);

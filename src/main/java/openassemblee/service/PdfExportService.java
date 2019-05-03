@@ -5,12 +5,12 @@ import com.itextpdf.text.pdf.*;
 import openassemblee.domain.*;
 import openassemblee.service.dto.EluEnFonctionDTO;
 import openassemblee.service.dto.EluListDTO;
+import openassemblee.service.util.EluNomComparator;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +44,7 @@ public class PdfExportService {
         document.add(mainTitle("Export des élus"));
 
         elus.stream()
-            .sorted(Comparator.comparing(dto -> dto.getElu().getNom()))
+            .sorted(EluNomComparator.comparing(EluListDTO::getElu))
             .forEach(e -> {
                 try {
                     addElu(document, e);
@@ -133,10 +133,12 @@ public class PdfExportService {
 
         document.add(subTitle2("Les élus ayant une fonction"));
         addCtElus(document, fonctions.stream()
-            .sorted(Comparator.comparing(f -> f.getElu().getNom())).collect(Collectors.toList()));
+            .sorted(EluNomComparator.comparing(EluEnFonctionDTO::getElu))
+            .collect(Collectors.toList()));
         document.add(subTitle2("Les membres de la commission"));
         addCtElus(document, appartenances.stream()
-            .sorted(Comparator.comparing(a -> a.getElu().getNom())).collect(Collectors.toList()));
+            .sorted(EluNomComparator.comparing(EluEnFonctionDTO::getElu))
+            .collect(Collectors.toList()));
 
         document.close();
         return output.toByteArray();
@@ -172,7 +174,7 @@ public class PdfExportService {
 
         elus
             .stream()
-            .sorted(Comparator.comparing(Elu::getNom))
+            .sorted(EluNomComparator.comparing(e -> e))
             .forEach(e -> addRow(table, e, signatureNumber));
 
         document.add(table);

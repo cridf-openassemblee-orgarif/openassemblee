@@ -10,6 +10,7 @@ import openassemblee.service.ExcelExportService;
 import openassemblee.service.PdfExportService;
 import openassemblee.service.SeanceService;
 import openassemblee.service.dto.SeanceDTO;
+import openassemblee.service.util.EluNomComparator;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
 import org.elasticsearch.common.io.Streams;
@@ -192,7 +193,7 @@ public class SeanceResource {
         Seance seance = seanceService.get(id);
         List<PresenceElu> presenceElus = seance != null ?
             seance.getPresenceElus().stream()
-                .sorted(Comparator.comparing(p -> p.getElu().getNom()))
+                .sorted(EluNomComparator.comparing(PresenceElu::getElu))
                 .collect(Collectors.toList())
             : Collections.emptyList();
         List<List<String>> result = new ArrayList<>();
@@ -246,7 +247,7 @@ public class SeanceResource {
         List<Elu> elus = seance != null ?
             seance.getPresenceElus().stream()
                 .map(PresenceElu::getElu)
-                .sorted(Comparator.comparing(Elu::getNom))
+                .sorted(EluNomComparator.comparing(e -> e))
                 .collect(Collectors.toList())
             : Collections.emptyList();
 

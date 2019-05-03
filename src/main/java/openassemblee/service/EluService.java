@@ -6,6 +6,7 @@ import openassemblee.repository.*;
 import openassemblee.repository.search.*;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
+import openassemblee.service.util.EluNomComparator;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,7 +116,7 @@ public class EluService {
                 return new EluListDTO(e, loadAdresses, filterAdresses);
             }
         })
-            .sorted(Comparator.comparing(e -> e.getElu().getNom()))
+            .sorted(EluNomComparator.comparing(EluListDTO::getElu))
             .collect(Collectors.toList());
     }
 
