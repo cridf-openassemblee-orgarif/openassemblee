@@ -385,6 +385,7 @@ public class EluResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
         List<EluListDTO> elus = eluService.getAll(true, !SecurityUtil.isAdmin(auth));
 
@@ -405,6 +406,7 @@ public class EluResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void getAllElusExport(HttpServletResponse response, Authentication auth) {
         log.debug("REST request to get elus export");
         ExcelExportService.Entry[] entries = eluService.getExportEntries(!SecurityUtil.isAdmin(auth));

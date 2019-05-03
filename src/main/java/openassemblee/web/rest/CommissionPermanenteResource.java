@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,7 @@ public class CommissionPermanenteResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void exportExecutif(HttpServletResponse response) {
         Entry[] entries = commissionPermanenteService.getExecutifExportEntries();
         byte[] export = excelExportService.exportToExcel(entries);
@@ -76,6 +78,7 @@ public class CommissionPermanenteResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void exportExecutPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
         ExecutifDTO dto = commissionPermanenteService.getExecutif();
         Boolean filterAdresses = !SecurityUtil.isAdmin(auth);
@@ -112,6 +115,7 @@ public class CommissionPermanenteResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void export(HttpServletResponse response) {
         Entry[] entries = commissionPermanenteService.getCommissionPermanenteExportEntries();
         byte[] export = excelExportService.exportToExcel(entries);
@@ -132,6 +136,7 @@ public class CommissionPermanenteResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
         List<EluEnFonctionDTO> as = commissionPermanenteService.getAppartenancesCommissionPermanenteDtos(!SecurityUtil.isAdmin(auth));
 

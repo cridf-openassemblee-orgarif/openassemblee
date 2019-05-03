@@ -145,6 +145,7 @@ public class CommissionThematiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void getAllCommissionThematiquesExport(HttpServletResponse response, Authentication auth) {
         log.debug("REST request to get all GroupePolitiques");
 
@@ -166,6 +167,7 @@ public class CommissionThematiqueResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
+    @Secured("ROLE_USER")
     public void getAllCommissionThematiquesExportPdf(HttpServletResponse response) throws DocumentException {
         log.debug("REST request to get all GroupePolitiques");
         List<CommissionThematique> cts = commissionThematiqueRepository.findAll();

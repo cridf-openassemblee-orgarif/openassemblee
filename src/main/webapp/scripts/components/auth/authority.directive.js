@@ -64,4 +64,37 @@ angular.module('openassembleeApp')
                 }
             }
         };
+    }])
+    .directive('hasNotAuthority', ['Principal', function (Principal) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var setVisible = function () {
+                        element.removeClass('hidden');
+                    },
+                    setHidden = function () {
+                        element.addClass('hidden');
+                    },
+                    defineVisibility = function (reset) {
+
+                        if (reset) {
+                            setVisible();
+                        }
+
+                        Principal.hasAuthority(authority)
+                        .then(function (result) {
+                            if (!result) {
+                                setVisible();
+                            } else {
+                                setHidden();
+                            }
+                        });
+                    },
+                    authority = attrs.hasNotAuthority.replace(/\s+/g, '');
+
+                if (authority.length > 0) {
+                    defineVisibility(false);
+                }
+            }
+        };
     }]);

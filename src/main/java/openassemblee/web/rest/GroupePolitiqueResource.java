@@ -161,6 +161,7 @@ public class GroupePolitiqueResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public void getAllGroupePolitiquesExport(HttpServletResponse response) {
         log.debug("REST request to get all GroupePolitiques");
         List<GroupePolitiqueListDTO> gps = groupePolitiqueService.getAll();

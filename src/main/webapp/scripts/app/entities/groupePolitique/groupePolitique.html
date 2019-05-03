@@ -13,8 +13,8 @@
                 <h2>{{dtos.length}} groupes politiques</h2>
             </div>
 
-            <div class="col-lg-8 align-right">
-                <button class="btn btn-sm btn-primary" ui-sref="groupesPolitiques.new" has-authority="ROLE_ADMIN">
+            <div class="col-lg-8 align-right" has-authority="ROLE_ADMIN">
+                <button class="btn btn-sm btn-primary" ui-sref="groupesPolitiques.new">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span>Créer un nouveau groupe politique</span>
                 </button>

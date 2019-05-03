@@ -51,7 +51,10 @@
                 <div class="info-box">
                     <div class="info-box-photo-big">
                         <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
-                             ui-sref="groupesPolitiques.detail.uploadImage"/>
+                             has-not-authority="ROLE_ADMIN"/>
+                        <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
+                             ui-sref="groupesPolitiques.detail.uploadImage"
+                             has-authority="ROLE_ADMIN"/>
                         <button ng-if="dto.groupePolitique.image == null" class="btn btn-sm btn-primary"
                                 ui-sref="groupesPolitiques.detail.uploadImage"
                                 has-authority="ROLE_ADMIN">
