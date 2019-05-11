@@ -102,7 +102,7 @@ public class EluService {
     }
 
     @Transactional(readOnly = true)
-    public List<EluListDTO> getAll(Boolean loadAdresses, Boolean filterAdresses) {
+    public List<EluListDTO> getAll(Boolean loadAdresses, Boolean filterAdresses, Boolean removeDemissionaires) {
         List<Elu> elus = eluRepository.findAll();
         return elus.stream().map(e -> {
             Optional<GroupePolitique> groupePolitique = e.getAppartenancesGroupePolitique().stream()
@@ -116,6 +116,7 @@ public class EluService {
                 return new EluListDTO(e, loadAdresses, filterAdresses);
             }
         })
+            .filter(e -> !removeDemissionaires || e.getElu().getDateDemission() == null)
             .sorted(EluNomComparator.comparing(EluListDTO::getElu))
             .collect(Collectors.toList());
     }
@@ -378,27 +379,27 @@ public class EluService {
 
     @Transactional(readOnly = true)
     public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses) {
-        List<EluListDTO> dtos = getAll(true, filterAdresses);
+        List<EluListDTO> dtos = getAll(true, filterAdresses, true);
         List<List<String>> elusActifsLines = new ArrayList<>();
         elusActifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Profession",
             "Lieu de naissance", "Date de naissance", "Département", "Adresses postales", "Emails", "Numéros publics",
             "Numéros internes ou confidentiels"));
-        List<List<String>> elusInactifsLines = new ArrayList<>();
-        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Date de démission",
-            "Motif de démission", "Profession", "Lieu de naissance", "Date de naissance", "Département",
-            "Adresses postales", "Emails", "Numéros publics", "Numéros internes ou confidentiels"));
+//        List<List<String>> elusInactifsLines = new ArrayList<>();
+//        elusInactifsLines.add(Arrays.asList("Civilité", "Prénom", "Nom", "Groupe politique", "Date de démission",
+//            "Motif de démission", "Profession", "Lieu de naissance", "Date de naissance", "Département",
+//            "Adresses postales", "Emails", "Numéros publics", "Numéros internes ou confidentiels"));
         for (EluListDTO dto : dtos) {
             Elu e = dto.getElu();
             GroupePolitique gp = dto.getGroupePolitique();
-            if (e.getDateDemission() == null) {
-                elusActifsLines.add(xlsEluLine(e, gp, false));
-            } else {
-                elusActifsLines.add(xlsEluLine(e, gp, true));
-            }
+//            if (e.getDateDemission() == null) {
+            elusActifsLines.add(xlsEluLine(e, gp, false));
+//            } else {
+//                elusInactifsLines.add(xlsEluLine(e, gp, true));
+//            }
         }
         return new ExcelExportService.Entry[]{
             new ExcelExportService.Entry("Élus", elusActifsLines),
-            new ExcelExportService.Entry("Élus démissionnaires", elusInactifsLines),
+//            new ExcelExportService.Entry("Élus démissionnaires", elusInactifsLines),
             new ExcelExportService.Entry("Fonctions", commissionPermanenteService.getFonctionsEntry(dtos))
         };
     }

@@ -84,7 +84,7 @@ public class CommissionThematiqueService {
     }
 
     @Transactional(readOnly = true)
-    public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses) {
+    public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses, Boolean removeDemissionaires) {
         List<ExcelExportService.Entry> entries = new ArrayList<>();
         List<CommissionThematique> cts = commissionThematiqueRepository.findAll();
         List<List<String>> lines = new ArrayList<>();
@@ -103,6 +103,7 @@ public class CommissionThematiqueService {
             List<FonctionCommissionThematique> fcts = fonctionCommissionThematiqueRepository.findAllByCommissionThematique(ct)
                 .stream()
                 .filter(CommissionThematiqueService::isFonctionCourante)
+//                .filter(f -> !removeDemissionaires || f.getDateFin() == null)
                 .collect(Collectors.toList());
             for (FonctionCommissionThematique f : fcts) {
                 List<String> fLines = new ArrayList<>();
@@ -115,6 +116,7 @@ public class CommissionThematiqueService {
             List<AppartenanceCommissionThematique> acts = appartenanceCommissionThematiqueRepository.findAllByCommissionThematique(ct)
                 .stream()
                 .filter(CommissionThematiqueService::isAppartenanceCourante)
+//                .filter(a -> !removeDemissionaires || a.getDateFin() == null)
                 .collect(Collectors.toList());
             for (AppartenanceCommissionThematique a : acts) {
                 List<String> aLines = new ArrayList<>();

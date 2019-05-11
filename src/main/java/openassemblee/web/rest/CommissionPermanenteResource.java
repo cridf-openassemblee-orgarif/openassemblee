@@ -49,7 +49,7 @@ public class CommissionPermanenteResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ExecutifDTO> getExecutif() {
-        return new ResponseEntity<>(commissionPermanenteService.getExecutif(), HttpStatus.OK);
+        return new ResponseEntity<>(commissionPermanenteService.getExecutif(false), HttpStatus.OK);
     }
 
     @Transactional(readOnly = true)
@@ -80,7 +80,7 @@ public class CommissionPermanenteResource {
     @Timed
     @Secured("ROLE_USER")
     public void exportExecutPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
-        ExecutifDTO dto = commissionPermanenteService.getExecutif();
+        ExecutifDTO dto = commissionPermanenteService.getExecutif(true);
         Boolean filterAdresses = !SecurityUtil.isAdmin(auth);
         List<EluEnFonctionDTO> executif = dto.getFonctionsExecutives().stream().map(fe -> {
             EluListDTO listDto = eluService.eluToEluListDTO(fe.getElu(), true, filterAdresses);
@@ -108,7 +108,7 @@ public class CommissionPermanenteResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<CommissionPermanenteDTO> getCommissionPermanente() {
-        return new ResponseEntity<>(commissionPermanenteService.getCommissionPermanente(), HttpStatus.OK);
+        return new ResponseEntity<>(commissionPermanenteService.getCommissionPermanente(false), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/commission-permanente/export",
@@ -138,7 +138,8 @@ public class CommissionPermanenteResource {
     @Timed
     @Secured("ROLE_USER")
     public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
-        List<EluEnFonctionDTO> as = commissionPermanenteService.getAppartenancesCommissionPermanenteDtos(!SecurityUtil.isAdmin(auth));
+        List<EluEnFonctionDTO> as = commissionPermanenteService
+            .getAppartenancesCommissionPermanenteDtos(!SecurityUtil.isAdmin(auth), true);
 
         byte[] export = pdfExportService.exportCommissionPermanente(as);
 

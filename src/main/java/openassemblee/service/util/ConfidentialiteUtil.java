@@ -1,6 +1,7 @@
 package openassemblee.service.util;
 
 import openassemblee.domain.Elu;
+import org.hibernate.Hibernate;
 
 import java.util.stream.Collectors;
 
@@ -22,6 +23,11 @@ public class ConfidentialiteUtil {
                 elu.setNumerosFax(elu.getNumerosFax().stream()
                     .filter(a -> a.getNiveauConfidentialite() == PUBLIABLE)
                     .collect(Collectors.toList()));
+            } else {
+                Hibernate.initialize(elu.getAdressesMail());
+                Hibernate.initialize(elu.getAdressesPostales());
+                Hibernate.initialize(elu.getNumerosTelephones());
+                Hibernate.initialize(elu.getNumerosFax());
             }
         } else {
             // par mesure de sécurité, pour que ça se voit si on met des paramètre incohérents

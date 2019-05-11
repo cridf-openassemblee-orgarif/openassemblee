@@ -305,7 +305,7 @@ public class EluResource {
     @Timed
     public List<EluListDTO> getAllElus() {
         log.debug("REST request to get all Elus");
-        return eluService.getAll(false, false);
+        return eluService.getAll(false, false, false);
     }
 
     /**
@@ -387,7 +387,7 @@ public class EluResource {
     @Timed
     @Secured("ROLE_USER")
     public void exportPdf(HttpServletResponse response, Authentication auth) throws DocumentException {
-        List<EluListDTO> elus = eluService.getAll(true, !SecurityUtil.isAdmin(auth));
+        List<EluListDTO> elus = eluService.getAll(true, !SecurityUtil.isAdmin(auth), true);
 
         byte[] export = pdfExportService.exportElus(elus);
 

@@ -347,7 +347,7 @@ public class PdfExportService {
 
         aps
             .stream()
-            .filter(a -> a.getPublicationAnnuaire())
+            .filter(a -> a.getPublicationAnnuaire() != null && a.getPublicationAnnuaire())
             .forEach(a -> {
                 table.addCell(a.getNatureProPerso() != null ? a.getNatureProPerso().name() : "");
                 table.addCell(a.getNiveauConfidentialite() != null ? a.getNiveauConfidentialite().name() : "");

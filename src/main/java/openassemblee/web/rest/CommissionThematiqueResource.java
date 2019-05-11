@@ -149,7 +149,8 @@ public class CommissionThematiqueResource {
     public void getAllCommissionThematiquesExport(HttpServletResponse response, Authentication auth) {
         log.debug("REST request to get all GroupePolitiques");
 
-        byte[] export = excelExportService.exportToExcel(commissionThematiqueService.getExportEntries(!SecurityUtil.isAdmin(auth)));
+        byte[] export = excelExportService.exportToExcel(commissionThematiqueService
+            .getExportEntries(!SecurityUtil.isAdmin(auth), true));
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-commissions-thematiques";
@@ -178,6 +179,7 @@ public class CommissionThematiqueResource {
             .map(ct -> {
                 List<EluEnFonctionDTO> dtos = as.stream()
                     .filter(a -> a.getCommissionThematique().getId().equals(ct.getId()))
+                    .filter(a -> a.getDateFin() == null)
                     .map(a -> {
                         EluListDTO dto = eluService.eluToEluListDTO(a.getElu(), false, false);
                         return new EluEnFonctionDTO(a.getElu(), dto.getGroupePolitique(), null);
@@ -190,6 +192,7 @@ public class CommissionThematiqueResource {
             .map(ct -> {
                 List<EluEnFonctionDTO> dtos = fs.stream()
                     .filter(f -> f.getCommissionThematique().getId().equals(ct.getId()))
+                    .filter(f -> f.getDateFin() == null)
                     .map(f -> {
                         EluListDTO dto = eluService.eluToEluListDTO(f.getElu(), false, false);
                         return new EluEnFonctionDTO(f.getElu(), dto.getGroupePolitique(), f.getFonction());
@@ -242,10 +245,25 @@ public class CommissionThematiqueResource {
         lines.add(new ArrayList<>());
         // FIXME si la CT est fermée ça n'apparait pas là!
         // TODO autre sheet ?
-        for (AppartenanceCommissionThematiqueDTO act : dto.getAppartenanceCommissionThematiqueDTOs()) {
+        List<AppartenanceCommissionThematiqueDTO> appartenances = dto.getAppartenanceCommissionThematiqueDTOs()
+            .stream()
+            .filter(a -> a.getAppartenanceCommissionThematique().getDateFin() == null)
+            .collect(Collectors.toList());
+        for (AppartenanceCommissionThematiqueDTO act : appartenances) {
             lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
         }
-        byte[] export = excelExportService.exportToExcel("Commission thématique", lines);
+        // FIXMENOW pas les fonctions ???
+        ExcelExportService.Entry appartenancesEntry = new ExcelExportService.Entry("Appartenances", lines);
+        List<FonctionCommissionThematiqueDTO> fonctions = dto.getFonctionCommissionThematiqueDTOs()
+            .stream()
+            .filter(f -> f.getFonctionCommissionThematique().getDateFin() == null)
+            .collect(Collectors.toList());
+        List<List<String>> fonctionsLines = new ArrayList<>();
+        for (FonctionCommissionThematiqueDTO f : fonctions) {
+            fonctionsLines.add(Arrays.asList(f.getElu().getNom(), f.getElu().getPrenom()));
+        }
+        ExcelExportService.Entry fonctionsEntry = new ExcelExportService.Entry("Fonctions", fonctionsLines);
+        byte[] export = excelExportService.exportToExcel(appartenancesEntry, fonctionsEntry);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-commission-thematique-" + id;
@@ -267,12 +285,14 @@ public class CommissionThematiqueResource {
         log.debug("REST request to get all GroupePolitiques");
         CommissionThematiqueDTO ct = commissionThematiqueService.get(id);
         List<EluEnFonctionDTO> as = ct.getAppartenanceCommissionThematiqueDTOs().stream()
+            .filter(a ->  a.getAppartenanceCommissionThematique().getDateFin() == null)
             .map(a -> {
                 EluListDTO dto = eluService.eluToEluListDTO(a.getElu(), false, false);
                 return new EluEnFonctionDTO(a.getElu(), dto.getGroupePolitique(), null);
             })
             .collect(Collectors.toList());
         List<EluEnFonctionDTO> fs = ct.getFonctionCommissionThematiqueDTOs().stream()
+            .filter(f ->  f.getFonctionCommissionThematique().getDateFin() == null)
             .map(a -> {
                 EluListDTO dto = eluService.eluToEluListDTO(a.getElu(), false, false);
                 return new EluEnFonctionDTO(a.getElu(), dto.getGroupePolitique(), a.getFonctionCommissionThematique().getFonction());
