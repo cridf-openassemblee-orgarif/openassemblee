@@ -3,14 +3,18 @@ package openassemblee.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
 import openassemblee.repository.AppartenanceOrganismeRepository;
+import openassemblee.repository.EluRepository;
 import openassemblee.repository.OrganismeRepository;
 import openassemblee.service.SearchService;
+import openassemblee.service.ShortUidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/remote-api")
@@ -30,6 +34,12 @@ public class RemoteApiResource {
 
     @Autowired
     private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
+
+    @Autowired
+    private EluRepository eluRepository;
+
+    @Autowired
+    private ShortUidService shortUidService;
 
     @RequestMapping(value = "/index-reset", method = RequestMethod.POST)
     @Timed
@@ -55,6 +65,20 @@ public class RemoteApiResource {
         if (fakeData) {
             testDataInjector.injectTestData();
         }
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/set-uids", method = RequestMethod.GET)
+    public ResponseEntity<Void> setUids() {
+        eluRepository.findAll()
+            .stream()
+            // FIXME remettre
+//            .filter(e -> e.getUid() == null)
+            .forEach(e -> {
+                UUID uuid = shortUidService.createShortUid();
+                e.setUid(uuid);
+                eluRepository.save(e);
+            });
         return ResponseEntity.ok().build();
     }
 
