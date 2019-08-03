@@ -71,6 +71,9 @@ public class Elu implements Serializable {
     @Column(name = "liste_court")
     private String listeCourt;
 
+    @Column(name = "uid", columnDefinition = "BINARY(16)")
+    private UUID uid;
+
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // TODO et sans la joinTable ?
@@ -407,6 +410,14 @@ public class Elu implements Serializable {
 
     public void setDistinctionHonorifiques(Set<DistinctionHonorifique> distinctionHonorifiques) {
         this.distinctionHonorifiques = distinctionHonorifiques;
+    }
+
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
     }
 
     public String civiliteComplete() {

@@ -10,6 +10,10 @@ import static openassemblee.domain.enumeration.NiveauConfidentialite.PUBLIABLE;
 public class ConfidentialiteUtil {
     public static void filterElu(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
         if (loadAdresses) {
+            Hibernate.initialize(elu.getAdressesMail());
+            Hibernate.initialize(elu.getAdressesPostales());
+            Hibernate.initialize(elu.getNumerosTelephones());
+            Hibernate.initialize(elu.getNumerosFax());
             if (filterAdresses) {
                 elu.setAdressesMail(elu.getAdressesMail().stream()
                     .filter(a -> a.getNiveauConfidentialite() == PUBLIABLE)
