@@ -44,8 +44,8 @@ spring:
             cluster-nodes:
             properties:
                 path:
-                  logs: ${BUCKET_HOST}/elasticsearch/log
-                  data: ${BUCKET_HOST}/elasticsearch/data
+                    logs: ${APP_HOME}/elasticsearch/logs
+                    data: ${APP_HOME}/elasticsearch/data
     mail:
         host: localhost
         port: 25
@@ -78,7 +78,7 @@ jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: openassemblee@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
+        jmx.enabled: false
         spark:
             enabled: false
             host: localhost
