@@ -1,0 +1,71 @@
+package openassemblee.webservice;
+
+import openassemblee.domain.enumeration.Civilite;
+import openassemblee.service.EluService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/publicdata/v2")
+public class EluWebservice {
+
+    @Autowired
+    protected EluService eluService;
+
+    enum PublicCivilite {M, MME}
+
+    class PublicElu {
+        public Long uid;
+        public PublicCivilite civilite;
+        public String nom;
+        public String prenom;
+        public String groupePolitique;
+        public String image;
+        public Boolean actif;
+
+        public PublicElu(Long uid, PublicCivilite civilite, String nom, String prenom, String groupePolitique, String image, Boolean actif) {
+            this.uid = uid;
+            this.civilite = civilite;
+            this.nom = nom;
+            this.prenom = prenom;
+            this.groupePolitique = groupePolitique;
+            this.image = image;
+            this.actif = actif;
+        }
+    }
+
+    class Data {
+        public List<PublicElu> elus;
+
+        public Data(List<PublicElu> elus) {
+            this.elus = elus;
+        }
+    }
+
+    @RequestMapping(value = "/elus", method = RequestMethod.GET)
+    public Data elus() {
+        List<PublicElu> elus = eluService.getAll(false, false, false)
+            .stream()
+            .map(it -> {
+                String groupePolitique = it.getGroupePolitique() != null ? it.getGroupePolitique().getNom() :
+                    "sans groupe";
+                return new PublicElu(
+                    it.getElu().getShortUid(),
+                    it.getElu().getCivilite() == Civilite.MONSIEUR ? PublicCivilite.M : PublicCivilite.MME,
+                    it.getElu().getNom(),
+                    it.getElu().getPrenom(),
+                    groupePolitique, "" +
+                    "/images/" + it.getElu().getImage(),
+                    // FIXME ?
+                    it.getElu().getDateDemission() != null);
+            })
+            .collect(Collectors.toList());
+        return new Data(elus);
+    }
+
+}
