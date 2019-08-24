@@ -4,14 +4,24 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="mlo (generated)" id="1449764230662845-4">
         <addColumn tableName="elu">
-            <column name="uid" type="BINARY(16)">
+            <column name="uid" type="varchar(255)" >
+                <constraints unique="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="elu">
+            <column name="short_uid" type="bigint">
                 <constraints unique="true"/>
             </column>
         </addColumn>
         <createIndex indexName="idx_elu_uid"
                      tableName="elu"
                      unique="true">
-            <column name="uid" type="BINARY(16)"/>
+            <column name="uid" type="varchar(255)"/>
+        </createIndex>
+        <createIndex indexName="idx_elu_short_uid"
+                     tableName="elu"
+                     unique="true">
+            <column name="short_uid" type="bigint"/>
         </createIndex>
     </changeSet>
 </databaseChangeLog>

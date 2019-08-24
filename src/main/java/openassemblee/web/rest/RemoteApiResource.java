@@ -2,6 +2,7 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
+import openassemblee.domain.ShortUid;
 import openassemblee.repository.AppartenanceOrganismeRepository;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.OrganismeRepository;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/remote-api")
@@ -69,17 +70,18 @@ public class RemoteApiResource {
     }
 
     @RequestMapping(value = "/set-uids", method = RequestMethod.GET)
-    public ResponseEntity<Void> setUids() {
-        eluRepository.findAll()
+    public ResponseEntity<String> setUids() {
+        Stream<ShortUid> uuids = eluRepository.findAll()
             .stream()
-            // FIXME remettre
-//            .filter(e -> e.getUid() == null)
-            .forEach(e -> {
-                UUID uuid = shortUidService.createShortUid();
-                e.setUid(uuid);
+            .filter(e -> e.getUid() == null)
+            .map(e -> {
+                ShortUid uid = shortUidService.createShortUid();
+                e.setUid(uid.getUid());
+                e.setShortUid(uid.getShortUid());
                 eluRepository.save(e);
+                return uid;
             });
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Changed " + uuids.count());
     }
 
     @RequestMapping(value = "/inject-organismes", method = RequestMethod.POST)

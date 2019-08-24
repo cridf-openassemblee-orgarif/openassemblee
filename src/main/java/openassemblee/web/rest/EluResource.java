@@ -65,6 +65,9 @@ public class EluResource {
     @Inject
     private PdfExportService pdfExportService;
 
+    @Inject
+    private ShortUidService shortUidService;
+
     /**
      * POST  /elus -> Create a new elu.
      */
@@ -78,6 +81,9 @@ public class EluResource {
         if (elu.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new elu cannot already have an ID").body(null);
         }
+        ShortUid uid = shortUidService.createShortUid();
+        elu.setUid(uid.getUid());
+        elu.setShortUid(uid.getShortUid());
         Elu result = eluRepository.save(elu);
         eluSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());

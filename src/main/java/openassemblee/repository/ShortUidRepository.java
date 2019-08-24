@@ -14,6 +14,8 @@ import java.util.UUID;
 @Repository
 public interface ShortUidRepository extends JpaRepository<ShortUid, UUID> {
 
-    ShortUid findOneByShortUid(String shortUid);
+    ShortUid findOneByUid(String uid);
+
+    ShortUid findOneByShortUid(Long shortUid);
 
 }

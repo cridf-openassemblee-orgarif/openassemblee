@@ -71,8 +71,11 @@ public class Elu implements Serializable {
     @Column(name = "liste_court")
     private String listeCourt;
 
-    @Column(name = "uid", columnDefinition = "BINARY(16)")
-    private UUID uid;
+    @Column(name = "uid", columnDefinition = "varchar(255)")
+    private String uid;
+
+    @Column(name = "short_uid")
+    private Long shortUid;
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
     @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -412,12 +415,20 @@ public class Elu implements Serializable {
         this.distinctionHonorifiques = distinctionHonorifiques;
     }
 
-    public UUID getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(UUID uid) {
+    public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public Long getShortUid() {
+        return shortUid;
+    }
+
+    public void setShortUid(Long shortUid) {
+        this.shortUid = shortUid;
     }
 
     public String civiliteComplete() {

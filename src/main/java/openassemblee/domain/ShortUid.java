@@ -5,13 +5,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * A ShortUid.
@@ -23,45 +19,56 @@ import java.util.UUID;
 public class ShortUid implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @Column(name = "uid", columnDefinition = "BINARY(16)")
-    private UUID uid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "uid", columnDefinition = "VARCHAR(16)")
+    private String uid;
 
     @Column(name = "short_uid")
-    private String shortUid;
+    private Long shortUid;
 
     public ShortUid() {
     }
 
-    public ShortUid(UUID uid, String shortUid) {
+    public ShortUid(String uid, Long shortUid) {
         this.uid = uid;
         this.shortUid = shortUid;
     }
 
-    public UUID getUid() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUid() {
         return uid;
     }
 
-    public ShortUid uid(UUID uid) {
+    public ShortUid uid(String uid) {
         this.uid = uid;
         return this;
     }
 
-    public void setUid(UUID uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public String getShortUid() {
+    public Long getShortUid() {
         return shortUid;
     }
 
-    public ShortUid shortUid(String shortUid) {
+    public ShortUid shortUid(Long shortUid) {
         this.shortUid = shortUid;
         return this;
     }
 
-    public void setShortUid(String shortUid) {
+    public void setShortUid(Long shortUid) {
         this.shortUid = shortUid;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

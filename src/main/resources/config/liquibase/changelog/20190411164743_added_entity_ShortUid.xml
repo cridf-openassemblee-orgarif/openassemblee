@@ -17,11 +17,15 @@
     -->
     <changeSet id="20190411164743-1" author="jhipster">
         <createTable tableName="short_uid">
-            <column name="uid" type="BINARY(16)">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="short_uid" type="varchar(255)">
+            <column name="uid" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+
+            <column name="short_uid" type="bigint">
                 <constraints nullable="false" unique="true"/>
             </column>
 

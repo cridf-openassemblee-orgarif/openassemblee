@@ -10,4 +10,6 @@ public interface EluRepository extends JpaRepository<Elu,Long> {
 
     Elu findOneByImportUid(String importUid);
 
+    Elu findOneByShortUid(Long uuid);
+
 }
