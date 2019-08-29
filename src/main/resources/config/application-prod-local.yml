@@ -1,0 +1,9 @@
+spring:
+    profiles:
+        active: prod-local
+    datasource:
+        driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://localhost:3306/openassemblee_local?useUnicode=true&characterEncoding=utf8&max_allowed_packet=21167764
+        name:
+        username: root
+        password:
