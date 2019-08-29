@@ -63,7 +63,7 @@ public class CommissionPermanenteResource {
         byte[] export = excelExportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        String filename = "siger-export-elus";
+        String filename = "siger-export-commission-permanente";
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());
@@ -121,7 +121,7 @@ public class CommissionPermanenteResource {
         byte[] export = excelExportService.exportToExcel(entries);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        String filename = "siger-export-elus";
+        String filename = "siger-export-commission-permanente";
         response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xlsx");
         try {
             Streams.copy(export, response.getOutputStream());

@@ -126,8 +126,8 @@ public class CommissionPermanenteService {
             lines.add(line);
             String dateDebut = acp.getDateDebut() != null ?
                 acp.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de début inconnue";
-            String dateFin = acp.getDateDebut() != null ?
-                acp.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "Date de fin inconnue";
+            String dateFin = acp.getDateFin() != null ?
+                acp.getDateFin().format(DateTimeFormatter.ISO_LOCAL_DATE) : null;
             line.add(dateDebut);
             line.add(dateFin);
             line.add(acp.getMotifFin());
