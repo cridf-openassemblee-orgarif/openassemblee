@@ -221,7 +221,7 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
             case 'SiteInternet':
                 return '<span class="grey">(site Internet)</span>';
             case 'Blog':
-                return '<span class="grey">(bloc)</span>';
+                return '<span class="grey">(blog)</span>';
             case 'Twitter':
                 return '<span class="grey icon fa fa-twitter"></span>';
             case 'LinkedIn':
