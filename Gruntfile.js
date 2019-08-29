@@ -184,26 +184,26 @@ module.exports = function (grunt) {
                 dirs: ['<%= yeoman.dist %>']
             }
         },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                    src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
-        svgmin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                    src: '**/*.svg',
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
+        // imagemin: {
+        //     dist: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: 'src/main/webapp/assets/images',
+        //             src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
+        //             dest: '<%= yeoman.dist %>/assets/images'
+        //         }]
+        //     }
+        // },
+        // svgmin: {
+        //     dist: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: 'src/main/webapp/assets/images',
+        //             src: '**/*.svg',
+        //             dest: '<%= yeoman.dist %>/assets/images'
+        //         }]
+        //     }
+        // },
         cssmin: {
             // src and dest is configured in a subtask called "generated" by usemin
         },
@@ -389,8 +389,8 @@ module.exports = function (grunt) {
         'useminPrepare',
         'ngtemplates',
         'sass:server',
-        'imagemin',
-        'svgmin',
+        // 'imagemin',
+        // 'svgmin',
         'concat',
         'copy:fonts',
         'copy:dist',
