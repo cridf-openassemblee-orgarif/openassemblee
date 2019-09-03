@@ -42,8 +42,8 @@ spring:
             cluster-nodes:
             properties:
                 path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
+                    logs: ${APP_HOME}/elasticsearch/logs
+                    data: ${APP_HOME}/elasticsearch/data
     mail:
         host: localhost
         port: 25
