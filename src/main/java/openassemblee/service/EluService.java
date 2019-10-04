@@ -131,7 +131,7 @@ public class EluService {
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .findFirst();
-        return groupePolitique.map(groupePolitique1 -> new EluListDTO(elu, groupePolitique1, loadAdresses, filterAdresses)).orElseGet(() ->
+        return groupePolitique.map(gp -> new EluListDTO(elu, gp, loadAdresses, filterAdresses)).orElseGet(() ->
             new EluListDTO(elu, loadAdresses, filterAdresses));
     }
 

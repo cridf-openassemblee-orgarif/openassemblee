@@ -5,6 +5,7 @@ import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
 import openassemblee.repository.*;
 import openassemblee.service.SearchService;
+import openassemblee.service.ShortUidService;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,9 @@ public class TestDataInjector {
 
     @Autowired
     private FonctionExecutiveRepository fonctionExecutiveRepository;
+
+    @Autowired
+    private ShortUidService shortUidService;
 
     private Random random;
 
@@ -268,6 +272,9 @@ public class TestDataInjector {
 
     private Elu initElu(Civilite civilite, String nom, String prenom) {
         Elu elu = new Elu();
+        ShortUid uid  = shortUidService.createShortUid();
+        elu.setUid(uid.getUid());
+        elu.setShortUid(uid.getShortUid());
         elu.setCivilite(civilite);
         elu.setNom(nom);
         elu.setPrenom(prenom);

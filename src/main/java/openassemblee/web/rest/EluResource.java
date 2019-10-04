@@ -333,6 +333,7 @@ public class EluResource {
 
     @RequestMapping(value = "/elus/{id}/export",
         method = RequestMethod.GET,
+        // TODO pas du tout, en fait =]
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void getEluExport(@PathVariable Long id, HttpServletResponse response, Authentication auth) {
