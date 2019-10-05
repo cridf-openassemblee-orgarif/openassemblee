@@ -174,7 +174,6 @@ public class CommissionThematiqueResource {
         List<CommissionThematique> cts = commissionThematiqueRepository.findAll();
         List<AppartenanceCommissionThematique> as = appartenanceCommissionThematiqueRepository.findAll();
         List<FonctionCommissionThematique> fs = fonctionCommissionThematiqueRepository.findAll();
-        //noinspection unchecked
         Map<Long, List<EluEnFonctionDTO>> appartenancesByCt = cts.stream()
             .map(ct -> {
                 List<EluEnFonctionDTO> dtos = as.stream()

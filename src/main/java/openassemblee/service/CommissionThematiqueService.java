@@ -125,7 +125,7 @@ public class CommissionThematiqueService {
                 aLines.addAll(eluService.xlsEluLine(a.getElu(), eld.getGroupePolitique(), false));
                 ctLines.add(aLines);
             }
-            entries.add(new ExcelExportService.Entry(ct.getNomCourt(), ctLines));
+            entries.add(new ExcelExportService.Entry(ct.getNomCourt() != null ? ct.getNomCourt() : ct.getNom(), ctLines));
         });
         return entries.toArray(new ExcelExportService.Entry[0]);
     }
