@@ -2,6 +2,7 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.Pouvoir;
+import openassemblee.domain.Seance;
 import openassemblee.repository.PouvoirRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -92,12 +93,14 @@ public class PouvoirResource {
     /**
      * GET  /pouvoirs -> get all the pouvoirs sans date de fin.
      */
-    @RequestMapping(value = "/pouvoirs/open",
+    @RequestMapping(value = "/pouvoirs/open/{seanceId}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Pouvoir> getAllOpenPouvoirs() throws URISyntaxException {
-        return pouvoirRepository.findAllByDateFinAndHeureFin(null, null);
+    public List<Pouvoir> getAllOpenPouvoirs(@PathVariable Long seanceId) throws URISyntaxException {
+        Seance s = new Seance();
+        s.setId(seanceId);
+        return pouvoirRepository.findAllBySeanceAndDateFinAndHeureFin(s, null, null);
     }
 
     /**

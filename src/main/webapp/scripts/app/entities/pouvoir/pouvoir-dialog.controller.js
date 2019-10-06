@@ -72,7 +72,7 @@ angular.module('openassembleeApp').controller('PouvoirDialogController',
             $scope.$watch('pouvoir.eluBeneficiaire', initPouvoirsDejaExistant);
 
             $scope.openPouvoirs = [];
-            Pouvoir.getAllOpen(function (result) {
+            Pouvoir.getAllOpen({seanceId: $stateParams.id}, function (result) {
                 $scope.openPouvoirs = result;
             });
 

@@ -15,7 +15,7 @@ angular.module('openassembleeApp')
             },
             'getAllOpen': {
                 method: 'GET',
-                url: 'api/pouvoirs/open',
+                url: 'api/pouvoirs/open/:seanceId',
                 isArray: true,
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
