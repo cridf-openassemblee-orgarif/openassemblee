@@ -5,6 +5,7 @@ import openassemblee.domain.Pouvoir;
 import openassemblee.domain.Seance;
 import openassemblee.repository.PouvoirRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.web.rest.dto.PouvoirCloseOrderDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -117,6 +118,21 @@ public class PouvoirResource {
                 pouvoir,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/pouvoirs/close-all",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void closeAll(@RequestBody PouvoirCloseOrderDTO dto) {
+        Seance s = new Seance();
+        s.setId(dto.getSeanceId());
+        pouvoirRepository.findAllBySeanceAndDateFinAndHeureFin(s, null, null)
+            .forEach(p -> {
+                p.setDateFin(dto.getDateFin());
+                p.setHeureFin(dto.getHeureFin());
+                pouvoirRepository.save(p);
+            });
     }
 
     /**

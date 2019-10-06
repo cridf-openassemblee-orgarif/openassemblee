@@ -30,9 +30,6 @@ angular.module('openassembleeApp').controller('PouvoirDialogController',
                 $scope.pouvoirTemp = tempHours(entity);
                 if(!$scope.pouvoir.seance) {
                     $scope.pouvoir.seance = {id: $stateParams.id};
-                    Seance.get($scope.pouvoir.seance).$promise.then(function(s) {
-                        $scope.pouvoir.seance = s;
-                    });
                 }
             };
 

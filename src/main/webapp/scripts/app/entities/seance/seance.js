@@ -141,6 +141,24 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('seance.detail.fermerTousPouvoirs', {
+                parent: 'seance.detail',
+                url: '/pouvoir/fermer-tous',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/pouvoir/pouvoir-fermer-tous-dialog.html',
+                        controller: 'PouvoirFermerTousDialogController',
+                        size: 'lg'
+                    }).result.then(function (result) {
+                        $state.go('^', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('seance.detail.pouvoirEdit', {
                 parent: 'seance.detail',
                 url: '/pouvoir/{pouvoirId}/edit',

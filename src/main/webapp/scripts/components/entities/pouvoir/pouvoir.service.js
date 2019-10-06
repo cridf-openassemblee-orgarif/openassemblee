@@ -27,6 +27,10 @@ angular.module('openassembleeApp')
                     return data;
                 }
             },
+            'closeAll': {
+                method: 'POST',
+                url: 'api/pouvoirs/close-all/:seanceId',
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {
