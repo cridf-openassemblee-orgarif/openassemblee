@@ -7,7 +7,7 @@
             <div class="unit-bloc action-bloc"
                  ng-repeat="a in dto.elu.appartenancesOrganismes"
                  ng-if="a.dateFin == null"
-                 ui-sref="elu.detail.finAppartenanceOrganisme({appartenanceId: a.id})">
+                 ui-sref="elu.detail.editAppartenanceOrganisme({appartenanceId: a.id})">
                 {{a.organisme}}
                 <br/>
                 <span class="lg"><span class="grey">Statut :</span> {{a.statut}}</span>

@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
         <h4 class="modal-title" id="myFonctionCommissionPermanenteLabel">
-            Ajouter une fonction
+            Fonction
         </h4>
     </div>
     <div class="modal-body">
@@ -21,18 +21,18 @@
                    ng-model="fonctionCommissionPermanente.dateDebut"
                    autocomplete="off"/>
         </div>
-        <!--<div class="form-group">-->
-        <!--<label class="control-label" for="field_dateFin">DateFin</label>-->
-        <!--<input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"-->
-        <!--ng-model="fonctionCommissionPermanente.dateFin"-->
-        <!--autocomplete="off"/>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-        <!--<label class="control-label" for="field_motifFin">MotifFin</label>-->
-        <!--<input type="text" class="form-control" name="motifFin" id="field_motifFin"-->
-        <!--ng-model="fonctionCommissionPermanente.motifFin"-->
-        <!--/>-->
-        <!--</div>-->
+        <div class="form-group">
+        <label class="control-label" for="field_dateFin">DateFin</label>
+        <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
+        ng-model="fonctionCommissionPermanente.dateFin"
+        autocomplete="off"/>
+        </div>
+        <div class="form-group">
+        <label class="control-label" for="field_motifFin">MotifFin</label>
+        <input type="text" class="form-control" name="motifFin" id="field_motifFin"
+        ng-model="fonctionCommissionPermanente.motifFin"
+        />
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

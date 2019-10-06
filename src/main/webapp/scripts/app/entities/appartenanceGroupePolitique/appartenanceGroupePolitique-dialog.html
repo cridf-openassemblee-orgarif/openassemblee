@@ -1,9 +1,9 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+                ng-click="clear()">&times;
+        </button>
         <h4 class="modal-title" id="myAppartenanceGroupePolitiqueLabel">Ajouter à un groupe politique</h4>
     </div>
     <div class="modal-body">
@@ -14,12 +14,35 @@
                    autocomplete="off"/>
         </div>
 
-        <div class="form-group">
-            <label for="field_groupePolitique">Groupe politique</label>
-            <select class="form-control" id="field_groupePolitique" name="groupePolitique"
+        <!--
+        On sépare les cas de la création initiale et de la modif
+        dans le cas de la création initiale on n'affiche pas les groupes fermés
+        -->
+        <div class="form-group" ng-if="!appartenanceGroupePolitique.id">
+            <label for="field_groupePolitique_new">Groupe politique</label>
+            <select class="form-control" id="field_groupePolitique_new" name="groupePolitique"
                     ng-model="appartenanceGroupePolitique.groupePolitique"
                     ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques | filter: {dateFin: '!'}">
+                <option value=""></option>
             </select>
+        </div>
+        <div class="form-group" ng-if="appartenanceGroupePolitique.id">
+            <select class="form-control" id="field_groupePolitique" name="groupePolitique"
+                    ng-model="appartenanceGroupePolitique.groupePolitique"
+                    ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques track by groupePolitique.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateFin">Date de fin</label>
+            <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
+                   ng-model="appartenanceGroupePolitique.dateFin"
+                   autocomplete="off"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_motifFin">Motif de fin</label>
+            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
+                   ng-model="appartenanceGroupePolitique.motifFin"/>
         </div>
     </div>
     <div class="modal-footer">

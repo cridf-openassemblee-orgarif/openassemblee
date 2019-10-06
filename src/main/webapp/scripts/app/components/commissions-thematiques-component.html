@@ -7,14 +7,14 @@
             <div class="unit-bloc action-bloc"
                  ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
                  ng-if="a.dateFin == null"
-                 ui-sref="elu.detail.finAppartenanceCommissionThematique({appartenanceId: a.id})">
+                 ui-sref="elu.detail.editAppartenanceCommissionThematique({appartenanceId: a.id})">
                 {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
                 <br/>
                 <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
             </div>
             <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
                  ng-if="f.dateFin == null"
-                 ui-sref="elu.detail.finFonctionCommissionThematique({fonctionId: f.id})">
+                 ui-sref="elu.detail.editFonctionCommissionThematique({fonctionId: f.id})">
                 <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
                 {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
                 <br/>

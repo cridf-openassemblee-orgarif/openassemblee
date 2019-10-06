@@ -125,15 +125,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finFonctionExecutive', {
+            .state('elu.detail.editFonctionExecutive', {
                 parent: 'elu.detail',
-                url: '/fin-fonction-executive/{fonctionId}',
+                url: '/edit-fonction-executive/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/fonctionExecutive/fonctionExecutive-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionExecutive/fonctionExecutive-dialog.html',
                         controller: 'FonctionExecutiveDialogController',
                         size: 'lg',
                         resolve: {
@@ -227,15 +227,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finFonctionCommissionPermanente', {
+            .state('elu.detail.editFonctionCommissionPermanente', {
                 parent: 'elu.detail',
-                url: '/fin-fonction-commission-permanente/{fonctionId}',
+                url: '/edit-fonction-commission-permanente/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/fonctionCommissionPermanente/fonctionCommissionPermanente-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionCommissionPermanente/fonctionCommissionPermanente-dialog.html',
                         controller: 'FonctionCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -278,15 +278,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finAppartenanceCommissionPermanente', {
+            .state('elu.detail.editAppartenanceCommissionPermanente', {
                 parent: 'elu.detail',
-                url: '/fin-appartenance-commission-permanente/{appartenanceId}',
+                url: '/edit-appartenance-commission-permanente/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/appartenanceCommissionPermanente/appartenanceCommissionPermanente-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionPermanente/appartenanceCommissionPermanente-dialog.html',
                         controller: 'AppartenanceCommissionPermanenteDialogController',
                         size: 'lg',
                         resolve: {
@@ -329,15 +329,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finAppartenanceGroupePolitique', {
+            .state('elu.detail.editAppartenanceGroupePolitique', {
                 parent: 'elu.detail',
-                url: '/fin-appartenance-groupe-politique/{appartenanceId}',
+                url: '/edit-appartenance-groupe-politique/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/appartenanceGroupePolitique/appartenanceGroupePolitique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceGroupePolitique/appartenanceGroupePolitique-dialog.html',
                         controller: 'AppartenanceGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -427,15 +427,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finAppartenanceOrganisme', {
+            .state('elu.detail.editAppartenanceOrganisme', {
                 parent: 'elu.detail',
-                url: '/fin-appartenance-organisme/{appartenanceId}',
+                url: '/edit-appartenance-organisme/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/appartenanceOrganisme/appartenanceOrganisme-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceOrganisme/appartenanceOrganisme-dialog.html',
                         controller: 'AppartenanceOrganismeDialogController',
                         size: 'lg',
                         resolve: {
@@ -480,15 +480,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finFonctionGroupePolitique', {
+            .state('elu.detail.editFonctionGroupePolitique', {
                 parent: 'elu.detail',
-                url: '/fin-fonction-groupe-politique/{fonctionId}',
+                url: '/edit-fonction-groupe-politique/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/fonctionGroupePolitique/fonctionGroupePolitique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionGroupePolitique/fonctionGroupePolitique-dialog.html',
                         controller: 'FonctionGroupePolitiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -526,15 +526,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finAppartenanceCommissionThematique', {
+            .state('elu.detail.editAppartenanceCommissionThematique', {
                 parent: 'elu.detail',
-                url: '/fin-appartenance-commission-thematique/{appartenanceId}',
+                url: '/edit-appartenance-commission-thematique/{appartenanceId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/appartenanceCommissionThematique/appartenanceCommissionThematique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionThematique/appartenanceCommissionThematique-dialog.html',
                         controller: 'AppartenanceCommissionThematiqueDialogController',
                         size: 'lg',
                         resolve: {
@@ -572,15 +572,15 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
-            .state('elu.detail.finFonctionCommissionThematique', {
+            .state('elu.detail.editFonctionCommissionThematique', {
                 parent: 'elu.detail',
-                url: '/fin-fonction-commission-thematique/{fonctionId}',
+                url: '/edit-fonction-commission-thematique/{fonctionId}',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/fonctionCommissionThematique/fonctionCommissionThematique-fin-dialog.html',
+                        templateUrl: 'scripts/app/entities/fonctionCommissionThematique/fonctionCommissionThematique-dialog.html',
                         controller: 'FonctionCommissionThematiqueDialogController',
                         size: 'lg',
                         resolve: {

@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="clear()">&times;</button>
         <h4 class="modal-title" id="myFonctionCommissionThematiqueLabel">
-            Ajouter une fonction à une commission thématique
+            Fonction à une commission thématique
         </h4>
     </div>
     <div class="modal-body">
@@ -28,6 +28,18 @@
                     ng-options="commissionThematique as commissionThematique.nom for commissionThematique in commissionthematiques track by commissionThematique.id">
                 <option value=""></option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="field_dateFin">Date de fin</label>
+            <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
+                   ng-model="fonctionCommissionThematique.dateFin"
+                   autocomplete="off"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_motifFin">Motif de fin</label>
+            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
+                   ng-model="fonctionCommissionThematique.motifFin"/>
         </div>
     </div>
     <div class="modal-footer">

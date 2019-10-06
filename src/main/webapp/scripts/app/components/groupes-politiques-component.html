@@ -5,7 +5,7 @@
     <div class="box-body">
         <div class="unit-bloc action-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
              ng-if="a.dateFin == null"
-             ui-sref="elu.detail.finAppartenanceGroupePolitique({appartenanceId: a.id})">
+             ui-sref="elu.detail.editAppartenanceGroupePolitique({appartenanceId: a.id})">
             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
             <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
             <br/>
@@ -13,7 +13,7 @@
         </div>
         <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
              ng-if="f.dateFin == null"
-             ui-sref="elu.detail.finFonctionGroupePolitique({fonctionId: f.id})">
+             ui-sref="elu.detail.editFonctionGroupePolitique({fonctionId: f.id})">
             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
             {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
             <br/>
