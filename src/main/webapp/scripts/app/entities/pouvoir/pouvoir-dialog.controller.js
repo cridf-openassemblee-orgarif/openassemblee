@@ -28,7 +28,7 @@ angular.module('openassembleeApp').controller('PouvoirDialogController',
             var initPouvoirScope = function (entity) {
                 $scope.pouvoir = entity;
                 $scope.pouvoirTemp = tempHours(entity);
-                if(!$scope.pouvoir.seance) {
+                if (!$scope.pouvoir.seance) {
                     $scope.pouvoir.seance = {id: $stateParams.id};
                 }
             };
@@ -47,17 +47,17 @@ angular.module('openassembleeApp').controller('PouvoirDialogController',
                 return $scope.openPouvoirs.filter(function (pv) {
                     return ($scope.pouvoir.eluCedeur != null &&
                         ((pv.eluCedeur != null
-                        && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id)
-                        || (pv.eluBeneficiaire != null
-                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluCedeur.id)))
+                            && pv.eluCedeur.id == $scope.pouvoir.eluCedeur.id)
+                            || (pv.eluBeneficiaire != null
+                                && pv.eluBeneficiaire.id == $scope.pouvoir.eluCedeur.id)))
 
                         ||
 
                         ($scope.pouvoir.eluBeneficiaire != null &&
-                        ((pv.eluCedeur != null
-                        && pv.eluCedeur.id == $scope.pouvoir.eluBeneficiaire.id)
-                        || (pv.eluBeneficiaire != null
-                        && pv.eluBeneficiaire.id == $scope.pouvoir.eluBeneficiaire.id)))
+                            ((pv.eluCedeur != null
+                                && pv.eluCedeur.id == $scope.pouvoir.eluBeneficiaire.id)
+                                || (pv.eluBeneficiaire != null
+                                    && pv.eluBeneficiaire.id == $scope.pouvoir.eluBeneficiaire.id)))
                 });
             };
 
@@ -136,14 +136,14 @@ angular.module('openassembleeApp').controller('PouvoirDialogController',
                 }
                 var pouvoirsDejaExistant = $scope.pouvoirsDejaExistant;
                 if (pouvoirsDejaExistant.length > 0 && $scope.autoclosePrecedentPouvoir) {
-                    // Ne propose pas la fermeture si plus d'un pouvoir
-                    var pouvoirDejaExistant = pouvoirsDejaExistant[0];
-                    // TODO se plante s'il n'y en a pas...
-                    pouvoirDejaExistant.dateFin = $scope.pouvoir.dateDebut;
-                    pouvoirDejaExistant.heureFin = $scope.pouvoir.heureDebut;
-                    Pouvoir.update(pouvoirDejaExistant, function () {
-                        savePouvoir()
-                    }, onSaveError);
+                    pouvoirsDejaExistant.forEach(function (pouvoirDejaExistant) {
+                        // TODO se plante s'il n'y en a pas...
+                        pouvoirDejaExistant.dateFin = $scope.pouvoir.dateDebut;
+                        pouvoirDejaExistant.heureFin = $scope.pouvoir.heureDebut;
+                        // pas ouf pour l'async mais bcp plus compliqué sinon
+                        Pouvoir.update(pouvoirDejaExistant);
+                    });
+                    savePouvoir()
                 } else {
                     savePouvoir()
                 }

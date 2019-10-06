@@ -62,14 +62,14 @@
             </div>
         </div>
         <a ng-click="finIsNow()">Fixer l'heure actuelle en heure de fin</a><br/><br/>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label class="control-label">Séance</label>
-                <input class="form-control" disabled
-                       value="{{pouvoir.seance.type | typeSeance}} {{pouvoir.seance.intitule}} du {{pouvoir.seance.date | date:'mediumDate'}}">
-                <i>Il n'est pas possible de changer de séance.</i>
-            </div>
-        </div>
+<!--        <div class="row">-->
+<!--            <div class="form-group col-md-6">-->
+<!--                <label class="control-label">Séance</label>-->
+<!--                <input class="form-control" disabled-->
+<!--                       value="{{pouvoir.seance.type | typeSeance}} {{pouvoir.seance.intitule}} du {{pouvoir.seance.date | date:'mediumDate'}}">-->
+<!--                <i>Il n'est pas possible de changer de séance.</i>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="super-error-message"
          ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
@@ -81,22 +81,7 @@
         <div class="super-error-message">
             Attention !
         </div>
-        <div ng-if="pouvoirsDejaExistant.length == 1" style="margin: 10px">
-            <b>{{pouvoirsDejaExistant[0].eluCedeur.prenom}} {{pouvoirsDejaExistant[0].eluCedeur.nom}}
-                cède à
-                {{pouvoirsDejaExistant[0].eluBeneficiaire.prenom}} {{pouvoirsDejaExistant[0].eluBeneficiaire.nom}}
-                depuis le
-                {{pouvoirsDejaExistant[0].dateDebut | date:'mediumDate'}} - {{pouvoirsDejaExistant[0].heureDebut}}
-            </b>
-            <br/><br/>
-            <input id="autoclose" type="checkbox" ng-model="$parent.$parent.autoclosePrecedentPouvoir">
-            <label for="autoclose">
-                Clore la délégation de pouvoir.
-            </label>
-            <br/><b>Attention la date et heure de début doivent être précisées !</b>
-        </div>
-        <div ng-if="pouvoirsDejaExistant.length > 1" style="margin: 10px">
-            Vous devez d'abord fermer ces délégations à la main :
+        <div ng-if="pouvoirsDejaExistant.length >= 1" style="margin: 10px">
             <ul ng-repeat="p in pouvoirsDejaExistant">
                 <li>{{p.eluCedeur.prenom}} {{p.eluCedeur.nom}}
                     cède à
@@ -105,6 +90,11 @@
                     {{p.dateDebut | date:'mediumDate'}} - {{p.heureDebut}}
                 </li>
             </ul>
+            <input id="autoclose" type="checkbox" ng-model="$parent.$parent.autoclosePrecedentPouvoir">
+            <label for="autoclose">
+                Clore ces délégations.
+            </label>
+            <br/><b>Attention la date et heure de début doivent être précisées !</b>
         </div>
     </div>
     <div class="modal-footer">
