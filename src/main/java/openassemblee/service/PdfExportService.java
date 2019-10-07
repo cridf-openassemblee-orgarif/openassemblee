@@ -152,7 +152,7 @@ public class PdfExportService {
 
         document.open();
 
-        document.add(mainTitle("Feuille d'émargement - " + dateFormatter.format(date)));
+        document.add(mainTitle("Feuille d'émargement - " + (date != null ? dateFormatter.format(date) : "")));
 
         int columnsNumber = 2 + signatureNumber;
         PdfPTable table = new PdfPTable(columnsNumber);
