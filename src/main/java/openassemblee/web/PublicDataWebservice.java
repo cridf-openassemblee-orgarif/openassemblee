@@ -525,60 +525,64 @@ public class PublicDataWebservice {
             m.setDescription(stringOrSpace(null));
             return m;
         })).collect(Collectors.toList());
-        List<MembreDto> m3 = elus.stream().flatMap(e -> e.getFonctionsCommissionPermanente().stream().map(fcp -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(fcp.exportUid());
-            // .contains("résident") pour président, vice-président, présidente, avec ou sans maj...
-            if (fcp.getFonction().contains("résident")) {
-                m.setUidEnsemble(COMMISSION_PERMANENTE);
-                m.setBureau('0');
-                if (fcp.getFonction().equals("Président") || fcp.getFonction().equals("Présidente"))
-                    m.setBureau('1');
-            } else {
-                m.setUidEnsemble(DELEGUES_SPECIAUX);
-                m.setBureau(bureau(fcp.getFonction()));
-            }
-            m.setUidConseiller(e.exportUid());
+        List<MembreDto> m3 = elus.stream().flatMap(e -> e.getFonctionsCommissionPermanente().stream()
+            .filter(fcp -> fcp.getFonction() != null)
+            .map(fcp -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(fcp.exportUid());
+                // .contains("résident") pour président, vice-président, présidente, avec ou sans maj...
+                if (fcp.getFonction().contains("résident")) {
+                    m.setUidEnsemble(COMMISSION_PERMANENTE);
+                    m.setBureau('0');
+                    if (fcp.getFonction().equals("Président") || fcp.getFonction().equals("Présidente"))
+                        m.setBureau('1');
+                } else {
+                    m.setUidEnsemble(DELEGUES_SPECIAUX);
+                    m.setBureau(bureau(fcp.getFonction()));
+                }
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Commissions");
-            m.setDateDebut(formatDate(fcp.getDateDebut()));
-            m.setDateFin(formatDate(fcp.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(fcp.getFonction()));
-            m.setMotifFin(stringOrSpace(fcp.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Commissions");
+                m.setDateDebut(formatDate(fcp.getDateDebut()));
+                m.setDateFin(formatDate(fcp.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(fcp.getFonction()));
+                m.setMotifFin(stringOrSpace(fcp.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
         List<String> fonctionsCT = new ArrayList<>();
-        List<MembreDto> m5 = elus.stream().flatMap(e -> e.getFonctionsCommissionsThematiques().stream().map(fct -> {
-            fonctionsCT.add(fct.exportUid());
-            MembreDto m = new MembreDto();
-            m.setUidMembre(fct.exportUid());
-            m.setUidEnsemble(fct.getCommissionThematique().exportUid());
-            m.setUidConseiller(e.exportUid());
+        List<MembreDto> m5 = elus.stream().flatMap(e -> e.getFonctionsCommissionsThematiques().stream()
+            .filter(fct -> fct.getCommissionThematique() != null)
+            .map(fct -> {
+                fonctionsCT.add(fct.exportUid());
+                MembreDto m = new MembreDto();
+                m.setUidMembre(fct.exportUid());
+                m.setUidEnsemble(fct.getCommissionThematique().exportUid());
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Commissions");
-            m.setDateDebut(formatDate(fct.getDateDebut()));
-            m.setDateFin(formatDate(fct.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(fct.getFonction()));
-            m.setBureau(bureau(fct.getFonction()));
-            m.setMotifFin(stringOrSpace(fct.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Commissions");
+                m.setDateDebut(formatDate(fct.getDateDebut()));
+                m.setDateFin(formatDate(fct.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(fct.getFonction()));
+                m.setBureau(bureau(fct.getFonction()));
+                m.setMotifFin(stringOrSpace(fct.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
         List<MembreDto> m4 = elus.stream().flatMap(e -> e.getAppartenancesCommissionsThematiques().stream()
-            .filter(act -> !fonctionsCT.contains(act.exportUid()))
+            .filter(act -> !fonctionsCT.contains(act.exportUid()) && act.getCommissionThematique() != null)
             .map(act -> {
                 MembreDto m = new MembreDto();
                 m.setUidMembre(act.exportUid());
@@ -601,30 +605,32 @@ public class PublicDataWebservice {
                 return m;
             })).collect(Collectors.toList());
         List<String> fonctionsGP = new ArrayList<>();
-        List<MembreDto> m7 = elus.stream().flatMap(e -> e.getFonctionsGroupePolitique().stream().map(fgp -> {
-            fonctionsGP.add(fgp.exportUid());
-            MembreDto m = new MembreDto();
-            m.setUidMembre(fgp.exportUid());
-            m.setUidEnsemble(fgp.getGroupePolitique().exportUid());
-            m.setUidConseiller(e.exportUid());
+        List<MembreDto> m7 = elus.stream().flatMap(e -> e.getFonctionsGroupePolitique().stream()
+            .filter(fgp -> fgp.getGroupePolitique() != null)
+            .map(fgp -> {
+                fonctionsGP.add(fgp.exportUid());
+                MembreDto m = new MembreDto();
+                m.setUidMembre(fgp.exportUid());
+                m.setUidEnsemble(fgp.getGroupePolitique().exportUid());
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Groupe politique");
-            m.setDateDebut(formatDate(fgp.getDateDebut()));
-            m.setDateFin(formatDate(fgp.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(fgp.getFonction()));
-            m.setBureau(bureau(fgp.getFonction()));
-            m.setMotifFin(stringOrSpace(fgp.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Groupe politique");
+                m.setDateDebut(formatDate(fgp.getDateDebut()));
+                m.setDateFin(formatDate(fgp.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(fgp.getFonction()));
+                m.setBureau(bureau(fgp.getFonction()));
+                m.setMotifFin(stringOrSpace(fgp.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
         List<MembreDto> m6 = elus.stream().flatMap(e -> e.getAppartenancesGroupePolitique().stream()
-            .filter(agp -> !fonctionsGP.contains(agp.exportUid()))
+            .filter(agp -> !fonctionsGP.contains(agp.exportUid()) && agp.getGroupePolitique() != null)
             .map(agp -> {
                 MembreDto m = new MembreDto();
                 m.setUidMembre(agp.exportUid());
@@ -632,9 +638,6 @@ public class PublicDataWebservice {
                 m.setUidConseiller(e.exportUid());
 
                 m.setMandature(MANDATURE);
-                if (agp.getGroupePolitique() != null) {
-                    m.setUidEnsemble(agp.getGroupePolitique().exportUid());
-                }
                 m.setType("Groupe politique");
                 m.setDateDebut(formatDate(agp.getDateDebut()));
                 m.setDateFin(formatDate(agp.getDateFin()));
