@@ -20,20 +20,25 @@ public class EluWebservice {
     enum PublicCivilite {M, MME}
 
     class PublicElu {
-        public Long uid;
+        public String id;
+        public String uid;
         public PublicCivilite civilite;
         public String nom;
         public String prenom;
         public String groupePolitique;
+        public String groupePolitiqueCourt;
         public String image;
         public Boolean actif;
 
-        public PublicElu(Long uid, PublicCivilite civilite, String nom, String prenom, String groupePolitique, String image, Boolean actif) {
+        public PublicElu(String id, String uid, PublicCivilite civilite, String nom, String prenom,
+                         String groupePolitique, String groupePolitiqueShort, String image, Boolean actif) {
+            this.id = id;
             this.uid = uid;
             this.civilite = civilite;
             this.nom = nom;
             this.prenom = prenom;
             this.groupePolitique = groupePolitique;
+            this.groupePolitiqueCourt = groupePolitiqueShort;
             this.image = image;
             this.actif = actif;
         }
@@ -54,12 +59,16 @@ public class EluWebservice {
             .map(it -> {
                 String groupePolitique = it.getGroupePolitique() != null ? it.getGroupePolitique().getNom() :
                     "sans groupe";
+                String groupePolitiqueCourt = it.getGroupePolitique() != null ? it.getGroupePolitique().getNomCourt() :
+                    "-";
                 return new PublicElu(
-                    it.getElu().getShortUid(),
+                    it.getElu().getShortUid().toString(),
+                    it.getElu().getUid(),
                     it.getElu().getCivilite() == Civilite.MONSIEUR ? PublicCivilite.M : PublicCivilite.MME,
                     it.getElu().getNom(),
                     it.getElu().getPrenom(),
-                    groupePolitique, "" +
+                    groupePolitique,
+                    groupePolitiqueCourt,
                     "/images/" + it.getElu().getImage(),
                     // FIXME ?
                     it.getElu().getDateDemission() != null);
