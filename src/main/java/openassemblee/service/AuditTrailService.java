@@ -9,10 +9,8 @@ import openassemblee.repository.search.AuditTrailSearchRepository;
 import openassemblee.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -31,14 +29,7 @@ public class AuditTrailService {
     private AuditTrailSearchRepository auditTrailSearchRepository;
 
     @Inject
-    private Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder;
-
     private ObjectMapper objectMapper;
-
-    @PostConstruct
-    public void init() {
-        objectMapper = jackson2ObjectMapperBuilder.build();
-    }
 
     public <T extends Serializable> void logCreation(T entity, Long id) {
         logAuditTrail(CREATE, entity.getClass(), id, entity, null, null, null);
