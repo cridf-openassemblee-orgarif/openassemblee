@@ -176,6 +176,7 @@ public class PublicDataWebservice {
                     .forEach(a -> commissionsStringBuilder.append("|").append(DELEGUES_SPECIAUX));
                 e.getAppartenancesCommissionsThematiques().stream()
                     .filter(a -> a.getDateFin() == null)
+                    .filter(a -> a.getCommissionThematique() != null)
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
                     .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().exportUid()));
                 d.setCommissions(IS_TEST_IMPORT ? EMPTY_STRING : commissionsStringBuilder.toString());
