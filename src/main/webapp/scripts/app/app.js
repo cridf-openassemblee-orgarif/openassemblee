@@ -280,9 +280,10 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
     return function (items, search) {
         var out = [];
         if (angular.isArray(items)) {
+            var token = search.toLowerCase().latinize();
             items.forEach(function (item) {
-                if ((item.nom != null && item.nom.toLowerCase().latinize().indexOf(search) === 0)
-                    || (item.prenom != null && item.prenom.toLowerCase().latinize().indexOf(search) === 0)) {
+                if ((item.nom != null && item.nom.toLowerCase().latinize().indexOf(token) === 0)
+                    || (item.prenom != null && item.prenom.toLowerCase().latinize().indexOf(token) === 0)) {
                     out.push(item);
                 }
             });
