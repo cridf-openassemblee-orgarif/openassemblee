@@ -240,7 +240,7 @@ public class CommissionThematiqueResource {
         CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
         List<List<String>> lines = new ArrayList<>();
         CommissionThematique ct = dto.getCommissionThematique();
-        lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt()));
+        lines.add(Arrays.asList(ct.getNom()));
         lines.add(new ArrayList<>());
         // FIXME si la CT est fermée ça n'apparait pas là!
         // TODO autre sheet ?

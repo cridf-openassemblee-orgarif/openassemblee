@@ -25,9 +25,6 @@ public class CommissionThematique implements Serializable {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "nom_court")
-    private String nomCourt;
-
     @Column(name = "date_debut")
     private LocalDate dateDebut;
 
@@ -54,14 +51,6 @@ public class CommissionThematique implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public String getNomCourt() {
-        return nomCourt;
-    }
-
-    public void setNomCourt(String nomCourt) {
-        this.nomCourt = nomCourt;
     }
 
     public LocalDate getDateDebut() {
@@ -122,7 +111,6 @@ public class CommissionThematique implements Serializable {
         return "CommissionThematique{" +
             "id=" + id +
             ", nom='" + nom + "'" +
-            ", nomCourt='" + nomCourt + "'" +
             ", dateDebut='" + dateDebut + "'" +
             ", dateFin='" + dateFin + "'" +
             ", motifFin='" + motifFin + "'" +

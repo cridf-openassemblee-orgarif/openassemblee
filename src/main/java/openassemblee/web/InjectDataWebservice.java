@@ -521,7 +521,6 @@ public class InjectDataWebservice {
     private CommissionThematique buildCommissionThematique(EnsembleDto e) {
         CommissionThematique ct = new CommissionThematique();
         ct.setNom(e.getLibLong());
-        ct.setNomCourt(e.getLibCourt());
         ct.setDateDebut(parseDate(e.getDateCreation()));
         ct.setDateFin(parseDate(e.getDateFin()));
         ct.setMotifFin(trimOrNull(e.getMotifFin()));

@@ -94,7 +94,7 @@ public class CommissionThematiqueService {
             int count = (int) acts.stream()
                 .filter(CommissionThematiqueService::isAppartenanceCourante)
                 .count();
-            lines.add(Arrays.asList(ct.getNom(), ct.getNomCourt(), count + " membres"));
+            lines.add(Arrays.asList(ct.getNom(), count + " membres"));
         }
         entries.add(new ExcelExportService.Entry("Commission thématiques", lines));
         cts.forEach(ct -> {
@@ -125,7 +125,7 @@ public class CommissionThematiqueService {
                 aLines.addAll(eluService.xlsEluLine(a.getElu(), eld.getGroupePolitique(), false));
                 ctLines.add(aLines);
             }
-            entries.add(new ExcelExportService.Entry(ct.getNomCourt() != null ? ct.getNomCourt() : ct.getNom(), ctLines));
+            entries.add(new ExcelExportService.Entry(ct.getNom(), ctLines));
         });
         return entries.toArray(new ExcelExportService.Entry[0]);
     }

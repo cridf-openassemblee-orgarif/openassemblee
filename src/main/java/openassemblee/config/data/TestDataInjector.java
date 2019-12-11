@@ -388,7 +388,6 @@ public class TestDataInjector {
     private CommissionThematique initCommissionThematique(String nom, String nomCourt) {
         CommissionThematique ct = new CommissionThematique();
         ct.setNom(nom);
-        ct.setNomCourt(nomCourt);
         ct.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
         return ct;
     }

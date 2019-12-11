@@ -446,7 +446,7 @@ public class PublicDataWebservice {
             EnsembleDto e = new EnsembleDto();
             e.setMandature(MANDATURE);
             e.setUidEnsemble(ct.exportUid());
-            e.setLibCourt(ct.getNomCourt());
+            e.setLibCourt("");
             e.setDateCreation(formatDate(ct.getDateDebut()));
             e.setType("commission");
             e.setTypeCommission("Thématique");

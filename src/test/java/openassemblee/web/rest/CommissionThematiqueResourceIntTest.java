@@ -4,19 +4,17 @@ import openassemblee.Application;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.repository.CommissionThematiqueRepository;
 import openassemblee.repository.search.CommissionThematiqueSearchRepository;
-
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.CommissionThematiqueService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -53,7 +52,6 @@ public class CommissionThematiqueResourceIntTest {
 
     private static final String DEFAULT_NOM = "AAAAA";
     private static final String UPDATED_NOM = "BBBBB";
-    private static final String DEFAULT_NOM_COURT = "AAAAA";
     private static final String UPDATED_NOM_COURT = "BBBBB";
 
     private static final LocalDate DEFAULT_DATE_DEBUT = LocalDate.ofEpochDay(0L);
@@ -103,7 +101,6 @@ public class CommissionThematiqueResourceIntTest {
     public void initTest() {
         commissionThematique = new CommissionThematique();
         commissionThematique.setNom(DEFAULT_NOM);
-        commissionThematique.setNomCourt(DEFAULT_NOM_COURT);
         commissionThematique.setDateDebut(DEFAULT_DATE_DEBUT);
         commissionThematique.setDateFin(DEFAULT_DATE_FIN);
         commissionThematique.setMotifFin(DEFAULT_MOTIF_FIN);
@@ -130,7 +127,6 @@ public class CommissionThematiqueResourceIntTest {
         assertThat(commissionThematiques).hasSize(databaseSizeBeforeCreate + 1);
         CommissionThematique testCommissionThematique = commissionThematiques.get(commissionThematiques.size() - 1);
         assertThat(testCommissionThematique.getNom()).isEqualTo(DEFAULT_NOM);
-        assertThat(testCommissionThematique.getNomCourt()).isEqualTo(DEFAULT_NOM_COURT);
         assertThat(testCommissionThematique.getDateDebut()).isEqualTo(DEFAULT_DATE_DEBUT);
         assertThat(testCommissionThematique.getDateFin()).isEqualTo(DEFAULT_DATE_FIN);
         assertThat(testCommissionThematique.getMotifFin()).isEqualTo(DEFAULT_MOTIF_FIN);
@@ -148,7 +144,6 @@ public class CommissionThematiqueResourceIntTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(commissionThematique.getId().intValue())))
                 .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM.toString())))
-                .andExpect(jsonPath("$.[*].nomCourt").value(hasItem(DEFAULT_NOM_COURT.toString())))
                 .andExpect(jsonPath("$.[*].dateDebut").value(hasItem(DEFAULT_DATE_DEBUT.toString())))
                 .andExpect(jsonPath("$.[*].dateFin").value(hasItem(DEFAULT_DATE_FIN.toString())))
                 .andExpect(jsonPath("$.[*].motifFin").value(hasItem(DEFAULT_MOTIF_FIN.toString())));
@@ -166,7 +161,6 @@ public class CommissionThematiqueResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.commissionThematique.id").value(commissionThematique.getId().intValue()))
             .andExpect(jsonPath("$.commissionThematique.nom").value(DEFAULT_NOM.toString()))
-            .andExpect(jsonPath("$.commissionThematique.nomCourt").value(DEFAULT_NOM_COURT.toString()))
             .andExpect(jsonPath("$.commissionThematique.dateDebut").value(DEFAULT_DATE_DEBUT.toString()))
             .andExpect(jsonPath("$.commissionThematique.dateFin").value(DEFAULT_DATE_FIN.toString()))
             .andExpect(jsonPath("$.commissionThematique.motifFin").value(DEFAULT_MOTIF_FIN.toString()));
@@ -190,7 +184,6 @@ public class CommissionThematiqueResourceIntTest {
 
         // Update the commissionThematique
         commissionThematique.setNom(UPDATED_NOM);
-        commissionThematique.setNomCourt(UPDATED_NOM_COURT);
         commissionThematique.setDateDebut(UPDATED_DATE_DEBUT);
         commissionThematique.setDateFin(UPDATED_DATE_FIN);
         commissionThematique.setMotifFin(UPDATED_MOTIF_FIN);
@@ -205,7 +198,6 @@ public class CommissionThematiqueResourceIntTest {
         assertThat(commissionThematiques).hasSize(databaseSizeBeforeUpdate);
         CommissionThematique testCommissionThematique = commissionThematiques.get(commissionThematiques.size() - 1);
         assertThat(testCommissionThematique.getNom()).isEqualTo(UPDATED_NOM);
-        assertThat(testCommissionThematique.getNomCourt()).isEqualTo(UPDATED_NOM_COURT);
         assertThat(testCommissionThematique.getDateDebut()).isEqualTo(UPDATED_DATE_DEBUT);
         assertThat(testCommissionThematique.getDateFin()).isEqualTo(UPDATED_DATE_FIN);
         assertThat(testCommissionThematique.getMotifFin()).isEqualTo(UPDATED_MOTIF_FIN);

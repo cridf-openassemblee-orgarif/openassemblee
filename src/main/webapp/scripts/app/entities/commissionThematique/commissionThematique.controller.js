@@ -24,7 +24,6 @@ angular.module('openassembleeApp')
         $scope.clear = function () {
             $scope.commissionThematique = {
                 nom: null,
-                nomCourt: null,
                 dateDebut: null,
                 dateFin: null,
                 motifFin: null,

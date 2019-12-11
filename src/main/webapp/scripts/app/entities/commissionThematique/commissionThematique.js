@@ -32,7 +32,6 @@ angular.module('openassembleeApp')
                             entity: function () {
                                 return {
                                     nom: null,
-                                    nomCourt: null,
                                     dateDebut: null,
                                     dateFin: null,
                                     motifFin: null,
