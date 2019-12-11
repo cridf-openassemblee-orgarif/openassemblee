@@ -356,6 +356,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerAppartenanceGroupePolitique', {
+                parent: 'elu.detail',
+                url: '/appartenance-groupe-politique/{appartenanceId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceGroupePolitique/appartenanceGroupePolitique-delete-dialog.html',
+                        controller: 'AppartenanceGroupePolitiqueDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.appartenanceId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.autreMandat', {
                 parent: 'elu.detail',
                 url: '/autre-mandat',
