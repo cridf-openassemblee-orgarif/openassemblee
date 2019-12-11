@@ -3,7 +3,7 @@
         <h3 class="box-title"><i class="fa fa-bookmark"></i> Groupe politique</h3>
     </div>
     <div class="box-body">
-        <div class="info-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+        <div class="unit-bloc info-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
              ng-if="a.dateFin == null">
             <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
                 <edit-button ui-sref="elu.detail.editAppartenanceGroupePolitique({appartenanceId: a.id})"></edit-button>
