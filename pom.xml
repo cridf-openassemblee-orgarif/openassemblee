@@ -59,6 +59,7 @@
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <springfox.version>2.0.3</springfox.version>
+        <mysql.connector.version>8.0.18</mysql.connector.version>
     </properties>
 
     <dependencies>
@@ -215,6 +216,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
