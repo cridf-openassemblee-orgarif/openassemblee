@@ -14,9 +14,12 @@
             <br/>
             <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}</span>
         </div>
-        <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
-             ng-if="f.dateFin == null"
-             ui-sref="elu.detail.editFonctionGroupePolitique({fonctionId: f.id})">
+        <div class="unit-bloc info-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+             ng-if="f.dateFin == null">
+            <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                <edit-button ui-sref="elu.detail.editFonctionGroupePolitique({fonctionId: f.id})"></edit-button>
+                <delete-button ui-sref="elu.detail.supprimerFonctionGroupePolitique({fonctionId: f.id})"></delete-button>
+            </div>
             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
             {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
             <br/>

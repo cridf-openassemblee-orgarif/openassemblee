@@ -532,6 +532,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerFonctionGroupePolitique', {
+                parent: 'elu.detail',
+                url: '/fonction-groupe-politique/{fonctionId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionGroupePolitique/fonctionGroupePolitique-delete-dialog.html',
+                        controller: 'FonctionGroupePolitiqueDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.fonctionId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterCommissionThematique', {
                 parent: 'elu.detail',
                 url: '/ajouter-commission-thematique',
