@@ -254,6 +254,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerFonctionCommissionPermanente', {
+                parent: 'elu.detail',
+                url: '/fonction-commission-permanente/{fonctionId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionCommissionPermanente/fonctionCommissionPermanente-delete-dialog.html',
+                        controller: 'FonctionCommissionPermanenteDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.fonctionId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterCommissionPermanente', {
                 parent: 'elu.detail',
                 url: '/ajouter-commission-permanente',
@@ -301,6 +326,31 @@ angular.module('openassembleeApp')
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.supprimerAppartenanceCommissionPermanente', {
+                parent: 'elu.detail',
+                url: '/appartenance-commission-permanente/{fonctionId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionPermanente/appartenanceCommissionPermanente-delete-dialog.html',
+                        controller: 'AppartenanceCommissionPermanenteDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.fonctionId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
                         $state.go('^');
                     })
                 }]

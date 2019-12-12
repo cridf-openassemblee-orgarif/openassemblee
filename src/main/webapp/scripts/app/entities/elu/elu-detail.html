@@ -29,19 +29,25 @@
                                 <span class="lg">Élu non actif, cause :</span> {{dto.elu.motifDemission}}
                                 <span class="lg">depuis le</span> {{dto.elu.dateDemission | date:'mediumDate'}}
                             </div>
-                            <br />
+                            <br/>
                             <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
-                                  ng-if="f.dateFin == null">
-                                <div class="action-bloc"
-                                     ui-sref="elu.detail.editFonctionCommissionPermanente({fonctionId: f.id})">
+                                 ng-if="f.dateFin == null">
+                                <div class="action-bloc info-bloc">
+                                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                                        <edit-button ui-sref="elu.detail.editFonctionCommissionPermanente({fonctionId: f.id})"></edit-button>
+                                        <delete-button ui-sref="elu.detail.supprimerFonctionCommissionPermanente({fonctionId: f.id})"></delete-button>
+                                    </div>
                                     <span class="lg">Fonction :</span> {{f.fonction}}
                                     <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                             <div ng-repeat="f in dto.elu.fonctionsExecutives"
                                  ng-if="f.dateFin == null">
-                                <div class="action-bloc"
-                                     ui-sref="elu.detail.editFonctionExecutive({fonctionId: f.id})">
+                                <div class="action-bloc info-bloc">
+                                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                                        <edit-button ui-sref="elu.detail.editFonctionExecutive({fonctionId: f.id})"></edit-button>
+                                        <delete-button ui-sref="elu.detail.supprimerFonctionExecutive({fonctionId: f.id})"></delete-button>
+                                    </div>
                                     <span class="lg">Fonction exécutive :</span> {{f.fonction}}
                                     <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
                                 </div>
@@ -69,19 +75,19 @@
                                         Éditer
                                     </a>
                                 </li>
-                                <li >
+                                <li>
                                     <a href="#"
                                        ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
                                         Ajouter une fonction (délégué etc.)
                                     </a>
                                 </li>
-                                <li >
+                                <li>
                                     <a href="#"
                                        ui-sref="elu.detail.nouvelleFonctionExecutive">
                                         Ajouter une fonction exécutive
                                     </a>
                                 </li>
-                                <li >
+                                <li>
                                     <a href="#"
                                        ui-sref="elu.detail.ajoutDistinctionHonorifique">
                                         Ajouter une distinction honorifique
