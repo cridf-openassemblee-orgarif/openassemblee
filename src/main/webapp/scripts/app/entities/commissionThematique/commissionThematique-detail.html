@@ -16,10 +16,10 @@
                                 <span class="lg">Nom court</span> {{dto.commissionThematique.nomCourt}}
                             </div>
                             <div>
-                                <span class="lg">Date de début</span> {{dto.commissionThematique.dateDebut}}
+                                <span class="lg">Date de début</span> {{dto.commissionThematique.dateDebut | date:'mediumDate'}}
                             </div>
                             <div ng-if="dto.commissionThematique.dateFin">
-                                <span class="lg">Dissolu le</span> {{dto.commissionThematique.dateFin}}
+                                <span class="lg">Dissolu le</span> {{dto.commissionThematique.dateFin | date:'mediumDate'}}
                                 <span class="lg">pour le motif suivant :</span> {{dto.commissionThematique.motifFin}}
                             </div>
                         </span>
@@ -79,7 +79,7 @@
                         <span
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                 <div class="info-box-info">
-                                    <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut}}
+                                    <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                 <div class="info-box-info">
                                     {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
-                                    {{a.fonctionCommissionThematique.dateDebut}}
+                                    {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                         <span
                                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                         <div class="info-box-info">
-                                            <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut}}
+                                            <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                         <div class="info-box-info">
                                             {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
-                                            {{a.fonctionCommissionThematique.dateDebut}}
+                                            {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>

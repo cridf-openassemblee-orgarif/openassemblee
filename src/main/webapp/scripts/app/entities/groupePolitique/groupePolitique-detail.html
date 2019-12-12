@@ -16,10 +16,10 @@
                                 <span class="lg">Nom court</span> {{dto.groupePolitique.nomCourt}}
                             </div>
                             <div>
-                                <span class="lg">Date de début</span> {{dto.groupePolitique.dateDebut}}
+                                <span class="lg">Date de début</span> {{dto.groupePolitique.dateDebut | date:'mediumDate'}}
                             </div>
                             <div ng-if="dto.groupePolitique.dateFin">
-                                <span class="lg">Dissolu le</span> {{dto.groupePolitique.dateFin}}
+                                <span class="lg">Dissolu le</span> {{dto.groupePolitique.dateFin | date:'mediumDate'}}
                                 <span class="lg">pour le motif suivant :</span> {{dto.groupePolitique.motifFin}}
                             </div>
                             <div>
@@ -84,7 +84,7 @@
                         <span
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                 <div class="info-box-info">
-                                    <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut}}
+                                    <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                 <div class="info-box-info">
                                     {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
-                                    {{a.fonctionGroupePolitique.dateDebut}}
+                                    {{a.fonctionGroupePolitique.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                         <span
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                         <div class="info-box-info">
-                                            <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut}}
+                                            <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                         <div class="info-box-info">
                                             {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
-                                            {{a.fonctionGroupePolitique.dateDebut}}
+                                            {{a.fonctionGroupePolitique.dateDebut | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>

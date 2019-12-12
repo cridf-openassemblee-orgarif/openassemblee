@@ -10,7 +10,7 @@
                  ui-sref="elu.detail.editAppartenanceCommissionThematique({appartenanceId: a.id})">
                 {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
                 <br/>
-                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+                <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}</span>
             </div>
             <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
                  ng-if="f.dateFin == null"
@@ -18,7 +18,7 @@
                 <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
                 {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
                 <br/>
-                <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+                <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut | date:'mediumDate'}}</span>
             </div>
             <div class="unit-bloc" ng-if="!eluACommissionThematiqueOuFonction">
                 Aucune commission thématique

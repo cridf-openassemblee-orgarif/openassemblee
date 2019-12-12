@@ -35,7 +35,7 @@
                 <tr ng-repeat="distinctionHonorifique in distinctionHonorifiques track by distinctionHonorifique.id">
                     <td><a ui-sref="distinctionHonorifique.detail({id:distinctionHonorifique.id})">{{distinctionHonorifique.id}}</a></td>
                     <td>{{distinctionHonorifique.titre}}</td>
-                    <td>{{distinctionHonorifique.date}}</td>
+                    <td>{{distinctionHonorifique.date | date:'mediumDate'}}</td>
                     <td>
                         <a ui-sref="elu.detail({id:distinctionHonorifique.elu.id})">{{distinctionHonorifique.elu.id}}</a>
                     </td>

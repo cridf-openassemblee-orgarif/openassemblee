@@ -45,8 +45,8 @@
                                     class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
                                     <span class="info-box-info fonction">{{f.fonction}}</span>
                                     <div class="info-box-info">
-                                        Depuis le {{f.dateDebut}}
-                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
+                                        Depuis le {{f.dateDebut | date:'mediumDate'}}
+                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :
                                             {{f.motifFin}}
                                         </div>
                                     </div>
@@ -75,8 +75,8 @@
                                     class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
                                     <span class="info-box-info fonction">{{f.fonction}}</span>
                                     <div class="info-box-info">
-                                        Depuis le {{f.dateDebut}}
-                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin}} pour le motif suivant :
+                                        Depuis le {{f.dateDebut | date:'mediumDate'}}
+                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :
                                             {{f.motifFin}}
                                         </div>
                                     </div>

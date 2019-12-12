@@ -13,17 +13,17 @@
                     <div class="info-box-content-elu">
                         <span class="info-box-info-elu">
                             <div>
-                                <span class="lg">{{dto.elu.civilite | neOuNee}} le</span> {{dto.elu.dateNaissance}}
-                                <span class="lg">à</span> {{dto.elu.lieuNaissance}}
+                                <span class="lg">{{dto.elu.civilite | neOuNee}} le</span> {{dto.elu.dateNaissance | date:'mediumDate'}}
+                                <span class="lg" ng-if="dto.elu.lieuNaissance && dto.elu.lieuNaissance !== ''">à</span> {{dto.elu.lieuNaissance}}
                             </div>
                             <div ng-if="dto.elu.nomJeuneFille">
                                 <span class="lg">Nom de jeune fille</span> {{dto.elu.nomJeuneFille}}
                             </div>
                             <div>
-                                <span class="lg">Profession</span> {{dto.elu.profession}}
+                                <span class="lg">Profession :</span> {{dto.elu.profession}}
                             </div>
                             <div>
-                                <span class="lg">Département</span> {{dto.elu.departement}}
+                                <span class="lg">Département :</span> {{dto.elu.departement}}
                             </div>
                             <div ng-if="dto.elu.dateDemission || dto.elu.motifDemission">
                                 <span class="lg">Élu non actif, cause :</span> {{dto.elu.motifDemission}}
@@ -34,16 +34,16 @@
                                   ng-if="f.dateFin == null">
                                 <div class="action-bloc"
                                      ui-sref="elu.detail.editFonctionCommissionPermanente({fonctionId: f.id})">
-                                    <span class="grey">Fonction :</span> {{f.fonction}}
-                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <span class="lg">Fonction :</span> {{f.fonction}}
+                                    <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                             <div ng-repeat="f in dto.elu.fonctionsExecutives"
                                  ng-if="f.dateFin == null">
                                 <div class="action-bloc"
                                      ui-sref="elu.detail.editFonctionExecutive({fonctionId: f.id})">
-                                    <span class="grey">Fonction exécutive :</span> {{f.fonction}}
-                                    <span class="grey">depuis le</span> {{f.dateDebut}}
+                                    <span class="lg">Fonction exécutive :</span> {{f.fonction}}
+                                    <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
                             <br/>
@@ -52,7 +52,7 @@
                                      ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})">
                                     <span class="lg">Titre :</span> {{d.titre}}
                                     <br/>
-                                    <span class="lg">Date :</span> {{d.date}}
+                                    <span class="lg">Date :</span> {{d.date | date:'mediumDate'}}
                                     <i class="fa fa-pencil"></i>
                                 </div>
                             </div>

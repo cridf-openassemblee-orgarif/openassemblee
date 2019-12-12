@@ -9,7 +9,7 @@
             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
             <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
             <br/>
-            <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut}}</span>
+            <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}</span>
         </div>
         <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
              ng-if="f.dateFin == null"
@@ -17,7 +17,7 @@
             <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
             {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
             <br/>
-            <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut}}</span>
+            <span class="lg"><span class="grey">Depuis le</span> {{f.dateDebut | date:'mediumDate'}}</span>
         </div>
         <div class="unit-bloc" ng-if="!eluAGroupePolitiqueOuFonction">
             Aucun groupe politique
