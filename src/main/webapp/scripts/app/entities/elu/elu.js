@@ -16,7 +16,11 @@ angular.module('openassembleeApp')
                         controller: 'EluController'
                     }
                 },
-                resolve: {}
+                resolve: {
+                    entity: ['Elu', function (Elu) {
+                        return Elu.query();
+                    }]
+                }
             })
             .state('elu.new', {
                 parent: 'elu',

@@ -26,56 +26,57 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="comm.fonctionsExecutives.length">
-                <h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>
-                <div class="row" ng-init="chunks = _.chunk(comm.fonctionsExecutives, 3)">
+            <!--            attention pas bon faire le filtre cote controller -->
+            <!--            <div ng-if="comm.fonctionsExecutives.length">-->
+            <!--                <h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>-->
+            <!--                <div class="row" ng-init="chunks = _.chunk(comm.fonctionsExecutives, 3)">-->
+            <!--                    <div class="col-md-12 col-sm-12 col-xs-12"-->
+            <!--                         ng-repeat="fonctionsExecutives in chunks">-->
+            <!--                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctionsExecutives"-->
+            <!--                             ng-if="f.dateFin == null">-->
+            <!--                            <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"-->
+            <!--                                 ui-sref="elu.detail({id:elu.id})">-->
+            <!--                                <span class="info-box-photo">-->
+            <!--                                    <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>-->
+            <!--                                </span>-->
+
+            <!--                                <div class="info-box-content">-->
+            <!--                                <span-->
+            <!--                                    class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>-->
+            <!--                                    <span class="info-box-info fonction">{{f.fonction}}</span>-->
+            <!--                                    <div class="info-box-info">-->
+            <!--                                        Depuis le {{f.dateDebut | date:'mediumDate'}}-->
+            <!--                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :-->
+            <!--                                            {{f.motifFin}}-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--<hr class="commission-permanente-separator"/>-->
+            <div ng-if="appartenances.length">
+                <h2 class="commission-permanente-titre">Les membres de la commission</h2>
+
+                <div class="row" ng-init="chunks = _.chunk(appartenances, 3)">
                     <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="fonctionsExecutives in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctionsExecutives"
-                             ng-if="f.dateFin == null">
-                            <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
+                         ng-repeat="appartenances in chunks">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in appartenances">
+                            <div class="info-box entity-component" ng-init="elu = comm.elus[a.elu.id]"
                                  ui-sref="elu.detail({id:elu.id})">
                                 <span class="info-box-photo">
                                     <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
                                 </span>
 
                                 <div class="info-box-content">
-                                <span
-                                    class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                                    <span class="info-box-info fonction">{{f.fonction}}</span>
-                                    <div class="info-box-info">
-                                        Depuis le {{f.dateDebut | date:'mediumDate'}}
-                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :
-                                            {{f.motifFin}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--<hr class="commission-permanente-separator"/>-->
-            <div ng-if="comm.appartenances.length">
-                <h2 class="commission-permanente-titre">Les membres de la commission</h2>
-
-                <div class="row" ng-init="chunks = _.chunk(comm.appartenances, 3)">
-                    <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="appartenances in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in appartenances"
-                             ng-if="a.dateFin == null">
-                            <div class="info-box entity-component" ng-init="elu = comm.elus[a.elu.id]"
-                                 ui-sref="elu.detail({id:elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
-                        </span>
-
-                                <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
+                                    <span
+                                        class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
                                     <div class="info-box-info">
                                         Depuis le {{a.dateDebut | date:'mediumDate'}}
-                                        <div ng-if="a.dateFin">Prend fin le {{a.dateFin | date:'mediumDate'}} pour le motif suivant :
+                                        <div ng-if="a.dateFin">Prend fin le {{a.dateFin | date:'mediumDate'}} pour le
+                                            motif suivant :
                                             {{a.motifFin}}
                                         </div>
                                     </div>
@@ -87,33 +88,33 @@
             </div>
 
             <!--<div ng-if="comm.fonctions.length">-->
-                <!--<h2>Les élus ayant une fonction à la commission</h2>-->
-                <!--<div class="row" ng-init="chunks = _.chunk(comm.fonctions, 3)">-->
-                    <!--<div class="col-md-12 col-sm-12 col-xs-12"-->
-                         <!--ng-repeat="fonctions in chunks">-->
-                        <!--<div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctions"-->
-                             <!--ng-if="f.dateFin == null">-->
-                            <!--<div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"-->
-                                 <!--ui-sref="elu.detail({id:elu.id})">-->
-                                <!--<span class="info-box-photo">-->
-                                    <!--<img ng-if="elu.image" ng-src="images/{{elu.image}}"/>-->
-                                <!--</span>-->
+            <!--<h2>Les élus ayant une fonction à la commission</h2>-->
+            <!--<div class="row" ng-init="chunks = _.chunk(comm.fonctions, 3)">-->
+            <!--<div class="col-md-12 col-sm-12 col-xs-12"-->
+            <!--ng-repeat="fonctions in chunks">-->
+            <!--<div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctions"-->
+            <!--ng-if="f.dateFin == null">-->
+            <!--<div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"-->
+            <!--ui-sref="elu.detail({id:elu.id})">-->
+            <!--<span class="info-box-photo">-->
+            <!--<img ng-if="elu.image" ng-src="images/{{elu.image}}"/>-->
+            <!--</span>-->
 
-                                <!--<div class="info-box-content">-->
-                                <!--<span-->
-                                    <!--class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>-->
-                                    <!--<span class="info-box-info fonction">{{f.fonction}}</span>-->
-                                    <!--<div class="info-box-info">-->
-                                        <!--Depuis le {{f.dateDebut | date:'mediumDate'}}-->
-                                        <!--<div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :-->
-                                            <!--{{f.motifFin}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="info-box-content">-->
+            <!--<span-->
+            <!--class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>-->
+            <!--<span class="info-box-info fonction">{{f.fonction}}</span>-->
+            <!--<div class="info-box-info">-->
+            <!--Depuis le {{f.dateDebut | date:'mediumDate'}}-->
+            <!--<div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :-->
+            <!--{{f.motifFin}}-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
         </div>
     </section>

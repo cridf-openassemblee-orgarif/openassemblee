@@ -1,34 +1,23 @@
 'use strict';
 
 angular.module('openassembleeApp')
-    .controller('EluController', function ($scope, $state, $modal, Elu, EluSearch) {
+.controller('EluController', function ($scope, entity) {
 
-        $scope.dtos = [];
-        $scope.loadAll = function () {
-            Elu.query(function (dtos) {
-                $scope.dtos = dtos;
-                $scope.nombreElus = dtos.filter(function(dto) { return !dto.elu.dateDemission }).length
+    $scope.dtos = entity;
+    $scope.elus = [];
+    $scope.anciens = [];
+
+    $scope.$watch('dtos', function () {
+        $scope.dtos.$promise.then(function (dtos) {
+            // simpler de faire le chunks ici à cause de la promesse, et fait qu'on recup directement le array
+            $scope.elus = dtos.filter(function (dto) {
+                return !dto.elu.dateDemission
             });
-        };
-        $scope.loadAll();
-
-        $scope.refresh = function () {
-            $scope.loadAll();
-            $scope.clear();
-        };
-
-        $scope.clear = function () {
-            $scope.elu = {
-                civilite: null,
-                nom: null,
-                prenom: null,
-                nomJeuneFille: null,
-                profession: null,
-                dateNaissance: null,
-                lieuNaissance: null,
-                motifDemission: null,
-                dateDemission: null,
-                id: null
-            };
-        };
+            $scope.nombreElus = $scope.elus.length;
+            $scope.anciens = dtos.filter(function (dto) {
+                return dto.elu.dateDemission
+            });
+        });
     });
+
+});

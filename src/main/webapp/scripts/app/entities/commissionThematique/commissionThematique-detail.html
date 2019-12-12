@@ -58,25 +58,31 @@
         </div>
         <div class="container">
             <h2 class="col-md-12"
-                ng-if="!dto.appartenanceCommissionThematiqueDTOs.length && !dto.fonctionCommissionThematiqueDTOs.length">
+                ng-if="!appartenances.length && !fonctions.length">
                 Aucun élu dans la commission thématique
             </h2>
-            <div class="col-md-12" ng-if="dto.appartenanceCommissionThematiqueDTOs.length">
+            <div class="col-md-12" ng-if="appartenances.length">
                 <h2>Les élus dans la commission</h2>
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs | orderBy:'elu.nom'"
-                         ng-if="a.appartenanceCommissionThematique.dateFin == null">
-                        <div class="info-box entity-component"
-                             ui-sref="elu.detail({id:a.elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                        </span>
+                <div class="row" ng-init="chunks = _.chunk(appartenances, 3)">
+                    <div class="col-md-12 col-sm-12 col-xs-12"
+                         ng-repeat="aChunks in chunks">
+                        <div class="col-md-4 col-sm-6 col-xs-12"
+                             ng-repeat="a in aChunks | orderBy:'elu.nom'"
+                             ng-if="a.appartenanceCommissionThematique.dateFin == null">
+                            <div class="info-box entity-component"
+                                 ui-sref="elu.detail({id:a.elu.id})">
+                                <span class="info-box-photo">
+                                    <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                </span>
 
-                            <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                <div class="info-box-info">
-                                    <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut | date:'mediumDate'}}
+                                <div class="info-box-content">
+                                    <span
+                                        class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                    <div class="info-box-info">
+                                        <span class="grey">Depuis le</span>
+                                        {{a.appartenanceCommissionThematique.dateDebut |
+                                        date:'mediumDate'}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,23 +90,26 @@
                 </div>
             </div>
 
-            <div class="col-md-12" ng-if="dto.fonctionCommissionThematiqueDTOs.length">
+            <div class="col-md-12" ng-if="fonctions.length">
                 <h2>Les élus en fonction dans la commission</h2>
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs | orderBy:'elu.nom'"
-                         ng-if="a.fonctionCommissionThematique.dateFin == null">
-                        <div class="info-box entity-component"
-                             ui-sref="elu.detail({id:a.elu.id})">
-                        <span class="info-box-photo">
-                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                        </span>
+                <div class="row" ng-init="chunks = _.chunk(fonctions, 3)">
+                    <div class="col-md-12 col-sm-12 col-xs-12"
+                         ng-repeat="aChunks in chunks">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks | orderBy:'elu.nom'">
+                            <div class="info-box entity-component"
+                                 ui-sref="elu.detail({id:a.elu.id})">
+                                <span class="info-box-photo">
+                                    <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                </span>
 
-                            <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                <div class="info-box-info">
-                                    {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
-                                    {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
+                                <div class="info-box-content">
+                                    <span
+                                        class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                    <div class="info-box-info">
+                                        {{a.fonctionCommissionThematique.fonction}} <span
+                                        class="grey">depuis le</span>
+                                        {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,41 +130,52 @@
                     </div>
                     <div class="box-body" style="display: none;">
                         <h2>Anciens élus</h2>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.appartenanceCommissionThematiqueDTOs | orderBy:'elu.nom'"
-                                 ng-if="a.appartenanceCommissionThematique.dateFin != null">
-                                <div class="info-box entity-component"
-                                     ui-sref="elu.detail({id:a.elu.id})">
-                                    <span class="info-box-photo">
-                                        <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                                    </span>
+                        <div class="row" ng-init="chunks = _.chunk(appartenancesAnciens, 3)"
+                             ng-if="appartenancesAnciens.length">
+                            <div class="col-md-12 col-sm-12 col-xs-12"
+                                 ng-repeat="aChunks in chunks">
+                                <div class="col-md-4 col-sm-6 col-xs-12"
+                                     ng-repeat="a in aChunks | orderBy:'elu.nom'">
+                                    <div class="info-box entity-component"
+                                         ui-sref="elu.detail({id:a.elu.id})">
+                                            <span class="info-box-photo">
+                                                <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                            </span>
 
-                                    <div class="info-box-content">
+                                        <div class="info-box-content">
                                         <span
                                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                        <div class="info-box-info">
-                                            <span class="grey">Depuis le</span> {{a.appartenanceCommissionThematique.dateDebut | date:'mediumDate'}}
+                                            <div class="info-box-info">
+                                                <span class="grey">Depuis le</span>
+                                                {{a.appartenanceCommissionThematique.dateDebut |
+                                                date:'mediumDate'}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <h2>Anciens élus en fonction</h2>
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in dto.fonctionCommissionThematiqueDTOs | orderBy:'elu.nom'"
-                                 ng-if="a.fonctionCommissionThematique.dateFin != null">
-                                <div class="info-box entity-component"
-                                     ui-sref="elu.detail({id:a.elu.id})">
+                        <div class="row" ng-init="chunks = _.chunk(fonctionsAnciens, 3)"
+                             ng-if="fonctionsAnciens.length">
+                            <div class="col-md-12 col-sm-12 col-xs-12"
+                                 ng-repeat="aChunks in chunks">
+                                <div class="col-md-4 col-sm-6 col-xs-12"
+                                     ng-repeat="a in aChunks | orderBy:'elu.nom'">
+                                    <div class="info-box entity-component"
+                                         ui-sref="elu.detail({id:a.elu.id})">
                                     <span class="info-box-photo">
                                         <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
                                     </span>
 
-                                    <div class="info-box-content">
+                                        <div class="info-box-content">
                                         <span
                                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                        <div class="info-box-info">
-                                            {{a.fonctionCommissionThematique.fonction}} <span class="grey">depuis le</span>
-                                            {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
+                                            <div class="info-box-info">
+                                                {{a.fonctionCommissionThematique.fonction}} <span
+                                                class="grey">depuis le</span>
+                                                {{a.fonctionCommissionThematique.dateDebut | date:'mediumDate'}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

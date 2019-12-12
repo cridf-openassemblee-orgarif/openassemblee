@@ -9,10 +9,10 @@
     <!-- Main content -->
     <section class="content">
         <div class="container">
-            <h2 ng-if="!comm.appartenances.length && !comm.fonctionsExecutives.length">
+            <h2 ng-if="!fonctions.length && !fonctionsExecutives.length">
                 Aucun membre à la commission permanente
             </h2>
-            <div ng-if="comm.appartenances.length || comm.fonctionsExecutives.length" has-authority="ROLE_ADMIN">
+            <div ng-if="fonctions.length || fonctionsExecutives.length" has-authority="ROLE_ADMIN">
                 <div class="row">
                     <div class="col-md-12 align-right">
                         <a class="btn btn-sm btn-primary" href="api/executif/export">
@@ -26,10 +26,10 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="comm.fonctionsExecutives.length">
+            <div ng-if="fonctionsExecutives.length">
                 <br />
                 <!--<h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>-->
-                <div class="row" ng-init="chunks = _.chunk(comm.fonctionsExecutives, 3)">
+                <div class="row" ng-init="chunks = _.chunk(fonctionsExecutives, 3)">
                     <div class="col-md-12 col-sm-12 col-xs-12"
                          ng-repeat="fonctionsExecutives in chunks">
                         <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctionsExecutives"
@@ -57,9 +57,9 @@
                 </div>
             </div>
             <hr class="commission-permanente-separator"/>
-            <div ng-if="comm.fonctions.length">
+            <div ng-if="fonctions.length">
                 <!--<h2>Les élus ayant une fonction à la commission</h2>-->
-                <div class="row" ng-init="chunks = _.chunk(comm.fonctions, 3)">
+                <div class="row" ng-init="chunks = _.chunk(fonctions, 3)">
                     <div class="col-md-12 col-sm-12 col-xs-12"
                          ng-repeat="fonctions in chunks">
                         <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctions"
