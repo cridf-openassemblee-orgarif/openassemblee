@@ -1,9 +1,11 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.DistinctionHonorifique;
 import openassemblee.repository.DistinctionHonorifiqueRepository;
 import openassemblee.repository.search.DistinctionHonorifiqueSearchRepository;
+import openassemblee.service.AuditTrailService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,9 @@ public class DistinctionHonorifiqueResource {
     @Inject
     private DistinctionHonorifiqueSearchRepository distinctionHonorifiqueSearchRepository;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /distinctionHonorifiques -> Create a new distinctionHonorifique.
      */
@@ -52,6 +57,7 @@ public class DistinctionHonorifiqueResource {
         }
         DistinctionHonorifique result = distinctionHonorifiqueRepository.save(distinctionHonorifique);
         distinctionHonorifiqueSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/distinctionHonorifiques/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("distinctionHonorifique", result.getId().toString()))
             .body(result);
@@ -71,6 +77,7 @@ public class DistinctionHonorifiqueResource {
         }
         DistinctionHonorifique result = distinctionHonorifiqueRepository.save(distinctionHonorifique);
         distinctionHonorifiqueSearchRepository.save(distinctionHonorifique);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("distinctionHonorifique", distinctionHonorifique.getId().toString()))
             .body(result);
@@ -115,6 +122,7 @@ public class DistinctionHonorifiqueResource {
         log.debug("REST request to delete DistinctionHonorifique : {}", id);
         distinctionHonorifiqueRepository.delete(id);
         distinctionHonorifiqueSearchRepository.delete(id);
+        auditTrailService.logDeletion(DistinctionHonorifique.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("distinctionHonorifique", id.toString())).build();
     }
 

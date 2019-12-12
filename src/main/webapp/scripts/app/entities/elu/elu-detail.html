@@ -54,12 +54,14 @@
                             </div>
                             <br/>
                             <div ng-repeat="d in dto.elu.distinctionHonorifiques">
-                                <div class="action-bloc"
-                                     ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})">
+                                <div class="action-bloc info-bloc">
+                                     <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                                        <edit-button ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})"></edit-button>
+                                        <delete-button ui-sref="elu.detail.supprimerDistinctionHonorifique({distinctionHonorifiqueId: d.id})"></delete-button>
+                                    </div>
                                     <span class="lg">Titre :</span> {{d.titre}}
                                     <br/>
                                     <span class="lg">Date :</span> {{d.date | date:'mediumDate'}}
-                                    <i class="fa fa-pencil"></i>
                                 </div>
                             </div>
                         </span>
