@@ -30,10 +30,9 @@
                             </button>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a href="#" ui-sref="commissionThematique.detail.fin"
-                                       ng-if="dto.commissionThematique.dateFin==undefined">
+                                    <a href="#" ui-sref="commissionThematique.edit({id: dto.commissionThematique.id})">
                                         <span class="fa fa-pencil"></span>
-                                        Fixer une date et un motif de fin
+                                        Éditer
                                     </a>
                                 </li>
                                 <li>
@@ -48,6 +47,12 @@
                                        ng-href="api/commissionThematiques/{{dto.commissionThematique.id}}/export-pdf">
                                         <span class="fa fa-file-text"></span>
                                         <span>Export PDF</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" ui-sref="commissionThematique.delete({id: dto.commissionThematique.id})">
+                                        <span class="fa fa-times"></span>
+                                        Supprimer
                                     </a>
                                 </li>
                             </ul>
@@ -147,8 +152,7 @@
                                             class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
                                             <div class="info-box-info">
                                                 <span class="grey">Depuis le</span>
-                                                {{a.appartenanceCommissionThematique.dateDebut |
-                                                date:'mediumDate'}}
+                                                {{a.appartenanceCommissionThematique.dateDebut | date:'mediumDate'}}
                                             </div>
                                         </div>
                                     </div>

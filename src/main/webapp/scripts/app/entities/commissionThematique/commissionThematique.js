@@ -65,8 +65,8 @@ angular.module('openassembleeApp')
                 }
             })
             .state('commissionThematique.edit', {
-                parent: 'commissionThematique',
-                url: '/{id}/edit',
+                parent: 'commissionThematique.detail',
+                url: '/edit',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
@@ -81,15 +81,15 @@ angular.module('openassembleeApp')
                             }]
                         }
                     }).result.then(function (result) {
-                        $state.go('commissionThematique', null, {reload: true});
+                        $state.go('^', null, {reload: true});
                     }, function () {
                         $state.go('^');
                     })
                 }]
             })
             .state('commissionThematique.delete', {
-                parent: 'commissionThematique',
-                url: '/{id}/delete',
+                parent: 'commissionThematique.detail',
+                url: '/delete',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
@@ -105,29 +105,6 @@ angular.module('openassembleeApp')
                         }
                     }).result.then(function (result) {
                         $state.go('commissionThematique', null, {reload: true});
-                    }, function () {
-                        $state.go('^');
-                    })
-                }]
-            })
-            .state('commissionThematique.detail.fin', {
-                parent: 'commissionThematique.detail',
-                url: '/fin',
-                data: {
-                    authorities: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function ($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/entities/commissionThematique/commissionThematique-fin-dialog.html',
-                        controller: 'CommissionThematiqueDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['CommissionThematique', function (CommissionThematique) {
-                                return CommissionThematique.get({id: $stateParams.id});
-                            }]
-                        }
-                    }).result.then(function (result) {
-                        $state.go('^', null, {reload: true});
                     }, function () {
                         $state.go('^');
                     })
