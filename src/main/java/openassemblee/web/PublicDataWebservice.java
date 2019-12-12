@@ -169,12 +169,17 @@ public class PublicDataWebservice {
                 // TODO putain de non cohérence entre les membres et ce truc
                 StringBuilder commissionsStringBuilder = new StringBuilder();
                 e.getAppartenancesCommissionPermanente()
+                    .stream()
+                    .filter(a -> a.getDateFin() == null)
                     .forEach(a -> commissionsStringBuilder.append("|").append(COMMISSION_PERMANENTE));
 //                e.getFonctionsExecutives()
 //                    .forEach(a -> commissionsStringBuilder.append("|").append(EXECUTIF));
                 e.getFonctionsCommissionPermanente()
+                    .stream()
+                    .filter(a -> a.getDateFin() == null)
                     .forEach(a -> commissionsStringBuilder.append("|").append(DELEGUES_SPECIAUX));
-                e.getAppartenancesCommissionsThematiques().stream()
+                e.getAppartenancesCommissionsThematiques()
+                    .stream()
                     .filter(a -> a.getDateFin() == null)
                     .filter(a -> a.getCommissionThematique() != null)
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
@@ -484,49 +489,54 @@ public class PublicDataWebservice {
 
     private List<MembreDto> getMembres(List<Elu> elus, List<Organisme> organismes,
                                        Map<String, Organisme> organismeMapNom, Map<String, Organisme> organismeMapRNE) {
-        List<MembreDto> m1 = elus.stream().flatMap(e -> e.getAppartenancesCommissionPermanente().stream().map(acp -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(acp.exportUid());
-            m.setUidEnsemble(COMMISSION_PERMANENTE);
-            m.setUidConseiller(e.exportUid());
+        List<MembreDto> m1 = elus.stream().flatMap(e -> e.getAppartenancesCommissionPermanente().stream()
+            .filter(a -> a.getDateFin() == null)
+            .map(acp -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(acp.exportUid());
+                m.setUidEnsemble(COMMISSION_PERMANENTE);
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Commissions");
-            m.setDateDebut(formatDate(acp.getDateDebut()));
-            m.setDateFin(formatDate(acp.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus(stringOrSpace(null));
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(null));
-            m.setBureau('0');
-            m.setMotifFin(stringOrSpace(acp.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
-        List<MembreDto> m2 = elus.stream().flatMap(e -> e.getFonctionsExecutives().stream().map(fe -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(fe.exportUid());
-            m.setUidEnsemble(EXECUTIF);
-            m.setUidConseiller(e.exportUid());
+                m.setMandature(MANDATURE);
+                m.setType("Commissions");
+                m.setDateDebut(formatDate(acp.getDateDebut()));
+                m.setDateFin(formatDate(acp.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus(stringOrSpace(null));
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(null));
+                m.setBureau('0');
+                m.setMotifFin(stringOrSpace(acp.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
+        List<MembreDto> m2 = elus.stream().flatMap(e -> e.getFonctionsExecutives().stream()
+            .filter(a -> a.getDateFin() == null)
+            .map(fe -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(fe.exportUid());
+                m.setUidEnsemble(EXECUTIF);
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Exécutif");
-            m.setDateDebut(formatDate(fe.getDateDebut()));
-            m.setDateFin(formatDate(fe.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(null));
-            m.setStatus("Titulaire");
-            m.setNomination(stringOrSpace(null));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(fe.getFonction()));
-            m.setBureau(bureau(fe.getFonction()));
-            m.setMotifFin(stringOrSpace(fe.getMotifFin()));
-            m.setDateNomination(stringOrSpace(null));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Exécutif");
+                m.setDateDebut(formatDate(fe.getDateDebut()));
+                m.setDateFin(formatDate(fe.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(null));
+                m.setStatus("Titulaire");
+                m.setNomination(stringOrSpace(null));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(fe.getFonction()));
+                m.setBureau(bureau(fe.getFonction()));
+                m.setMotifFin(stringOrSpace(fe.getMotifFin()));
+                m.setDateNomination(stringOrSpace(null));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
         List<MembreDto> m3 = elus.stream().flatMap(e -> e.getFonctionsCommissionPermanente().stream()
+            .filter(a -> a.getDateFin() == null)
             .filter(fcp -> fcp.getFonction() != null)
             .map(fcp -> {
                 MembreDto m = new MembreDto();
@@ -559,6 +569,7 @@ public class PublicDataWebservice {
             })).collect(Collectors.toList());
         List<String> fonctionsCT = new ArrayList<>();
         List<MembreDto> m5 = elus.stream().flatMap(e -> e.getFonctionsCommissionsThematiques().stream()
+            .filter(a -> a.getDateFin() == null)
             .filter(fct -> fct.getCommissionThematique() != null)
             .map(fct -> {
                 fonctionsCT.add(fct.exportUid());
@@ -583,6 +594,7 @@ public class PublicDataWebservice {
                 return m;
             })).collect(Collectors.toList());
         List<MembreDto> m4 = elus.stream().flatMap(e -> e.getAppartenancesCommissionsThematiques().stream()
+            .filter(a -> a.getDateFin() == null)
             .filter(act -> !fonctionsCT.contains(act.exportUid()) && act.getCommissionThematique() != null)
             .map(act -> {
                 MembreDto m = new MembreDto();
@@ -607,6 +619,7 @@ public class PublicDataWebservice {
             })).collect(Collectors.toList());
         List<String> fonctionsGP = new ArrayList<>();
         List<MembreDto> m7 = elus.stream().flatMap(e -> e.getFonctionsGroupePolitique().stream()
+            .filter(a -> a.getDateFin() == null)
             .filter(fgp -> fgp.getGroupePolitique() != null)
             .map(fgp -> {
                 fonctionsGP.add(fgp.exportUid());
@@ -631,6 +644,7 @@ public class PublicDataWebservice {
                 return m;
             })).collect(Collectors.toList());
         List<MembreDto> m6 = elus.stream().flatMap(e -> e.getAppartenancesGroupePolitique().stream()
+            .filter(a -> a.getDateFin() == null)
             .filter(agp -> !fonctionsGP.contains(agp.exportUid()) && agp.getGroupePolitique() != null)
             .map(agp -> {
                 MembreDto m = new MembreDto();
@@ -657,36 +671,38 @@ public class PublicDataWebservice {
 //        List<String> doublons = Arrays.asList("0750708M", "0751451V", "0754471C", "0754476H", "0754679D", "0754718W",
 //            "0754811X", "0754815B", "0754816C", "0754850P", "0771654E", "0772241T", "0772447S", "0772468P", "0782058N",
 //            "0782059P", "0783430E", "0922451P", "0932217E", "0932305A", "0951848T", "0951963T");
-        List<MembreDto> m8 = elus.stream().flatMap(e -> e.getAppartenancesOrganismes().stream().map(ao -> {
-            MembreDto m = new MembreDto();
-            m.setUidMembre(ao.exportUid());
-            if (ao.getCodeRNE() != null) {
-                m.setUidEnsemble(organismeMapRNE.get(ao.getCodeRNE()).exportUid());
-            } else {
-                Organisme o = organismeMapNom.get(ao.getOrganisme());
-                if (o != null) {
-                    m.setUidEnsemble(o.exportUid());
+        List<MembreDto> m8 = elus.stream().flatMap(e -> e.getAppartenancesOrganismes().stream()
+            .filter(a -> a.getDateFin() == null)
+            .map(ao -> {
+                MembreDto m = new MembreDto();
+                m.setUidMembre(ao.exportUid());
+                if (ao.getCodeRNE() != null) {
+                    m.setUidEnsemble(organismeMapRNE.get(ao.getCodeRNE()).exportUid());
                 } else {
-                    logger.info("Unknown organisme " + ao.getOrganisme());
+                    Organisme o = organismeMapNom.get(ao.getOrganisme());
+                    if (o != null) {
+                        m.setUidEnsemble(o.exportUid());
+                    } else {
+                        logger.info("Unknown organisme " + ao.getOrganisme());
+                    }
                 }
-            }
-            m.setUidConseiller(e.exportUid());
+                m.setUidConseiller(e.exportUid());
 
-            m.setMandature(MANDATURE);
-            m.setType("Organisme");
-            m.setDateDebut(formatDate(ao.getDateDebut()));
-            m.setDateFin(formatDate(ao.getDateFin()));
-            m.setNumeroNomination(stringOrSpace(ao.getReference()));
-            m.setStatus(stringOrSpace(ao.getStatut()));
-            m.setNomination(stringOrSpace(ao.getType()));
-            m.setSt(0f);
-            m.setFonction(stringOrSpace(ao.getFonction()));
-            m.setBureau(bureau(ao.getFonction()));
-            m.setMotifFin(stringOrSpace(ao.getMotifFin()));
-            m.setDateNomination(formatDate(ao.getDateNomination()));
-            m.setDescription(stringOrSpace(null));
-            return m;
-        })).collect(Collectors.toList());
+                m.setMandature(MANDATURE);
+                m.setType("Organisme");
+                m.setDateDebut(formatDate(ao.getDateDebut()));
+                m.setDateFin(formatDate(ao.getDateFin()));
+                m.setNumeroNomination(stringOrSpace(ao.getReference()));
+                m.setStatus(stringOrSpace(ao.getStatut()));
+                m.setNomination(stringOrSpace(ao.getType()));
+                m.setSt(0f);
+                m.setFonction(stringOrSpace(ao.getFonction()));
+                m.setBureau(bureau(ao.getFonction()));
+                m.setMotifFin(stringOrSpace(ao.getMotifFin()));
+                m.setDateNomination(formatDate(ao.getDateNomination()));
+                m.setDescription(stringOrSpace(null));
+                return m;
+            })).collect(Collectors.toList());
 
         m1.addAll(m2);
         m1.addAll(m3);
