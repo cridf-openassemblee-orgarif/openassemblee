@@ -703,6 +703,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerAppartenanceCommissionThematique', {
+                parent: 'elu.detail',
+                url: '/appartenance-commission-thematique/{appartenanceId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/appartenanceCommissionThematique/appartenanceCommissionThematique-delete-dialog.html',
+                        controller: 'AppartenanceCommissionThematiqueDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.appartenanceId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.nouvelleFonctionCommissionThematique', {
                 parent: 'elu.detail',
                 url: '/nouvelle-fonction-commission-thematique',
@@ -745,6 +770,31 @@ angular.module('openassembleeApp')
                     }).result.then(function (result) {
                         $state.go('^', null, {reload: true});
                     }, function () {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('elu.detail.supprimerFonctionCommissionThematique', {
+                parent: 'elu.detail',
+                url: '/fonction-commission-thematique/{fonctionId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionCommissionThematique/fonctionCommissionThematique-delete-dialog.html',
+                        controller: 'FonctionCommissionThematiqueDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.fonctionId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
                         $state.go('^');
                     })
                 }]

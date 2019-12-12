@@ -4,17 +4,23 @@
             <h3 class="box-title"><i class="fa fa-quote-left"></i> Commissions thématiques</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc"
+            <div class="unit-bloc action-bloc info-bloc"
                  ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
-                 ng-if="a.dateFin == null"
-                 ui-sref="elu.detail.editAppartenanceCommissionThematique({appartenanceId: a.id})">
+                 ng-if="a.dateFin == null">
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                    <edit-button ui-sref="elu.detail.editAppartenanceCommissionThematique({appartenanceId: a.id})"></edit-button>
+                    <delete-button ui-sref="elu.detail.supprimerAppartenanceCommissionThematique({appartenanceId: a.id})"></delete-button>
+                </div>
                 {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
                 <br/>
                 <span class="lg"><span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}</span>
             </div>
-            <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
-                 ng-if="f.dateFin == null"
-                 ui-sref="elu.detail.editFonctionCommissionThematique({fonctionId: f.id})">
+            <div class="unit-bloc action-bloc info-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
+                 ng-if="f.dateFin == null">
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                    <edit-button ui-sref="elu.detail.editFonctionCommissionThematique({fonctionId: f.id})"></edit-button>
+                    <delete-button ui-sref="elu.detail.supprimerFonctionCommissionThematique({fonctionId: f.id})"></delete-button>
+                </div>
                 <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
                 {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
                 <br/>
