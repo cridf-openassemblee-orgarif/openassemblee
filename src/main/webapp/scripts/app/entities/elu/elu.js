@@ -152,6 +152,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerFonctionExecutive', {
+                parent: 'elu.detail',
+                url: '/fonction-executive/{fonctionId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/fonctionExecutive/fonctionExecutive-delete-dialog.html',
+                        controller: 'FonctionExecutiveDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.fonctionId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajoutDistinctionHonorifique', {
                 parent: 'elu.detail',
                 url: '/distinction-honorifique',
