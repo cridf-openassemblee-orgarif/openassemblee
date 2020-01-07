@@ -326,4 +326,27 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
         }
         return items;
     };
+}])
+.filter('inconsistencyCategory', [function () {
+    return function (value) {
+        switch (value) {
+            case'POUVOIR_BENEFICIAIRE_MANQUANT':
+                return "Pouvoir dont l'élu mandataire est manquant";
+            case 'POUVOIR_CEDEUR_MANQUANT':
+                return "Pouvoir dont l'élu mandant est manquant";
+        }
+        return value;
+    };
+}])
+.filter('inconsistency', [function () {
+    return function (value) {
+        var inconsistencyEntity = function (value) {
+            switch (value) {
+                case'Seance':
+                    return 'Séance';
+            }
+            return value;
+        };
+        return inconsistencyEntity(value.entity) + ' ' + value.entityId + ' ' + inconsistencyEntity(value.parentEntity) + ' ' + value.parentEntityId;
+    };
 }]);

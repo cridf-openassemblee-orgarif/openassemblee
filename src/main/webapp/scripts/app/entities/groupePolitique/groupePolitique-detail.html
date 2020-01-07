@@ -99,8 +99,7 @@
                 <div class="row" ng-init="chunks = _.chunk(fonctions, 3)">
                     <div class="col-md-12 col-sm-12 col-xs-12"
                          ng-repeat="aChunks in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks | orderBy:'elu.nom'"
-                        ">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks | orderBy:'elu.nom'">
                         <div class="info-box entity-component"
                              ui-sref="elu.detail({id:a.elu.id})">
                                 <span class="info-box-photo">
