@@ -533,6 +533,31 @@ angular.module('openassembleeApp')
                     })
                 }]
             })
+            .state('elu.detail.supprimerAutreMandat', {
+                parent: 'elu.detail',
+                url: '/autre-mandat/{mandatId}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                    $modal.open({
+                        templateUrl: 'scripts/app/entities/autreMandat/autreMandat-delete-dialog.html',
+                        controller: 'AutreMandatDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: [function() {
+                                return {
+                                    id: $stateParams.mandatId
+                                }
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('^', null, {reload: true});
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
             .state('elu.detail.ajouterOrganisme', {
                 parent: 'elu.detail',
                 url: '/ajouter-organisme',
