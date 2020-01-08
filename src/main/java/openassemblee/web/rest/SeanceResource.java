@@ -5,10 +5,7 @@ import com.itextpdf.text.DocumentException;
 import openassemblee.domain.*;
 import openassemblee.repository.SeanceRepository;
 import openassemblee.repository.search.SeanceSearchRepository;
-import openassemblee.service.AuditTrailService;
-import openassemblee.service.ExcelExportService;
-import openassemblee.service.PdfExportService;
-import openassemblee.service.SeanceService;
+import openassemblee.service.*;
 import openassemblee.service.dto.SeanceDTO;
 import openassemblee.service.util.EluNomComparator;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -143,15 +140,28 @@ public class SeanceResource {
             "Civilité élu cédeur",
             "Prénom élu cédeur",
             "Nom élu cédeur",
+            "Groupe politique élu cédeur",
             "Civilité élu bénéficiaire",
             "Nom élu bénéficiaire",
             "Prénom élu bénéficiaire",
+            "Groupe politique élu bénéficiaire",
             "Date de début",
             "Heure de début",
             "Date de fin",
             "Heure de fin"
         ));
         for (Pouvoir pv : pouvoirs) {
+            Optional<GroupePolitique> groupePolitiqueCedeur = pv.getEluCedeur().getAppartenancesGroupePolitique()
+                .stream()
+                .filter(GroupePolitiqueService::isAppartenanceCourante)
+                .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .findFirst();
+            Optional<GroupePolitique> groupePolitiqueBeneficiaire = pv.getEluBeneficiaire()
+                .getAppartenancesGroupePolitique()
+                .stream()
+                .filter(GroupePolitiqueService::isAppartenanceCourante)
+                .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .findFirst();
             String dateDebut = pv.getDateDebut() != null ?
                 pv.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
             String dateFin = pv.getDateFin() != null ?
@@ -160,9 +170,11 @@ public class SeanceResource {
                 pv.getEluCedeur() != null ? pv.getEluCedeur().getCiviliteLabel() : "",
                 pv.getEluCedeur() != null ? pv.getEluCedeur().getPrenom() : "",
                 pv.getEluCedeur() != null ? pv.getEluCedeur().getNom() : "",
+                groupePolitiqueCedeur.map(GroupePolitique::getNom).orElse("Aucun groupe politique"),
                 pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getCiviliteLabel() : "",
                 pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getNom() : "",
                 pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getPrenom() : "",
+                groupePolitiqueBeneficiaire.map(GroupePolitique::getNom).orElse("Aucun groupe politique"),
                 dateDebut,
                 pv.getHeureDebut(),
                 dateFin,
@@ -201,7 +213,8 @@ public class SeanceResource {
         headers.addAll(Arrays.asList(
             "Civilité élu",
             "Nom élu",
-            "Prénom élu"
+            "Prénom élu",
+            "Groupe politique élu"
         ));
         for (int i = 1; i <= (seance != null ? seance.getNombreSignatures() : 0); i++) {
             headers.add("Signature " + i);
@@ -209,10 +222,15 @@ public class SeanceResource {
         result.add(headers);
         for (PresenceElu pe : presenceElus) {
             List<String> line = new ArrayList<>();
+            Optional<GroupePolitique> groupePolitique = pe.getElu().getAppartenancesGroupePolitique().stream()
+                .filter(GroupePolitiqueService::isAppartenanceCourante)
+                .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .findFirst();
             line.addAll(Arrays.asList(
                 pe.getElu().getCiviliteLabel(),
                 pe.getElu().getNom(),
-                pe.getElu().getPrenom()
+                pe.getElu().getPrenom(),
+                groupePolitique.map(GroupePolitique::getNom).orElse("Aucun groupe politique")
             ));
             for (int i = 1; i <= seance.getNombreSignatures(); i++) {
                 Integer position = i;

@@ -10,6 +10,7 @@ import openassemblee.repository.FonctionCommissionThematiqueRepository;
 import openassemblee.repository.search.AdressePostaleSearchRepository;
 import openassemblee.repository.search.CommissionThematiqueSearchRepository;
 import openassemblee.service.dto.*;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class CommissionThematiqueService {
     }
 
     @Transactional(readOnly = true)
-    public CommissionThematiqueDTO get(Long id) {
+    public CommissionThematiqueDTO get(Long id, Boolean loadGroupePolitiques) {
         CommissionThematique ct = commissionThematiqueRepository.findOne(id);
         if (ct == null) {
             return null;
@@ -68,6 +69,14 @@ public class CommissionThematiqueService {
             .findAllByCommissionThematique(ct).stream()
             .map(a -> new FonctionCommissionThematiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
+        if(loadGroupePolitiques) {
+            actDtos.forEach(a -> {
+                Hibernate.initialize(a.getElu().getAppartenancesGroupePolitique());
+            });
+            fctDtos.forEach(f -> {
+                Hibernate.initialize(f.getElu().getAppartenancesGroupePolitique());
+            });
+        }
         return new CommissionThematiqueDTO(ct, actDtos, fctDtos);
     }
 

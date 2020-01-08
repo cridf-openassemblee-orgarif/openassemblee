@@ -80,7 +80,12 @@ public class SeanceService {
         if (seance == null) {
             return new ArrayList<>();
         }
-        return pouvoirRepository.findAllBySeance(seance);
+        List<Pouvoir> pouvoirs = pouvoirRepository.findAllBySeance(seance);
+        pouvoirs.forEach(p -> {
+            Hibernate.initialize(p.getEluCedeur().getAppartenancesGroupePolitique());
+            Hibernate.initialize(p.getEluBeneficiaire().getAppartenancesGroupePolitique());
+        });
+        return pouvoirs;
     }
 
     @Transactional

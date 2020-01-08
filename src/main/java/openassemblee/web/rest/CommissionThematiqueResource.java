@@ -2,9 +2,7 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.itextpdf.text.DocumentException;
-import openassemblee.domain.AppartenanceCommissionThematique;
-import openassemblee.domain.CommissionThematique;
-import openassemblee.domain.FonctionCommissionThematique;
+import openassemblee.domain.*;
 import openassemblee.repository.AppartenanceCommissionThematiqueRepository;
 import openassemblee.repository.CommissionThematiqueRepository;
 import openassemblee.repository.FonctionCommissionThematiqueRepository;
@@ -31,10 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -222,7 +217,7 @@ public class CommissionThematiqueResource {
     @Timed
     public ResponseEntity<CommissionThematiqueDTO> getCommissionThematique(@PathVariable Long id) {
         log.debug("REST request to get CommissionThematique : {}", id);
-        CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
+        CommissionThematiqueDTO dto = commissionThematiqueService.get(id, false);
         if (dto != null) {
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }
@@ -237,7 +232,7 @@ public class CommissionThematiqueResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void getCommissionThematiqueExport(@PathVariable Long id, HttpServletResponse response) {
-        CommissionThematiqueDTO dto = commissionThematiqueService.get(id);
+        CommissionThematiqueDTO dto = commissionThematiqueService.get(id, true);
         List<List<String>> lines = new ArrayList<>();
         CommissionThematique ct = dto.getCommissionThematique();
         lines.add(Arrays.asList(ct.getNom()));
@@ -249,7 +244,15 @@ public class CommissionThematiqueResource {
             .filter(a -> a.getAppartenanceCommissionThematique().getDateFin() == null)
             .collect(Collectors.toList());
         for (AppartenanceCommissionThematiqueDTO act : appartenances) {
-            lines.add(Arrays.asList(act.getElu().getNom(), act.getElu().getPrenom()));
+            Optional<GroupePolitique> groupePolitiqueCedeur = act.getElu().getAppartenancesGroupePolitique().stream()
+                .filter(GroupePolitiqueService::isAppartenanceCourante)
+                .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .findFirst();
+            lines.add(Arrays.asList(
+                act.getElu().getNom(),
+                act.getElu().getPrenom(),
+                groupePolitiqueCedeur.map(GroupePolitique::getNom).orElse("Aucun groupe politique")
+            ));
         }
         // FIXMENOW pas les fonctions ???
         ExcelExportService.Entry appartenancesEntry = new ExcelExportService.Entry("Appartenances", lines);
@@ -259,7 +262,15 @@ public class CommissionThematiqueResource {
             .collect(Collectors.toList());
         List<List<String>> fonctionsLines = new ArrayList<>();
         for (FonctionCommissionThematiqueDTO f : fonctions) {
-            fonctionsLines.add(Arrays.asList(f.getElu().getNom(), f.getElu().getPrenom()));
+            Optional<GroupePolitique> groupePolitiqueCedeur = f.getElu().getAppartenancesGroupePolitique().stream()
+                .filter(GroupePolitiqueService::isAppartenanceCourante)
+                .map(AppartenanceGroupePolitique::getGroupePolitique)
+                .findFirst();
+            fonctionsLines.add(Arrays.asList(
+                f.getElu().getNom(),
+                f.getElu().getPrenom(),
+                groupePolitiqueCedeur.map(GroupePolitique::getNom).orElse("Aucun groupe politique")
+            ));
         }
         ExcelExportService.Entry fonctionsEntry = new ExcelExportService.Entry("Fonctions", fonctionsLines);
         byte[] export = excelExportService.exportToExcel(appartenancesEntry, fonctionsEntry);
@@ -282,16 +293,16 @@ public class CommissionThematiqueResource {
     @Transactional(readOnly = true)
     public void getCommissionThematiqueExportPdf(@PathVariable Long id, HttpServletResponse response) throws DocumentException {
         log.debug("REST request to get all GroupePolitiques");
-        CommissionThematiqueDTO ct = commissionThematiqueService.get(id);
+        CommissionThematiqueDTO ct = commissionThematiqueService.get(id, false);
         List<EluEnFonctionDTO> as = ct.getAppartenanceCommissionThematiqueDTOs().stream()
-            .filter(a ->  a.getAppartenanceCommissionThematique().getDateFin() == null)
+            .filter(a -> a.getAppartenanceCommissionThematique().getDateFin() == null)
             .map(a -> {
                 EluListDTO dto = eluService.eluToEluListDTO(a.getElu(), false, false);
                 return new EluEnFonctionDTO(a.getElu(), dto.getGroupePolitique(), null);
             })
             .collect(Collectors.toList());
         List<EluEnFonctionDTO> fs = ct.getFonctionCommissionThematiqueDTOs().stream()
-            .filter(f ->  f.getFonctionCommissionThematique().getDateFin() == null)
+            .filter(f -> f.getFonctionCommissionThematique().getDateFin() == null)
             .map(a -> {
                 EluListDTO dto = eluService.eluToEluListDTO(a.getElu(), false, false);
                 return new EluEnFonctionDTO(a.getElu(), dto.getGroupePolitique(), a.getFonctionCommissionThematique().getFonction());
