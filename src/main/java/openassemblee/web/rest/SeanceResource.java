@@ -157,12 +157,12 @@ public class SeanceResource {
             String dateFin = pv.getDateFin() != null ?
                 pv.getDateFin().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
             result.add(Arrays.asList(
-                pv.getEluCedeur().getCiviliteLabel(),
-                pv.getEluCedeur().getPrenom(),
-                pv.getEluCedeur().getNom(),
-                pv.getEluBeneficiaire().getCiviliteLabel(),
-                pv.getEluBeneficiaire().getNom(),
-                pv.getEluBeneficiaire().getPrenom(),
+                pv.getEluCedeur() != null ? pv.getEluCedeur().getCiviliteLabel() : "",
+                pv.getEluCedeur() != null ? pv.getEluCedeur().getPrenom() : "",
+                pv.getEluCedeur() != null ? pv.getEluCedeur().getNom() : "",
+                pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getCiviliteLabel() : "",
+                pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getNom() : "",
+                pv.getEluBeneficiaire() != null ? pv.getEluBeneficiaire().getPrenom() : "",
                 dateDebut,
                 pv.getHeureDebut(),
                 dateFin,
