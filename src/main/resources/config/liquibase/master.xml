@@ -56,5 +56,6 @@
     <include file="classpath:config/liquibase/changelog/20170701140152_added_entity_DistinctionHonorifique.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20190411164643_changelog.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20190411164743_added_entity_ShortUid.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/_2020-01-12_add-groupe-politique-couleur.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

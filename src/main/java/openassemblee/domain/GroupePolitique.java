@@ -61,6 +61,9 @@ public class GroupePolitique implements Serializable {
     @Column(name = "import_uid")
     private String importUid;
 
+    @Column(name = "couleur")
+    private String couleur;
+
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
@@ -175,6 +178,14 @@ public class GroupePolitique implements Serializable {
 
     public void setImportUid(String importUid) {
         this.importUid = importUid;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public void setCouleur(String couleur) {
+        this.couleur = couleur;
     }
 
     public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {
