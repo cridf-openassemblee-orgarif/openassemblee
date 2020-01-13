@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/publicdata/v2")
-public class EluWebservice {
+public class PublicEluWebservice {
 
     @Autowired
     protected EluService eluService;
@@ -25,18 +25,21 @@ public class EluWebservice {
         public PublicCivilite civilite;
         public String nom;
         public String prenom;
+        public String groupePolitiqueId;
         public String groupePolitique;
         public String groupePolitiqueCourt;
         public String image;
         public Boolean actif;
 
         public PublicElu(String id, String uid, PublicCivilite civilite, String nom, String prenom,
-                         String groupePolitique, String groupePolitiqueShort, String image, Boolean actif) {
+                         String groupePolitiqueId, String groupePolitique, String groupePolitiqueShort, String image,
+                         Boolean actif) {
             this.id = id;
             this.uid = uid;
             this.civilite = civilite;
             this.nom = nom;
             this.prenom = prenom;
+            this.groupePolitiqueId = groupePolitiqueId;
             this.groupePolitique = groupePolitique;
             this.groupePolitiqueCourt = groupePolitiqueShort;
             this.image = image;
@@ -52,11 +55,13 @@ public class EluWebservice {
         }
     }
 
-    @RequestMapping(value = "/elus", method = RequestMethod.GET)
+    @RequestMapping(value = "/elu", method = RequestMethod.GET)
     public Data elus() {
         List<PublicElu> elus = eluService.getAll(false, false, false)
             .stream()
             .map(it -> {
+                String groupePolitiqueId = it.getGroupePolitique() != null ? it.getGroupePolitique().getShortUid()
+                    .toString() : null;
                 String groupePolitique = it.getGroupePolitique() != null ? it.getGroupePolitique().getNom() :
                     "sans groupe";
                 String groupePolitiqueCourt = it.getGroupePolitique() != null ? it.getGroupePolitique().getNomCourt() :
@@ -67,6 +72,7 @@ public class EluWebservice {
                     it.getElu().getCivilite() == Civilite.MONSIEUR ? PublicCivilite.M : PublicCivilite.MME,
                     it.getElu().getNom(),
                     it.getElu().getPrenom(),
+                    groupePolitiqueId,
                     groupePolitique,
                     groupePolitiqueCourt,
                     "/images/" + it.getElu().getImage(),
