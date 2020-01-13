@@ -26,11 +26,12 @@ angular.module('openassembleeApp', ['LocalStorageModule', 'ngResource', 'ngCooki
                 method: 'GET',
                 url: 'search/' + value
             }).then(function successCallback(result) {
-                $rootScope.dtos = result.data;
+                $rootScope.assemblee = result.data;
+                console.log($rootScope.assemblee);
             }, function errorCallback(response) {
             });
         } else {
-            $rootScope.dtos = []
+            $rootScope.assemblee = []
         }
     });
 

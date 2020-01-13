@@ -8,6 +8,93 @@
 
     <section class="content">
         <div class="container">
+            <div>
+                <svg width="1000" height="600">
+                    <style>
+                        .assembleeChair {
+                            fill: none;
+                        }
+
+                        .assembleeChair:hover {
+                            fill: #4673bd;
+                            opacity: 0.4;
+                        }
+
+                        .assembleeCouloir1 {
+                            transform: rotate(30deg);
+                            transform-origin: 50% 100%;
+                        }
+
+                        .assembleeCouloir2 {
+                            transform: rotate(-30deg);
+                            transform-origin: 50% 100%;
+                        }
+                    </style>
+                    <rect x="0"
+                          y="0"
+                          width="1000"
+                          height="600"
+                          fill="none"
+                          stroke="#bd5e46"/>
+                    <g ng-repeat="chair in assemblee.chairs">
+                        <polygon
+                            points="{{chair.x1}},{{chair.y1}} {{chair.x2}},{{chair.y2}} {{chair.x3}},{{chair.y3}} {{chair.x4}},{{chair.y4}}"
+                            stroke="black"
+                            stroke-width="1px"
+                            class="assembleeChair"
+                            ng-mouseover="test()"
+                        />
+                        <!--                        <line-->
+                        <!--                            x1={{chair.baseX1}}-->
+                        <!--                            y1={{chair.baseY1}}-->
+                        <!--                            x2={{chair.baseX2}}-->
+                        <!--                            y2={{chair.baseY2}}-->
+                        <!--                            stroke="green"-->
+                        <!--                        />-->
+                        <!--                        <line-->
+                        <!--                            x1={{500}}-->
+                        <!--                            y1={{300}}-->
+                        <!--                            x2={{chair.chairBaseX}}-->
+                        <!--                            y2={{chair.chairBaseY}}-->
+                        <!--                            stroke="yellow"-->
+                        <!--                        />-->
+                        <!--                        <circle-->
+                        <!--                            cx="{{chair.baseX1}}"-->
+                        <!--                            cy="{{chair.baseY1}}"-->
+                        <!--                            r="2"-->
+                        <!--                            fill="blue"-->
+                        <!--                        />-->
+                    </g>
+                    <!--                    <ellipse rx="240"-->
+                    <!--                             ry="160"-->
+                    <!--                             cx="500"-->
+                    <!--                             cy="600"-->
+                    <!--                             fill="none"-->
+                    <!--                             stroke="#4673bd"-->
+                    <!--                             opacity="0.4"-->
+                    <!--                    />-->
+                    <!--                    <g>-->
+                    <!--                        <rect x="480"-->
+                    <!--                              y="0"-->
+                    <!--                              width="40"-->
+                    <!--                              height="600"-->
+                    <!--                              class="assembleeCouloir1"-->
+                    <!--                              fill="none"-->
+                    <!--                              stroke="#4673bd"-->
+                    <!--                              opacity="0.4"-->
+                    <!--                        />-->
+                    <!--                        <rect x="480"-->
+                    <!--                              y="0"-->
+                    <!--                              width="40"-->
+                    <!--                              height="600"-->
+                    <!--                              class="assembleeCouloir2"-->
+                    <!--                              fill="none"-->
+                    <!--                              stroke="#4673bd"-->
+                    <!--                              opacity="0.4"-->
+                    <!--                        />-->
+                    <!--                    </g>-->
+                </svg>
+            </div>
 
             <div class="search-bloc">
                 <label class="search-label" for="search-input">Recherche</label>
