@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="mlo (generated)" id="2020-01-12-2">
+        <addColumn tableName="groupe_politique">
+            <column name="uid" type="varchar(255)" >
+                <constraints unique="true"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="groupe_politique">
+            <column name="short_uid" type="bigint">
+                <constraints unique="true"/>
+            </column>
+        </addColumn>
+        <createIndex indexName="idx_groupe_politique_uid"
+                     tableName="groupe_politique"
+                     unique="true">
+            <column name="uid" type="varchar(255)"/>
+        </createIndex>
+        <createIndex indexName="idx_groupe_politique_short_uid"
+                     tableName="groupe_politique"
+                     unique="true">
+            <column name="short_uid" type="bigint"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

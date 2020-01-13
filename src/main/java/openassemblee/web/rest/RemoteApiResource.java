@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
+import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.ShortUid;
 import openassemblee.repository.AppartenanceOrganismeRepository;
 import openassemblee.repository.EluRepository;
+import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.OrganismeRepository;
 import openassemblee.service.SearchService;
 import openassemblee.service.ShortUidService;
@@ -37,7 +39,7 @@ public class RemoteApiResource {
     private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
 
     @Autowired
-    private EluRepository eluRepository;
+    private GroupePolitiqueRepository groupePolitiqueRepository;
 
     @Autowired
     private ShortUidService shortUidService;
@@ -69,16 +71,16 @@ public class RemoteApiResource {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/set-uids", method = RequestMethod.GET)
+    @RequestMapping(value = "/set-uids-groupe-politiques", method = RequestMethod.GET)
     public ResponseEntity<String> setUids() {
-        Stream<ShortUid> uuids = eluRepository.findAll()
+        Stream<ShortUid> uuids = groupePolitiqueRepository.findAll()
             .stream()
-            .filter(e -> e.getUid() == null)
-            .map(e -> {
+            .filter(gp -> gp.getUid() == null)
+            .map(gp -> {
                 ShortUid uid = shortUidService.createShortUid();
-                e.setUid(uid.getUid());
-                e.setShortUid(uid.getShortUid());
-                eluRepository.save(e);
+                gp.setUid(uid.getUid());
+                gp.setShortUid(uid.getShortUid());
+                groupePolitiqueRepository.save(gp);
                 return uid;
             });
         return ResponseEntity.ok("Changed " + uuids.count());
@@ -93,11 +95,4 @@ public class RemoteApiResource {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/clean-organismes", method = RequestMethod.POST)
-    @Timed
-    public ResponseEntity<String> cleanOrganismes() {
-        appartenanceOrganismeRepository.deleteAll();
-        organismeRepository.deleteAll();
-        return ResponseEntity.ok("ok");
-    }
 }

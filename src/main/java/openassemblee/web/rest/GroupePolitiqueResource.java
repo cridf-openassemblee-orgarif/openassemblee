@@ -3,12 +3,10 @@ package openassemblee.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.Image;
+import openassemblee.domain.ShortUid;
 import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.search.GroupePolitiqueSearchRepository;
-import openassemblee.service.AuditTrailService;
-import openassemblee.service.ExcelExportService;
-import openassemblee.service.GroupePolitiqueService;
-import openassemblee.service.ImageService;
+import openassemblee.service.*;
 import openassemblee.service.dto.GroupePolitiqueDTO;
 import openassemblee.service.dto.GroupePolitiqueListDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -62,6 +60,9 @@ public class GroupePolitiqueResource {
     @Inject
     private AuditTrailService auditTrailService;
 
+    @Inject
+    private ShortUidService shortUidService;
+
     /**
      * POST  /groupePolitiques -> Create a new groupePolitique.
      */
@@ -77,6 +78,9 @@ public class GroupePolitiqueResource {
             return ResponseEntity.badRequest().header("Failure", "A new groupePolitique cannot already have an ID")
                 .body(null);
         }
+        ShortUid uid = shortUidService.createShortUid();
+        groupePolitique.setUid(uid.getUid());
+        groupePolitique.setShortUid(uid.getShortUid());
         GroupePolitique result = groupePolitiqueService.save(groupePolitique);
         auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/groupePolitiques/" + result.getId()))
