@@ -136,7 +136,7 @@ export default class Assemblee extends React.PureComponent<Props> {
                                 y={chair.centerY}
                                 css={css`
                                     text-anchor: middle;
-                                    font-size: 12px;
+                                    font-size: 10px;
                                     cursor: pointer;
                                     alignment-baseline: central;
                                 `}
