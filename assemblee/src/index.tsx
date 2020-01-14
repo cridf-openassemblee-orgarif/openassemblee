@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
-import React from 'react';
+import { jsx } from '@emotion/core';
 import ReactDOM from 'react-dom';
 import App from './component/App';
 import { injector } from './service/injector';

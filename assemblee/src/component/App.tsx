@@ -5,7 +5,6 @@ import { injector } from '../service/injector';
 import { clearfix } from '../utils';
 import SizingContainer from './SizingContainer';
 import Assemblee from './Assemblee';
-import Elus from './SelectionComponent';
 import SelectionComponent from './SelectionComponent';
 
 interface State {
@@ -47,6 +46,7 @@ export default class App extends React.PureComponent<{}, State> {
                             css={css`
                                 float: left;
                                 width: ${(width * 3) / 4}px;
+                                height: ${height}px;
                             `}
                         >
                             {this.state.assemblee && (
@@ -61,6 +61,7 @@ export default class App extends React.PureComponent<{}, State> {
                             css={css`
                                 float: left;
                                 width: ${width / 4}px;
+                                height: ${height}px;
                             `}
                         >
                             {this.state.eluListDTOs && (

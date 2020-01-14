@@ -2,16 +2,16 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 
-const classes = {
-    assembleeCouloir1: css`
-        transform: rotate(30deg);
-        transform-origin: 50% 100%;
-    `,
-    assembleeCouloir2: css`
-        transform: rotate(-30deg);
-        transform-origin: 50% 100%;
-    `
-};
+// const classes = {
+//     assembleeCouloir1: css`
+//         transform: rotate(30deg);
+//         transform-origin: 50% 100%;
+//     `,
+//     assembleeCouloir2: css`
+//         transform: rotate(-30deg);
+//         transform-origin: 50% 100%;
+//     `
+// };
 
 interface Props {
     assemblee: AssembleeDTO;

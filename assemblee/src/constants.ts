@@ -1,3 +1,5 @@
 export const colors = {
-    grey: '#f3f3f3'
+    white: '#fff',
+    greyWithoutSharp: '888'
+    // clearGrey: '#f3f3f3',
 };
