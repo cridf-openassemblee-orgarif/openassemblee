@@ -10,12 +10,14 @@ import SelectionComponent from './SelectionComponent';
 interface State {
     assemblee?: AssembleeDTO;
     eluListDTOs?: EluListDTO[];
+    selectedChairNumber?: number;
 }
 
 export default class App extends React.PureComponent<{}, State> {
     state: State = {
         assemblee: undefined,
-        eluListDTOs: undefined
+        eluListDTOs: undefined,
+        selectedChairNumber: undefined
     };
 
     componentDidMount(): void {
@@ -30,6 +32,9 @@ export default class App extends React.PureComponent<{}, State> {
                 this.setState(state => ({ ...state, eluListDTOs: a.body }));
             });
     }
+
+    private updateChairNumber = (selectedChairNumber: number) =>
+        this.setState(state => ({ ...state, selectedChairNumber }));
 
     public render() {
         return (
@@ -54,6 +59,8 @@ export default class App extends React.PureComponent<{}, State> {
                                     assemblee={this.state.assemblee}
                                     width={(width * 3) / 4}
                                     height={height}
+                                    selectedChairNumber={this.state.selectedChairNumber}
+                                    updateChairNumber={this.updateChairNumber}
                                 />
                             )}
                         </div>
@@ -67,6 +74,9 @@ export default class App extends React.PureComponent<{}, State> {
                             {this.state.eluListDTOs && (
                                 <SelectionComponent
                                     eluListDTOs={this.state.eluListDTOs}
+                                    selectionMode={false}
+                                    selectedChairNumber={this.state.selectedChairNumber}
+                                    updateChairNumber={this.updateChairNumber}
                                 />
                             )}
                         </div>

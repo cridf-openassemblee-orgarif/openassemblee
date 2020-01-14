@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
+import { colors } from '../constants';
 
 // const classes = {
 //     assembleeCouloir1: css`
@@ -17,6 +18,8 @@ interface Props {
     assemblee: AssembleeDTO;
     width: number;
     height: number;
+    selectedChairNumber?: number;
+    updateChairNumber: (chairNumber: number) => void;
 }
 
 export default class Assemblee extends React.PureComponent<Props> {
@@ -64,12 +67,12 @@ export default class Assemblee extends React.PureComponent<Props> {
                                 &:hover {
                                     polygon,
                                     circle {
-                                        fill: #4673bd;
+                                        fill: ${colors.blue};
                                     }
                                 }
                             `}
                             onClick={() => {
-                                console.log(chair.number);
+                                this.props.updateChairNumber(chair.number);
                             }}
                         >
                             <circle
@@ -79,7 +82,10 @@ export default class Assemblee extends React.PureComponent<Props> {
                                 css={css`
                                     stroke: black;
                                     stroke-width: 1px;
-                                    fill: white;
+                                    fill: ${this.props.selectedChairNumber ===
+                                    chair.number
+                                        ? colors.green
+                                        : colors.white};
                                     cursor: pointer;
                                     //&:hover {
                                     //    fill: #4673bd;
@@ -91,7 +97,10 @@ export default class Assemblee extends React.PureComponent<Props> {
                                 points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}
                                 css={css`
                                     stroke: none;
-                                    fill: white;
+                                    fill: ${this.props.selectedChairNumber ===
+                                    chair.number
+                                        ? colors.green
+                                        : colors.white};
                                     cursor: pointer;
                                     //&:hover {
                                     //    fill: #4673bd;
