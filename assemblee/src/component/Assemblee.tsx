@@ -1,7 +1,6 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { css } from '@emotion/core';
 
 const classes = {
     assembleeCouloir1: css`
@@ -16,13 +15,19 @@ const classes = {
 
 interface Props {
     assemblee: AssembleeDTO;
+    width: number;
+    height: number;
 }
 
 export default class Assemblee extends React.PureComponent<Props> {
     public render() {
         return (
             // viewbox avec 20 / 30 en size de chair : viewBox="20 60 960 510"
-            <svg width="1200" height="720" viewBox="46 56 910 460">
+            <svg
+                width={this.props.width}
+                height={this.props.height}
+                viewBox="46 56 910 500"
+            >
                 {/*<svg width="1000" height="600" viewBox="0 0 20 600" >*/}
                 <style>
                     {/*    .assembleeChair {*/}
@@ -63,6 +68,9 @@ export default class Assemblee extends React.PureComponent<Props> {
                                     }
                                 }
                             `}
+                            onClick={() => {
+                                console.log(chair.number);
+                            }}
                         >
                             <circle
                                 r={13}
@@ -90,9 +98,6 @@ export default class Assemblee extends React.PureComponent<Props> {
                                     //    opacity: 0.4;
                                     //}
                                 `}
-                                onClick={() => {
-                                    console.log(chair.number);
-                                }}
                                 // ng-mouseover="test()"
                             />
                             <line

@@ -1,4 +1,5 @@
 import HttpService, { SecurityCsrfToken } from './HttpService';
+import EventBus from './EventBus';
 
 class Injector {
     public static instance: Injector;
@@ -12,6 +13,8 @@ class Injector {
         inputName: '_csrf',
         token: undefined
     };
+
+    applicationEventBus = new EventBus<ApplicationEvents>();
 }
 
 export const injector = () => {
