@@ -2,6 +2,8 @@ package openassemblee.config;
 
 import openassemblee.security.*;
 import openassemblee.web.filter.CsrfCookieGeneratorFilter;
+import openassemblee.web.filter.DevCorsFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -19,11 +21,16 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
 
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Value("${spring.profiles.active}")
+    private String profiles;
 
     @Inject
     private Environment env;
@@ -71,6 +78,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        List<String> springProfile = Arrays.asList(profiles.split(","));
+        if (springProfile.contains("dev")) {
+            // for assemblee dev (react)
+            http
+                .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
+                .authorizeRequests()
+                .antMatchers("/api/assemblee").permitAll()
+                .antMatchers("/api/elus").permitAll();
+        }
         http
             .csrf()
             .ignoringAntMatchers("/remote-api/**")
@@ -145,7 +161,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/configuration/security").permitAll()
             .antMatchers("/configuration/ui").permitAll()
             .antMatchers("/protected/**").authenticated();
-
     }
 
     @Bean
