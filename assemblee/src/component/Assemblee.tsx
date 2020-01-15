@@ -20,6 +20,7 @@ interface Props {
     height: number;
     selectedChairNumber?: number;
     updateChairNumber: (chairNumber: number) => void;
+    associations: Dict<number, EluListDTO>;
 }
 
 export default class Assemblee extends React.PureComponent<Props> {
@@ -139,6 +140,29 @@ export default class Assemblee extends React.PureComponent<Props> {
                                 x2={chair.x1}
                                 y2={chair.y1}
                             />
+
+                            {(() => {
+                                const association = this.props.associations[
+                                    chair.number
+                                ];
+                                if (
+                                    association &&
+                                    association.groupePolitique
+                                ) {
+                                    return (
+                                        <line
+                                            css={css`
+                                                stroke: #${association.groupePolitique.couleur};
+                                                stroke-width: 4px;
+                                            `}
+                                            x1={chair.x3}
+                                            y1={chair.y3}
+                                            x2={chair.x4}
+                                            y2={chair.y4}
+                                        />
+                                    );
+                                }
+                            })()}
 
                             <text
                                 x={chair.centerX}

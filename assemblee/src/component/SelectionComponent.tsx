@@ -9,7 +9,9 @@ interface Props {
     eluListDTOs: EluListDTO[];
     selectionMode: boolean;
     selectedChairNumber?: number;
-    updateChairNumber: (chairNumber: number) => void;
+    updateSelectedChairNumber: (chairNumber: number) => void;
+    updateSelectedElu: (elu: EluListDTO) => void;
+    associations: Dict<number, EluListDTO>;
 }
 
 interface State {
@@ -59,7 +61,7 @@ export default class SelectionComponent extends React.PureComponent<
         const chairInput = e.target.value;
         this.setState(state => ({ ...state, chairInput }));
         const chairNumber = parseInt(chairInput);
-        this.props.updateChairNumber(chairNumber);
+        this.props.updateSelectedChairNumber(chairNumber);
     };
 
     private updateSearchEluInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,26 +70,32 @@ export default class SelectionComponent extends React.PureComponent<
     };
 
     public render() {
-        const elusParGroupe = {} as any;
+        // FIXME usage Record vs groupe la...
+        const elusParGroupe = {} as any; //as Dict<number, EluListDTO>;
         const groupes = {} as any;
-        this.props.eluListDTOs.forEach(e => {
-            if (e.groupePolitique) {
-                if (!elusParGroupe[e.groupePolitique.id]) {
-                    elusParGroupe[e.groupePolitique.id] = [];
+        const elusInAssociations = Object.keys(this.props.associations).map(
+            (n: string) => this.props.associations[parseInt(n)]?.elu.id
+        );
+        this.props.eluListDTOs
+            .filter(e => !elusInAssociations.includes(e.elu.id))
+            .forEach(e => {
+                if (e.groupePolitique) {
+                    if (!elusParGroupe[e.groupePolitique.id]) {
+                        elusParGroupe[e.groupePolitique.id] = [];
+                    }
+                    elusParGroupe[e.groupePolitique.id].push(e);
+                    groupes[e.groupePolitique.id] = e.groupePolitique;
+                    // } else {
+                    //     if (!elusParGroupe[sansGroupePolitique]) {
+                    //         elusParGroupe[sansGroupePolitique] = [];
+                    //     }
+                    //     elusParGroupe[sansGroupePolitique].push(e.elu);
+                    //     groupes[sansGroupePolitique] = {
+                    //         nomCourt: 'Sans',
+                    //         couleur: colors.greyWithoutSharp
+                    //     } as Partial<GroupePolitique>;
                 }
-                elusParGroupe[e.groupePolitique.id].push(e.elu);
-                groupes[e.groupePolitique.id] = e.groupePolitique;
-                // } else {
-                //     if (!elusParGroupe[sansGroupePolitique]) {
-                //         elusParGroupe[sansGroupePolitique] = [];
-                //     }
-                //     elusParGroupe[sansGroupePolitique].push(e.elu);
-                //     groupes[sansGroupePolitique] = {
-                //         nomCourt: 'Sans',
-                //         couleur: colors.greyWithoutSharp
-                //     } as Partial<GroupePolitique>;
-            }
-        });
+            });
         return (
             <div
                 css={css`
@@ -117,6 +125,7 @@ export default class SelectionComponent extends React.PureComponent<
                                 outline: none;
                                 font-size: 30px;
                                 width: 100%;
+                                text-align: center;
                                 &:focus {
                                     border: 1px solid ${colors.blue};
                                 }
@@ -135,7 +144,7 @@ export default class SelectionComponent extends React.PureComponent<
                     >
                         <input
                             css={css`
-                            position: relative;
+                                position: relative;
                                 border: 1px solid ${colors.grey};
                                 outline: none;
                                 font-size: 30px;
@@ -167,7 +176,8 @@ export default class SelectionComponent extends React.PureComponent<
                             <GroupePolitiqueComponent
                                 key={groupe.id}
                                 groupePolitique={groupe}
-                                elus={elus}
+                                eluDtos={elus}
+                                updateSelectedElu={this.props.updateSelectedElu}
                             />
                         );
                     })}

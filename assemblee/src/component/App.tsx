@@ -11,30 +11,70 @@ interface State {
     assemblee?: AssembleeDTO;
     eluListDTOs?: EluListDTO[];
     selectedChairNumber?: number;
+    selectedElu?: EluListDTO;
+    associations: Dict<number, EluListDTO>;
 }
 
 export default class App extends React.PureComponent<{}, State> {
     state: State = {
         assemblee: undefined,
         eluListDTOs: undefined,
-        selectedChairNumber: undefined
+        selectedChairNumber: undefined,
+        selectedElu: undefined,
+        associations: {}
     };
 
     componentDidMount(): void {
         injector()
             .httpService.get(injector().urlBase + '/api/assemblee')
             .then(a => {
-                this.setState(state => ({ ...state, assemblee: a.body }));
+                this.setState(state => ({
+                    ...state,
+                    assemblee: a.body
+                }));
             });
         injector()
             .httpService.get(injector().urlBase + '/api/elus')
             .then(a => {
-                this.setState(state => ({ ...state, eluListDTOs: a.body }));
+                const eluListDTOs = a.body as EluListDTO[];
+                this.setState(state => ({
+                    ...state,
+                    eluListDTOs
+                }));
             });
     }
 
-    private updateChairNumber = (selectedChairNumber: number) =>
-        this.setState(state => ({ ...state, selectedChairNumber }));
+    private checkAssociation = () => {
+        this.setState(state => {
+            const selectedChairNumber = state.selectedChairNumber;
+            if (selectedChairNumber && state.selectedElu) {
+                return {
+                    ...state,
+                    associations: {
+                        ...state.associations,
+                        [selectedChairNumber]: state.selectedElu
+                    },
+                    selectedChairNumber: undefined,
+                    selectedElu: undefined
+                };
+            } else {
+                return state;
+            }
+        });
+    };
+
+    private updateSelectedChairNumber = (selectedChairNumber: number) => {
+        this.setState(state => ({
+            ...state,
+            selectedChairNumber
+        }));
+        this.checkAssociation();
+    };
+
+    private updateSelectedElu = (selectedElu: EluListDTO) => {
+        this.setState(state => ({ ...state, selectedElu }));
+        this.checkAssociation();
+    };
 
     public render() {
         return (
@@ -59,8 +99,13 @@ export default class App extends React.PureComponent<{}, State> {
                                     assemblee={this.state.assemblee}
                                     width={(width * 3) / 4}
                                     height={height}
-                                    selectedChairNumber={this.state.selectedChairNumber}
-                                    updateChairNumber={this.updateChairNumber}
+                                    selectedChairNumber={
+                                        this.state.selectedChairNumber
+                                    }
+                                    updateChairNumber={
+                                        this.updateSelectedChairNumber
+                                    }
+                                    associations={this.state.associations}
                                 />
                             )}
                         </div>
@@ -75,8 +120,14 @@ export default class App extends React.PureComponent<{}, State> {
                                 <SelectionComponent
                                     eluListDTOs={this.state.eluListDTOs}
                                     selectionMode={false}
-                                    selectedChairNumber={this.state.selectedChairNumber}
-                                    updateChairNumber={this.updateChairNumber}
+                                    selectedChairNumber={
+                                        this.state.selectedChairNumber
+                                    }
+                                    updateSelectedChairNumber={
+                                        this.updateSelectedChairNumber
+                                    }
+                                    updateSelectedElu={this.updateSelectedElu}
+                                    associations={this.state.associations}
                                 />
                             )}
                         </div>

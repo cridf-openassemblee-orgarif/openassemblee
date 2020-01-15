@@ -5,14 +5,17 @@ import { colors } from '../constants';
 
 interface Props {
     groupePolitique: GroupePolitique;
-    elus: Elu[];
+    // FIXMENOW about ce naming
+    eluDtos: EluListDTO[];
+    // FIXME naming
+    updateSelectedElu: (elu: EluListDTO) => void;
 }
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
 > {
     public render() {
-        const { groupePolitique, elus } = this.props;
+        const { groupePolitique, eluDtos } = this.props;
         return (
             <div
                 css={css`
@@ -42,14 +45,20 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                         padding: 10px;
                     `}
                 >
-                    {elus.map((e: Elu) => (
+                    {eluDtos.map((d: EluListDTO) => (
                         <div
-                            key={e.id}
+                            key={d.elu.id}
                             css={css`
                                 font-size: 16px;
+                                padding: 2px 10px;
+                                cursor: pointer;
+                                &:hover {
+                                    background: ${colors.clearGrey};
+                                }
                             `}
+                            onClick={() => this.props.updateSelectedElu(d)}
                         >
-                            {e.prenom} {e.nom}{' '}
+                            {d.elu.prenom} {d.elu.nom}
                         </div>
                     ))}
                 </div>
