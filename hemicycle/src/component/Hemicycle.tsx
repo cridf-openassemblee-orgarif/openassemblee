@@ -15,7 +15,7 @@ import { colors } from '../constants';
 // };
 
 interface Props {
-    assemblee: AssembleeDTO;
+    hemicycle: HemicycleDTO;
     width: number;
     height: number;
     selectedChairNumber?: number;
@@ -23,7 +23,7 @@ interface Props {
     associations: Dict<number, EluListDTO>;
 }
 
-export default class Assemblee extends React.PureComponent<Props> {
+export default class Hemicycle extends React.PureComponent<Props> {
     public render() {
         return (
             // viewbox avec 20 / 30 en size de chair : viewBox="20 60 960 510"
@@ -61,7 +61,7 @@ export default class Assemblee extends React.PureComponent<Props> {
                 {/*    fill="white"*/}
                 {/*    // stroke="#bd5e46"*/}
                 {/*/>*/}
-                {this.props.assemblee.chairs.map(chair => (
+                {this.props.hemicycle.chairs.map(chair => (
                     <React.Fragment key={chair.number}>
                         <g
                             css={css`

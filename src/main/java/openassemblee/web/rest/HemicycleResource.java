@@ -2,8 +2,8 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.service.util.DichotomyUtil;
-import openassemblee.web.rest.dto.AssembleeChairDTO;
-import openassemblee.web.rest.dto.AssembleeDTO;
+import openassemblee.web.rest.dto.HemicycleChairDTO;
+import openassemblee.web.rest.dto.HemicycleDTO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +17,7 @@ import static java.lang.Math.*;
 
 @RestController
 @RequestMapping("/api")
-public class AssembleeResource {
+public class HemicycleResource {
 
     class ChairBaseLine {
         public double startAngle;
@@ -45,7 +45,7 @@ public class AssembleeResource {
     private double prof = 16.0;
 
     //    private double prof = 30.0;
-    private double ratioAssemblee = 1.5;
+    private double ratioHemicycle = 1.5;
 
     private double demieLargeur = largeur / 2;
     double demieProf = prof / 2;
@@ -80,12 +80,12 @@ public class AssembleeResource {
         }
     }
 
-    @RequestMapping(value = "/assemblee",
+    @RequestMapping(value = "/hemicycle",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     // FIXMENOW ne pas tout recalculer
-    public AssembleeDTO assemblee() {
+    public HemicycleDTO hemicycle() {
         List<LineDefinition> lines = Arrays.asList(
             new LineDefinition(LineOrientation.LEFT, 160, -26.2, false, 5),
             new LineDefinition(LineOrientation.CENTER, 160.0, 0.0, true, 5),
@@ -124,23 +124,23 @@ public class AssembleeResource {
             new LineDefinition(LineOrientation.RIGHT, 520, 22.6, false, 6)
         );
 
-        List<AssembleeChairDTO> chairs = lines.stream()
+        List<HemicycleChairDTO> chairs = lines.stream()
             .map(this::calculateChairs)
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
-        List<AssembleeChairDTO> numberedChairs = IntStream.range(0, chairs.size())
+        List<HemicycleChairDTO> numberedChairs = IntStream.range(0, chairs.size())
             .mapToObj(i -> {
-                AssembleeChairDTO c = chairs.get(i);
+                HemicycleChairDTO c = chairs.get(i);
                 c.setNumber(i + 1);
                 return c;
             })
             .collect(Collectors.toList());
-        return new AssembleeDTO(numberedChairs);
+        return new HemicycleDTO(numberedChairs);
     }
 
-    private List<AssembleeChairDTO> calculateChairs(LineDefinition line) {
+    private List<HemicycleChairDTO> calculateChairs(LineDefinition line) {
         double ry = line.ry;
-        double rx = ry * ratioAssemblee;
+        double rx = ry * ratioHemicycle;
         return chairBaseLines(line, rx, ry)
             .stream()
             .map(l -> calcChair(l, rx, ry))
@@ -231,7 +231,7 @@ public class AssembleeResource {
         return lines.get(lines.size() - 1);
     }
 
-    private AssembleeChairDTO calcChair(ChairBaseLine baseLine, double rx, double ry) {
+    private HemicycleChairDTO calcChair(ChairBaseLine baseLine, double rx, double ry) {
         double startSin = sin(baseLine.startAngle);
         double startCos = cos(baseLine.startAngle);
         double endSin = sin(baseLine.endAngle);
@@ -253,7 +253,7 @@ public class AssembleeResource {
         double centerAngle = (baseLine.startAngle + baseLine.endAngle) / 2;
         double chairBaseX = x1 + (x2 - x1) / 2;
         double chairBaseY = y1 + (y2 - y1) / 2;
-        return new AssembleeChairDTO(-1,
+        return new HemicycleChairDTO(-1,
             startX,
             startY,
             endX,
@@ -273,10 +273,10 @@ public class AssembleeResource {
             ((startY + endY) / 2 + chairBaseY) / 2);
     }
 
-    private AssembleeChairDTO positionChair(AssembleeChairDTO d) {
+    private HemicycleChairDTO positionChair(HemicycleChairDTO d) {
         double x = baseX;
         double y = baseY;
-        return new AssembleeChairDTO(d.number,
+        return new HemicycleChairDTO(d.number,
             x + d.baseX1,
             y - d.baseY1,
             x + d.baseX2,

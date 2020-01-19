@@ -84,7 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
                 .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/assemblee").permitAll()
+                .antMatchers("/api/hemicycle").permitAll()
                 .antMatchers("/api/elus").permitAll();
         }
         http

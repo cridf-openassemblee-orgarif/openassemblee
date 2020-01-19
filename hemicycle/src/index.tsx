@@ -8,7 +8,7 @@ window.addEventListener('resize', () =>
     injector().applicationEventBus.publish('window_resized_event')
 );
 
-// Ce code pour redimensionner l'assemblee à l'agrandissement/rétrécissement du menu admintle
+// Ce code pour redimensionner l'hemicycle à l'agrandissement/rétrécissement du menu admintle
 // setTimeout car sinon document.body est null à l'éxécution du code
 setTimeout(() => {
     new MutationObserver(function(event) {
@@ -27,10 +27,10 @@ setTimeout(() => {
     });
 }, 0);
 
-global.loadAssemblee = () => {
-    ReactDOM.render(<App />, document.getElementById('assemblee-app'));
+global.loadHemicycle = () => {
+    ReactDOM.render(<App />, document.getElementById('hemicycle-app'));
 };
 
 if (global.devHost) {
-    global.loadAssemblee();
+    global.loadHemicycle();
 }

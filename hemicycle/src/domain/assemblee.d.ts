@@ -1,4 +1,4 @@
-interface AssembleeChairDTO {
+interface HemicycleChairDTO {
     number: number;
     baseX1: number;
     baseY1: number;
@@ -20,6 +20,6 @@ interface AssembleeChairDTO {
     centerY: number;
 }
 
-interface AssembleeDTO {
-    chairs: AssembleeChairDTO[];
+interface HemicycleDTO {
+    chairs: HemicycleChairDTO[];
 }

@@ -4,11 +4,11 @@ import React from 'react';
 import { injector } from '../service/injector';
 import { clearfix } from '../utils';
 import SizingContainer from './SizingContainer';
-import Assemblee from './Assemblee';
+import Hemicycle from './Hemicycle';
 import SelectionComponent from './SelectionComponent';
 
 interface State {
-    assemblee?: AssembleeDTO;
+    hemicycle?: HemicycleDTO;
     eluListDTOs?: EluListDTO[];
     selectedChairNumber?: number;
     selectedElu?: EluListDTO;
@@ -17,7 +17,7 @@ interface State {
 
 export default class App extends React.PureComponent<{}, State> {
     state: State = {
-        assemblee: undefined,
+        hemicycle: undefined,
         eluListDTOs: undefined,
         selectedChairNumber: undefined,
         selectedElu: undefined,
@@ -26,11 +26,11 @@ export default class App extends React.PureComponent<{}, State> {
 
     componentDidMount(): void {
         injector()
-            .httpService.get(injector().urlBase + '/api/assemblee')
+            .httpService.get(injector().urlBase + '/api/hemicycle')
             .then(a => {
                 this.setState(state => ({
                     ...state,
-                    assemblee: a.body
+                    hemicycle: a.body
                 }));
             });
         injector()
@@ -94,9 +94,9 @@ export default class App extends React.PureComponent<{}, State> {
                                 height: ${height}px;
                             `}
                         >
-                            {this.state.assemblee && (
-                                <Assemblee
-                                    assemblee={this.state.assemblee}
+                            {this.state.hemicycle && (
+                                <Hemicycle
+                                    hemicycle={this.state.hemicycle}
                                     width={(width * 3) / 4}
                                     height={height}
                                     selectedChairNumber={

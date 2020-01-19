@@ -1,6 +1,6 @@
 package openassemblee.web.rest.dto;
 
-public class AssembleeChairDTO {
+public class HemicycleChairDTO {
 
     public int number;
     public double baseX1, baseY1, baseX2, baseY2;
@@ -10,7 +10,7 @@ public class AssembleeChairDTO {
     public double chairBaseX, chairBaseY;
     public double centerX, centerY;
 
-    public AssembleeChairDTO(int number,
+    public HemicycleChairDTO(int number,
                              double baseX1, double baseY1, double baseX2, double baseY2,
                              double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4,
                              double centerAngle,

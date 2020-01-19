@@ -694,7 +694,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${basedir}/build-and-copy-assemblee.sh</executable>
+                                    <executable>${basedir}/build-and-copy-hemicycle.sh</executable>
                                 </configuration>
                             </execution>
                         </executions>
