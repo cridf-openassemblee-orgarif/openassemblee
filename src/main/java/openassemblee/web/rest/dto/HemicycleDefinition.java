@@ -47,11 +47,13 @@ public class HemicycleDefinition {
     // TODO tester d'autres values ;)
     public double expectedPrecision;
     public List<LineDefinition> lines;
+    public int margin;
+    public int numerotationDebut;
 
     public HemicycleDefinition() {
     }
 
-    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, double ratioHemicycle, double expectedPrecision, List<LineDefinition> lines) {
+    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, double ratioHemicycle, double expectedPrecision, List<LineDefinition> lines, int margin, int numerotationDebut) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.largeur = largeur;
@@ -59,5 +61,7 @@ public class HemicycleDefinition {
         this.ratioHemicycle = ratioHemicycle;
         this.expectedPrecision = expectedPrecision;
         this.lines = lines;
+        this.margin = margin;
+        this.numerotationDebut = numerotationDebut;
     }
 }

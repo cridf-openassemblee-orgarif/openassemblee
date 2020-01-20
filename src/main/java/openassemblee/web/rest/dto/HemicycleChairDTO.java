@@ -1,5 +1,8 @@
 package openassemblee.web.rest.dto;
 
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+
 public class HemicycleChairDTO {
 
     public int number;
@@ -39,4 +42,29 @@ public class HemicycleChairDTO {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public int minX() {
+        return (int) DoubleStream.of(x()).min().getAsDouble();
+    }
+
+    public int maxX() {
+        return (int) DoubleStream.of(x()).max().getAsDouble();
+    }
+
+    public int minY() {
+        return (int) DoubleStream.of(y()).min().getAsDouble();
+    }
+
+    public int maxY() {
+        return (int) DoubleStream.of(y()).max().getAsDouble();
+    }
+
+    private double[] x() {
+        return new double[]{x1, x2, x3, x4};
+    }
+
+    private double[] y() {
+        return new double[]{y1, y2, y3, y4};
+    }
+
 }

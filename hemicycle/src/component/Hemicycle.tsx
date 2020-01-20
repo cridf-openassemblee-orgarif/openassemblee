@@ -58,7 +58,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                 <svg
                     width={this.props.width}
                     height={this.props.height}
-                    viewBox="46 56 910 500"
+                    viewBox={`${this.props.hemicycle.viewPortX} ${this.props.hemicycle.viewPortY} ${this.props.hemicycle.viewPortWidth} ${this.props.hemicycle.viewPortHeight}`}
                 >
                     <style>
                         {/*    .assembleeChair {*/}

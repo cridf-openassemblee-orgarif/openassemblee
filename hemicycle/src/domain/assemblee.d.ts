@@ -22,4 +22,8 @@ interface HemicycleChairDTO {
 
 interface HemicycleDTO {
     chairs: HemicycleChairDTO[];
+    viewPortX: number;
+    viewPortY: number;
+    viewPortWidth: number;
+    viewPortHeight: number;
 }

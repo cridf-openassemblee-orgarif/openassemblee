@@ -1,8 +1,15 @@
 {
+    "numerotationDebut": 8,
+
+    "largeur": 26,
+    "prof": 16,
+
+    "ratioHemicycle": 1.5,
+
     "baseX": 500,
     "baseY": 600,
     "expectedPrecision": 1,
-    "largeur": 26,
+    "margin": 4,
     "lines": [
         {"chairsNumber": 5, "firstIsCentralChair": false, "lineOrientation": "LEFT", "ry": 160, "startAngle": -26.2},
         {"chairsNumber": 5, "firstIsCentralChair": true, "lineOrientation": "CENTER", "ry": 160, "startAngle": 0},
@@ -31,7 +38,5 @@
         {"chairsNumber": 6, "firstIsCentralChair": false, "lineOrientation": "LEFT", "ry": 520, "startAngle": -22.6},
         {"chairsNumber": 20, "firstIsCentralChair": false, "lineOrientation": "CENTER", "ry": 520, "startAngle": 0},
         {"chairsNumber": 6, "firstIsCentralChair": false, "lineOrientation": "RIGHT", "ry": 520, "startAngle": 22.6}
-    ],
-    "prof": 16,
-    "ratioHemicycle": 1.5
+    ]
 }
