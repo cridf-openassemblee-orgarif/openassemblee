@@ -113,12 +113,21 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                 : this.props.hideAssociationsChairs &&
                                   association
                                 ? colors.clearGrey
+                                : groupePolitique
+                                ? groupePolitique.couleur
                                 : colors.white;
+                        const fillChairOpacity =
+                            this.props.selectedChairNumber === chair.number ||
+                            (this.props.hideAssociationsChairs &&
+                                association) ||
+                            !groupePolitique
+                                ? 1
+                                : 0.15;
                         const opacity =
                             this.props.hideAssociationsChairs &&
                             this.props.selectedChairNumber !== chair.number &&
                             association
-                                ? 0.1
+                                ? 0.15
                                 : 1;
                         return (
                             <React.Fragment key={chair.number}>
@@ -128,13 +137,9 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                     css={css`
                                         opacity: ${opacity};
                                         &:hover {
-                                            polygon,
-                                            circle {
-                                                fill: ${this.props
-                                                    .selectedChairNumber ===
-                                                chair.number
-                                                    ? colors.blue
-                                                    : colors.clearGrey};
+                                            polygon {
+                                                fill: ${colors.blue};
+                                                fill-opacity: 1;
                                             }
                                         }
                                     `}
@@ -154,55 +159,63 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         }
                                     }}
                                 >
-                                    <circle
-                                        r={13}
-                                        cx={chair.chairBaseX}
-                                        cy={chair.chairBaseY}
-                                        css={css`
-                                            stroke: ${strokeChairColor};
-                                            stroke-width: 1px;
-                                            fill: ${fillChairColor};
-                                            cursor: pointer;
-                                        `}
-                                    />
+                                    {/*<circle*/}
+                                    {/*    r={13}*/}
+                                    {/*    cx={chair.chairBaseX}*/}
+                                    {/*    cy={chair.chairBaseY}*/}
+                                    {/*    css={css`*/}
+                                    {/*        stroke: ${strokeChairColor};*/}
+                                    {/*        stroke-width: 1px;*/}
+                                    {/*        fill: ${fillChairColor};*/}
+                                    {/*        cursor: pointer;*/}
+                                    {/*    `}*/}
+                                    {/*/>*/}
+                                    {/*<polygon*/}
+                                    {/*    points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}*/}
+                                    {/*    css={css`*/}
+                                    {/*        fill: ${colors.white};*/}
+                                    {/*    `}*/}
+                                    {/*/>*/}
                                     <polygon
                                         points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}
                                         css={css`
-                                            stroke: none;
+                                            stroke: ${strokeChairColor};
+                                            stroke-width: 0.5px;
                                             fill: ${fillChairColor};
+                                            fill-opacity: ${fillChairOpacity};
                                             cursor: pointer;
                                         `}
                                     />
-                                    <line
-                                        css={css`
-                                            stroke: ${strokeChairColor};
-                                            stroke-width: 1px;
-                                        `}
-                                        x1={chair.x2}
-                                        y1={chair.y2}
-                                        x2={chair.x3}
-                                        y2={chair.y3}
-                                    />
-                                    <line
-                                        css={css`
-                                            stroke: ${strokeChairColor};
-                                            stroke-width: 1px;
-                                        `}
-                                        x1={chair.x3}
-                                        y1={chair.y3}
-                                        x2={chair.x4}
-                                        y2={chair.y4}
-                                    />
-                                    <line
-                                        css={css`
-                                            stroke: ${strokeChairColor};
-                                            stroke-width: 1px;
-                                        `}
-                                        x1={chair.x4}
-                                        y1={chair.y4}
-                                        x2={chair.x1}
-                                        y2={chair.y1}
-                                    />
+                                    {/*<line*/}
+                                    {/*    css={css`*/}
+                                    {/*        stroke: ${strokeChairColor};*/}
+                                    {/*        stroke-width: 1px;*/}
+                                    {/*    `}*/}
+                                    {/*    x1={chair.x2}*/}
+                                    {/*    y1={chair.y2}*/}
+                                    {/*    x2={chair.x3}*/}
+                                    {/*    y2={chair.y3}*/}
+                                    {/*/>*/}
+                                    {/*<line*/}
+                                    {/*    css={css`*/}
+                                    {/*        stroke: ${strokeChairColor};*/}
+                                    {/*        stroke-width: 1px;*/}
+                                    {/*    `}*/}
+                                    {/*    x1={chair.x3}*/}
+                                    {/*    y1={chair.y3}*/}
+                                    {/*    x2={chair.x4}*/}
+                                    {/*    y2={chair.y4}*/}
+                                    {/*/>*/}
+                                    {/*<line*/}
+                                    {/*    css={css`*/}
+                                    {/*        stroke: ${strokeChairColor};*/}
+                                    {/*        stroke-width: 1px;*/}
+                                    {/*    `}*/}
+                                    {/*    x1={chair.x4}*/}
+                                    {/*    y1={chair.y4}*/}
+                                    {/*    x2={chair.x1}*/}
+                                    {/*    y2={chair.y1}*/}
+                                    {/*/>*/}
                                     {groupePolitique && (
                                         <line
                                             css={css`
@@ -221,7 +234,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         css={css`
                                             fill: ${strokeChairColor};
                                             text-anchor: middle;
-                                            font-size: 10px;
+                                            font-size: 8px;
                                             cursor: pointer;
                                             alignment-baseline: central;
                                         `}
