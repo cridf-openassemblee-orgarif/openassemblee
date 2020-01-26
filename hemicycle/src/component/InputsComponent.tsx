@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../constants';
-import { clearfix } from '../utils';
+import { clearfix, domUid } from '../utils';
 import EluSelectionComponent from './EluSelectionComponent';
 import { AppData, Selections } from './App';
 
@@ -14,6 +14,7 @@ interface Props {
 interface State {
     chairInput: string;
     chairInputIsValid: boolean;
+    autoIncrement: boolean;
 }
 
 export default class InputsComponent extends React.PureComponent<Props, State> {
@@ -21,7 +22,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         chairInput: this.props.selections.selectedChairNumber
             ? this.props.selections.selectedChairNumber.toString()
             : '',
-        chairInputIsValid: true
+        chairInputIsValid: true,
+        autoIncrement: false
     };
 
     componentWillUpdate(
@@ -31,14 +33,36 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     ): void {
         const selectedChairNumber = nextProps.selections.selectedChairNumber;
         if (selectedChairNumber !== this.props.selections.selectedChairNumber) {
-            this.setState(state => ({
-                ...state,
-                chairInput: selectedChairNumber
-                    ? selectedChairNumber.toString()
-                    : ''
-            }));
+            if (selectedChairNumber) {
+                this.setState(state => ({
+                    ...state,
+                    chairInput: selectedChairNumber.toString()
+                }));
+            } else {
+                if (
+                    this.props.selections.selectedChairNumber &&
+                    this.state.autoIncrement
+                ) {
+                    const newChairNumber =
+                        this.props.selections.selectedChairNumber + 1;
+                    this.props.selections.updateSelectedChairNumber(
+                        newChairNumber
+                    );
+                } else {
+                    this.setState(state => ({
+                        ...state,
+                        chairInput: ''
+                    }));
+                }
+            }
         }
     }
+
+    private switchAutoIncrement = () =>
+        this.setState(state => ({
+            ...state,
+            autoIncrement: !state.autoIncrement
+        }));
 
     private updateChairInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const chairInput = e.target.value;
@@ -48,6 +72,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     public render() {
+        const checkboxId = domUid();
         return (
             <div
                 css={css`
@@ -77,6 +102,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         onChange={this.updateChairInput}
                         value={this.state.chairInput}
                     />
+                    <label htmlFor={checkboxId}>
+                        <input
+                            type="checkbox"
+                            id={checkboxId}
+                            value={this.state.autoIncrement.toString()}
+                            onChange={this.switchAutoIncrement}
+                        />
+                        Incrément auto
+                    </label>
                 </div>
                 <div
                     css={css`
