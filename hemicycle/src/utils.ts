@@ -10,3 +10,5 @@ export const clearfix = css`
 
 let uniqueIdIndex = 0;
 export const domUid = () => 'WivaldyUid_' + uniqueIdIndex++;
+
+export const eluToString = (elu: Elu) => elu.prenom + ' ' + elu.nom;

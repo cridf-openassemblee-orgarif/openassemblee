@@ -2,6 +2,8 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../constants';
+import { clearfix } from '../utils';
+import EluSelectionComponent from './EluSelectionComponent';
 import { AppData, Selections } from './App';
 
 interface Props {
@@ -49,25 +51,46 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         return (
             <div
                 css={css`
+                    ${clearfix};
                     margin: 10px 0;
-                    position: relative;
                 `}
             >
-                <input
+                <div
                     css={css`
-                        border: 1px solid ${colors.grey};
-                        outline: none;
-                        font-size: 20px;
-                        width: 100%;
-                        text-align: center;
-                        height: 40px;
-                        &:focus {
-                            border: 1px solid ${colors.black};
-                        }
+                        position: relative;
+                        float: left;
+                        width: 25%;
                     `}
-                    onChange={this.updateChairInput}
-                    value={this.state.chairInput}
-                />
+                >
+                    <input
+                        css={css`
+                            border: 1px solid ${colors.grey};
+                            outline: none;
+                            font-size: 20px;
+                            width: 100%;
+                            text-align: center;
+                            height: 40px;
+                            &:focus {
+                                border: 1px solid ${colors.black};
+                            }
+                        `}
+                        onChange={this.updateChairInput}
+                        value={this.state.chairInput}
+                    />
+                </div>
+                <div
+                    css={css`
+                        position: relative;
+                        float: left;
+                        width: 75%;
+                        padding-left: 4px;
+                    `}
+                >
+                    <EluSelectionComponent
+                        selections={this.props.selections}
+                        data={this.props.data}
+                    />
+                </div>
             </div>
         );
     }

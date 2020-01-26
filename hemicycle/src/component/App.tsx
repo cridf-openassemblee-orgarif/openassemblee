@@ -51,11 +51,17 @@ export interface Association {
     elu: Elu;
 }
 
+type SelectedEluSource = 'input' | 'list';
+
 export interface Selections {
     selectedChairNumber?: number;
     selectedElu?: Elu;
+    selectedEluSource?: SelectedEluSource;
     updateSelectedChairNumber: (selectedChairNumber: number) => void;
-    updateSelectedElu: (selectedElu: Elu) => void;
+    updateSelectedElu: (
+        selectedElu: Elu | undefined,
+        source: SelectedEluSource
+    ) => void;
     removeAssociation: (chair: number) => void;
 }
 
@@ -75,6 +81,7 @@ export interface AppData {
 interface State {
     selectedChairNumber?: number;
     selectedElu?: Elu;
+    selectedEluSource?: SelectedEluSource;
     associations: Associations;
     hemicycle?: HemicycleDTO;
     data?: AppData;
@@ -84,6 +91,7 @@ export default class App extends React.PureComponent<{}, State> {
     state: State = {
         selectedChairNumber: undefined,
         selectedElu: undefined,
+        selectedEluSource: undefined,
         hemicycle: undefined,
         data: undefined,
         associations: {
@@ -194,47 +202,49 @@ export default class App extends React.PureComponent<{}, State> {
         };
     };
 
-    private checkSelections = () => {
-        this.setState(state => {
-            const selectedChairNumber = state.selectedChairNumber;
-            const selectedElu = state.selectedElu;
-            if (selectedChairNumber && selectedElu) {
-                const newAssociation: Association = {
-                    chair: selectedChairNumber,
-                    elu: selectedElu
-                };
-                const newAssociations = state.associations.list.filter(
-                    a =>
-                        a.chair !== selectedChairNumber &&
-                        a.elu.id !== selectedElu.id
-                );
-                newAssociations.push(newAssociation);
-                return {
-                    ...state,
-                    selectedChairNumber: undefined,
-                    selectedElu: undefined,
-                    ...this.associationsCollections(newAssociations)
-                };
-            } else {
-                return state;
-            }
-        });
+    private checkSelections = (state: State) => {
+        const selectedChairNumber = state.selectedChairNumber;
+        const selectedElu = state.selectedElu;
+        if (selectedChairNumber && selectedElu) {
+            const newAssociation: Association = {
+                chair: selectedChairNumber,
+                elu: selectedElu
+            };
+            const newAssociations = state.associations.list.filter(
+                a =>
+                    a.chair !== selectedChairNumber &&
+                    a.elu.id !== selectedElu.id
+            );
+            newAssociations.push(newAssociation);
+            return {
+                ...state,
+                selectedChairNumber: undefined,
+                selectedElu: undefined,
+                selectedEluSource: undefined,
+                ...this.associationsCollections(newAssociations)
+            };
+        } else {
+            return state;
+        }
     };
 
-    private updateSelectedChairNumber = (selectedChairNumber: number) => {
-        this.setState(state => ({
-            ...state,
-            selectedChairNumber
-        }));
-        this.checkSelections();
-    };
+    private updateSelectedChairNumber = (selectedChairNumber: number) =>
+        this.setState(state =>
+            this.checkSelections({
+                ...state,
+                selectedChairNumber
+            })
+        );
 
-    private updateSelectedElu = (selectedElu: Elu) => {
-        this.setState(state => ({ ...state, selectedElu }));
-        this.checkSelections();
-    };
+    private updateSelectedElu = (
+        selectedElu: Elu | undefined,
+        selectedEluSource: SelectedEluSource
+    ) =>
+        this.setState(state =>
+            this.checkSelections({ ...state, selectedElu, selectedEluSource })
+        );
 
-    private removeAssociation = (chair: number) => {
+    private removeAssociation = (chair: number) =>
         this.setState(state => {
             const newAssociations = state.associations.list.filter(
                 a => a.chair !== chair
@@ -244,12 +254,12 @@ export default class App extends React.PureComponent<{}, State> {
                 ...this.associationsCollections(newAssociations)
             };
         });
-    };
 
     public render() {
         const selections: Selections = {
             selectedChairNumber: this.state.selectedChairNumber,
             selectedElu: this.state.selectedElu,
+            selectedEluSource: this.state.selectedEluSource,
             updateSelectedChairNumber: this.updateSelectedChairNumber,
             updateSelectedElu: this.updateSelectedElu,
             removeAssociation: this.removeAssociation

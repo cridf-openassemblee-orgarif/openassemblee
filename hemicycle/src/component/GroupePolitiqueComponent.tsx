@@ -76,7 +76,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                           `}
                                 `}
                                 onClick={() =>
-                                    this.props.selections.updateSelectedElu(elu)
+                                    this.props.selections.updateSelectedElu(elu, 'list')
                                 }
                             >
                                 <span
