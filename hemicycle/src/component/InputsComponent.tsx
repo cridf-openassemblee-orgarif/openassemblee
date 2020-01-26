@@ -5,6 +5,7 @@ import { colors } from '../constants';
 import { clearfix, domUid } from '../utils';
 import EluSelectionComponent from './EluSelectionComponent';
 import { AppData, Selections } from './App';
+import DelayedChangeInput from './DelayedChangeInput';
 
 interface Props {
     selections: Selections;
@@ -64,8 +65,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
             autoIncrement: !state.autoIncrement
         }));
 
-    private updateChairInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const chairInput = e.target.value;
+    private updateChairInput = (chairInput: string) => {
         this.setState(state => ({ ...state, chairInput }));
         const chairNumber = parseInt(chairInput);
         this.props.selections.updateSelectedChairNumber(chairNumber);
@@ -87,7 +87,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         width: 25%;
                     `}
                 >
-                    <input
+                    <DelayedChangeInput
                         css={css`
                             border: 1px solid ${colors.grey};
                             outline: none;
@@ -99,7 +99,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                                 border: 1px solid ${colors.black};
                             }
                         `}
-                        onChange={this.updateChairInput}
+                        onValueChange={this.updateChairInput}
                         value={this.state.chairInput}
                     />
                     <label htmlFor={checkboxId}>
