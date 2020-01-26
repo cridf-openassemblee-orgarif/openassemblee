@@ -4,6 +4,7 @@ import React from 'react';
 import { colors } from '../constants';
 import ReactTooltip from 'react-tooltip';
 import { domUid } from '../utils';
+import { AppData, Associations, Selections } from './App';
 
 // const classes = {
 //     assembleeCouloir1: css`
@@ -17,16 +18,16 @@ import { domUid } from '../utils';
 // };
 
 interface Props {
-    hemicycle: HemicycleDTO;
     width: number;
     height: number;
-    selectedChairNumber?: number;
-    updateChairNumber: (chairNumber: number) => void;
-    associations: Dict<number, EluListDTO>;
+    hemicycle: HemicycleDTO;
+    selections: Selections;
+    associations: Associations;
+    data: AppData;
 }
 
 interface State {
-    tooltipElu?: EluListDTO;
+    tooltipElu?: Elu;
 }
 
 export default class Hemicycle extends React.PureComponent<Props, State> {
@@ -34,7 +35,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
         tooltipElu: undefined
     } as State;
 
-    private setEluInTooltip = (tooltipElu?: EluListDTO) =>
+    private setEluInTooltip = (tooltipElu?: Elu) =>
         this.setState(state => ({ ...state, tooltipElu }));
 
     public render() {
@@ -50,18 +51,15 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                 >
                     <p>
                         {tooltipElu
-                            ? `${tooltipElu.elu.prenom} ${tooltipElu.elu.nom}`
+                            ? `${tooltipElu.prenom} ${tooltipElu.nom}`
                             : undefined}
                     </p>
                 </ReactTooltip>
-                {/*viewbox avec 20 / 30 en size de chair : viewBox="20 60 960 510"*/}
-                {/*FIXMENOW calculer auto !*/}
                 <svg
                     width={this.props.width}
                     height={this.props.height}
                     viewBox="46 56 910 500"
                 >
-                    {/*<svg width="1000" height="600" viewBox="0 0 20 600" >*/}
                     <style>
                         {/*    .assembleeChair {*/}
                         {/*    fill: none;*/}
@@ -91,9 +89,13 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     {/*    // stroke="#bd5e46"*/}
                     {/*/>*/}
                     {this.props.hemicycle.chairs.map(chair => {
-                        const association = this.props.associations[
-                            chair.number
-                        ];
+                        const association = this.props.associations
+                            .associationsByChair[chair.number];
+                        const groupePolitique = association
+                            ? this.props.data.groupePolitiquesById[
+                                  association.elu.groupePolitiqueId
+                              ]
+                            : undefined;
                         return (
                             <React.Fragment key={chair.number}>
                                 <g
@@ -103,15 +105,19 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         &:hover {
                                             polygon,
                                             circle {
-                                                fill: ${colors.blue};
+                                                fill: ${this.props.selections
+                                                    .selectedChairNumber ===
+                                                chair.number
+                                                    ? colors.blue
+                                                    : colors.clearGrey};
                                             }
                                         }
                                     `}
                                     onMouseOver={() =>
-                                        this.setEluInTooltip(association)
+                                        this.setEluInTooltip(association?.elu)
                                     }
                                     onClick={() => {
-                                        this.props.updateChairNumber(
+                                        this.props.selections.updateSelectedChairNumber(
                                             chair.number
                                         );
                                     }}
@@ -123,34 +129,25 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         css={css`
                                             stroke: black;
                                             stroke-width: 1px;
-                                            fill: ${this.props
+                                            fill: ${this.props.selections
                                                 .selectedChairNumber ===
                                             chair.number
-                                                ? colors.green
+                                                ? colors.blue
                                                 : colors.white};
                                             cursor: pointer;
-                                            //&:hover {
-                                            //    fill: #4673bd;
-                                            //    opacity: 0.4;
-                                            //}
                                         `}
                                     />
                                     <polygon
                                         points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}
                                         css={css`
                                             stroke: none;
-                                            fill: ${this.props
+                                            fill: ${this.props.selections
                                                 .selectedChairNumber ===
                                             chair.number
-                                                ? colors.green
+                                                ? colors.blue
                                                 : colors.white};
                                             cursor: pointer;
-                                            //&:hover {
-                                            //    fill: #4673bd;
-                                            //    opacity: 0.4;
-                                            //}
                                         `}
-                                        // ng-mouseover="test()"
                                     />
                                     <line
                                         css={css`
@@ -182,27 +179,18 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         x2={chair.x1}
                                         y2={chair.y1}
                                     />
-
-                                    {(() => {
-                                        if (
-                                            association &&
-                                            association.groupePolitique
-                                        ) {
-                                            return (
-                                                <line
-                                                    css={css`
-                                                        stroke: #${association.groupePolitique.couleur};
-                                                        stroke-width: 4px;
-                                                    `}
-                                                    x1={chair.x3}
-                                                    y1={chair.y3}
-                                                    x2={chair.x4}
-                                                    y2={chair.y4}
-                                                />
-                                            );
-                                        }
-                                    })()}
-
+                                    {groupePolitique && (
+                                        <line
+                                            css={css`
+                                                stroke: ${groupePolitique.couleur};
+                                                stroke-width: 4px;
+                                            `}
+                                            x1={chair.x3}
+                                            y1={chair.y3}
+                                            x2={chair.x4}
+                                            y2={chair.y4}
+                                        />
+                                    )}
                                     <text
                                         x={chair.centerX}
                                         y={chair.centerY}
@@ -216,7 +204,6 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         {chair.number}
                                     </text>
                                 </g>
-
                                 {/*<line*/}
                                 {/*    x1={chair.baseX1}*/}
                                 {/*    y1={chair.baseY1}*/}

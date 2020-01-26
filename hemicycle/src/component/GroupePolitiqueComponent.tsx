@@ -2,20 +2,21 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../constants';
+import { AppData, Associations, Selections } from './App';
 
 interface Props {
     groupePolitique: GroupePolitique;
-    // FIXMENOW about ce naming
-    eluDtos: EluListDTO[];
-    // FIXME naming
-    updateSelectedElu: (elu: EluListDTO) => void;
+    data: AppData;
+    displayAssociations: boolean;
+    associations: Associations;
+    selections: Selections;
 }
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
 > {
     public render() {
-        const { groupePolitique, eluDtos } = this.props;
+        let elus = this.props.data.elusByGroupe[this.props.groupePolitique.id];
         return (
             <div
                 css={css`
@@ -25,7 +26,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
             >
                 <div
                     css={css`
-                        background: #${groupePolitique.couleur};
+                        background: ${this.props.groupePolitique.couleur};
                         padding-left: 20px;
                     `}
                 >
@@ -35,32 +36,77 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                             padding: 0 10px;
                         `}
                     >
-                        {groupePolitique.nomCourt}
+                        {this.props.groupePolitique.nomCourt}
                     </span>
                 </div>
                 <div
                     css={css`
-                        border: 4px solid #${groupePolitique.couleur};
+                        border: 4px solid ${this.props.groupePolitique.couleur};
                         border-top: 0;
                         padding: 10px;
                     `}
                 >
-                    {eluDtos.map((d: EluListDTO) => (
-                        <div
-                            key={d.elu.id}
-                            css={css`
-                                font-size: 16px;
-                                padding: 2px 10px;
-                                cursor: pointer;
-                                &:hover {
-                                    background: ${colors.clearGrey};
+                    {elus
+                        .map((elu: Elu) => ({
+                            elu,
+                            association: this.props.associations
+                                .associationsByElu[elu.id]
+                        }))
+                        .filter(
+                            ({ elu, association }) =>
+                                this.props.displayAssociations || !association
+                        )
+                        .map(({ elu, association }) => (
+                            <div
+                                key={elu.id}
+                                css={css`
+                                    position: relative;
+                                    font-size: 16px;
+                                    padding: 2px 10px;
+                                    cursor: pointer;
+                                    ${this.props.selections.selectedElu?.id ===
+                                    elu.id
+                                        ? css`
+                                              background: ${colors.blue};
+                                          `
+                                        : css`
+                                              &:hover {
+                                                  background: ${colors.clearGrey};
+                                              }
+                                          `}
+                                `}
+                                onClick={() =>
+                                    this.props.selections.updateSelectedElu(elu)
                                 }
-                            `}
-                            onClick={() => this.props.updateSelectedElu(d)}
-                        >
-                            {d.elu.prenom} {d.elu.nom}
-                        </div>
-                    ))}
+                            >
+                                <span
+                                    css={css`
+                                        display: inline-block;
+                                        width: 40px;
+                                    `}
+                                >
+                                    {association?.chair}
+                                </span>
+                                {elu.prenom} {elu.nom}
+                                {association?.chair && (
+                                    <div
+                                        css={css`
+                                            position: absolute;
+                                            top: 2px;
+                                            right: 2px;
+                                        `}
+                                        onClick={e => {
+                                            this.props.selections.removeAssociation(
+                                                association.chair
+                                            );
+                                            e.stopPropagation();
+                                        }}
+                                    >
+                                        ✕
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                 </div>
             </div>
         );

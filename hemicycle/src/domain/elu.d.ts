@@ -7,6 +7,21 @@ interface Elu {
     civilite: Civilite;
     nom: string;
     prenom: string;
+    groupePolitiqueId: number;
+}
+
+interface GroupePolitique {
+    id: number;
+    nom: string;
+    nomCourt: string;
+    couleur: string;
+}
+
+interface EluFromWs {
+    id: number;
+    civilite: Civilite;
+    nom: string;
+    prenom: string;
     nomJeuneFille: string;
     profession: string;
     dateNaissance: LocalDate;
@@ -21,10 +36,9 @@ interface Elu {
     listeCourt: string;
     uid: string;
     shortUid: number;
-    appartenancesGroupePolitique: AppartenanceGroupePolitique[];
 }
 
-interface GroupePolitique {
+interface GroupePolitiqueFromWs {
     id: number;
     nom: string;
     nomCourt: string;
@@ -43,17 +57,7 @@ interface GroupePolitique {
     shortUid: number;
 }
 
-interface AppartenanceGroupePolitique {
-    id: number;
-    dateDebut: LocalDate;
-    dateFin: LocalDate;
-    motifFin: string;
-    importUid: string;
-    elu: Elu;
-    groupePolitique: GroupePolitique;
-}
-
 interface EluListDTO {
-    elu: Elu;
-    groupePolitique: GroupePolitique;
+    elu: EluFromWs;
+    groupePolitique?: GroupePolitiqueFromWs;
 }

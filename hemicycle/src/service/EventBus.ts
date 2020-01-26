@@ -4,7 +4,10 @@ type Callback = (eventDetails: any) => void;
 export type Unsuscriber = () => void;
 
 export default class EventBus<T extends string> {
-    private eventListenersMap: Dict<string, Dict<string, Callback>> = {};
+    private eventListenersMap: Record<
+        string,
+        Record<string, Callback> | undefined
+    > = {};
 
     public subscribe(event: T, listener: Callback): Unsuscriber {
         let eventListeners = this.eventListenersMap[event];
@@ -15,7 +18,7 @@ export default class EventBus<T extends string> {
         const listenerId = domUid();
         eventListeners[listenerId] = listener;
         return () =>
-            delete (eventListeners as Dict<string, Callback>)[listenerId];
+            delete (eventListeners as Record<string, Callback>)[listenerId];
     }
 
     public publish(event: T, eventDetails?: any) {
@@ -23,7 +26,7 @@ export default class EventBus<T extends string> {
         if (!eventListeners) {
             return;
         }
-        Object.keys(eventListeners as Dict<string, Callback>).forEach(
+        Object.keys(eventListeners as Record<string, Callback>).forEach(
             (k: string) => {
                 const func = eventListeners[k];
                 if (typeof func === 'function') {
