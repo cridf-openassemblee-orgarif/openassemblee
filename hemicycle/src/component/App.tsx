@@ -322,13 +322,19 @@ export default class App extends React.PureComponent<{}, State> {
         }));
 
     private switchHideAssociations = () =>
-        this.setState(state => ({
-            ...state,
-            config: {
-                ...state.config,
-                hideAssociationsChairs: !state.config.hideAssociationsChairs
-            }
-        }));
+        this.setState(state => {
+            const hideAssociationsChairs = !state.config.hideAssociationsChairs;
+            return {
+                ...state,
+                selectedChairNumber: hideAssociationsChairs
+                    ? undefined
+                    : state.selectedChairNumber,
+                config: {
+                    ...state.config,
+                    hideAssociationsChairs
+                }
+            };
+        });
 
     private switchDeleteMode = () =>
         this.setState(state => {
