@@ -183,7 +183,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             checked={this.state.autoIncrement}
                             onChange={this.switchAutoIncrement}
                             disabled={this.props.deleteMode}
-                        />
+                        />{' '}
                         Incrément auto
                     </label>
                     <label
@@ -203,7 +203,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             checked={this.props.hideAssociationsChairs}
                             onChange={this.props.switchHideAssociations}
                             disabled={this.props.deleteMode}
-                        />
+                        />{' '}
                         Cacher les associations
                     </label>
                 </div>

@@ -74,7 +74,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                         checked={this.state.hideAssociations}
                         onChange={this.switchDisplayAssociations}
                         disabled={this.props.deleteMode}
-                    />
+                    />{' '}
                     Cacher les associations
                 </label>
                 {this.props.data.groupePolitiques.map(groupePolitique => {
