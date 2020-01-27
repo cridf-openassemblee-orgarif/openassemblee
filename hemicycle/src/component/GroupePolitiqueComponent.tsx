@@ -22,7 +22,20 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
 > {
     public render() {
-        let elus = this.props.data.elusByGroupe[this.props.groupePolitique.id];
+        let eluAssociations = this.props.data.elusByGroupe[
+            this.props.groupePolitique.id
+        ]
+            .map((elu: Elu) => ({
+                elu,
+                association: this.props.associations.associationsByElu[elu.id]
+            }))
+            .filter(
+                ({ elu, association }) =>
+                    !this.props.hideAssociations || !association
+            );
+        if (eluAssociations.length === 0) {
+            return null;
+        }
         return (
             <div
                 css={css`
@@ -52,86 +65,73 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                         padding: 10px;
                     `}
                 >
-                    {elus
-                        .map((elu: Elu) => ({
-                            elu,
-                            association: this.props.associations
-                                .associationsByElu[elu.id]
-                        }))
-                        .filter(
-                            ({ elu, association }) =>
-                                !this.props.hideAssociations || !association
-                        )
-                        .map(({ elu, association }) => (
-                            <div
-                                key={elu.id}
-                                css={css`
-                                    position: relative;
-                                    font-size: 14px;
-                                    padding: 2px 10px;
-                                    cursor: pointer;
-                                    ${this.props.selectedElu?.id === elu.id
-                                        ? css`
-                                              background: ${colors.blue};
-                                          `
-                                        : css`
-                                              &:hover {
-                                                  background: ${colors.clearGrey};
-                                              }
-                                          `}
-                                    ${!association &&
-                                        this.props.deleteMode &&
-                                        css`
-                                            color: ${colors.grey};
-                                            cursor: auto;
-                                            &:hover {
-                                                background: ${colors.white};
-                                            }
-                                        `}
-                                `}
-                                onClick={() => {
-                                    if (!this.props.deleteMode) {
-                                        this.props.updateSelectedElu(
-                                            elu,
-                                            'list'
-                                        );
-                                    } else {
-                                        if (association) {
-                                            this.props.removeAssociation(
-                                                association.chair
-                                            );
+                    {eluAssociations.map(({ elu, association }) => (
+                        <div
+                            key={elu.id}
+                            css={css`
+                                position: relative;
+                                font-size: 14px;
+                                padding: 2px 10px;
+                                cursor: pointer;
+                                ${this.props.selectedElu?.id === elu.id
+                                    ? css`
+                                          background: ${colors.blue};
+                                      `
+                                    : css`
+                                          &:hover {
+                                              background: ${colors.clearGrey};
+                                          }
+                                      `}
+                                ${!association &&
+                                    this.props.deleteMode &&
+                                    css`
+                                        color: ${colors.grey};
+                                        cursor: auto;
+                                        &:hover {
+                                            background: ${colors.white};
                                         }
-                                    }
-                                }}
-                            >
-                                <span
-                                    css={css`
-                                        display: inline-block;
-                                        width: 40px;
                                     `}
+                            `}
+                            onClick={() => {
+                                if (!this.props.deleteMode) {
+                                    this.props.updateSelectedElu(elu, 'list');
+                                } else {
+                                    if (association) {
+                                        this.props.removeAssociation(
+                                            association.chair
+                                        );
+                                    }
+                                }
+                            }}
+                        >
+                            <span
+                                css={css`
+                                    display: inline-block;
+                                    width: 40px;
+                                `}
+                            >
+                                {association?.chair}
+                            </span>
+                            {elu.prenom} {elu.nom}
+                            {association?.chair && !this.props.deleteMode && (
+                                <div
+                                    css={css`
+                                        position: absolute;
+                                        top: 2px;
+                                        right: 2px;
+                                    `}
+                                    onClick={e => {
+                                        this.props.removeAssociation(
+                                            association.chair
+                                        );
+                                        e.stopPropagation();
+                                    }}
                                 >
-                                    {association?.chair}
-                                </span>
-                                {elu.prenom} {elu.nom}
-                                {association?.chair && !this.props.deleteMode && (
-                                    <div
-                                        css={css`
-                                            position: absolute;
-                                            top: 2px;
-                                            right: 2px;
-                                        `}
-                                        onClick={e => {
-                                            this.props.removeAssociation(
-                                                association.chair
-                                            );
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        ✕
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                                    ✕
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </div>
         );
