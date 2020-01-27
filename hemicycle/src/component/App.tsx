@@ -51,19 +51,7 @@ export interface Association {
     elu: Elu;
 }
 
-type SelectedEluSource = 'input' | 'list';
-
-export interface Selections {
-    selectedChairNumber?: number;
-    selectedElu?: Elu;
-    selectedEluSource?: SelectedEluSource;
-    updateSelectedChairNumber: (selectedChairNumber: number) => void;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
-        source: SelectedEluSource
-    ) => void;
-    removeAssociation: (chair: number) => void;
-}
+export type SelectedEluSource = 'input' | 'list';
 
 export interface Associations {
     list: Association[];
@@ -184,9 +172,7 @@ export default class App extends React.PureComponent<{}, State> {
             });
     }
 
-    private associationsCollections = (
-        list: Association[]
-    ): { associations: Associations } => {
+    private associationsCollections = (list: Association[]): Associations => {
         const associationsByChair: Record<number, Association | undefined> = {};
         const associationsByElu: Record<number, Association | undefined> = {};
         list.forEach(a => {
@@ -194,55 +180,66 @@ export default class App extends React.PureComponent<{}, State> {
             associationsByElu[a.elu.id] = a;
         });
         return {
-            associations: {
-                list,
-                associationsByChair,
-                associationsByElu
-            }
+            list,
+            associationsByChair,
+            associationsByElu
         };
     };
 
-    private checkSelections = (state: State) => {
-        const selectedChairNumber = state.selectedChairNumber;
-        const selectedElu = state.selectedElu;
-        if (selectedChairNumber && selectedElu) {
-            const newAssociation: Association = {
-                chair: selectedChairNumber,
-                elu: selectedElu
-            };
-            const newAssociations = state.associations.list.filter(
-                a =>
-                    a.chair !== selectedChairNumber &&
-                    a.elu.id !== selectedElu.id
-            );
-            newAssociations.push(newAssociation);
-            return {
-                ...state,
-                selectedChairNumber: undefined,
-                selectedElu: undefined,
-                selectedEluSource: undefined,
-                ...this.associationsCollections(newAssociations)
-            };
-        } else {
-            return state;
-        }
+    private checkSelections = () => {
+        // le fait de delayer ce set State permet à l'input de récupérer le selectedChairNumber via les props
+        // pour le reprendre ensuite en undefined et détecter le changement effectif
+        // est bugguy sans ça
+        // + petit timeout non null permet une visualisation rapide en plus
+        // risque de "bug" si clics très rapides, mais bon... => pas un bug catastrophique, un clic en remplace un autre
+        // FIXMENOW éventuellement supprimer cette latence quand la saisie est dans l'input ? car ralentie la saisie
+        // voire la dégager tout court en fait =]
+        setTimeout(() => {
+            this.setState(state => {
+                const selectedChairNumber = state.selectedChairNumber;
+                const selectedElu = state.selectedElu;
+                if (selectedChairNumber && selectedElu) {
+                    const newAssociation: Association = {
+                        chair: selectedChairNumber,
+                        elu: selectedElu
+                    };
+                    const newAssociations = state.associations.list.filter(
+                        a =>
+                            a.chair !== selectedChairNumber &&
+                            a.elu.id !== selectedElu.id
+                    );
+                    newAssociations.push(newAssociation);
+                    return {
+                        ...state,
+                        selectedChairNumber: undefined,
+                        selectedElu: undefined,
+                        selectedEluSource: undefined,
+                        associations: this.associationsCollections(
+                            newAssociations
+                        )
+                    };
+                } else {
+                    return state;
+                }
+            });
+        }, 200);
     };
 
-    private updateSelectedChairNumber = (selectedChairNumber: number) =>
-        this.setState(state =>
-            this.checkSelections({
-                ...state,
-                selectedChairNumber
-            })
-        );
+    private updateSelectedChairNumber = (selectedChairNumber: number) => {
+        this.setState(state => ({
+            ...state,
+            selectedChairNumber
+        }));
+        this.checkSelections();
+    };
 
     private updateSelectedElu = (
         selectedElu: Elu | undefined,
         selectedEluSource: SelectedEluSource
-    ) =>
-        this.setState(state =>
-            this.checkSelections({ ...state, selectedElu, selectedEluSource })
-        );
+    ) => {
+        this.setState(state => ({ ...state, selectedElu, selectedEluSource }));
+        this.checkSelections();
+    };
 
     private removeAssociation = (chair: number) =>
         this.setState(state => {
@@ -251,77 +248,96 @@ export default class App extends React.PureComponent<{}, State> {
             );
             return {
                 ...state,
-                ...this.associationsCollections(newAssociations)
+                associations: this.associationsCollections(newAssociations)
             };
         });
 
     public render() {
-        const selections: Selections = {
-            selectedChairNumber: this.state.selectedChairNumber,
-            selectedElu: this.state.selectedElu,
-            selectedEluSource: this.state.selectedEluSource,
-            updateSelectedChairNumber: this.updateSelectedChairNumber,
-            updateSelectedElu: this.updateSelectedElu,
-            removeAssociation: this.removeAssociation
-        };
         return (
             <SizingContainer
-                render={(width: number, height: number) => (
-                    <div
-                        css={css`
-                            ${clearfix};
-                            width: 100%;
-                            height: ${height}px;
-                        `}
-                    >
+                render={(width: number, height: number) => {
+                    const hemicycleWidth = (5 * width) / 6;
+                    const columnWidth = width - hemicycleWidth;
+                    return (
                         <div
                             css={css`
-                                float: left;
-                                width: ${(width * 3) / 4}px;
+                                ${clearfix};
+                                width: 100%;
                                 height: ${height}px;
                             `}
                         >
-                            {this.state.data && (
-                                <div
-                                    css={css`
-                                        width: 40%;
-                                        margin: auto;
-                                    `}
-                                >
-                                    <InputsComponent
+                            <div
+                                css={css`
+                                    float: left;
+                                    width: ${hemicycleWidth}px;
+                                    height: ${height}px;
+                                `}
+                            >
+                                {this.state.data && (
+                                    <div
+                                        css={css`
+                                            width: 40%;
+                                            margin: auto;
+                                        `}
+                                    >
+                                        <InputsComponent
+                                            selectedChairNumber={
+                                                this.state.selectedChairNumber
+                                            }
+                                            selectedElu={this.state.selectedElu}
+                                            selectedEluSource={
+                                                this.state.selectedEluSource
+                                            }
+                                            updateSelectedChairNumber={
+                                                this.updateSelectedChairNumber
+                                            }
+                                            updateSelectedElu={
+                                                this.updateSelectedElu
+                                            }
+                                            data={this.state.data}
+                                        />
+                                    </div>
+                                )}
+                                {this.state.hemicycle && this.state.data && (
+                                    <Hemicycle
+                                        width={hemicycleWidth}
+                                        height={height}
+                                        hemicycle={this.state.hemicycle}
                                         data={this.state.data}
-                                        selections={selections}
+                                        associations={this.state.associations}
+                                        selectedChairNumber={
+                                            this.state.selectedChairNumber
+                                        }
+                                        updateSelectedChairNumber={
+                                            this.updateSelectedChairNumber
+                                        }
                                     />
-                                </div>
-                            )}
-                            {this.state.hemicycle && this.state.data && (
-                                <Hemicycle
-                                    width={(width * 3) / 4}
-                                    height={height}
-                                    hemicycle={this.state.hemicycle}
-                                    data={this.state.data}
-                                    selections={selections}
-                                    associations={this.state.associations}
-                                />
-                            )}
+                                )}
+                            </div>
+                            <div
+                                css={css`
+                                    float: left;
+                                    width: ${columnWidth}px;
+                                    height: ${height}px;
+                                `}
+                            >
+                                {this.state.data && (
+                                    <EluListComponent
+                                        data={this.state.data}
+                                        associations={this.state.associations}
+                                        selectedElu={this.state.selectedElu}
+                                        updateSelectedElu={
+                                            this.updateSelectedElu
+                                        }
+                                        removeAssociation={
+                                            this.removeAssociation
+                                        }
+                                    />
+                                )}
+                            </div>
                         </div>
-                        <div
-                            css={css`
-                                float: left;
-                                width: ${width / 4}px;
-                                height: ${height}px;
-                            `}
-                        >
-                            {this.state.data && (
-                                <EluListComponent
-                                    data={this.state.data}
-                                    selections={selections}
-                                    associations={this.state.associations}
-                                />
-                            )}
-                        </div>
-                    </div>
-                )}
+                    );
+                }}
             />
         );
     }

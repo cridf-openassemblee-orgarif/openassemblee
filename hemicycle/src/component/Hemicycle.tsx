@@ -4,7 +4,7 @@ import React from 'react';
 import { colors } from '../constants';
 import ReactTooltip from 'react-tooltip';
 import { domUid } from '../utils';
-import { AppData, Associations, Selections } from './App';
+import { AppData, Associations } from './App';
 
 // const classes = {
 //     assembleeCouloir1: css`
@@ -21,9 +21,10 @@ interface Props {
     width: number;
     height: number;
     hemicycle: HemicycleDTO;
-    selections: Selections;
     associations: Associations;
     data: AppData;
+    selectedChairNumber?: number;
+    updateSelectedChairNumber: (selectedChairNumber: number) => void;
 }
 
 interface State {
@@ -105,7 +106,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         &:hover {
                                             polygon,
                                             circle {
-                                                fill: ${this.props.selections
+                                                fill: ${this.props
                                                     .selectedChairNumber ===
                                                 chair.number
                                                     ? colors.blue
@@ -117,7 +118,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         this.setEluInTooltip(association?.elu)
                                     }
                                     onClick={() => {
-                                        this.props.selections.updateSelectedChairNumber(
+                                        this.props.updateSelectedChairNumber(
                                             chair.number
                                         );
                                     }}
@@ -129,7 +130,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         css={css`
                                             stroke: black;
                                             stroke-width: 1px;
-                                            fill: ${this.props.selections
+                                            fill: ${this.props
                                                 .selectedChairNumber ===
                                             chair.number
                                                 ? colors.blue
@@ -141,7 +142,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}
                                         css={css`
                                             stroke: none;
-                                            fill: ${this.props.selections
+                                            fill: ${this.props
                                                 .selectedChairNumber ===
                                             chair.number
                                                 ? colors.blue

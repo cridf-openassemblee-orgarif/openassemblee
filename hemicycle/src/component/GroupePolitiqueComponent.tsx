@@ -2,14 +2,19 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../constants';
-import { AppData, Associations, Selections } from './App';
+import { AppData, Associations, SelectedEluSource } from './App';
 
 interface Props {
     groupePolitique: GroupePolitique;
     data: AppData;
     displayAssociations: boolean;
     associations: Associations;
-    selections: Selections;
+    selectedElu?: Elu;
+    updateSelectedElu: (
+        selectedElu: Elu | undefined,
+        source: SelectedEluSource
+    ) => void;
+    removeAssociation: (chair: number) => void;
 }
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
@@ -61,11 +66,10 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                 key={elu.id}
                                 css={css`
                                     position: relative;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     padding: 2px 10px;
                                     cursor: pointer;
-                                    ${this.props.selections.selectedElu?.id ===
-                                    elu.id
+                                    ${this.props.selectedElu?.id === elu.id
                                         ? css`
                                               background: ${colors.blue};
                                           `
@@ -76,7 +80,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                           `}
                                 `}
                                 onClick={() =>
-                                    this.props.selections.updateSelectedElu(elu, 'list')
+                                    this.props.updateSelectedElu(elu, 'list')
                                 }
                             >
                                 <span
@@ -96,7 +100,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                             right: 2px;
                                         `}
                                         onClick={e => {
-                                            this.props.selections.removeAssociation(
+                                            this.props.removeAssociation(
                                                 association.chair
                                             );
                                             e.stopPropagation();

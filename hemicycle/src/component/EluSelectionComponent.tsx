@@ -4,11 +4,16 @@ import { useEffect, useState } from 'react';
 import { colors } from '../constants';
 import { useCombobox } from 'downshift';
 import EluComponent from './EluComponent';
-import { AppData, Selections } from './App';
+import { AppData, SelectedEluSource } from './App';
 import { eluToString } from '../utils';
 
 interface Props {
-    selections: Selections;
+    selectedElu?: Elu;
+    selectedEluSource?: SelectedEluSource;
+    updateSelectedElu: (
+        selectedElu: Elu | undefined,
+        source: SelectedEluSource
+    ) => void;
     data: AppData;
 }
 
@@ -43,7 +48,7 @@ const EluSelectionComponent = (props: Props) => {
                         selectedItem &&
                         !isEqual(selectedItem, inputValue)
                     ) {
-                        props.selections.updateSelectedElu(undefined, 'input');
+                        props.updateSelectedElu(undefined, 'input');
                     }
                 }, 0);
             }
@@ -55,7 +60,7 @@ const EluSelectionComponent = (props: Props) => {
                     selectedItem &&
                     isEqual(selectedItem, inputValue)
                 ) {
-                    props.selections.updateSelectedElu(selectedItem, 'input');
+                    props.updateSelectedElu(selectedItem, 'input');
                 }
             }, 0);
             setInputItems(
@@ -70,14 +75,14 @@ const EluSelectionComponent = (props: Props) => {
         }
     });
     useEffect(() => {
-        if (props.selections.selectedEluSource !== 'input') {
-            if (props.selections.selectedElu) {
-                setInputValue(eluToString(props.selections.selectedElu));
+        if (props.selectedEluSource !== 'input') {
+            if (props.selectedElu) {
+                setInputValue(eluToString(props.selectedElu));
             } else {
                 setInputValue('');
             }
         }
-    }, [props.selections]);
+    }, [props.selectedElu, props.selectedEluSource]);
     return (
         <div
             css={css`
@@ -95,7 +100,7 @@ const EluSelectionComponent = (props: Props) => {
                     &:focus {
                         border: 1px solid ${colors.black};
                     }
-                    ${props.selections.selectedElu &&
+                    ${props.selectedElu &&
                         css`
                             background: ${colors.blue};
                         `}

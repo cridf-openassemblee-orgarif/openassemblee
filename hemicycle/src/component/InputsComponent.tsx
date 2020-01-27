@@ -4,11 +4,18 @@ import React from 'react';
 import { colors } from '../constants';
 import { clearfix, domUid } from '../utils';
 import EluSelectionComponent from './EluSelectionComponent';
-import { AppData, Selections } from './App';
+import { AppData, SelectedEluSource } from './App';
 import DelayedChangeInput from './DelayedChangeInput';
 
 interface Props {
-    selections: Selections;
+    selectedChairNumber?: number;
+    selectedElu?: Elu;
+    selectedEluSource?: SelectedEluSource;
+    updateSelectedChairNumber: (selectedChairNumber: number) => void;
+    updateSelectedElu: (
+        selectedElu: Elu | undefined,
+        source: SelectedEluSource
+    ) => void;
     data: AppData;
 }
 
@@ -20,41 +27,34 @@ interface State {
 
 export default class InputsComponent extends React.PureComponent<Props, State> {
     state = {
-        chairInput: this.props.selections.selectedChairNumber
-            ? this.props.selections.selectedChairNumber.toString()
+        chairInput: this.props.selectedChairNumber
+            ? this.props.selectedChairNumber.toString()
             : '',
         chairInputIsValid: true,
         autoIncrement: false
     };
 
-    componentWillUpdate(
-        nextProps: Readonly<Props>,
-        nextState: Readonly<State>,
-        nextContext: any
+    componentDidUpdate(
+        prevProps: Readonly<Props>,
+        prevState: Readonly<State>
     ): void {
-        const selectedChairNumber = nextProps.selections.selectedChairNumber;
-        if (selectedChairNumber !== this.props.selections.selectedChairNumber) {
-            if (selectedChairNumber) {
-                this.setState(state => ({
-                    ...state,
-                    chairInput: selectedChairNumber.toString()
-                }));
-            } else {
-                if (
-                    this.props.selections.selectedChairNumber &&
-                    this.state.autoIncrement
-                ) {
-                    const newChairNumber =
-                        this.props.selections.selectedChairNumber + 1;
-                    this.props.selections.updateSelectedChairNumber(
-                        newChairNumber
-                    );
+        const selectedChairNumber = this.props.selectedChairNumber;
+        if (selectedChairNumber !== prevProps.selectedChairNumber) {
+            if (!selectedChairNumber) {
+                if (this.state.autoIncrement && prevProps.selectedChairNumber) {
+                    const newChairNumber = prevProps.selectedChairNumber + 1;
+                    this.props.updateSelectedChairNumber(newChairNumber);
                 } else {
                     this.setState(state => ({
                         ...state,
                         chairInput: ''
                     }));
                 }
+            } else {
+                this.setState(state => ({
+                    ...state,
+                    chairInput: selectedChairNumber.toString()
+                }));
             }
         }
     }
@@ -68,7 +68,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     private updateChairInput = (chairInput: string) => {
         this.setState(state => ({ ...state, chairInput }));
         const chairNumber = parseInt(chairInput);
-        this.props.selections.updateSelectedChairNumber(chairNumber);
+        this.props.updateSelectedChairNumber(chairNumber);
     };
 
     public render() {
@@ -121,7 +121,9 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                     `}
                 >
                     <EluSelectionComponent
-                        selections={this.props.selections}
+                        selectedElu={this.props.selectedElu}
+                        selectedEluSource={this.props.selectedEluSource}
+                        updateSelectedElu={this.props.updateSelectedElu}
                         data={this.props.data}
                     />
                 </div>

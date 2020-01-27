@@ -22,8 +22,7 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
 
     componentDidUpdate(
         prevProps: Readonly<Props>,
-        prevState: Readonly<State>,
-        snapshot?: any
+        prevState: Readonly<State>
     ): void {
         if (prevProps.value !== this.props.value) {
             this.setState(state => ({

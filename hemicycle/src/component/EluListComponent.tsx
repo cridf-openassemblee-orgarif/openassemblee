@@ -3,10 +3,15 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import GroupePolitiqueComponent from './GroupePolitiqueComponent';
 import { domUid } from '../utils';
-import { AppData, Associations, Selections } from './App';
+import { AppData, Associations, SelectedEluSource } from './App';
 
 interface Props {
-    selections: Selections;
+    selectedElu?: Elu;
+    updateSelectedElu: (
+        selectedElu: Elu | undefined,
+        source: SelectedEluSource
+    ) => void;
+    removeAssociation: (chair: number) => void;
     associations: Associations;
     data: AppData;
 }
@@ -54,7 +59,9 @@ export default class EluListComponent extends React.Component<Props, State> {
                             groupePolitique={groupePolitique}
                             displayAssociations={this.state.displayAssociations}
                             associations={this.props.associations}
-                            selections={this.props.selections}
+                            selectedElu={this.props.selectedElu}
+                            updateSelectedElu={this.props.updateSelectedElu}
+                            removeAssociation={this.props.removeAssociation}
                             data={this.props.data}
                         />
                     );
