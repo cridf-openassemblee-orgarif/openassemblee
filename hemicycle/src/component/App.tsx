@@ -252,6 +252,27 @@ export default class App extends React.PureComponent<{}, State> {
             };
         });
 
+    private protoAlphaSort = () => {
+        this.setState(state => {
+            const hemicycle = state.hemicycle;
+            if (state.data && hemicycle) {
+                const associations = state.data.elus.map(
+                    (elu, index) =>
+                        ({
+                            chair: hemicycle.chairs[index].number,
+                            elu: elu
+                        } as Association)
+                );
+                return {
+                    ...state,
+                    associations: this.associationsCollections(associations)
+                };
+            } else {
+                return state;
+            }
+        });
+    };
+
     public render() {
         return (
             <SizingContainer
@@ -268,35 +289,71 @@ export default class App extends React.PureComponent<{}, State> {
                         >
                             <div
                                 css={css`
+                                    position: relative;
                                     float: left;
                                     width: ${hemicycleWidth}px;
                                     height: ${height}px;
                                 `}
                             >
                                 {this.state.data && (
-                                    <div
-                                        css={css`
-                                            width: 40%;
-                                            margin: auto;
-                                        `}
-                                    >
-                                        <InputsComponent
-                                            selectedChairNumber={
-                                                this.state.selectedChairNumber
-                                            }
-                                            selectedElu={this.state.selectedElu}
-                                            selectedEluSource={
-                                                this.state.selectedEluSource
-                                            }
-                                            updateSelectedChairNumber={
-                                                this.updateSelectedChairNumber
-                                            }
-                                            updateSelectedElu={
-                                                this.updateSelectedElu
-                                            }
-                                            data={this.state.data}
-                                        />
-                                    </div>
+                                    <React.Fragment>
+                                        <div
+                                            css={css`
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                background: ${colors.white};
+                                                border: 1px solid ${colors.grey};
+                                                padding: 4px;
+                                            `}
+                                        >
+                                            <div
+                                                css={css`
+                                                    text-align: center;
+                                                `}
+                                            >
+                                                [proto]
+                                            </div>
+                                            <button
+                                                onClick={this.protoAlphaSort}
+                                            >
+                                                Ordre alphabétique
+                                            </button>
+                                            <button disabled={true}>
+                                                Vider
+                                            </button>
+                                            <button disabled={true}>
+                                                Enregistrer
+                                            </button>
+                                        </div>
+                                        <div
+                                            css={css`
+                                                width: 40%;
+                                                margin: auto;
+                                            `}
+                                        >
+                                            <InputsComponent
+                                                selectedChairNumber={
+                                                    this.state
+                                                        .selectedChairNumber
+                                                }
+                                                selectedElu={
+                                                    this.state.selectedElu
+                                                }
+                                                selectedEluSource={
+                                                    this.state.selectedEluSource
+                                                }
+                                                updateSelectedChairNumber={
+                                                    this
+                                                        .updateSelectedChairNumber
+                                                }
+                                                updateSelectedElu={
+                                                    this.updateSelectedElu
+                                                }
+                                                data={this.state.data}
+                                            />
+                                        </div>
+                                    </React.Fragment>
                                 )}
                                 {this.state.hemicycle && this.state.data && (
                                     <Hemicycle
