@@ -35,6 +35,9 @@ public class HemicycleService {
         }
     }
 
+    @Deprecated
+    private Integer removeYMargin = 20;
+
     public HemicycleDTO hemicycle(HemicycleDefinition hd) {
         List<HemicycleChairDTO> chairs = hd.lines.stream()
             .map(l -> calculateChairs(l, hd))
@@ -51,8 +54,8 @@ public class HemicycleService {
         int maxX = -numberedChairs.stream().map(c -> -c.maxX()).sorted().findFirst().get();
         int minY = numberedChairs.stream().map(c -> c.minY()).sorted().findFirst().get();
         int maxY = -numberedChairs.stream().map(c -> -c.maxY()).sorted().findFirst().get();
-        return new HemicycleDTO(numberedChairs, minX - hd.margin, minY - hd.margin,
-            (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin));
+        return new HemicycleDTO(numberedChairs, minX - hd.margin, minY - hd.margin - removeYMargin,
+            (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin + removeYMargin));
     }
 
     private List<HemicycleChairDTO> calculateChairs(LineDefinition line, HemicycleDefinition hd) {
