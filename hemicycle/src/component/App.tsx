@@ -307,6 +307,12 @@ export default class App extends React.PureComponent<{}, State> {
         );
     };
 
+    private protoEmpty = () =>
+        this.setState(state => ({
+            ...state,
+            associations: this.associationsCollections([])
+        }));
+
     public render() {
         return (
             <SizingContainer
@@ -360,7 +366,7 @@ export default class App extends React.PureComponent<{}, State> {
                                             >
                                                 Enregistrer
                                             </button>
-                                            <button disabled={true}>
+                                            <button onClick={this.protoEmpty}>
                                                 Vider
                                             </button>
                                         </div>
