@@ -3,6 +3,7 @@ package openassemblee.config;
 import openassemblee.security.*;
 import openassemblee.web.filter.CsrfCookieGeneratorFilter;
 import openassemblee.web.filter.DevCorsFilter;
+import openassemblee.web.rest.HemicycleResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -84,8 +85,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
                 .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/hemicycle").permitAll()
+                .antMatchers("/api" + HemicycleResource.hemicycleUrl).permitAll()
+                .antMatchers("/api" + HemicycleResource.protoAssociationsUrl).permitAll()
                 .antMatchers("/api/elus").permitAll();
+            http
+                .csrf()
+                .ignoringAntMatchers("/api" + HemicycleResource.hemicycleUrl)
+                .ignoringAntMatchers("/api" + HemicycleResource.protoAssociationsUrl);
         }
         http
             .csrf()

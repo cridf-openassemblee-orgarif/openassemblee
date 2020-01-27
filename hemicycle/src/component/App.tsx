@@ -169,6 +169,7 @@ export default class App extends React.PureComponent<{}, State> {
                         groupePolitiquesById
                     }
                 }));
+                this.updateProtoAssociations(elus);
             });
     }
 
@@ -273,6 +274,39 @@ export default class App extends React.PureComponent<{}, State> {
         });
     };
 
+    private updateProtoAssociations(elus: Elu[]) {
+        injector()
+            .httpService.get(injector().urlBase + '/api/proto-associations')
+            .then(a => {
+                const protoAssociations = a.body as [number, number][];
+                const eluById = {} as Record<number, Elu>;
+                elus.forEach(e => {
+                    eluById[e.id] = e;
+                });
+                const associations: Association[] = protoAssociations.map(
+                    a => ({
+                        chair: a[0],
+                        elu: eluById[a[1]]
+                    })
+                );
+                this.setState(state => ({
+                    ...state,
+                    associations: this.associationsCollections(associations)
+                }));
+            });
+    }
+
+    private saveProtoAssociations = () => {
+        const protoAssociations = this.state.associations.list.map(a => [
+            a.chair,
+            a.elu.id
+        ]);
+        injector().httpService.post(
+            injector().urlBase + '/api/proto-associations',
+            protoAssociations
+        );
+    };
+
     public render() {
         return (
             <SizingContainer
@@ -319,11 +353,15 @@ export default class App extends React.PureComponent<{}, State> {
                                             >
                                                 Ordre alphabétique
                                             </button>
-                                            <button disabled={true}>
-                                                Vider
+                                            <button
+                                                onClick={
+                                                    this.saveProtoAssociations
+                                                }
+                                            >
+                                                Enregistrer
                                             </button>
                                             <button disabled={true}>
-                                                Enregistrer
+                                                Vider
                                             </button>
                                         </div>
                                         <div
