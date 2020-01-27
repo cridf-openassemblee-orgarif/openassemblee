@@ -155,14 +155,17 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                                 height: 36px;
                                 margin: 2px;
                                 border-radius: 2px;
-                                padding-top: 10px;
+                                padding-top: 3px;
                                 text-align: center;
-                                font-size: 12px;
+                                font-size: 11px;
                                 cursor: pointer;
+                                font-weight: bold;
                             `}
                             onClick={this.props.switchDeleteMode}
                         >
-                            Mode suppression
+                            Mode
+                            <br />
+                            suppression
                         </div>
                     </div>
                 </div>
