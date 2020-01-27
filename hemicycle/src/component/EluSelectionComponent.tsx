@@ -15,6 +15,7 @@ interface Props {
         source: SelectedEluSource
     ) => void;
     data: AppData;
+    deleteMode: boolean;
 }
 
 const isEqual = (item: Elu, inputValue: string) =>
@@ -104,8 +105,13 @@ const EluSelectionComponent = (props: Props) => {
                         css`
                             background: ${colors.blue};
                         `}
+                    &:disabled {
+                        background: ${colors.redBackground};
+                        border-color: ${colors.red};
+                    }
                 `}
                 {...getInputProps()}
+                disabled={props.deleteMode}
             />
             <div
                 css={css`

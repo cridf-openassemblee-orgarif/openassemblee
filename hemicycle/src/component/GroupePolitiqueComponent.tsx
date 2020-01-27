@@ -7,7 +7,7 @@ import { AppData, Associations, SelectedEluSource } from './App';
 interface Props {
     groupePolitique: GroupePolitique;
     data: AppData;
-    displayAssociations: boolean;
+    hideAssociations: boolean;
     associations: Associations;
     selectedElu?: Elu;
     updateSelectedElu: (
@@ -15,6 +15,7 @@ interface Props {
         source: SelectedEluSource
     ) => void;
     removeAssociation: (chair: number) => void;
+    deleteMode: boolean;
 }
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
@@ -59,7 +60,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                         }))
                         .filter(
                             ({ elu, association }) =>
-                                this.props.displayAssociations || !association
+                                !this.props.hideAssociations || !association
                         )
                         .map(({ elu, association }) => (
                             <div
@@ -78,10 +79,30 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                                   background: ${colors.clearGrey};
                                               }
                                           `}
+                                    ${!association &&
+                                        this.props.deleteMode &&
+                                        css`
+                                            color: ${colors.grey};
+                                            cursor: auto;
+                                            &:hover {
+                                                background: ${colors.white};
+                                            }
+                                        `}
                                 `}
-                                onClick={() =>
-                                    this.props.updateSelectedElu(elu, 'list')
-                                }
+                                onClick={() => {
+                                    if (!this.props.deleteMode) {
+                                        this.props.updateSelectedElu(
+                                            elu,
+                                            'list'
+                                        );
+                                    } else {
+                                        if (association) {
+                                            this.props.removeAssociation(
+                                                association.chair
+                                            );
+                                        }
+                                    }
+                                }}
                             >
                                 <span
                                     css={css`
@@ -92,7 +113,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                     {association?.chair}
                                 </span>
                                 {elu.prenom} {elu.nom}
-                                {association?.chair && (
+                                {association?.chair && !this.props.deleteMode && (
                                     <div
                                         css={css`
                                             position: absolute;

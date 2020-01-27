@@ -4,6 +4,7 @@ import React from 'react';
 import GroupePolitiqueComponent from './GroupePolitiqueComponent';
 import { domUid } from '../utils';
 import { AppData, Associations, SelectedEluSource } from './App';
+import { colors } from '../constants';
 
 interface Props {
     selectedElu?: Elu;
@@ -14,21 +15,35 @@ interface Props {
     removeAssociation: (chair: number) => void;
     associations: Associations;
     data: AppData;
+    deleteMode: boolean;
 }
 
 interface State {
-    displayAssociations: boolean;
+    hideAssociations: boolean;
 }
 
 export default class EluListComponent extends React.Component<Props, State> {
     state = {
-        displayAssociations: true
+        hideAssociations: false
     };
+
+    componentDidUpdate(
+        prevProps: Readonly<Props>,
+        prevState: Readonly<State>,
+        snapshot?: any
+    ): void {
+        if (!prevProps.deleteMode && this.props.deleteMode) {
+            this.setState(state => ({
+                ...state,
+                hideAssociations: false
+            }));
+        }
+    }
 
     private switchDisplayAssociations = () =>
         this.setState(state => ({
             ...state,
-            displayAssociations: !state.displayAssociations
+            hideAssociations: !state.hideAssociations
         }));
 
     render() {
@@ -43,12 +58,22 @@ export default class EluListComponent extends React.Component<Props, State> {
                     overflow: scroll;
                 `}
             >
-                <label htmlFor={checkboxId}>
+                <label
+                    htmlFor={checkboxId}
+                    css={
+                        this.props.deleteMode
+                            ? css`
+                                  color: ${colors.grey};
+                              `
+                            : undefined
+                    }
+                >
                     <input
                         type="checkbox"
                         id={checkboxId}
-                        value={this.state.displayAssociations.toString()}
+                        checked={this.state.hideAssociations}
                         onChange={this.switchDisplayAssociations}
+                        disabled={this.props.deleteMode}
                     />
                     Cacher les associations
                 </label>
@@ -57,12 +82,13 @@ export default class EluListComponent extends React.Component<Props, State> {
                         <GroupePolitiqueComponent
                             key={groupePolitique.id}
                             groupePolitique={groupePolitique}
-                            displayAssociations={this.state.displayAssociations}
+                            hideAssociations={this.state.hideAssociations}
                             associations={this.props.associations}
                             selectedElu={this.props.selectedElu}
                             updateSelectedElu={this.props.updateSelectedElu}
                             removeAssociation={this.props.removeAssociation}
                             data={this.props.data}
+                            deleteMode={this.props.deleteMode}
                         />
                     );
                 })}

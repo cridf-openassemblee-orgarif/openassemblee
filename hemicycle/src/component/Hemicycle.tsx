@@ -26,6 +26,8 @@ interface Props {
     selectedChairNumber?: number;
     updateSelectedChairNumber: (selectedChairNumber: number) => void;
     hideAssociationsChairs: boolean;
+    removeAssociation: (chair: number) => void;
+    deleteMode: boolean;
 }
 
 interface State {
@@ -45,18 +47,19 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
         const tooltipElu = this.state.tooltipElu;
         return (
             <React.Fragment>
-                <ReactTooltip
-                    id={tooltipId}
-                    aria-haspopup="true"
-                    role="elu"
-                    disable={!tooltipElu}
-                >
-                    <p>
-                        {tooltipElu
-                            ? `${tooltipElu.prenom} ${tooltipElu.nom}`
-                            : undefined}
-                    </p>
-                </ReactTooltip>
+                {tooltipElu && (
+                    <ReactTooltip
+                        id={tooltipId}
+                        aria-haspopup="true"
+                        role="elu"
+                    >
+                        <p>
+                            {tooltipElu
+                                ? `${tooltipElu.prenom} ${tooltipElu.nom}`
+                                : undefined}
+                        </p>
+                    </ReactTooltip>
+                )}
                 <svg
                     width={this.props.width}
                     height={this.props.height}
@@ -139,9 +142,16 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         this.setEluInTooltip(association?.elu)
                                     }
                                     onClick={() => {
-                                        this.props.updateSelectedChairNumber(
-                                            chair.number
-                                        );
+                                        if (!this.props.deleteMode) {
+                                            this.props.updateSelectedChairNumber(
+                                                chair.number
+                                            );
+                                        } else {
+                                            this.props.removeAssociation(
+                                                chair.number
+                                            );
+                                            this.setEluInTooltip(undefined);
+                                        }
                                     }}
                                 >
                                     <circle

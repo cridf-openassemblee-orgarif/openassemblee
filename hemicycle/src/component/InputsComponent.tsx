@@ -17,6 +17,8 @@ interface Props {
         source: SelectedEluSource
     ) => void;
     data: AppData;
+    deleteMode: boolean;
+    switchDeleteMode: () => void;
     hideAssociationsChairs: boolean;
     switchHideAssociations: () => void;
 }
@@ -59,6 +61,12 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                 }));
             }
         }
+        if (!prevProps.deleteMode && this.props.deleteMode) {
+            this.setState(state => ({
+                ...state,
+                autoIncrement: false
+            }));
+        }
     }
 
     private switchAutoIncrement = () =>
@@ -79,71 +87,126 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         return (
             <div
                 css={css`
-                    ${clearfix};
                     margin: 10px 0;
                 `}
             >
-                <div
-                    css={css`
-                        position: relative;
-                        float: left;
-                        width: 25%;
-                    `}
-                >
-                    <DelayedChangeInput
+                <div css={clearfix}>
+                    <div
                         css={css`
-                            border: 1px solid ${colors.grey};
-                            outline: none;
-                            font-size: 20px;
-                            width: 100%;
-                            text-align: center;
-                            height: 40px;
-                            &:focus {
-                                border: 1px solid ${colors.black};
-                            }
+                            position: relative;
+                            float: left;
+                            width: 15%;
                         `}
-                        onValueChange={this.updateChairInput}
-                        value={this.state.chairInput}
-                    />
+                    >
+                        <DelayedChangeInput
+                            css={css`
+                                border: 1px solid ${colors.grey};
+                                outline: none;
+                                font-size: 20px;
+                                width: 100%;
+                                text-align: center;
+                                height: 40px;
+                                &:focus {
+                                    border: 1px solid ${colors.black};
+                                }
+                                &:disabled {
+                                    background: ${colors.redBackground};
+                                    border-color: ${colors.red};
+                                }
+                            `}
+                            onValueChange={this.updateChairInput}
+                            value={this.state.chairInput}
+                            disabled={this.props.deleteMode}
+                        />
+                    </div>
+                    <div
+                        css={css`
+                            position: relative;
+                            float: left;
+                            width: 65%;
+                            padding-left: 4px;
+                        `}
+                    >
+                        <EluSelectionComponent
+                            selectedElu={this.props.selectedElu}
+                            selectedEluSource={this.props.selectedEluSource}
+                            updateSelectedElu={this.props.updateSelectedElu}
+                            data={this.props.data}
+                            deleteMode={this.props.deleteMode}
+                        />
+                    </div>
+                    <div
+                        css={css`
+                            position: relative;
+                            float: left;
+                            width: 20%;
+                            padding-left: 4px;
+                        `}
+                    >
+                        <div
+                            css={css`
+                                background: ${this.props.deleteMode
+                                    ? colors.red
+                                    : colors.redBackground};
+                                border: 1px solid ${colors.red};
+                                color: ${this.props.deleteMode
+                                    ? colors.white
+                                    : colors.red};
+                                height: 36px;
+                                margin: 2px;
+                                border-radius: 2px;
+                                padding-top: 10px;
+                                text-align: center;
+                                font-size: 12px;
+                                cursor: pointer;
+                            `}
+                            onClick={this.props.switchDeleteMode}
+                        >
+                            Mode suppression
+                        </div>
+                    </div>
                 </div>
-                <div
-                    css={css`
-                        position: relative;
-                        float: left;
-                        width: 75%;
-                        padding-left: 4px;
-                    `}
-                >
-                    <EluSelectionComponent
-                        selectedElu={this.props.selectedElu}
-                        selectedEluSource={this.props.selectedEluSource}
-                        updateSelectedElu={this.props.updateSelectedElu}
-                        data={this.props.data}
-                    />
+                <div>
+                    <label
+                        htmlFor={autoIncrementCheckboxId}
+                        css={
+                            this.props.deleteMode
+                                ? css`
+                                      color: ${colors.grey};
+                                  `
+                                : undefined
+                        }
+                    >
+                        <input
+                            type="checkbox"
+                            id={autoIncrementCheckboxId}
+                            checked={this.state.autoIncrement}
+                            onChange={this.switchAutoIncrement}
+                            disabled={this.props.deleteMode}
+                        />
+                        Incrément auto
+                    </label>
+                    <label
+                        htmlFor={hideAssociationsCheckboxId}
+                        css={css`
+                            margin-left: 10px;
+                            ${this.props.deleteMode
+                                ? css`
+                                      color: ${colors.grey};
+                                  `
+                                : undefined};
+                        `}
+                    >
+                        <input
+                            type="checkbox"
+                            id={hideAssociationsCheckboxId}
+                            checked={this.props.hideAssociationsChairs}
+                            onChange={this.props.switchHideAssociations}
+                            disabled={this.props.deleteMode}
+                        />
+                        Cacher les associations
+                    </label>
                 </div>
-                <label htmlFor={autoIncrementCheckboxId}>
-                    <input
-                        type="checkbox"
-                        id={autoIncrementCheckboxId}
-                        value={this.state.autoIncrement.toString()}
-                        onChange={this.switchAutoIncrement}
-                    />
-                    Incrément auto
-                </label>
-                <label
-                    htmlFor={hideAssociationsCheckboxId}
-                    css={css`
-                        margin-left: 10px;
-                    `}
-                >
-                    <input
-                        type="checkbox"
-                        id={hideAssociationsCheckboxId}
-                        value={this.props.hideAssociationsChairs.toString()}
-                        onChange={this.props.switchHideAssociations}
-                    />
-                    Cacher les associations
-                </label>
             </div>
         );
     }

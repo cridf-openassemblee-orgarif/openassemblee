@@ -75,6 +75,7 @@ interface State {
     data?: AppData;
     config: {
         hideAssociationsChairs: boolean;
+        deleteMode: boolean;
     };
 }
 
@@ -91,7 +92,8 @@ export default class App extends React.PureComponent<{}, State> {
             associationsByElu: {}
         },
         config: {
-            hideAssociationsChairs: false
+            hideAssociationsChairs: false,
+            deleteMode: false
         }
     };
 
@@ -328,6 +330,29 @@ export default class App extends React.PureComponent<{}, State> {
             }
         }));
 
+    private switchDeleteMode = () =>
+        this.setState(state => {
+            const deleteMode = !state.config.deleteMode;
+            const selectedChairNumber = deleteMode
+                ? undefined
+                : state.selectedChairNumber;
+            const selectedElu = deleteMode ? undefined : state.selectedElu;
+            const selectedEluSource = deleteMode
+                ? undefined
+                : state.selectedEluSource;
+            return {
+                ...state,
+                selectedChairNumber,
+                selectedElu,
+                selectedEluSource,
+                config: {
+                    ...state.config,
+                    hideAssociationsChairs: false,
+                    deleteMode
+                }
+            };
+        });
+
     public render() {
         return (
             <SizingContainer
@@ -410,6 +435,12 @@ export default class App extends React.PureComponent<{}, State> {
                                                     this.updateSelectedElu
                                                 }
                                                 data={this.state.data}
+                                                deleteMode={
+                                                    this.state.config.deleteMode
+                                                }
+                                                switchDeleteMode={
+                                                    this.switchDeleteMode
+                                                }
                                                 hideAssociationsChairs={
                                                     this.state.config
                                                         .hideAssociationsChairs
@@ -434,7 +465,16 @@ export default class App extends React.PureComponent<{}, State> {
                                         updateSelectedChairNumber={
                                             this.updateSelectedChairNumber
                                         }
-                                        hideAssociationsChairs={this.state.config.hideAssociationsChairs}
+                                        hideAssociationsChairs={
+                                            this.state.config
+                                                .hideAssociationsChairs
+                                        }
+                                        removeAssociation={
+                                            this.removeAssociation
+                                        }
+                                        deleteMode={
+                                            this.state.config.deleteMode
+                                        }
                                     />
                                 )}
                             </div>
@@ -455,6 +495,9 @@ export default class App extends React.PureComponent<{}, State> {
                                         }
                                         removeAssociation={
                                             this.removeAssociation
+                                        }
+                                        deleteMode={
+                                            this.state.config.deleteMode
                                         }
                                     />
                                 )}
