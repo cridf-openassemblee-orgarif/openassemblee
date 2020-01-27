@@ -37,10 +37,10 @@ const alphabeticSort = (map: (item: any) => string) => (
     const a = map(first);
     const b = map(second);
     if (a > b) {
-        return -1;
+        return 1;
     }
     if (b > a) {
-        return 1;
+        return -1;
     }
     return 0;
 };
