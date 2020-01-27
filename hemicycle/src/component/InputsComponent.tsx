@@ -17,6 +17,8 @@ interface Props {
         source: SelectedEluSource
     ) => void;
     data: AppData;
+    hideAssociationsChairs: boolean;
+    switchHideAssociations: () => void;
 }
 
 interface State {
@@ -72,7 +74,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     public render() {
-        const checkboxId = domUid();
+        const autoIncrementCheckboxId = domUid();
+        const hideAssociationsCheckboxId = domUid();
         return (
             <div
                 css={css`
@@ -102,15 +105,6 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         onValueChange={this.updateChairInput}
                         value={this.state.chairInput}
                     />
-                    <label htmlFor={checkboxId}>
-                        <input
-                            type="checkbox"
-                            id={checkboxId}
-                            value={this.state.autoIncrement.toString()}
-                            onChange={this.switchAutoIncrement}
-                        />
-                        Incrément auto
-                    </label>
                 </div>
                 <div
                     css={css`
@@ -127,6 +121,29 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         data={this.props.data}
                     />
                 </div>
+                <label htmlFor={autoIncrementCheckboxId}>
+                    <input
+                        type="checkbox"
+                        id={autoIncrementCheckboxId}
+                        value={this.state.autoIncrement.toString()}
+                        onChange={this.switchAutoIncrement}
+                    />
+                    Incrément auto
+                </label>
+                <label
+                    htmlFor={hideAssociationsCheckboxId}
+                    css={css`
+                        margin-left: 10px;
+                    `}
+                >
+                    <input
+                        type="checkbox"
+                        id={hideAssociationsCheckboxId}
+                        value={this.props.hideAssociationsChairs.toString()}
+                        onChange={this.props.switchHideAssociations}
+                    />
+                    Cacher les associations
+                </label>
             </div>
         );
     }

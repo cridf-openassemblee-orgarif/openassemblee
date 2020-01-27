@@ -73,6 +73,9 @@ interface State {
     associations: Associations;
     hemicycle?: HemicycleDTO;
     data?: AppData;
+    config: {
+        hideAssociationsChairs: boolean;
+    };
 }
 
 export default class App extends React.PureComponent<{}, State> {
@@ -86,6 +89,9 @@ export default class App extends React.PureComponent<{}, State> {
             list: [],
             associationsByChair: {},
             associationsByElu: {}
+        },
+        config: {
+            hideAssociationsChairs: false
         }
     };
 
@@ -313,6 +319,15 @@ export default class App extends React.PureComponent<{}, State> {
             associations: this.associationsCollections([])
         }));
 
+    private switchHideAssociations = () =>
+        this.setState(state => ({
+            ...state,
+            config: {
+                ...state.config,
+                hideAssociationsChairs: !state.config.hideAssociationsChairs
+            }
+        }));
+
     public render() {
         return (
             <SizingContainer
@@ -395,6 +410,13 @@ export default class App extends React.PureComponent<{}, State> {
                                                     this.updateSelectedElu
                                                 }
                                                 data={this.state.data}
+                                                hideAssociationsChairs={
+                                                    this.state.config
+                                                        .hideAssociationsChairs
+                                                }
+                                                switchHideAssociations={
+                                                    this.switchHideAssociations
+                                                }
                                             />
                                         </div>
                                     </React.Fragment>
@@ -412,6 +434,7 @@ export default class App extends React.PureComponent<{}, State> {
                                         updateSelectedChairNumber={
                                             this.updateSelectedChairNumber
                                         }
+                                        hideAssociationsChairs={this.state.config.hideAssociationsChairs}
                                     />
                                 )}
                             </div>

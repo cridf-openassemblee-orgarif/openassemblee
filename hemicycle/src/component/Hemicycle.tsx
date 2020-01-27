@@ -25,6 +25,7 @@ interface Props {
     data: AppData;
     selectedChairNumber?: number;
     updateSelectedChairNumber: (selectedChairNumber: number) => void;
+    hideAssociationsChairs: boolean;
 }
 
 interface State {
@@ -97,12 +98,32 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                   association.elu.groupePolitiqueId
                               ]
                             : undefined;
+                        const strokeChairColor =
+                            this.props.hideAssociationsChairs &&
+                            this.props.selectedChairNumber !== chair.number &&
+                            association
+                                ? colors.grey
+                                : colors.black;
+                        const fillChairColor =
+                            this.props.selectedChairNumber === chair.number
+                                ? colors.blue
+                                : this.props.hideAssociationsChairs &&
+                                  association
+                                ? colors.clearGrey
+                                : colors.white;
+                        const opacity =
+                            this.props.hideAssociationsChairs &&
+                            this.props.selectedChairNumber !== chair.number &&
+                            association
+                                ? 0.1
+                                : 1;
                         return (
                             <React.Fragment key={chair.number}>
                                 <g
                                     data-tip
                                     data-for={tooltipId}
                                     css={css`
+                                        opacity: ${opacity};
                                         &:hover {
                                             polygon,
                                             circle {
@@ -128,13 +149,9 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         cx={chair.chairBaseX}
                                         cy={chair.chairBaseY}
                                         css={css`
-                                            stroke: black;
+                                            stroke: ${strokeChairColor};
                                             stroke-width: 1px;
-                                            fill: ${this.props
-                                                .selectedChairNumber ===
-                                            chair.number
-                                                ? colors.blue
-                                                : colors.white};
+                                            fill: ${fillChairColor};
                                             cursor: pointer;
                                         `}
                                     />
@@ -142,17 +159,13 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}
                                         css={css`
                                             stroke: none;
-                                            fill: ${this.props
-                                                .selectedChairNumber ===
-                                            chair.number
-                                                ? colors.blue
-                                                : colors.white};
+                                            fill: ${fillChairColor};
                                             cursor: pointer;
                                         `}
                                     />
                                     <line
                                         css={css`
-                                            stroke: black;
+                                            stroke: ${strokeChairColor};
                                             stroke-width: 1px;
                                         `}
                                         x1={chair.x2}
@@ -162,7 +175,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                     />
                                     <line
                                         css={css`
-                                            stroke: black;
+                                            stroke: ${strokeChairColor};
                                             stroke-width: 1px;
                                         `}
                                         x1={chair.x3}
@@ -172,7 +185,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                     />
                                     <line
                                         css={css`
-                                            stroke: black;
+                                            stroke: ${strokeChairColor};
                                             stroke-width: 1px;
                                         `}
                                         x1={chair.x4}
@@ -196,6 +209,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         x={chair.centerX}
                                         y={chair.centerY}
                                         css={css`
+                                            fill: ${strokeChairColor};
                                             text-anchor: middle;
                                             font-size: 10px;
                                             cursor: pointer;
