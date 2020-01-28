@@ -8,6 +8,7 @@ import Hemicycle from './Hemicycle';
 import EluListComponent from './list/EluListComponent';
 import InputsComponent from './input/InputsComponent';
 import { colors } from '../constants';
+import { eluListDTOSample, hemicycleSample } from './sample';
 
 const nonGroupePolitiqueId = -1;
 
@@ -76,6 +77,7 @@ interface State {
     config: {
         hideAssociationsChairs: boolean;
         deleteMode: boolean;
+        displayTestHemicycleButton: boolean;
     };
 }
 
@@ -93,7 +95,8 @@ export default class App extends React.PureComponent<{}, State> {
         },
         config: {
             hideAssociationsChairs: false,
-            deleteMode: false
+            deleteMode: false,
+            displayTestHemicycleButton: false
         }
     };
 
@@ -105,81 +108,98 @@ export default class App extends React.PureComponent<{}, State> {
                     ...state,
                     hemicycle: a.body
                 }));
+            })
+            .catch(() => {
+                this.setState(state => ({
+                    ...state,
+                    config: {
+                        ...state.config,
+                        displayTestHemicycleButton: true
+                    }
+                }));
             });
         injector()
             .httpService.get(injector().urlBase + '/api/elus')
             .then(a => {
-                const elus: Elu[] = [];
-                const elusByGroupe: Record<number, Elu[]> = {};
-                const gps: GroupePolitique[] = [];
-                const groupePolitiquesById: Record<
-                    number,
-                    GroupePolitique
-                > = {};
-
-                const eluListDTOs = a.body as EluListDTO[];
-                eluListDTOs.forEach(d => {
-                    const elu = convertElu(d);
-                    elus.push(elu);
-
-                    const groupePolitiqueId = d.groupePolitique
-                        ? d.groupePolitique.id
-                        : nonGroupePolitiqueId;
-                    let groupeElus = elusByGroupe[groupePolitiqueId];
-                    if (!groupeElus) {
-                        groupeElus = [];
-                        elusByGroupe[groupePolitiqueId] = groupeElus;
-                    }
-                    groupeElus.push(elu);
-
-                    if (
-                        d.groupePolitique &&
-                        !Object.keys(groupePolitiquesById).includes(
-                            d.groupePolitique.id.toString()
-                        )
-                    ) {
-                        const groupePolitique = convertGroupePolitique(
-                            d.groupePolitique
-                        );
-                        gps.push(groupePolitique);
-                        groupePolitiquesById[
-                            d.groupePolitique.id
-                        ] = groupePolitique;
-                    }
-                });
-                Object.keys(elusByGroupe).forEach((idAsString: string) => {
-                    const id = parseInt(idAsString);
-                    elusByGroupe[id] = elusByGroupe[id].sort(
-                        alphabeticSort((elu: Elu) => elu.nom)
-                    );
-                });
-                const groupePolitiques = gps.sort(
-                    alphabeticSort((gp: GroupePolitique) => gp.nom)
-                );
-                // FIXMENOW doc : potentiellement relou mais pas censé avoir d'élu sans groupe !
-                // ou reprendre les couleurs du groupe "sans groupe" effectif
-                // dans la conf de l'hemicycle =)))
-                // et redescendre le groupe avec l'hemicycle pour être sur de l'avoir
-                const nonGroupe: GroupePolitique = {
-                    id: nonGroupePolitiqueId,
-                    nom: 'Sans groupe',
-                    nomCourt: 'Sans groupe',
-                    couleur: colors.black
-                };
-                groupePolitiques.unshift(nonGroupe);
-                groupePolitiquesById[nonGroupePolitiqueId] = nonGroupe;
+                const data = this.dataFromEluListDTO(a.body as EluListDTO[]);
                 this.setState(state => ({
                     ...state,
-                    data: {
-                        elus: elus.sort(alphabeticSort((elu: Elu) => elu.nom)),
-                        groupePolitiques,
-                        elusByGroupe,
-                        groupePolitiquesById
+                    data
+                }));
+                this.updateProtoAssociations(data.elus);
+            })
+            .catch(() => {
+                this.setState(state => ({
+                    ...state,
+                    config: {
+                        ...state.config,
+                        displayTestHemicycleButton: true
                     }
                 }));
-                this.updateProtoAssociations(elus);
             });
     }
+
+    private dataFromEluListDTO = (eluListDTOs: EluListDTO[]): AppData => {
+        const elus: Elu[] = [];
+        const elusByGroupe: Record<number, Elu[]> = {};
+        const gps: GroupePolitique[] = [];
+        const groupePolitiquesById: Record<number, GroupePolitique> = {};
+
+        eluListDTOs.forEach(d => {
+            const elu = convertElu(d);
+            elus.push(elu);
+
+            const groupePolitiqueId = d.groupePolitique
+                ? d.groupePolitique.id
+                : nonGroupePolitiqueId;
+            let groupeElus = elusByGroupe[groupePolitiqueId];
+            if (!groupeElus) {
+                groupeElus = [];
+                elusByGroupe[groupePolitiqueId] = groupeElus;
+            }
+            groupeElus.push(elu);
+
+            if (
+                d.groupePolitique &&
+                !Object.keys(groupePolitiquesById).includes(
+                    d.groupePolitique.id.toString()
+                )
+            ) {
+                const groupePolitique = convertGroupePolitique(
+                    d.groupePolitique
+                );
+                gps.push(groupePolitique);
+                groupePolitiquesById[d.groupePolitique.id] = groupePolitique;
+            }
+        });
+        Object.keys(elusByGroupe).forEach((idAsString: string) => {
+            const id = parseInt(idAsString);
+            elusByGroupe[id] = elusByGroupe[id].sort(
+                alphabeticSort((elu: Elu) => elu.nom)
+            );
+        });
+        const groupePolitiques = gps.sort(
+            alphabeticSort((gp: GroupePolitique) => gp.nom)
+        );
+        // FIXMENOW doc : potentiellement relou mais pas censé avoir d'élu sans groupe !
+        // ou reprendre les couleurs du groupe "sans groupe" effectif
+        // dans la conf de l'hemicycle =)))
+        // et redescendre le groupe avec l'hemicycle pour être sur de l'avoir
+        const nonGroupe: GroupePolitique = {
+            id: nonGroupePolitiqueId,
+            nom: 'Sans groupe',
+            nomCourt: 'Sans groupe',
+            couleur: colors.black
+        };
+        groupePolitiques.unshift(nonGroupe);
+        groupePolitiquesById[nonGroupePolitiqueId] = nonGroupe;
+        return {
+            elus: elus.sort(alphabeticSort((elu: Elu) => elu.nom)),
+            groupePolitiques,
+            elusByGroupe,
+            groupePolitiquesById
+        };
+    };
 
     private associationsCollections = (list: Association[]): Associations => {
         const associationsByChair: Record<number, Association | undefined> = {};
@@ -321,6 +341,16 @@ export default class App extends React.PureComponent<{}, State> {
             associations: this.associationsCollections([])
         }));
 
+    private setSampleData = () => {
+        const data = this.dataFromEluListDTO(eluListDTOSample);
+        this.setState(state => ({
+            ...state,
+            data,
+            hemicycle: hemicycleSample
+        }));
+        this.updateProtoAssociations(data.elus);
+    };
+
     private switchHideAssociations = () =>
         this.setState(state => {
             const hideAssociationsChairs = !state.config.hideAssociationsChairs;
@@ -381,25 +411,25 @@ export default class App extends React.PureComponent<{}, State> {
                                     height: ${height}px;
                                 `}
                             >
-                                {this.state.data && (
-                                    <React.Fragment>
-                                        <div
-                                            css={css`
-                                                position: absolute;
-                                                top: 0;
-                                                left: 0;
-                                                background: ${colors.white};
-                                                border: 1px solid ${colors.grey};
-                                                padding: 4px;
-                                            `}
-                                        >
-                                            <div
-                                                css={css`
-                                                    text-align: center;
-                                                `}
-                                            >
-                                                [proto]
-                                            </div>
+                                <div
+                                    css={css`
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        background: ${colors.white};
+                                        border: 1px solid ${colors.grey};
+                                        padding: 4px;
+                                    `}
+                                >
+                                    <div
+                                        css={css`
+                                            text-align: center;
+                                        `}
+                                    >
+                                        [proto]
+                                    </div>
+                                    {this.state.data && (
+                                        <React.Fragment>
                                             <button
                                                 onClick={this.protoAlphaSort}
                                             >
@@ -415,48 +445,57 @@ export default class App extends React.PureComponent<{}, State> {
                                             <button onClick={this.protoEmpty}>
                                                 Vider
                                             </button>
-                                        </div>
-                                        <div
+                                        </React.Fragment>
+                                    )}
+                                    {this.state.config
+                                        .displayTestHemicycleButton && (
+                                        <button
+                                            onClick={this.setSampleData}
                                             css={css`
-                                                width: 40%;
-                                                margin: auto;
+                                                background: ${colors.redBackground};
                                             `}
                                         >
-                                            <InputsComponent
-                                                selectedChairNumber={
-                                                    this.state
-                                                        .selectedChairNumber
-                                                }
-                                                selectedElu={
-                                                    this.state.selectedElu
-                                                }
-                                                selectedEluSource={
-                                                    this.state.selectedEluSource
-                                                }
-                                                updateSelectedChairNumber={
-                                                    this
-                                                        .updateSelectedChairNumber
-                                                }
-                                                updateSelectedElu={
-                                                    this.updateSelectedElu
-                                                }
-                                                data={this.state.data}
-                                                deleteMode={
-                                                    this.state.config.deleteMode
-                                                }
-                                                switchDeleteMode={
-                                                    this.switchDeleteMode
-                                                }
-                                                hideAssociationsChairs={
-                                                    this.state.config
-                                                        .hideAssociationsChairs
-                                                }
-                                                switchHideAssociations={
-                                                    this.switchHideAssociations
-                                                }
-                                            />
-                                        </div>
-                                    </React.Fragment>
+                                            Sample data
+                                        </button>
+                                    )}
+                                </div>
+                                {this.state.data && (
+                                    <div
+                                        css={css`
+                                            width: 40%;
+                                            margin: auto;
+                                        `}
+                                    >
+                                        <InputsComponent
+                                            selectedChairNumber={
+                                                this.state.selectedChairNumber
+                                            }
+                                            selectedElu={this.state.selectedElu}
+                                            selectedEluSource={
+                                                this.state.selectedEluSource
+                                            }
+                                            updateSelectedChairNumber={
+                                                this.updateSelectedChairNumber
+                                            }
+                                            updateSelectedElu={
+                                                this.updateSelectedElu
+                                            }
+                                            data={this.state.data}
+                                            deleteMode={
+                                                this.state.config.deleteMode
+                                            }
+                                            switchDeleteMode={
+                                                this.switchDeleteMode
+                                            }
+                                            hideAssociationsChairs={
+                                                this.state.config
+                                                    .hideAssociationsChairs
+                                            }
+                                            switchHideAssociations={
+                                                this.switchHideAssociations
+                                            }
+                                        />
+                                    </div>
                                 )}
                                 {this.state.hemicycle && this.state.data && (
                                     <Hemicycle
