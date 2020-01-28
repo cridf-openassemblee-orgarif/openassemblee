@@ -212,7 +212,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             onChange={this.props.switchHideAssociations}
                             disabled={this.props.deleteMode}
                         />{' '}
-                        Cacher les associations
+                        Cacher les sièges pris
                     </label>
                 </div>
             </div>
