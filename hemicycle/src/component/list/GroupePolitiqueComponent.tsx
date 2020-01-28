@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../../constants';
 import { AppData, Associations, SelectedEluSource } from '../App';
-import { clearfix } from '../../utils';
+import EluComponent from './EluComponent';
 
 interface Props {
     groupePolitique: GroupePolitique;
@@ -18,8 +18,6 @@ interface Props {
     removeAssociation: (chair: number) => void;
     deleteMode: boolean;
 }
-
-const chairNumberWidth = 40;
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
@@ -69,79 +67,15 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                     `}
                 >
                     {eluAssociations.map(({ elu, association }) => (
-                        <div
+                        <EluComponent
                             key={elu.id}
-                            css={css`
-                                position: relative;
-                                font-size: 14px;
-                                padding: 2px 10px;
-                                cursor: pointer;
-                                ${this.props.selectedElu?.id === elu.id
-                                    ? css`
-                                          background: ${colors.blue};
-                                      `
-                                    : css`
-                                          &:hover {
-                                              background: ${colors.clearGrey};
-                                          }
-                                      `}
-                                ${!association &&
-                                    this.props.deleteMode &&
-                                    css`
-                                        color: ${colors.grey};
-                                        cursor: auto;
-                                        &:hover {
-                                            background: ${colors.white};
-                                        }
-                                    `}
-                            `}
-                            onClick={() => {
-                                if (!this.props.deleteMode) {
-                                    this.props.updateSelectedElu(elu, 'list');
-                                } else {
-                                    if (association) {
-                                        this.props.removeAssociation(
-                                            association.chair
-                                        );
-                                    }
-                                }
-                            }}
-                        >
-                            <div
-                                css={css`
-                                    position: absolute;
-                                    width: ${chairNumberWidth}px;
-                                    text-align: right;
-                                    padding-right: 20px;
-                                `}
-                            >
-                                {association?.chair}
-                            </div>
-                            <div
-                                css={css`
-                                    padding-left: ${chairNumberWidth}px;
-                                `}
-                            >
-                                {elu.prenom} {elu.nom}
-                                {association?.chair && !this.props.deleteMode && (
-                                    <div
-                                        css={css`
-                                            position: absolute;
-                                            top: 2px;
-                                            right: 2px;
-                                        `}
-                                        onClick={e => {
-                                            this.props.removeAssociation(
-                                                association.chair
-                                            );
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        ✕
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                            elu={elu}
+                            association={association}
+                            isSelected={this.props.selectedElu?.id === elu.id}
+                            deleteMode={this.props.deleteMode}
+                            updateSelectedElu={this.props.updateSelectedElu}
+                            removeAssociation={this.props.removeAssociation}
+                        />
                     ))}
                 </div>
             </div>
