@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { colors } from '../constants';
 import { AppData, Associations, SelectedEluSource } from './App';
+import { clearfix } from '../utils';
 
 interface Props {
     groupePolitique: GroupePolitique;
@@ -17,6 +18,8 @@ interface Props {
     removeAssociation: (chair: number) => void;
     deleteMode: boolean;
 }
+
+const chairNumberWidth = 40;
 
 export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
@@ -104,32 +107,40 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                                 }
                             }}
                         >
-                            <span
+                            <div
                                 css={css`
-                                    display: inline-block;
-                                    width: 40px;
+                                    position: absolute;
+                                    width: ${chairNumberWidth}px;
+                                    text-align: right;
+                                    padding-right: 20px;
                                 `}
                             >
                                 {association?.chair}
-                            </span>
-                            {elu.prenom} {elu.nom}
-                            {association?.chair && !this.props.deleteMode && (
-                                <div
-                                    css={css`
-                                        position: absolute;
-                                        top: 2px;
-                                        right: 2px;
-                                    `}
-                                    onClick={e => {
-                                        this.props.removeAssociation(
-                                            association.chair
-                                        );
-                                        e.stopPropagation();
-                                    }}
-                                >
-                                    ✕
-                                </div>
-                            )}
+                            </div>
+                            <div
+                                css={css`
+                                    padding-left: ${chairNumberWidth}px;
+                                `}
+                            >
+                                {elu.prenom} {elu.nom}
+                                {association?.chair && !this.props.deleteMode && (
+                                    <div
+                                        css={css`
+                                            position: absolute;
+                                            top: 2px;
+                                            right: 2px;
+                                        `}
+                                        onClick={e => {
+                                            this.props.removeAssociation(
+                                                association.chair
+                                            );
+                                            e.stopPropagation();
+                                        }}
+                                    >
+                                        ✕
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
