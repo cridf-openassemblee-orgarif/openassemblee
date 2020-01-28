@@ -57,7 +57,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
             } else {
                 this.setState(state => ({
                     ...state,
-                    chairInput: selectedChairNumber.toString(),
+                    chairInput: selectedChairNumber.toString()
                 }));
             }
         }

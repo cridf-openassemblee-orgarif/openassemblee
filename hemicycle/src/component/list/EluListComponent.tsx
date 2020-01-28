@@ -6,6 +6,8 @@ import { domUid } from '../../utils';
 import { AppData, Associations, SelectedEluSource } from '../App';
 import { colors } from '../../constants';
 import EluComponent from './EluComponent';
+import _ from 'lodash';
+import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
 
 interface Props {
     selectedElu?: Elu;
@@ -127,49 +129,17 @@ export default class EluListComponent extends React.Component<Props, State> {
                             deleteMode={this.props.deleteMode}
                         />
                     ))}
-                {(() => {
-                    if (this.state.displayBy === 'elu') {
-                        let eluAssociations = this.props.data.elus
-                            .map((elu: Elu) => ({
-                                elu,
-                                association: this.props.associations
-                                    .associationsByElu[elu.id]
-                            }))
-                            .filter(
-                                ({ elu, association }) =>
-                                    !this.state.hideAssociations || !association
-                            );
-                        return (
-                            <div
-                                css={css`
-                                    background: ${colors.white};
-                                    border: 1px solid ${colors.black};
-                                    padding: 4px;
-                                    margin-top: 10px;
-                                `}
-                            >
-                                {eluAssociations.map(({ elu, association }) => (
-                                    <EluComponent
-                                        key={elu.id}
-                                        elu={elu}
-                                        association={association}
-                                        isSelected={
-                                            this.props.selectedElu?.id ===
-                                            elu.id
-                                        }
-                                        deleteMode={this.props.deleteMode}
-                                        updateSelectedElu={
-                                            this.props.updateSelectedElu
-                                        }
-                                        removeAssociation={
-                                            this.props.removeAssociation
-                                        }
-                                    />
-                                ))}
-                            </div>
-                        );
-                    }
-                })()}
+                {this.state.displayBy === 'elu' && (
+                    <EluAlphabeticalListComponent
+                        data={this.props.data}
+                        associations={this.props.associations}
+                        selectedElu={this.props.selectedElu}
+                        updateSelectedElu={this.props.updateSelectedElu}
+                        removeAssociation={this.props.removeAssociation}
+                        deleteMode={this.props.deleteMode}
+                        hideAssociations={this.state.hideAssociations}
+                    />
+                )}
             </div>
         );
     }
