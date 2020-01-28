@@ -57,14 +57,19 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
             } else {
                 this.setState(state => ({
                     ...state,
-                    chairInput: selectedChairNumber.toString()
+                    chairInput: selectedChairNumber.toString(),
                 }));
             }
         }
-        if (!prevProps.deleteMode && this.props.deleteMode) {
+        if (
+            (!prevProps.deleteMode && this.props.deleteMode) ||
+            (!prevProps.hideAssociationsChairs &&
+                this.props.hideAssociationsChairs)
+        ) {
             this.setState(state => ({
                 ...state,
-                autoIncrement: false
+                autoIncrement: false,
+                chairInput: ''
             }));
         }
     }
