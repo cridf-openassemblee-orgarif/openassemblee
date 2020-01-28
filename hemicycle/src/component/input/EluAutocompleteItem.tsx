@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { colors } from '../constants';
-import { AppData } from './App';
+import { colors } from '../../constants';
+import { AppData } from '../App';
 
 interface Props {
     elu: Elu;
@@ -10,7 +10,7 @@ interface Props {
     data: AppData;
 }
 
-export default class EluComponent extends React.PureComponent<Props> {
+export default class EluAutocompleteItem extends React.PureComponent<Props> {
     public render() {
         const elu = this.props.elu;
         const groupePolitique = this.props.data.groupePolitiquesById[

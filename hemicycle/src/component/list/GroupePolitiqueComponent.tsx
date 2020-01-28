@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { colors } from '../constants';
-import { AppData, Associations, SelectedEluSource } from './App';
-import { clearfix } from '../utils';
+import { colors } from '../../constants';
+import { AppData, Associations, SelectedEluSource } from '../App';
+import { clearfix } from '../../utils';
 
 interface Props {
     groupePolitique: GroupePolitique;

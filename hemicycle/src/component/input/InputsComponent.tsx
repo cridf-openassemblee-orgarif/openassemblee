@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { colors } from '../constants';
-import { clearfix, domUid } from '../utils';
-import EluSelectionComponent from './EluSelectionComponent';
-import { AppData, SelectedEluSource } from './App';
+import { colors } from '../../constants';
+import { clearfix, domUid } from '../../utils';
+import EluAutocomplete from './EluAutocomplete';
+import { AppData, SelectedEluSource } from '../App';
 import DelayedChangeInput from './DelayedChangeInput';
 
 interface Props {
@@ -127,7 +127,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             padding-left: 4px;
                         `}
                     >
-                        <EluSelectionComponent
+                        <EluAutocomplete
                             selectedElu={this.props.selectedElu}
                             selectedEluSource={this.props.selectedEluSource}
                             updateSelectedElu={this.props.updateSelectedElu}

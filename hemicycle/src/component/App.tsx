@@ -3,10 +3,10 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { injector } from '../service/injector';
 import { clearfix } from '../utils';
-import SizingContainer from './SizingContainer';
+import SizingContainer from './util/SizingContainer';
 import Hemicycle from './Hemicycle';
-import EluListComponent from './EluListComponent';
-import InputsComponent from './InputsComponent';
+import EluListComponent from './list/EluListComponent';
+import InputsComponent from './input/InputsComponent';
 import { colors } from '../constants';
 
 const nonGroupePolitiqueId = -1;

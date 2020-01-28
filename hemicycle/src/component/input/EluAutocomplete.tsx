@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
-import { colors } from '../constants';
+import { colors } from '../../constants';
 import { useCombobox } from 'downshift';
-import EluComponent from './EluComponent';
-import { AppData, SelectedEluSource } from './App';
-import { eluToString } from '../utils';
+import EluAutocompleteItem from './EluAutocompleteItem';
+import { AppData, SelectedEluSource } from '../App';
+import { eluToString } from '../../utils';
 
 interface Props {
     selectedElu?: Elu;
@@ -29,7 +29,7 @@ const compare = (itemAsString: string, inputValue: string) =>
         .latinize()
         .startsWith(inputValue.toLowerCase().latinize());
 
-const EluSelectionComponent = (props: Props) => {
+const EluAutocomplete = (props: Props) => {
     const [inputItems, setInputItems] = useState(props.data.elus);
     const {
         isOpen,
@@ -128,7 +128,7 @@ const EluSelectionComponent = (props: Props) => {
                             key={elu.id}
                             {...getItemProps({ item: elu, index })}
                         >
-                            <EluComponent
+                            <EluAutocompleteItem
                                 elu={elu}
                                 highlighted={highlightedIndex === index}
                                 data={props.data}
@@ -139,4 +139,4 @@ const EluSelectionComponent = (props: Props) => {
         </div>
     );
 };
-export default EluSelectionComponent;
+export default EluAutocomplete;

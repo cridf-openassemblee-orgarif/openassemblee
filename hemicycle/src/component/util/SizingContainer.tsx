@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { injector } from '../service/injector';
-import { Unsuscriber } from '../service/EventBus';
+import { injector } from '../../service/injector';
+import { Unsuscriber } from '../../service/EventBus';
 
 const classes = {
     container: css`
