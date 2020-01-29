@@ -1,8 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import GroupePolitiqueComponent from './GroupePolitiqueComponent';
-import { domUid } from '../../utils';
 import { AppData, Associations, SelectedEluSource } from '../App';
 import { colors } from '../../constants';
 import EluComponent from './EluComponent';

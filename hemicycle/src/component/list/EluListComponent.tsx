@@ -5,8 +5,6 @@ import GroupePolitiqueComponent from './GroupePolitiqueComponent';
 import { domUid } from '../../utils';
 import { AppData, Associations, SelectedEluSource } from '../App';
 import { colors } from '../../constants';
-import EluComponent from './EluComponent';
-import _ from 'lodash';
 import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
 
 interface Props {
