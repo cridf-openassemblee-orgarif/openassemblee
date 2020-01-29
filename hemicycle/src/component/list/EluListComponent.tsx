@@ -102,22 +102,12 @@ export default class EluListComponent extends React.Component<Props, State> {
                         <option value="elu">Élu</option>
                     </select>
                 </div>
-                <label
-                    htmlFor={checkboxId}
-                    css={
-                        this.props.deleteMode
-                            ? css`
-                                  color: ${colors.grey};
-                              `
-                            : undefined
-                    }
-                >
+                <label htmlFor={checkboxId}>
                     <input
                         type="checkbox"
                         id={checkboxId}
                         checked={this.state.hideAssociations}
                         onChange={this.switchDisplayAssociations}
-                        disabled={this.props.deleteMode}
                     />{' '}
                     Cacher les associations
                 </label>
