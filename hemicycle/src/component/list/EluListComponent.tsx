@@ -4,7 +4,6 @@ import React from 'react';
 import GroupePolitiqueComponent from './GroupePolitiqueComponent';
 import { domUid } from '../../utils';
 import { AppData, Associations, SelectedEluSource } from '../App';
-import { colors } from '../../constants';
 import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
 import LastAssociationsComponent from './LastAssociationsComponent';
 
