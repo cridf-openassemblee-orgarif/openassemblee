@@ -75,15 +75,19 @@ const EluAutocomplete = (props: Props) => {
             );
         }
     });
-    useEffect(() => {
-        if (props.selectedEluSource !== 'input') {
-            if (props.selectedElu) {
-                setInputValue(eluToString(props.selectedElu));
-            } else {
-                setInputValue('');
+    useEffect(
+        () => {
+            if (props.selectedEluSource !== 'input') {
+                if (props.selectedElu) {
+                    setInputValue(eluToString(props.selectedElu));
+                } else {
+                    setInputValue('');
+                }
             }
-        }
-    }, [props.selectedElu, props.selectedEluSource]);
+        },
+        // eslint-disable-next-line
+        [props.selectedElu, props.selectedEluSource]
+    );
     return (
         <div
             css={css`
