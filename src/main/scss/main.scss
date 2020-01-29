@@ -5,7 +5,7 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 // endbower
 
 body {
-    background: #fafafa;
+    background: #ecf0f5;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
 }
@@ -217,6 +217,19 @@ ul#strength {
 @media screen and (min-width: 480px) {
     .alerts .toast {
         width: 50%;
+    }
+}
+
+.menu-footer {
+    padding: 0 20px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #b8c7ce;
+
+    hr {
+        border: 0;
+        border-top: 1px solid #ecf0f5;
     }
 }
 
