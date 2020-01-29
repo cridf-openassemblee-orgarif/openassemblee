@@ -26,4 +26,6 @@ interface HemicycleDTO {
     viewPortY: number;
     viewPortWidth: number;
     viewPortHeight: number;
+    minChairNumber: number;
+    maxChairNumber: number;
 }

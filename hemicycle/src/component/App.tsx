@@ -459,7 +459,7 @@ export default class App extends React.PureComponent<{}, State> {
                                         </button>
                                     )}
                                 </div>
-                                {this.state.data && (
+                                {this.state.data && this.state.hemicycle && (
                                     <div
                                         css={css`
                                             width: 40%;
@@ -481,6 +481,10 @@ export default class App extends React.PureComponent<{}, State> {
                                                 this.updateSelectedElu
                                             }
                                             data={this.state.data}
+                                            associations={
+                                                this.state.associations
+                                            }
+                                            hemicycle={this.state.hemicycle}
                                             deleteMode={
                                                 this.state.config.deleteMode
                                             }

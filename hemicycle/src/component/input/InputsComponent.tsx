@@ -4,7 +4,7 @@ import React from 'react';
 import { colors } from '../../constants';
 import { clearfix, domUid } from '../../utils';
 import EluAutocomplete from './EluAutocomplete';
-import { AppData, SelectedEluSource } from '../App';
+import { AppData, Associations, SelectedEluSource } from '../App';
 import DelayedChangeInput from './DelayedChangeInput';
 
 interface Props {
@@ -17,6 +17,8 @@ interface Props {
         source: SelectedEluSource
     ) => void;
     data: AppData;
+    associations: Associations;
+    hemicycle: HemicycleDTO;
     deleteMode: boolean;
     switchDeleteMode: () => void;
     hideAssociationsChairs: boolean;
@@ -38,6 +40,20 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         autoIncrement: false
     };
 
+    private initialChairNumber = () =>
+        this.increment(this.props.hemicycle.minChairNumber - 1);
+
+    private increment = (chairNumber: number): number => {
+        const newChairNumber = chairNumber + 1;
+        if (this.props.associations.associationsByChair[newChairNumber]) {
+            return this.increment(newChairNumber);
+        } else if (newChairNumber > this.props.hemicycle.maxChairNumber) {
+            return this.initialChairNumber();
+        } else {
+            return newChairNumber;
+        }
+    };
+
     componentDidUpdate(
         prevProps: Readonly<Props>,
         prevState: Readonly<State>
@@ -45,9 +61,16 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         const selectedChairNumber = this.props.selectedChairNumber;
         if (selectedChairNumber !== prevProps.selectedChairNumber) {
             if (!selectedChairNumber) {
-                if (this.state.autoIncrement && prevProps.selectedChairNumber) {
-                    const newChairNumber = prevProps.selectedChairNumber + 1;
-                    this.props.updateSelectedChairNumber(newChairNumber);
+                if (this.state.autoIncrement) {
+                    if (prevProps.selectedChairNumber) {
+                        this.props.updateSelectedChairNumber(
+                            this.increment(prevProps.selectedChairNumber)
+                        );
+                    } else {
+                        this.props.updateSelectedChairNumber(
+                            this.initialChairNumber()
+                        );
+                    }
                 } else {
                     this.setState(state => ({
                         ...state,
@@ -74,11 +97,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         }
     }
 
-    private switchAutoIncrement = () =>
+    private switchAutoIncrement = () => {
         this.setState(state => ({
             ...state,
             autoIncrement: !state.autoIncrement
         }));
+        if (!this.props.selectedChairNumber) {
+            this.props.updateSelectedChairNumber(this.initialChairNumber());
+        }
+    };
 
     private updateChairInput = (chairInput: string) => {
         this.setState(state => ({ ...state, chairInput }));

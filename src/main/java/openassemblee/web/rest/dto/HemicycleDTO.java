@@ -9,15 +9,20 @@ public class HemicycleDTO {
     private int viewPortY;
     private int viewPortWidth;
     private int viewPortHeight;
+    private int minChairNumber;
+    private int maxChairNumber;
 
-    public HemicycleDTO() { }
+    public HemicycleDTO() {
+    }
 
-    public HemicycleDTO(List<HemicycleChairDTO> chairs, int viewPortX, int viewPortY, int viewPortWidth, int viewPortHeight) {
+    public HemicycleDTO(List<HemicycleChairDTO> chairs, int viewPortX, int viewPortY, int viewPortWidth, int viewPortHeight, int minChairNumber, int maxChairNumber) {
         this.chairs = chairs;
         this.viewPortX = viewPortX;
         this.viewPortY = viewPortY;
         this.viewPortWidth = viewPortWidth;
         this.viewPortHeight = viewPortHeight;
+        this.minChairNumber = minChairNumber;
+        this.maxChairNumber = maxChairNumber;
     }
 
     public List<HemicycleChairDTO> getChairs() {
@@ -58,5 +63,21 @@ public class HemicycleDTO {
 
     public void setViewPortHeight(int viewPortHeight) {
         this.viewPortHeight = viewPortHeight;
+    }
+
+    public int getMinChairNumber() {
+        return minChairNumber;
+    }
+
+    public void setMinChairNumber(int minChairNumber) {
+        this.minChairNumber = minChairNumber;
+    }
+
+    public int getMaxChairNumber() {
+        return maxChairNumber;
+    }
+
+    public void setMaxChairNumber(int maxChairNumber) {
+        this.maxChairNumber = maxChairNumber;
     }
 }

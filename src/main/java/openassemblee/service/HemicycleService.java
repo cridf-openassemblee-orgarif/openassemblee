@@ -51,8 +51,10 @@ public class HemicycleService {
         int maxX = -numberedChairs.stream().map(c -> -c.maxX()).sorted().findFirst().get();
         int minY = numberedChairs.stream().map(c -> c.minY()).sorted().findFirst().get();
         int maxY = -numberedChairs.stream().map(c -> -c.maxY()).sorted().findFirst().get();
+        List<Integer> numbers = numberedChairs.stream().map(c -> c.number).sorted().collect(Collectors.toList());
         return new HemicycleDTO(numberedChairs, minX - hd.margin, minY - hd.margin,
-            (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin));
+            (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin), numbers.get(0),
+            numbers.get(numbers.size() - 1));
     }
 
     private List<HemicycleChairDTO> calculateChairs(LineDefinition line, HemicycleDefinition hd) {

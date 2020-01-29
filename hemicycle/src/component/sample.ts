@@ -4884,7 +4884,9 @@ export const hemicycleSample: HemicycleDTO = {
     viewPortX: 127,
     viewPortY: 183,
     viewPortWidth: 738,
-    viewPortHeight: 369
+    viewPortHeight: 369,
+    minChairNumber: 8,
+    maxChairNumber: 251
 };
 
 export const eluListDTOSample: EluListDTO[] = [

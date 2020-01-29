@@ -23,7 +23,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
 > {
     public render() {
-        let eluAssociations = this.props.data.elusByGroupe[
+        const eluAssociations = this.props.data.elusByGroupe[
             this.props.groupePolitique.id
         ]
             .map((elu: Elu) => ({
