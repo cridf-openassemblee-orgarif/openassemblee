@@ -6,6 +6,7 @@ import { domUid } from '../../utils';
 import { AppData, Associations, SelectedEluSource } from '../App';
 import { colors } from '../../constants';
 import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
+import LastAssociationsComponent from './LastAssociationsComponent';
 
 interface Props {
     selectedElu?: Elu;
@@ -75,6 +76,32 @@ export default class EluListComponent extends React.Component<Props, State> {
                     overflow: scroll;
                 `}
             >
+                <LastAssociationsComponent
+                    associations={this.props.associations}
+                    deleteMode={this.props.deleteMode}
+                    updateSelectedElu={this.props.updateSelectedElu}
+                    removeAssociation={this.props.removeAssociation}
+                    selectedElu={this.props.selectedElu}
+                />
+                <div
+                    css={css`
+                        padding-top: 6px;
+                    `}
+                >
+                    Liste des élus par :{' '}
+                    <select
+                        css={css`
+                            font-size: 16px;
+                        `}
+                        onChange={this.selectDisplay}
+                        value={this.state.displayBy}
+                    >
+                        <option value="groupePolitique">
+                            Groupe politique
+                        </option>
+                        <option value="elu">Élu</option>
+                    </select>
+                </div>
                 <label
                     htmlFor={checkboxId}
                     css={
@@ -94,25 +121,6 @@ export default class EluListComponent extends React.Component<Props, State> {
                     />{' '}
                     Cacher les associations
                 </label>
-                <div
-                    css={css`
-                        padding-top: 6px;
-                    `}
-                >
-                    Par :{' '}
-                    <select
-                        css={css`
-                            font-size: 16px;
-                        `}
-                        onChange={this.selectDisplay}
-                        value={this.state.displayBy}
-                    >
-                        <option value="groupePolitique">
-                            Groupe politique
-                        </option>
-                        <option value="elu">Élu</option>
-                    </select>
-                </div>
                 {this.state.displayBy === 'groupePolitique' &&
                     this.props.data.groupePolitiques.map(groupePolitique => (
                         <GroupePolitiqueComponent

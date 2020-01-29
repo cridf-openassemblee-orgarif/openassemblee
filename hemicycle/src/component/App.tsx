@@ -9,6 +9,7 @@ import EluListComponent from './list/EluListComponent';
 import InputsComponent from './input/InputsComponent';
 import { colors } from '../constants';
 import { eluListDTOSample, hemicycleSample } from './sample';
+import LastAssociationsComponent from './list/LastAssociationsComponent';
 
 const nonGroupePolitiqueId = -1;
 
