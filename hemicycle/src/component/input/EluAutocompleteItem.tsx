@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { colors } from '../../constants';
+import { colors, hexToRgbA } from '../../constants';
 import { AppData } from '../App';
 
 interface Props {
@@ -31,6 +31,7 @@ export default class EluAutocompleteItem extends React.PureComponent<Props> {
                 <div
                     css={css`
                         border: 4px solid ${couleurGroupePolitique};
+                        background: ${hexToRgbA(couleurGroupePolitique, 0.15)};
                         border-top: 0;
                         border-bottom: 0;
                         padding: 10px;
