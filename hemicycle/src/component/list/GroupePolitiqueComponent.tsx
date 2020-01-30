@@ -46,12 +46,15 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
             >
                 <div
                     css={css`
+                        height: 18px;
                         background: ${this.props.groupePolitique.couleur};
                         padding-left: 20px;
                     `}
                 >
                     <span
                         css={css`
+                            display: inline-block;
+                            height: 18px;
                             background: ${colors.white};
                             padding: 0 10px;
                         `}

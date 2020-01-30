@@ -246,11 +246,15 @@ ul#strength {
     background: #ecf0f5;
     margin: 0;
     padding: 0;
-    padding-top: 50px;
+    margin-top: 50px;
     @media (min-width: 768px) {
         padding-left: 230px;
     }
     transition: width linear;
+
+    > div {
+        height: 100%;
+    }
 }
 
 .sidebar-collapse .content-wrapper {
@@ -275,6 +279,21 @@ ul#strength {
 
 .sidebar-collapse .menu-footer {
     display: none;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+
+    .flex-1 {
+        flex: 1;
+        padding: 0;
+        margin: 0 10px;
+    }
 }
 
 /* end of Custom alerts for notification */
