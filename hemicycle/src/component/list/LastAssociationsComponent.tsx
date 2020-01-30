@@ -49,6 +49,7 @@ export default class LastAssociationsComponent extends React.Component<
                         color: ${colors.white};
                         font-weight: bold;
                         font-size: 14px;
+                        height: 24px;
                     `}
                 >
                     <div
@@ -61,7 +62,7 @@ export default class LastAssociationsComponent extends React.Component<
                     <div
                         css={css`
                             position: absolute;
-                            top: 0;
+                            top: 3px;
                             right: 6px;
                             background: ${colors.clearGrey};
                             color: ${colors.grey};
@@ -75,7 +76,7 @@ export default class LastAssociationsComponent extends React.Component<
                         <div
                             css={css`
                                 position: relative;
-                                top: -3px;
+                                top: ${this.state.isOpen ? -2 : -4}px;
                             `}
                         >
                             {this.state.isOpen ? '-' : '+'}
