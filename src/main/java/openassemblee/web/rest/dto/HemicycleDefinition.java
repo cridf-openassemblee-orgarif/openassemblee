@@ -4,6 +4,11 @@ import java.util.List;
 
 public class HemicycleDefinition {
 
+    //    private double largeur = 24.0;
+    //    private double prof = 14.0;
+    //    private double largeur = 30.0;
+    //    private double prof = 20.0;
+
     public enum LineOrientation {
         LEFT, CENTER, RIGHT
     }
@@ -48,12 +53,13 @@ public class HemicycleDefinition {
     public double expectedPrecision;
     public List<LineDefinition> lines;
     public int margin;
-    public int numerotationDebut;
+    public int frontChairs;
 
     public HemicycleDefinition() {
     }
 
-    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, double ratioHemicycle, double expectedPrecision, List<LineDefinition> lines, int margin, int numerotationDebut) {
+    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, double ratioHemicycle,
+                               double expectedPrecision, List<LineDefinition> lines, int margin, int frontChairs) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.largeur = largeur;
@@ -62,6 +68,6 @@ public class HemicycleDefinition {
         this.expectedPrecision = expectedPrecision;
         this.lines = lines;
         this.margin = margin;
-        this.numerotationDebut = numerotationDebut;
+        this.frontChairs = frontChairs;
     }
 }

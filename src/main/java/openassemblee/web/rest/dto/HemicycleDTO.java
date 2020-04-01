@@ -15,7 +15,8 @@ public class HemicycleDTO {
     public HemicycleDTO() {
     }
 
-    public HemicycleDTO(List<HemicycleChairDTO> chairs, int viewPortX, int viewPortY, int viewPortWidth, int viewPortHeight, int minChairNumber, int maxChairNumber) {
+    public HemicycleDTO(List<HemicycleChairDTO> chairs, int viewPortX, int viewPortY, int viewPortWidth,
+                        int viewPortHeight, int minChairNumber, int maxChairNumber) {
         this.chairs = chairs;
         this.viewPortX = viewPortX;
         this.viewPortY = viewPortY;

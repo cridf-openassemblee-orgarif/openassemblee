@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -43,7 +44,7 @@ public class HemicycleService {
         List<HemicycleChairDTO> numberedChairs = IntStream.range(0, chairs.size())
             .mapToObj(i -> {
                 HemicycleChairDTO c = chairs.get(i);
-                c.setNumber(i + hd.numerotationDebut);
+                c.setNumber(i + hd.frontChairs + 1);
                 return c;
             })
             .collect(Collectors.toList());
@@ -51,6 +52,9 @@ public class HemicycleService {
         int maxX = -numberedChairs.stream().map(c -> -c.maxX()).sorted().findFirst().get();
         int minY = numberedChairs.stream().map(c -> c.minY()).sorted().findFirst().get();
         int maxY = -numberedChairs.stream().map(c -> -c.maxY()).sorted().findFirst().get();
+
+        numberedChairs.addAll(0, getFrontChairs(hd, maxY));
+
         List<Integer> numbers = numberedChairs.stream().map(c -> c.number).sorted().collect(Collectors.toList());
         return new HemicycleDTO(numberedChairs, minX - hd.margin, minY - hd.margin,
             (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin), numbers.get(0),
@@ -218,6 +222,45 @@ public class HemicycleService {
             y - d.chairBaseY,
             x + d.centerX,
             y - d.centerY);
+    }
+
+    private List<HemicycleChairDTO> getFrontChairs(HemicycleDefinition hd, int maxY) {
+        List<HemicycleChairDTO> list = new ArrayList<>();
+        int halfChairNumber = hd.frontChairs / 2;
+        final AtomicInteger chairNumber = new AtomicInteger(1);
+        boolean isPrime = hd.frontChairs != (halfChairNumber * 2);
+        double baseShift = isPrime ? (hd.largeur / 2) : 0;
+        if (isPrime) {
+            list.add(frontChair(hd, maxY, chairNumber.getAndIncrement(), 0, -baseShift));
+        }
+        list.addAll(IntStream.range(0, halfChairNumber)
+            .mapToObj(i -> frontChair(hd, maxY, chairNumber.getAndIncrement(), -halfChairNumber + i, -baseShift))
+            .collect(Collectors.toList()));
+        list.addAll(IntStream.range(0, halfChairNumber)
+            .mapToObj(i -> frontChair(hd, maxY, chairNumber.getAndIncrement(), i, baseShift))
+            .collect(Collectors.toList()));
+        return list;
+    }
+
+    private HemicycleChairDTO frontChair(HemicycleDefinition hd, int maxY, int chairNumber, int chairPosition,
+                                         double baseShift) {
+        double x0 = hd.baseX + baseShift + (hd.largeur * chairPosition);
+        double x1 = x0 + hd.largeur;
+        double y0 = maxY - hd.prof;
+        double y1 = maxY;
+        double centerX = (x0 + x1) / 2;
+        double centerY = (y0 + y1) / 2;
+        return new HemicycleChairDTO(chairNumber,
+            x0,
+            centerY,
+            x1,
+            centerY,
+            x0, y0, x1, y0, x1, y1, x0, y1,
+            0,
+            centerX,
+            y0,
+            centerX,
+            centerY);
     }
 
 }

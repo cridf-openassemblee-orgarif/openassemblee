@@ -38,10 +38,6 @@ public class HemicycleResource {
     @Timed
     // FIXMENOW ne pas tout recalculer
     public HemicycleDTO hemicycle() throws IOException {
-        //    private double largeur = 24.0;
-        //    private double prof = 14.0;
-        //    private double largeur = 30.0;
-        //    private double prof = 20.0;
         String json = new String(Streams.copyToByteArray(getClass().getClassLoader()
             .getResourceAsStream("hemicycle/hemicycle-disposition-2020.json")));
         HemicycleDefinition hd = objectMapper.readValue(json, HemicycleDefinition.class);
