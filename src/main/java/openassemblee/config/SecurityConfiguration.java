@@ -81,13 +81,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         List<String> springProfile = Arrays.asList(profiles.split(","));
         if (springProfile.contains("dev")) {
-            // for assemblee dev (react)
+            // Pour le cross domain en dev sur l'hémicycle en React (requêtes get et post)
             http
                 .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api" + HemicycleResource.hemicycleUrl).permitAll()
                 .antMatchers("/api" + HemicycleResource.protoAssociationsUrl).permitAll()
                 .antMatchers("/api/elus").permitAll();
+            // Pour désactiver le csrf en dev sur l'hémicycle en React (post requests only)
             http
                 .csrf()
                 .ignoringAntMatchers("/api" + HemicycleResource.hemicycleUrl)

@@ -1,4 +1,5 @@
 import { injector } from './injector';
+import { productionBuild } from '../constants';
 
 type RequestType = 'GET' | 'POST';
 
@@ -13,8 +14,30 @@ export interface HttpResponse {
     body?: any;
 }
 
+const getCookie = (cookieName: String) => {
+    const value = '; ' + document.cookie;
+    const parts = value.split('; ' + cookieName + '=');
+    if (parts.length === 2) {
+        const firstPart = parts.pop();
+        if (!firstPart) {
+            throw Error();
+        }
+        return firstPart.split(';').shift();
+    } else {
+        return undefined;
+    }
+};
+
 export default class HttpService {
-    public credentials: RequestCredentials = 'same-origin';
+    private credentials: RequestCredentials = productionBuild
+        ? 'include'
+        : 'same-origin';
+
+    private csrfToken: string | undefined;
+
+    public constructor() {
+        this.csrfToken = getCookie('CSRF-TOKEN');
+    }
 
     public get = (url: string, getParams?: any) =>
         this.fetchAndDeserialize('GET', url, getParams);
@@ -28,22 +51,18 @@ export default class HttpService {
         getParams?: any,
         body?: any
     ): Promise<Response> {
+        const headers: HeadersInit = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        };
+        if (this.csrfToken) {
+            headers['X-CSRF-TOKEN'] = this.csrfToken;
+        }
         const params: RequestInit = {
             method: requestType,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers,
             credentials: this.credentials
         };
-        const csrfToken = injector().securityCsrfToken.token;
-        if (csrfToken) {
-            if (!params.headers) {
-                throw new Error();
-            }
-            // @ts-ignore
-            params.headers[injector().securityCsrfToken.header] = csrfToken;
-        }
         if (body) {
             params.body = JSON.stringify(body);
         }

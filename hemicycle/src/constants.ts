@@ -1,3 +1,5 @@
+export const productionBuild = process.env.NODE_ENV === 'production';
+
 export const colors = {
     white: '#fff',
     blue: '#bde4ff',

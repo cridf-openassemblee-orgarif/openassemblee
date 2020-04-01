@@ -8,12 +8,6 @@ class Injector {
 
     public httpService = new HttpService();
 
-    public securityCsrfToken: SecurityCsrfToken = {
-        header: 'X-XSRF-TOKEN',
-        inputName: '_csrf',
-        token: undefined
-    };
-
     applicationEventBus = new EventBus<ApplicationEvents>();
 }
 
