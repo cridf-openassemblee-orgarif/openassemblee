@@ -1,0 +1,67 @@
+<div>
+    <h2>HemicycleConfigurations</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="hemicycleConfiguration.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new HemicycleConfiguration</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a HemicycleConfiguration</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Label</th>
+                    <th>JsonConfiguration</th>
+                    <th>CreationDate</th>
+                    <th>LastModificationDate</th>
+                    <th>Frozen</th>
+                    <th>FrozenDate</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="hemicycleConfiguration in hemicycleConfigurations track by hemicycleConfiguration.id">
+                    <td><a ui-sref="hemicycleConfiguration.detail({id:hemicycleConfiguration.id})">{{hemicycleConfiguration.id}}</a></td>
+                    <td>{{hemicycleConfiguration.label}}</td>
+                    <td>{{hemicycleConfiguration.jsonConfiguration}}</td>
+                    <td>{{hemicycleConfiguration.creationDate | date:'medium'}}</td>
+                    <td>{{hemicycleConfiguration.lastModificationDate | date:'medium'}}</td>
+                    <td>{{hemicycleConfiguration.frozen}}</td>
+                    <td>{{hemicycleConfiguration.frozenDate | date:'medium'}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="hemicycleConfiguration.detail({id:hemicycleConfiguration.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="hemicycleConfiguration.edit({id:hemicycleConfiguration.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="hemicycleConfiguration.delete({id:hemicycleConfiguration.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
