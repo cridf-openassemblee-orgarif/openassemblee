@@ -1,0 +1,46 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "configuration",
+            "otherEntityName": "hemicycleConfiguration",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "label"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "seance",
+            "otherEntityName": "Seance",
+            "relationshipType": "one-to-one",
+            "ownerSide": "hemicyclePlan"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "label",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "jsonPlan",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "creationDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "lastModificationDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20200406151220",
+    "dto": "no",
+    "pagination": "no"
+}
