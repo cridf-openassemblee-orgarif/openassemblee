@@ -24,7 +24,7 @@
             <column name="label" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="json_plan" type="varchar(255)"/>
+            <column name="json_plan" type="text"/>
             <column name="creation_date" type="timestamp"/>
             <column name="last_modification_date" type="timestamp"/>
             <column name="configuration_id" type="bigint"/>
@@ -33,7 +33,6 @@
 
         <dropDefaultValue tableName="hemicycle_plan" columnName="last_modification_date" columnDataType="datetime"/>
 
-        
         <addForeignKeyConstraint baseColumnNames="configuration_id"
                                  baseTableName="hemicycle_plan"
                                  constraintName="fk_hemicycleplan_configuration_id"

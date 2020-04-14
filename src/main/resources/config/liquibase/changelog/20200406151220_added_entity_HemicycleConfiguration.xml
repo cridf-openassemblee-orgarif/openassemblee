@@ -24,7 +24,7 @@
             <column name="label" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="json_configuration" type="varchar(255)"/>
+            <column name="json_configuration" type="text"/>
             <column name="creation_date" type="timestamp"/>
             <column name="last_modification_date" type="timestamp"/>
             <column name="frozen" type="bit"/>
@@ -36,6 +36,6 @@
 
         <dropDefaultValue tableName="hemicycle_configuration" columnName="frozen_date" columnDataType="datetime"/>
 
-        
+
     </changeSet>
 </databaseChangeLog>
