@@ -85,21 +85,21 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                         {/*    transform-origin: 50% 100%;*/}
                         {/*}*/}
                     </style>
-                    {/*<rect*/}
-                    {/*    x="20"*/}
-                    {/*    y="60"*/}
-                    {/*    width="960"*/}
-                    {/*    height="510"*/}
-                    {/*    fill="white"*/}
-                    {/*    // stroke="#bd5e46"*/}
-                    {/*/>*/}
+                    <rect
+                        x={this.props.hemicycle.viewPortX}
+                        y={this.props.hemicycle.viewPortY}
+                        width={this.props.hemicycle.viewPortWidth}
+                        height={this.props.hemicycle.viewPortHeight}
+                        fill="none"
+                        stroke={colors.red}
+                    />
                     {this.props.hemicycle.chairs.map(chair => {
                         const association = this.props.associations
                             .associationsByChair[chair.number];
                         const groupePolitique = association
                             ? this.props.data.groupePolitiquesById[
-                                  association.elu.groupePolitiqueId
-                              ]
+                                association.elu.groupePolitiqueId
+                                ]
                             : undefined;
                         const strokeChairColor =
                             this.props.hideAssociationsChairs &&
@@ -111,11 +111,11 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                             this.props.selectedChairNumber === chair.number
                                 ? colors.blue
                                 : this.props.hideAssociationsChairs &&
-                                  association
+                                association
                                 ? colors.clearGrey
                                 : groupePolitique
-                                ? groupePolitique.couleur
-                                : colors.white;
+                                    ? groupePolitique.couleur
+                                    : colors.white;
                         const fillChairOpacity =
                             this.props.selectedChairNumber === chair.number ||
                             (this.props.hideAssociationsChairs &&
@@ -168,12 +168,6 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                     {/*        stroke-width: 1px;*/}
                                     {/*        fill: ${fillChairColor};*/}
                                     {/*        cursor: pointer;*/}
-                                    {/*    `}*/}
-                                    {/*/>*/}
-                                    {/*<polygon*/}
-                                    {/*    points={`${chair.x1}, ${chair.y1}, ${chair.x2}, ${chair.y2}, ${chair.x3}, ${chair.y3}, ${chair.x4}, ${chair.y4}`}*/}
-                                    {/*    css={css`*/}
-                                    {/*        fill: ${colors.white};*/}
                                     {/*    `}*/}
                                     {/*/>*/}
                                     <polygon
@@ -229,18 +223,42 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         />
                                     )}
                                     <text
-                                        x={chair.centerX}
-                                        y={chair.centerY}
+                                        // x={chair.baseX1}
+                                        y={chair.y1}
+                                        textLength={chair.x2 - chair.x1 + 'px'}
                                         css={css`
+                                            // width: ${chair.x2 - chair.x1}px;
+                                            //width: 10px;
                                             fill: ${strokeChairColor};
-                                            text-anchor: middle;
-                                            font-size: 8px;
+                                            font-size: 4px;
                                             cursor: pointer;
                                             alignment-baseline: central;
+                                            display: none;
+                                        `}
+                                    >
+                                        <tspan x={chair.baseX1 + 1} dy="1em">
+                                            {association?.elu.prenom}
+                                        </tspan>
+                                        <tspan x={chair.baseX1 + 1} dy="1em">
+                                            {association?.elu.nom}
+                                        </tspan>
+                                    </text>
+                                    <foreignObject
+                                        x={chair.baseX1 + 1}
+                                        y={chair.y1}
+                                        width={20}
+                                        height={26}
+                                        css={css`
+                                            font-size: 4px;
+                                            word-break: break-all;
                                         `}
                                     >
                                         {chair.number}
-                                    </text>
+                                        <br />
+                                        {association?.elu.prenom}
+                                        <br />
+                                        {association?.elu.nom}
+                                    </foreignObject>
                                 </g>
                                 {/*<line*/}
                                 {/*    x1={chair.baseX1}*/}
@@ -257,10 +275,16 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                 {/*    stroke="yellow"*/}
                                 {/*/>*/}
                                 {/*<circle*/}
-                                {/*    cx="{chair.baseX1}"*/}
-                                {/*    cy="{chair.baseY1}"*/}
+                                {/*    cx={chair.baseX1}*/}
+                                {/*    cy={chair.baseY1}*/}
                                 {/*    r="2"*/}
                                 {/*    fill="blue"*/}
+                                {/*/>*/}
+                                {/*<circle*/}
+                                {/*    cx={chair.centerX}*/}
+                                {/*    cy={chair.centerY}*/}
+                                {/*    r="2"*/}
+                                {/*    fill="red"*/}
                                 {/*/>*/}
                             </React.Fragment>
                         );

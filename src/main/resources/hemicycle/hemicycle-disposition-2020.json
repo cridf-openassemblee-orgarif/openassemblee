@@ -11,7 +11,7 @@
     "baseX": 500,
     "baseY": 600,
     "expectedPrecision": 1,
-    "margin": 4,
+    "margin": 2,
     "rows": [
         {"chairsNumber": 5, "rowOrientation": "LEFT", "line": 1, "startAngle": -26.2},
         {"chairsNumber": 5, "rowOrientation": "CENTER", "line": 1, "startAngle": 0},

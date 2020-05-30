@@ -1,6 +1,5 @@
 package openassemblee.service;
 
-import openassemblee.service.util.DichotomyUtil;
 import openassemblee.web.rest.dto.HemicycleChairDTO;
 import openassemblee.web.rest.dto.HemicycleDTO;
 import openassemblee.web.rest.dto.HemicycleDefinition;
@@ -10,16 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.lang.Math.*;
-
 @Service
 public class HemicycleService {
+
+    double spaceBetweenChairs = 0.5;
 
     class ChairBaseLine {
         public double startAngle;
@@ -38,8 +35,12 @@ public class HemicycleService {
 
     public HemicycleDTO hemicycle(HemicycleDefinition hd) {
         List<HemicycleChairDTO> chairs = hd.rows.stream()
+            .collect(Collectors.groupingBy(row -> row.line))
+            .values()
+            .stream()
             .map(l -> calculateChairs(l, hd))
             .flatMap(Collection::stream)
+            .map(chair -> translateCenter(chair, hd))
             .collect(Collectors.toList());
         List<HemicycleChairDTO> numberedChairs = IntStream.range(0, chairs.size())
             .mapToObj(i -> {
@@ -51,155 +52,69 @@ public class HemicycleService {
         int minX = numberedChairs.stream().map(c -> c.minX()).sorted().findFirst().get();
         int maxX = -numberedChairs.stream().map(c -> -c.maxX()).sorted().findFirst().get();
         int minY = numberedChairs.stream().map(c -> c.minY()).sorted().findFirst().get();
-        int maxY = -numberedChairs.stream().map(c -> -c.maxY()).sorted().findFirst().get();
+        int frontChairsShift = (int) (1.5 * hd.prof);
+        int maxY = -numberedChairs.stream().map(c -> -c.maxY()).sorted().findFirst().get() + frontChairsShift;
 
-        numberedChairs.addAll(0, getFrontChairs(hd, maxY));
+        numberedChairs.addAll(0, getFrontChairs(hd, hd.lineBase - frontChairsShift + hd.lineHeight)
+            .stream().map(chair -> translateCenter(chair, hd)).collect(Collectors.toList()));
 
         List<Integer> numbers = numberedChairs.stream().map(c -> c.number).sorted().collect(Collectors.toList());
-        return new HemicycleDTO(numberedChairs, minX - hd.margin, minY - hd.margin,
+        return new HemicycleDTO(numberedChairs,
+            minX - hd.margin, minY - hd.margin,
             (maxX - minX + 2 * hd.margin), (maxY - minY + 2 * hd.margin), numbers.get(0),
             numbers.get(numbers.size() - 1));
     }
 
-    private List<HemicycleChairDTO> calculateChairs(RowDefinition row, HemicycleDefinition hd) {
-        double ry = hd.lineBase + hd.lineHeight * row.line;
-        double rx = ry * hd.ratioHemicycle;
-        return chairBaseLines(row, rx, ry, hd)
-            .stream()
-            .map(l -> calculateChair(l, rx, ry, hd.prof))
-            .map(c -> translateCenter(c, hd))
-            .collect(Collectors.toList());
-    }
-
-    private List<ChairBaseLine> chairBaseLines(RowDefinition row, double rx, double ry, HemicycleDefinition hd) {
-        switch (row.rowOrientation) {
-            case CENTER:
-                return centerBaseLines(row, rx, ry, hd);
-            case LEFT:
-            case RIGHT:
-                return sideBaseLines(row, rx, ry, hd);
+    private List<HemicycleChairDTO> calculateChairs(List<RowDefinition> rows, HemicycleDefinition hd) {
+        if (rows.size() != 3 ||
+            rows.stream().filter(row -> row.rowOrientation == RowOrientation.LEFT).count() != 1 ||
+            rows.stream().filter(row -> row.rowOrientation == RowOrientation.CENTER).count() != 1 ||
+            rows.stream().filter(row -> row.rowOrientation == RowOrientation.RIGHT).count() != 1) {
+            throw new IllegalArgumentException("Hemicycle definition is KO");
         }
-        throw new RuntimeException();
-    }
-
-    private List<ChairBaseLine> centerBaseLines(RowDefinition row, double rx, double ry, HemicycleDefinition hd) {
-        List<ChairBaseLine> baseLines = new ArrayList<>();
-        boolean firstIsCentralChair = row.chairsNumber % 2 == 1;
-        if (!firstIsCentralChair) {
-            baseLines.add(firstBaseLine(rx, ry, hd));
-        } else {
-            baseLines.add(firstCentralBaseLine(rx, hd));
-            baseLines.add(new ChairBaseLine(last(baseLines).endAngle,
-                secondAngle(last(baseLines).endAngle, rx, ry, hd)));
+        RowDefinition left = rows.stream().filter(row -> row.rowOrientation == RowOrientation.LEFT).findFirst().get();
+        RowDefinition center = rows.stream().filter(row -> row.rowOrientation == RowOrientation.CENTER).findFirst().get();
+        RowDefinition right = rows.stream().filter(row -> row.rowOrientation == RowOrientation.RIGHT).findFirst().get();
+        int totalChairSpace = rows.stream().mapToInt(row -> row.chairsNumber).sum() + (int) (2 * spaceBetweenChairs);
+        double lineBaseX = -totalChairSpace * hd.largeur / 2;
+        double lineBaseY = hd.lineBase + hd.lineHeight * rows.get(0).line;
+        List<HemicycleChairDTO> chairs = new ArrayList<>();
+        for (int i = 0; i < left.chairsNumber; i++) {
+            chairs.add(calcChair(lineBaseX, lineBaseY, i, 0, hd.largeur, hd.prof, -1));
         }
-        for (int i = 1; i < (row.chairsNumber - 1) / 2; i++) {
-            baseLines.add(new ChairBaseLine(last(baseLines).endAngle,
-                nextAngle(last(baseLines).endAngle, last(baseLines).startAngle, rx, ry, hd)));
+        for (int i = 0; i < center.chairsNumber; i++) {
+            chairs.add(calcChair(lineBaseX, lineBaseY, left.chairsNumber + i, 1, hd.largeur, hd.prof, -1));
         }
-        Collections.reverse(baseLines);
-        for (int i = firstIsCentralChair ? baseLines.size() - 2 : baseLines.size() - 1; i >= 0; i--) {
-            ChairBaseLine l = baseLines.get(i);
-            baseLines.add(new ChairBaseLine(-l.endAngle, -l.startAngle));
+        for (int i = 0; i < right.chairsNumber; i++) {
+            chairs.add(calcChair(lineBaseX, lineBaseY, left.chairsNumber + center.chairsNumber + i, 2, hd.largeur, hd.prof, -1));
         }
-        Collections.reverse(baseLines);
-        return baseLines;
+        return chairs;
     }
 
-    private ChairBaseLine firstBaseLine(double rx, double ry, HemicycleDefinition hd) {
-        // bon point de départ pour dichotomy
-        double startAngle = atan(hd.largeur / ry);
-        double angle = DichotomyUtil.dichotomiseMe(startAngle, startAngle / 2,
-            a -> resolveEquation(0, ry, a, rx, ry, hd), hd.expectedPrecision, 0);
-        return new ChairBaseLine(0, angle);
-    }
-
-    private ChairBaseLine firstCentralBaseLine(double rx, HemicycleDefinition hd) {
-        double angle = asin(hd.largeur / 2 / rx);
-        return new ChairBaseLine(-angle, angle);
-    }
-
-    private double secondAngle(double firstAngle, double rx, double ry, HemicycleDefinition hd) {
-        // bon point de départ pour la dicho
-        double maxNextAngleDiff = firstAngle * 2;
-        double x1 = rx * sin(firstAngle);
-        double y1 = ry * cos(firstAngle);
-        return DichotomyUtil.dichotomiseMe(firstAngle, maxNextAngleDiff,
-            angle -> resolveEquation(x1, y1, angle, rx, ry, hd), hd.expectedPrecision, 0);
-    }
-
-    private List<ChairBaseLine> sideBaseLines(RowDefinition row, double rx, double ry, HemicycleDefinition hd) {
-        List<ChairBaseLine> baseLines = new ArrayList<>();
-        double angle = Math.abs(row.startAngle) / 360 * 2 * PI;
-        baseLines.add(new ChairBaseLine(angle, secondAngle(angle, rx, ry, hd)));
-        for (int i = 1; i < row.chairsNumber; i++) {
-            baseLines.add(new ChairBaseLine(last(baseLines).endAngle,
-                nextAngle(last(baseLines).endAngle, last(baseLines).startAngle, rx, ry, hd)));
-        }
-        if (row.rowOrientation == RowOrientation.LEFT) {
-            baseLines.forEach(l -> l.inverseAngles());
-            Collections.reverse(baseLines);
-        }
-        return baseLines;
-    }
-
-    private double nextAngle(double baseAngle, double previousAngle, double rx, double ry, HemicycleDefinition hd) {
-        double x1 = rx * sin(baseAngle);
-        double y1 = ry * cos(baseAngle);
-        double diff = baseAngle - previousAngle;
-        return DichotomyUtil.dichotomiseMe(baseAngle, diff,
-            angle -> resolveEquation(x1, y1, angle, rx, ry, hd), hd.expectedPrecision, 0);
-    }
-
-    private double resolveEquation(double x1, double y1, double angle, double rx, double ry, HemicycleDefinition hd) {
-        return pow(rx * sin(angle) - x1, 2) + pow(ry * cos(angle) - y1, 2) - pow(hd.largeur, 2);
-    }
-
-    private ChairBaseLine last(List<ChairBaseLine> lines) {
-        return lines.get(lines.size() - 1);
-    }
-
-    private HemicycleChairDTO calculateChair(ChairBaseLine baseLine, double rx, double ry, double prof) {
-        double startSin = sin(baseLine.startAngle);
-        double startCos = cos(baseLine.startAngle);
-        double endSin = sin(baseLine.endAngle);
-        double endCos = cos(baseLine.endAngle);
-
-        double startX = rx * startSin;
-        double startY = ry * startCos;
-        double endX = rx * endSin;
-        double endY = ry * endCos;
-
-        double demieProf = prof / 2;
-
-        double x1 = startX + demieProf * startSin;
-        double y1 = startY + demieProf * startCos;
-        double x2 = endX + demieProf * endSin;
-        double y2 = endY + demieProf * endCos;
-        double x3 = endX - demieProf * endSin;
-        double y3 = endY - demieProf * endCos;
-        double x4 = startX - demieProf * startSin;
-        double y4 = startY - demieProf * startCos;
-        double centerAngle = (baseLine.startAngle + baseLine.endAngle) / 2;
-        double chairBaseX = x1 + (x2 - x1) / 2;
-        double chairBaseY = y1 + (y2 - y1) / 2;
-        return new HemicycleChairDTO(-1,
-            startX,
-            startY,
-            endX,
-            endY,
-            x1,
-            y1,
-            x2,
-            y2,
-            x3,
-            y3,
-            x4,
-            y4,
-            centerAngle,
-            chairBaseX,
-            chairBaseY,
-            ((startX + endX) / 2 + chairBaseX) / 2,
-            ((startY + endY) / 2 + chairBaseY) / 2);
+    private HemicycleChairDTO calcChair(double lineBaseX, double lineBaseY, int chairPosition, int offset, double largeur,
+                                        double prof, int chairNumber) {
+        double baseX = lineBaseX + chairPosition * largeur + offset * largeur * spaceBetweenChairs;
+        double baseX2 = baseX + largeur;
+        double baseY = lineBaseY - prof / 2;
+        double baseY2 = baseY + prof;
+        return new HemicycleChairDTO(chairNumber,
+            baseX,
+            baseY,
+            baseX2,
+            baseY,
+            baseX,
+            baseY2,
+            baseX2,
+            baseY2,
+            baseX2,
+            baseY,
+            baseX,
+            baseY,
+            0,
+            (baseX + baseX2) / 2,
+            baseY2,
+            (baseX + baseX2) / 2,
+            (baseY + baseY2) / 2);
     }
 
     private HemicycleChairDTO translateCenter(HemicycleChairDTO d, HemicycleDefinition hd) {
@@ -225,43 +140,34 @@ public class HemicycleService {
             y - d.centerY);
     }
 
-    private List<HemicycleChairDTO> getFrontChairs(HemicycleDefinition hd, int maxY) {
-        List<HemicycleChairDTO> list = new ArrayList<>();
-        int halfChairNumber = hd.frontChairs / 2;
-        final AtomicInteger chairNumber = new AtomicInteger(1);
-        boolean isPrime = hd.frontChairs != (halfChairNumber * 2);
-        double baseShift = isPrime ? (hd.largeur / 2) : 0;
-        if (isPrime) {
-            list.add(frontChair(hd, maxY, chairNumber.getAndIncrement(), 0, -baseShift));
+    private List<HemicycleChairDTO> getFrontChairs(HemicycleDefinition hd, int baseY) {
+        double lineBaseX = -hd.frontChairs * hd.largeur / 2;
+        List<HemicycleChairDTO> chairs = new ArrayList<>();
+        for (int i = 0; i < hd.frontChairs; i++) {
+            chairs.add(calcChair(lineBaseX, baseY, i, 0, hd.largeur, hd.prof, i));
         }
-        list.addAll(IntStream.range(0, halfChairNumber)
-            .mapToObj(i -> frontChair(hd, maxY, chairNumber.getAndIncrement(), -halfChairNumber + i, -baseShift))
-            .collect(Collectors.toList()));
-        list.addAll(IntStream.range(0, halfChairNumber)
-            .mapToObj(i -> frontChair(hd, maxY, chairNumber.getAndIncrement(), i, baseShift))
-            .collect(Collectors.toList()));
-        return list;
+        return chairs;
     }
 
-    private HemicycleChairDTO frontChair(HemicycleDefinition hd, int maxY, int chairNumber, int chairPosition,
-                                         double baseShift) {
-        double x0 = hd.baseX + baseShift + (hd.largeur * chairPosition);
-        double x1 = x0 + hd.largeur;
-        double y0 = maxY - hd.prof;
-        double y1 = maxY;
-        double centerX = (x0 + x1) / 2;
-        double centerY = (y0 + y1) / 2;
-        return new HemicycleChairDTO(chairNumber,
-            x0,
-            centerY,
-            x1,
-            centerY,
-            x0, y0, x1, y0, x1, y1, x0, y1,
-            0,
-            centerX,
-            y0,
-            centerX,
-            centerY);
-    }
+//    private HemicycleChairDTO frontChair(HemicycleDefinition hd, int maxY, int chairNumber, int chairPosition,
+//                                         double baseShift) {
+//        double x0 = hd.baseX + baseShift + (hd.largeur * chairPosition);
+//        double x1 = x0 + hd.largeur;
+//        double y0 = maxY - hd.prof;
+//        double y1 = maxY;
+//        double centerX = (x0 + x1) / 2;
+//        double centerY = (y0 + y1) / 2;
+//        return new HemicycleChairDTO(chairNumber,
+//            x0,
+//            centerY,
+//            x1,
+//            centerY,
+//            x0, y0, x1, y0, x1, y1, x0, y1,
+//            0,
+//            centerX,
+//            y0,
+//            centerX,
+//            centerY);
+//    }
 
 }
