@@ -9,31 +9,29 @@ public class HemicycleDefinition {
     //    private double largeur = 30.0;
     //    private double prof = 20.0;
 
-    public enum LineOrientation {
+    public enum RowOrientation {
         LEFT, CENTER, RIGHT
     }
 
-    public static class LineDefinition {
-        public LineOrientation lineOrientation;
-        public double ry;
+    public static class RowDefinition {
+        public RowOrientation rowOrientation;
+        public int line;
         public double startAngle;
-        public boolean firstIsCentralChair;
         public int chairsNumber;
 
-        public LineDefinition() {
+        public RowDefinition() {
         }
 
-        public LineDefinition(LineOrientation lineOrientation, double ry, double startAngle, boolean firstIsCentralChair, int chairsNumber) {
-            if (lineOrientation == LineOrientation.CENTER && startAngle != 0.0) {
+        public RowDefinition(RowOrientation rowOrientation, int line, double startAngle, boolean firstIsCentralChair, int chairsNumber) {
+            if (rowOrientation == RowOrientation.CENTER && startAngle != 0.0) {
                 throw new IllegalArgumentException();
             }
-            if (lineOrientation != LineOrientation.CENTER && firstIsCentralChair) {
+            if (rowOrientation != RowOrientation.CENTER && firstIsCentralChair) {
                 throw new IllegalArgumentException();
             }
-            this.lineOrientation = lineOrientation;
-            this.ry = ry;
+            this.rowOrientation = rowOrientation;
+            this.line = line;
             this.startAngle = startAngle;
-            this.firstIsCentralChair = firstIsCentralChair;
             this.chairsNumber = chairsNumber;
         }
     }
@@ -43,6 +41,8 @@ public class HemicycleDefinition {
 
     public double largeur;
     public double prof;
+    public int lineBase;
+    public int lineHeight;
 
     public double ratioHemicycle;
 
@@ -51,22 +51,25 @@ public class HemicycleDefinition {
     // revient un peu à une précision graphique en pixel
     // TODO tester d'autres values ;)
     public double expectedPrecision;
-    public List<LineDefinition> lines;
+    public List<RowDefinition> rows;
     public int margin;
     public int frontChairs;
 
     public HemicycleDefinition() {
     }
 
-    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, double ratioHemicycle,
-                               double expectedPrecision, List<LineDefinition> lines, int margin, int frontChairs) {
+    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, int lineBase, int lineHeight,
+                               double ratioHemicycle, double expectedPrecision, List<RowDefinition> rows, int margin,
+                               int frontChairs) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.largeur = largeur;
         this.prof = prof;
+        this.lineBase = lineBase;
+        this.lineHeight = lineHeight;
         this.ratioHemicycle = ratioHemicycle;
         this.expectedPrecision = expectedPrecision;
-        this.lines = lines;
+        this.rows = rows;
         this.margin = margin;
         this.frontChairs = frontChairs;
     }
