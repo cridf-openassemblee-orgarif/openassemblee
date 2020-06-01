@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { colors } from '../../constants';
 import { Association, SelectedEluSource } from '../App';
-import React from 'react';
+import * as React from 'react';
 
 interface Props {
     elu: Elu;

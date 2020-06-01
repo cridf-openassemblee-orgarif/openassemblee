@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
+import * as React from 'react';
 import { colors, hexToRgbA } from '../../constants';
 import { AppData } from '../App';
 

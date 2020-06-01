@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
+import * as React from 'react';
 import { Associations, SelectedEluSource } from '../App';
 import EluComponent from './EluComponent';
 import AnimatedHeightContainer from '../util/AnimatedHeightContainer';

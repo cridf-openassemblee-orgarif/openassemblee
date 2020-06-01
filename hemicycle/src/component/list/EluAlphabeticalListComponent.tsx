@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
+import * as React from 'react';
 import { AppData, Associations, SelectedEluSource } from '../App';
 import { colors } from '../../constants';
 import EluComponent from './EluComponent';
