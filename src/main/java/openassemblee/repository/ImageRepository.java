@@ -62,8 +62,8 @@ public class ImageRepository {
             });
         } catch (EmptyResultDataAccessException e) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Streams.copy(getClass().getClassLoader().getResourceAsStream("pas-dimage.jpg"), baos);
-            return new Image("image/jpeg", baos.toByteArray());
+            Streams.copy(getClass().getClassLoader().getResourceAsStream("image/no-image.png"), baos);
+            return new Image("image/png", baos.toByteArray());
         }
     }
 
