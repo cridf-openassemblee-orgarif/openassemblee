@@ -71,7 +71,7 @@ public class EluWebservice {
                     groupePolitiqueCourt,
                     "/images/" + it.getElu().getImage(),
                     // FIXME ?
-                    it.getElu().getDateDemission() != null);
+                    it.getElu().getDateDemission() == null);
             })
             .collect(Collectors.toList());
         return new Data(elus);
