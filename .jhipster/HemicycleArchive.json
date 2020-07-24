@@ -1,0 +1,23 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "jsonPlan",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "svgPlan",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20200724000000",
+    "dto": "no",
+    "pagination": "no"
+}

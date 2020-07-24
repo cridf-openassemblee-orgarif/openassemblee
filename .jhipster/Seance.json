@@ -6,6 +6,13 @@
             "otherEntityName": "PresenceElu",
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "seance"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "archive",
+            "otherEntityName": "SeanceHemicycleArchive",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "seance"
         }
     ],
     "fields": [
