@@ -1466,6 +1466,11 @@
     "@types/react-dom" "*"
     "@types/testing-library__dom" "*"
 
+"@types/xml-formatter@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/xml-formatter/-/xml-formatter-1.1.0.tgz#f7cde70ec33d7b044029b6b6c2f6e69d270ced63"
+  integrity sha512-1Z8XdMUQ3mLsAwqBzKUea2IgDeLOwvgEWevUHhcu3aF6K0KqeGPRlwEYmVy3wGiaepZdcqsiCuUbNhrU4bIJog==
+
 "@types/yargs-parser@*":
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-13.1.0.tgz#c563aa192f39350a1d18da36c5a8da382bbd8228"
@@ -10643,10 +10648,22 @@ ws@^6.1.2, ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
+xml-formatter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/xml-formatter/-/xml-formatter-2.1.0.tgz#ff438be6e2195e480b7525ecd3b06652ed76f390"
+  integrity sha512-t55v5mfpohwKvNbfd8A0FZSZI22//hqXqx3AwRx3mjZel0IEoRM2p1bvVnvNPxHqdqZ0sDjUrBqfHJNbIfE8fw==
+  dependencies:
+    xml-parser-xo "^3.0.0"
+
 xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
+
+xml-parser-xo@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-3.0.0.tgz#4d46f1962e5100f228b5f73f34c61bb798430195"
+  integrity sha512-MPPexqXBx48m3OFMQXxo7+RYhG6o6kCGflk4q4oL3uQ0b7d5NDKjHFDwUoozOTPT3WFztT13z3R9Sn0QCTIJcQ==
 
 xmlchars@^2.1.1:
   version "2.2.0"

@@ -11,6 +11,7 @@ import { colors } from '../constants';
 import { eluListDTOSample, hemicycleSample } from './sample';
 import { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
+import format from 'xml-formatter';
 
 const nonGroupePolitiqueId = -1;
 
@@ -305,6 +306,84 @@ export default class App extends React.PureComponent<{}, State> {
         });
     };
 
+    private download = () => {
+        // FIXME une implem "ouvrir pour print"
+        const renderReact = (svgElement: ReactElement) => {
+            const svg = ReactDomServer.renderToString(svgElement);
+            // FIXMENOW [doc] da fuck Batik semble ne pas aimer ça.... parce que je parse mal ?
+            // FIXMENOW rechecker en fait....
+            return '<?xml version="1.0" encoding="UTF-8"?>' + svg;
+            // return finalSvg;
+        };
+        if (!this.state.data || !this.state.hemicycle) {
+            throw Error();
+        }
+        const r = renderReact(
+            <Hemicycle
+                width={1600}
+                height={1000}
+                hemicycle={this.state.hemicycle}
+                data={this.state.data}
+                associations={this.state.associations}
+                selectedChairNumber={this.state.selectedChairNumber}
+                updateSelectedChairNumber={this.updateSelectedChairNumber}
+                hideAssociationsChairs={
+                    this.state.config.hideAssociationsChairs
+                }
+                removeAssociation={this.removeAssociation}
+                deleteMode={this.state.config.deleteMode}
+            />
+        );
+        // const formatXml = (xml:string) => {
+        //     const PADDING = ' '.repeat(4); // set desired indent size here
+        //     const reg = /(>)(<)(\/*)/g;
+        //     let pad = 0;
+        //
+        //     xml = xml.replace(reg, '$1\r\n$2$3');
+        //
+        //     return xml.split('\r\n').map((node, index) => {
+        //         let indent = 0;
+        //         if (node.match(/.+<\/\w[^>]*>$/)) {
+        //             indent = 0;
+        //         } else if (node.match(/^<\/\w/) && pad > 0) {
+        //             pad -= 1;
+        //         } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+        //             indent = 1;
+        //         } else {
+        //             indent = 0;
+        //         }
+        //
+        //         pad += indent;
+        //
+        //         return PADDING.repeat(pad - indent) + node;
+        //     }).join('\r\n');
+        // }
+        console.log(format(r));
+        // const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(r);
+        const url = 'data:image/svg+xml;charset=utf-8,' + r;
+        // console.log(url)
+        var image = new Image();
+        image.src = url;
+
+        // var w = window.open("");
+        // w!.document.write(image.outerHTML);
+
+        var printWindow = window.open('', 'PrintMap');
+        printWindow!.document.writeln(r);
+        printWindow!.document.writeln(`
+        <style>
+        @page {
+            size: A3 landscape;
+        }
+        </style>
+        `);
+
+        printWindow!.document.close();
+        printWindow!.print();
+        // printWindow!.close();
+        // console.log(r)
+    };
+
     private updateProtoAssociations(elus: Elu[]) {
         injector()
             .httpService.get(injector().urlBase + '/api/proto-associations')
@@ -442,6 +521,10 @@ export default class App extends React.PureComponent<{}, State> {
                                                 onClick={this.protoAlphaSort}
                                             >
                                                 Ordre alpha
+                                            </button>
+                                            <br/>
+                                            <button onClick={this.download}>
+                                                Imprimer
                                             </button>
                                         </React.Fragment>
                                     )}
