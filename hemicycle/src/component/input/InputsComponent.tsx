@@ -23,6 +23,7 @@ interface Props {
     switchDeleteMode: () => void;
     hideAssociationsChairs: boolean;
     switchHideAssociations: () => void;
+    saveProtoAssociations: () => void;
 }
 
 interface State {
@@ -122,12 +123,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                     margin: 10px 0;
                 `}
             >
-                <div css={clearfix}>
+                <div
+                    css={css`
+                        display: flex;
+                        flex-direction: row;
+                    `}
+                >
                     <div
                         css={css`
-                            position: relative;
-                            float: left;
-                            width: 15%;
+                            flex: 1;
                         `}
                     >
                         <DelayedChangeInput
@@ -153,9 +157,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                     </div>
                     <div
                         css={css`
-                            position: relative;
-                            float: left;
-                            width: 65%;
+                            flex: 5;
                             padding-left: 4px;
                         `}
                     >
@@ -169,9 +171,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                     </div>
                     <div
                         css={css`
-                            position: relative;
-                            float: left;
-                            width: 20%;
+                            flex: 2;
                             padding-left: 4px;
                         `}
                     >
@@ -198,6 +198,56 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             Mode
                             <br />
                             suppression
+                        </div>
+                    </div>
+                    <div
+                        css={css`
+                            flex: 2;
+                            padding-left: 4px;
+                        `}
+                    >
+                        <div
+                            css={css`
+                                background: ${colors.blueBackground};
+                                border: 1px solid ${colors.blueborder};
+                                color: ${colors.blueborder};
+                                height: 36px;
+                                margin: 2px;
+                                border-radius: 2px;
+                                padding-top: 9px;
+                                text-align: center;
+                                font-size: 12px;
+                                cursor: pointer;
+                                font-weight: bold;
+                            `}
+                            onClick={this.props.saveProtoAssociations}
+                        >
+                            Enregistrer
+                        </div>
+                    </div>
+                    <div
+                        css={css`
+                        display: none;
+                            flex: 2;
+                            padding-left: 4px;
+                        `}
+                    >
+                        <div
+                            css={css`
+                                background: ${colors.blueBackground2};
+                                border: 1px solid ${colors.blueborder2};
+                                color: ${colors.blueborder2};
+                                height: 36px;
+                                margin: 2px;
+                                border-radius: 2px;
+                                padding-top: 9px;
+                                text-align: center;
+                                font-size: 12px;
+                                cursor: pointer;
+                                font-weight: bold;
+                            `}
+                        >
+                            Figer
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ interface Elu {
     nom: string;
     prenom: string;
     groupePolitiqueId: number;
+    shortFonction?: string;
 }
 
 interface GroupePolitique {
@@ -60,4 +61,5 @@ interface GroupePolitiqueFromWs {
 interface EluListDTO {
     elu: EluFromWs;
     groupePolitique?: GroupePolitiqueFromWs;
+    shortFonction?: string;
 }

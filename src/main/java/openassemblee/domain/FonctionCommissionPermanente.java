@@ -2,6 +2,9 @@ package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -19,6 +22,8 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "fonctioncommissionpermanente")
 public class FonctionCommissionPermanente implements Serializable {
+
+    protected static final Log logger = LogFactory.getLog(FonctionCommissionPermanente.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -117,6 +122,27 @@ public class FonctionCommissionPermanente implements Serializable {
         return Objects.equals(id, fonctionCommissionPermanente.id);
     }
 
+    public static String getShortFonction(String fonction) {
+        String cleanFonction = StringUtils.stripAccents(fonction != null ? fonction.toLowerCase() : "");
+        if (cleanFonction.contains("vice") && cleanFonction.contains("president")) {
+            return "VP";
+        }
+        if (cleanFonction.contains("delegue") && cleanFonction.contains("special")) {
+            return "DS";
+        }
+        if (cleanFonction.contains("presidente")) {
+            return "Présidente";
+        }
+        if (cleanFonction.contains("president")) {
+            return "Président";
+        }
+        if(cleanFonction.trim().equals("")) {
+            return null;
+        }
+        logger.error("Unknown short fonction " + fonction);
+        return null;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
@@ -131,5 +157,10 @@ public class FonctionCommissionPermanente implements Serializable {
             ", dateFin='" + dateFin + "'" +
             ", motifFin='" + motifFin + "'" +
             '}';
+    }
+
+    public static boolean isFonctionCourante(FonctionCommissionPermanente f) {
+        // later remettre || a.getDateFin().isAfter(LocalDate.now());
+        return f.getDateFin() == null;
     }
 }

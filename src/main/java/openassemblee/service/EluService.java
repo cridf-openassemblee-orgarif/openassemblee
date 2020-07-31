@@ -104,18 +104,7 @@ public class EluService {
     @Transactional(readOnly = true)
     public List<EluListDTO> getAll(Boolean loadAdresses, Boolean filterAdresses, Boolean removeDemissionaires) {
         List<Elu> elus = eluRepository.findAll();
-        return elus.stream().map(e -> {
-            Optional<GroupePolitique> groupePolitique = e.getAppartenancesGroupePolitique().stream()
-                .filter(GroupePolitiqueService::isAppartenanceCourante)
-                .map(AppartenanceGroupePolitique::getGroupePolitique)
-                .filter(Objects::nonNull)
-                .findFirst();
-            if (groupePolitique.isPresent()) {
-                return new EluListDTO(e, groupePolitique.get(), loadAdresses, filterAdresses);
-            } else {
-                return new EluListDTO(e, loadAdresses, filterAdresses);
-            }
-        })
+        return elus.stream().map(e -> eluToEluListDTO(e, loadAdresses, filterAdresses))
             .filter(e -> !removeDemissionaires || e.getElu().getDateDemission() == null)
             .sorted(EluNomComparator.comparing(EluListDTO::getElu))
             .collect(Collectors.toList());
@@ -130,9 +119,24 @@ public class EluService {
         Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
             .map(AppartenanceGroupePolitique::getGroupePolitique)
+            .filter(Objects::nonNull)
             .findFirst();
-        return groupePolitique.map(gp -> new EluListDTO(elu, gp, loadAdresses, filterAdresses)).orElseGet(() ->
-            new EluListDTO(elu, loadAdresses, filterAdresses));
+        String fonctionExec = elu.getFonctionsExecutives().stream()
+            .filter(FonctionExecutive::isFonctionCourante)
+            .findFirst()
+            .map(f -> FonctionCommissionPermanente.getShortFonction(f.getFonction()))
+            .orElse(null);
+        String fonctionCP = elu.getFonctionsCommissionPermanente().stream()
+            .filter(FonctionCommissionPermanente::isFonctionCourante)
+            .findFirst()
+            .map(f -> FonctionCommissionPermanente.getShortFonction(f.getFonction()))
+            .orElse(null);
+        String shortFonction = fonctionExec != null ? fonctionExec : fonctionCP != null ? fonctionCP : null;
+        if (groupePolitique.isPresent()) {
+            return new EluListDTO(elu, groupePolitique.get(), shortFonction, loadAdresses, filterAdresses);
+        } else {
+            return new EluListDTO(elu, shortFonction, loadAdresses, filterAdresses);
+        }
     }
 
     @Transactional(readOnly = true)

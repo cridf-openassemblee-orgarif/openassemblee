@@ -143,8 +143,14 @@ public class HemicycleService {
     private List<HemicycleChairDTO> getFrontChairs(HemicycleDefinition hd, int baseY) {
         double lineBaseX = -hd.frontChairs * hd.largeur / 2;
         List<HemicycleChairDTO> chairs = new ArrayList<>();
+        int halfNumber = (hd.frontChairs - 1) / 2; // is 2 for 6 chairs, 3 for 7 chairs
         for (int i = 0; i < hd.frontChairs; i++) {
-            chairs.add(calcChair(lineBaseX, baseY, i, 0, hd.largeur, hd.prof, i));
+            // half number = 3 avec frontChairs = 7
+            // donc la chaise i=3 prend le numéro 1
+            // les chaise 0 1 2 prennent 2 3 4
+            // les chaises 4 5 6 prennent 5 6 7
+            int chairNumber = i == halfNumber ? 1 : i < halfNumber ? i + 2 : i + 1;
+            chairs.add(calcChair(lineBaseX, baseY, i, 0, hd.largeur, hd.prof, chairNumber));
         }
         return chairs;
     }

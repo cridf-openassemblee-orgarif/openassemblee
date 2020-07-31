@@ -132,4 +132,9 @@ public class FonctionExecutive implements Serializable {
             ", motifFin='" + motifFin + "'" +
             '}';
     }
+
+    public static boolean isFonctionCourante(FonctionExecutive f) {
+        // later remettre || a.getDateFin().isAfter(LocalDate.now());
+        return f.getDateFin() == null;
+    }
 }

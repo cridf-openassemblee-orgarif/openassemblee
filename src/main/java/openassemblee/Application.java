@@ -78,7 +78,6 @@ public class Application {
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));
-
     }
 
     /**

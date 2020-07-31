@@ -8,16 +8,23 @@ public class EluListDTO {
 
     private Elu elu;
     private GroupePolitique groupePolitique;
+    private String shortFonction;
 
-    public EluListDTO(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
+    public EluListDTO(Elu elu, String shortFonction, Boolean loadAdresses, Boolean filterAdresses) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
+        this.shortFonction = shortFonction;
     }
 
-    public EluListDTO(Elu elu, GroupePolitique groupePolitique, Boolean loadAdresses, Boolean filterAdresses) {
+    public EluListDTO(Elu elu,
+                      GroupePolitique groupePolitique,
+                      String shortFonction,
+                      Boolean loadAdresses,
+                      Boolean filterAdresses) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.groupePolitique = groupePolitique;
+        this.shortFonction = shortFonction;
     }
 
     public Elu getElu() {
@@ -26,5 +33,9 @@ public class EluListDTO {
 
     public GroupePolitique getGroupePolitique() {
         return groupePolitique;
+    }
+
+    public String getShortFonction() {
+        return shortFonction;
     }
 }

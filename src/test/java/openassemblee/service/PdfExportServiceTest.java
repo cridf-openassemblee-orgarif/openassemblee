@@ -88,6 +88,6 @@ public class PdfExportServiceTest {
         GroupePolitique gp = new GroupePolitique();
         gp.setNom("Groupe Alternative écologiste et sociale");
         gp.setNomCourt("AES");
-        return elus.stream().map(elu -> new EluListDTO(elu, gp, true, false)).collect(Collectors.toList());
+        return elus.stream().map(elu -> new EluListDTO(elu, gp, "VP", true, false)).collect(Collectors.toList());
     }
 }

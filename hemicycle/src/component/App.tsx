@@ -9,6 +9,8 @@ import EluListComponent from './list/EluListComponent';
 import InputsComponent from './input/InputsComponent';
 import { colors } from '../constants';
 import { eluListDTOSample, hemicycleSample } from './sample';
+import { ReactElement } from 'react';
+import * as ReactDomServer from 'react-dom/server';
 
 const nonGroupePolitiqueId = -1;
 
@@ -19,7 +21,8 @@ const convertElu = (dto: EluListDTO): Elu => ({
     prenom: dto.elu.prenom,
     groupePolitiqueId: dto.groupePolitique
         ? dto.groupePolitique.id
-        : nonGroupePolitiqueId
+        : nonGroupePolitiqueId,
+    shortFonction: dto.shortFonction
 });
 
 const convertGroupePolitique = (
@@ -413,6 +416,7 @@ export default class App extends React.PureComponent<{}, State> {
                             >
                                 <div
                                     css={css`
+                                        //display: none;
                                         position: absolute;
                                         top: 0;
                                         left: 0;
@@ -421,29 +425,23 @@ export default class App extends React.PureComponent<{}, State> {
                                         padding: 4px;
                                     `}
                                 >
-                                    <div
-                                        css={css`
-                                            text-align: center;
-                                        `}
-                                    >
-                                        [proto]
-                                    </div>
                                     {this.state.data && (
                                         <React.Fragment>
+                                            {/*<button*/}
+                                            {/*    onClick={*/}
+                                            {/*        this.saveProtoAssociations*/}
+                                            {/*    }*/}
+                                            {/*>*/}
+                                            {/*    Enregistrer*/}
+                                            {/*</button>*/}
+                                            <button onClick={this.protoEmpty}>
+                                                Vider
+                                            </button>
+                                            <br/>
                                             <button
                                                 onClick={this.protoAlphaSort}
                                             >
-                                                Ordre alphabétique
-                                            </button>
-                                            <button
-                                                onClick={
-                                                    this.saveProtoAssociations
-                                                }
-                                            >
-                                                Enregistrer
-                                            </button>
-                                            <button onClick={this.protoEmpty}>
-                                                Vider
+                                                Ordre alpha
                                             </button>
                                         </React.Fragment>
                                     )}
@@ -462,7 +460,7 @@ export default class App extends React.PureComponent<{}, State> {
                                 {this.state.data && this.state.hemicycle && (
                                     <div
                                         css={css`
-                                            width: 40%;
+                                            width: 60%;
                                             margin: auto;
                                         `}
                                     >
@@ -497,6 +495,9 @@ export default class App extends React.PureComponent<{}, State> {
                                             }
                                             switchHideAssociations={
                                                 this.switchHideAssociations
+                                            }
+                                            saveProtoAssociations={
+                                                this.saveProtoAssociations
                                             }
                                         />
                                     </div>
