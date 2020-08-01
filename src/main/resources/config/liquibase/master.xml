@@ -59,5 +59,6 @@
     <include file="classpath:config/liquibase/changelog/_2020-01-12_add-groupe-politique-couleur.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20200406151220_added_entity_HemicycleConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20200406151220_added_entity_HemicyclePlan.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20200724000000_added_entity_HemicycleArchive.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
