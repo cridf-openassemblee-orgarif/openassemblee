@@ -2,53 +2,85 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors } from '../../constants';
-import { clearfix, domUid } from '../../utils';
+import { Dict, domUid, getMaybe } from '../../utils';
 import EluAutocomplete from './EluAutocomplete';
-import { AppData, Associations, SelectedEluSource } from '../App';
+import { SelectedEluSource, Selection } from '../App';
 import DelayedChangeInput from './DelayedChangeInput';
+import LoadingIcon from '../util/LoadingIcon';
+import { Errors } from '../util/errors';
+import { Elu, GroupePolitique } from '../../domain/elu';
+import { HemicycleConfigurationRendu } from '../../domain/assemblee';
+import {
+    ChairNumber,
+    EluId,
+    GroupePolitiqueId,
+    instanciateNominalNumber,
+    numberifyNominalNumber
+} from '../../domain/nominal';
+import { Association } from '../../domain/hemicycle';
+
+export const inputComponentHeight = 70;
 
 interface Props {
-    selectedChairNumber?: number;
-    selectedElu?: Elu;
-    selectedEluSource?: SelectedEluSource;
-    updateSelectedChairNumber: (selectedChairNumber: number) => void;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    selection: Selection;
+    elus: Elu[];
+    eluById: Dict<EluId, Elu>;
+    groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
+    associationByChair: Dict<ChairNumber, Association>;
+    updateSelectedChairNumber: (selectedChairNumber: ChairNumber) => void;
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    data: AppData;
-    associations: Associations;
-    hemicycle: HemicycleDTO;
+    hemicycleConfigurationRendu: HemicycleConfigurationRendu;
     deleteMode: boolean;
     switchDeleteMode: () => void;
     hideAssociationsChairs: boolean;
     switchHideAssociations: () => void;
-    saveProtoAssociations: () => void;
+    savePlan: (then: () => void) => void;
+    archive?: (then: () => void) => void;
 }
 
 interface State {
     chairInput: string;
     chairInputIsValid: boolean;
     autoIncrement: boolean;
+    isSaving: boolean;
+    isArchiving: boolean;
 }
 
 export default class InputsComponent extends React.PureComponent<Props, State> {
     state = {
-        chairInput: this.props.selectedChairNumber
-            ? this.props.selectedChairNumber.toString()
+        chairInput: this.props.selection.selectedChairNumber
+            ? this.props.selection.selectedChairNumber.toString()
             : '',
         chairInputIsValid: true,
-        autoIncrement: false
+        autoIncrement: false,
+        isSaving: false,
+        isArchiving: false
     };
 
     private initialChairNumber = () =>
-        this.increment(this.props.hemicycle.minChairNumber - 1);
+        this.increment(
+            instanciateNominalNumber(
+                numberifyNominalNumber(
+                    this.props.hemicycleConfigurationRendu.minChairNumber
+                ) - 1
+            )
+        );
 
-    private increment = (chairNumber: number): number => {
-        const newChairNumber = chairNumber + 1;
-        if (this.props.associations.associationsByChair[newChairNumber]) {
+    private increment = (chairNumber: ChairNumber): ChairNumber => {
+        const newChairNumber = instanciateNominalNumber<ChairNumber>(
+            numberifyNominalNumber(chairNumber) + 1
+        );
+        if (getMaybe(this.props.associationByChair, newChairNumber)) {
             return this.increment(newChairNumber);
-        } else if (newChairNumber > this.props.hemicycle.maxChairNumber) {
+        } else if (
+            numberifyNominalNumber(newChairNumber) >
+            numberifyNominalNumber(
+                this.props.hemicycleConfigurationRendu.maxChairNumber
+            )
+        ) {
             return this.initialChairNumber();
         } else {
             return newChairNumber;
@@ -59,13 +91,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         prevProps: Readonly<Props>,
         prevState: Readonly<State>
     ): void {
-        const selectedChairNumber = this.props.selectedChairNumber;
-        if (selectedChairNumber !== prevProps.selectedChairNumber) {
+        const selectedChairNumber = this.props.selection.selectedChairNumber;
+        if (selectedChairNumber !== prevProps.selection.selectedChairNumber) {
             if (!selectedChairNumber) {
                 if (this.state.autoIncrement) {
-                    if (prevProps.selectedChairNumber) {
+                    if (prevProps.selection.selectedChairNumber) {
                         this.props.updateSelectedChairNumber(
-                            this.increment(prevProps.selectedChairNumber)
+                            this.increment(
+                                prevProps.selection.selectedChairNumber
+                            )
                         );
                     } else {
                         this.props.updateSelectedChairNumber(
@@ -103,15 +137,33 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
             ...state,
             autoIncrement: !state.autoIncrement
         }));
-        if (!this.props.selectedChairNumber) {
+        if (!this.props.selection.selectedChairNumber) {
             this.props.updateSelectedChairNumber(this.initialChairNumber());
         }
     };
 
     private updateChairInput = (chairInput: string) => {
         this.setState(state => ({ ...state, chairInput }));
-        const chairNumber = parseInt(chairInput);
-        this.props.updateSelectedChairNumber(chairNumber);
+        this.props.updateSelectedChairNumber(
+            instanciateNominalNumber<ChairNumber>(parseInt(chairInput))
+        );
+    };
+
+    private savePlan = () => {
+        this.setState(state => ({ ...state, isSaving: true }));
+        this.props.savePlan(() =>
+            this.setState(state => ({ ...state, isSaving: false }))
+        );
+    };
+
+    private archive = () => {
+        if (!this.props.archive) {
+            throw Errors._62651552();
+        }
+        this.setState(state => ({ ...state, isArchiving: true }));
+        this.props.archive(() =>
+            this.setState(state => ({ ...state, isArchiving: false }))
+        );
     };
 
     public render() {
@@ -120,7 +172,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         return (
             <div
                 css={css`
-                    margin: 10px 0;
+                    padding: 5px 0;
+                    height: ${inputComponentHeight}px;
                 `}
             >
                 <div
@@ -162,10 +215,11 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         `}
                     >
                         <EluAutocomplete
-                            selectedElu={this.props.selectedElu}
-                            selectedEluSource={this.props.selectedEluSource}
-                            updateSelectedElu={this.props.updateSelectedElu}
-                            data={this.props.data}
+                            selection={this.props.selection}
+                            elus={this.props.elus}
+                            eluById={this.props.eluById}
+                            groupePolitiqueById={this.props.groupePolitiqueById}
+                            updateSelectedEluId={this.props.updateSelectedEluId}
                             deleteMode={this.props.deleteMode}
                         />
                     </div>
@@ -220,14 +274,49 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                                 cursor: pointer;
                                 font-weight: bold;
                             `}
-                            onClick={this.props.saveProtoAssociations}
+                            onClick={this.savePlan}
                         >
-                            Enregistrer
+                            {!this.state.isSaving && (
+                                <React.Fragment>Enregistrer</React.Fragment>
+                            )}
+                            {this.state.isSaving && (
+                                <LoadingIcon
+                                    height={20}
+                                    color={colors.blueborder}
+                                />
+                            )}
                         </div>
                     </div>
+                    {this.props.archive && (
+                        <div
+                            css={css`
+                                flex: 2;
+                                padding-left: 4px;
+                            `}
+                        >
+                            <div
+                                css={css`
+                                    background: ${colors.clearGrey};
+                                    border: 1px solid ${colors.grey};
+                                    color: ${colors.grey};
+                                    height: 36px;
+                                    margin: 2px;
+                                    border-radius: 2px;
+                                    padding-top: 9px;
+                                    text-align: center;
+                                    font-size: 12px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                `}
+                                onClick={this.archive}
+                            >
+                                Archiver
+                            </div>
+                        </div>
+                    )}
                     <div
                         css={css`
-                        display: none;
+                            display: none;
                             flex: 2;
                             padding-left: 4px;
                         `}

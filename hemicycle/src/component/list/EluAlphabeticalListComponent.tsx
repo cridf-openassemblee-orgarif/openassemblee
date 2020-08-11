@@ -1,20 +1,28 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
-import { AppData, Associations, SelectedEluSource } from '../App';
+import { SelectedEluSource } from '../App';
 import { colors } from '../../constants';
 import EluComponent from './EluComponent';
 import _ from 'lodash';
+import {
+    ChairNumber,
+    EluId,
+    numberifyNominalNumber
+} from '../../domain/nominal';
+import { Dict, getMaybe } from '../../utils';
+import { Association } from '../../domain/hemicycle';
+import { Elu } from '../../domain/elu';
 
 interface Props {
-    selectedElu?: Elu;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    elus: Elu[];
+    associationByEluId: Dict<EluId, Association>;
+    selectedEluId?: EluId;
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    removeAssociation: (chair: number) => void;
-    associations: Associations;
-    data: AppData;
+    removeAssociation: (chair: ChairNumber) => void;
     deleteMode: boolean;
     hideAssociations: boolean;
 }
@@ -23,16 +31,23 @@ export default class EluAlphabeticalListComponent extends React.Component<
     Props
 > {
     render() {
-        const eluAssociations = this.props.data.elus
+        const elusWithChairNumbers: {
+            elu: Elu;
+            chairNumber: ChairNumber | undefined;
+        }[] = this.props.elus
             .map((elu: Elu) => ({
                 elu,
-                association: this.props.associations.associationsByElu[elu.id]
+                chairNumber: getMaybe(this.props.associationByEluId, elu.id)
+                    ?.chairNumber
             }))
             .filter(
-                ({ elu, association }) =>
-                    !this.props.hideAssociations || !association
+                ({ elu, chairNumber }) =>
+                    !this.props.hideAssociations || !chairNumber
             );
-        const byFirstLetter = _.groupBy(eluAssociations, a => a.elu.nom[0]);
+        const byFirstLetter = _.groupBy(
+            elusWithChairNumbers,
+            a => a.elu.nom[0]
+        );
         return (
             <div
                 css={css`
@@ -66,18 +81,18 @@ export default class EluAlphabeticalListComponent extends React.Component<
                                     {_.sortBy(
                                         byFirstLetter[firstLetter],
                                         a => a.elu.nom
-                                    ).map(({ elu, association }) => (
+                                    ).map(({ elu, chairNumber }) => (
                                         <EluComponent
-                                            key={elu.id}
+                                            key={numberifyNominalNumber(elu.id)}
                                             elu={elu}
-                                            association={association}
+                                            chairNumber={chairNumber}
                                             isSelected={
-                                                this.props.selectedElu?.id ===
+                                                this.props.selectedEluId ===
                                                 elu.id
                                             }
                                             deleteMode={this.props.deleteMode}
-                                            updateSelectedElu={
-                                                this.props.updateSelectedElu
+                                            updateSelectedEluId={
+                                                this.props.updateSelectedEluId
                                             }
                                             removeAssociation={
                                                 this.props.removeAssociation

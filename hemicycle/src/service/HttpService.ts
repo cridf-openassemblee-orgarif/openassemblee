@@ -1,5 +1,5 @@
-import { injector } from './injector';
 import { productionBuild } from '../constants';
+import { Errors } from '../component/util/errors';
 
 type RequestType = 'GET' | 'POST';
 
@@ -20,7 +20,7 @@ const getCookie = (cookieName: String) => {
     if (parts.length === 2) {
         const firstPart = parts.pop();
         if (!firstPart) {
-            throw Error();
+            throw Errors._e32ccca2();
         }
         return firstPart.split(';').shift();
     } else {

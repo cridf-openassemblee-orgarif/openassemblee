@@ -2,9 +2,16 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors } from '../constants';
-import ReactTooltip from 'react-tooltip';
-import { assertUnreachable, domUid } from '../utils';
-import { AppData, Associations } from './App';
+import { assertUnreachable, Dict, domUid, get, getMaybe } from '../utils';
+import { Civilite, Elu, GroupePolitique } from '../domain/elu';
+import {
+    ChairNumber,
+    GroupePolitiqueId,
+    EluId,
+    numberifyNominalNumber
+} from '../domain/nominal';
+import { Association } from '../domain/hemicycle';
+import { HemicycleConfigurationRendu } from '../domain/assemblee';
 
 // const classes = {
 //     assembleeCouloir1: css`
@@ -18,16 +25,19 @@ import { AppData, Associations } from './App';
 // };
 
 interface Props {
+    eluById: Dict<EluId, Elu>;
+    groupePolitiques: GroupePolitique[];
+    groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
+    associationByChair: Dict<ChairNumber, Association>;
     width: number;
     height: number;
-    hemicycle: HemicycleDTO;
-    associations: Associations;
-    data: AppData;
-    selectedChairNumber?: number;
-    updateSelectedChairNumber: (selectedChairNumber: number) => void;
+    configurationRendu: HemicycleConfigurationRendu;
+    selectedChairNumber: ChairNumber | undefined;
+    updateSelectedChairNumber: (selectedChairNumber: ChairNumber) => void;
     hideAssociationsChairs: boolean;
-    removeAssociation: (chair: number) => void;
+    removeAssociation: (chair: ChairNumber) => void;
     deleteMode: boolean;
+    printMode: boolean;
 }
 
 interface State {
@@ -59,13 +69,12 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
 
     public render() {
         const tooltipId = domUid();
-        const tooltipElu = this.state.tooltipElu;
         return (
             <React.Fragment>
                 <svg
                     width={this.props.width}
                     height={this.props.height}
-                    viewBox={`${this.props.hemicycle.viewPortX} ${this.props.hemicycle.viewPortY} ${this.props.hemicycle.viewPortWidth} ${this.props.hemicycle.viewPortHeight}`}
+                    viewBox={`${this.props.configurationRendu.viewPortX} ${this.props.configurationRendu.viewPortY} ${this.props.configurationRendu.viewPortWidth} ${this.props.configurationRendu.viewPortHeight}`}
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <style>
@@ -96,13 +105,19 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     {/*    fill="none"*/}
                     {/*    stroke={colors.red}*/}
                     {/*/>*/}
-                    {this.props.hemicycle.chairs.map(chair => {
-                        const association = this.props.associations
-                            .associationsByChair[chair.number];
-                        const groupePolitique = association
-                            ? this.props.data.groupePolitiquesById[
-                                  association.elu.groupePolitiqueId
-                              ]
+                    {this.props.configurationRendu.chairs.map(chair => {
+                        const association = getMaybe(
+                            this.props.associationByChair,
+                            chair.number
+                        );
+                        const elu = association
+                            ? get(this.props.eluById, association.eluId)
+                            : undefined;
+                        const groupePolitique = elu
+                            ? get(
+                                  this.props.groupePolitiqueById,
+                                  elu.groupePolitiqueId
+                              )
                             : undefined;
                         const strokeChairColor =
                             this.props.hideAssociationsChairs &&
@@ -110,22 +125,23 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                             association
                                 ? colors.grey
                                 : colors.black;
-                        const fillChairColor =
-                            this.props.selectedChairNumber === chair.number
-                                ? colors.blue
-                                : this.props.hideAssociationsChairs &&
-                                  association
-                                ? colors.clearGrey
-                                : groupePolitique
-                                ? groupePolitique.couleur
-                                : colors.white;
-                        const fillChairOpacity =
-                            this.props.selectedChairNumber === chair.number ||
-                            (this.props.hideAssociationsChairs &&
-                                association) ||
-                            !groupePolitique
-                                ? 1
-                                : 0.15;
+                        const fillChairColor = this.props.printMode
+                            ? colors.white
+                            : this.props.selectedChairNumber === chair.number
+                            ? colors.blue
+                            : this.props.hideAssociationsChairs && association
+                            ? colors.clearGrey
+                            : groupePolitique
+                            ? groupePolitique.couleur
+                            : colors.white;
+                        const fillChairOpacity = this.props.printMode
+                            ? 1
+                            : this.props.selectedChairNumber === chair.number ||
+                              (this.props.hideAssociationsChairs &&
+                                  association) ||
+                              !groupePolitique
+                            ? 1
+                            : 0.15;
                         const opacity =
                             this.props.hideAssociationsChairs &&
                             this.props.selectedChairNumber !== chair.number &&
@@ -133,7 +149,9 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                 ? 0.15
                                 : 1;
                         return (
-                            <React.Fragment key={chair.number}>
+                            <React.Fragment
+                                key={numberifyNominalNumber(chair.number)}
+                            >
                                 <g
                                     data-tip
                                     data-for={tooltipId}
@@ -147,7 +165,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         }
                                     `}
                                     onMouseOver={() =>
-                                        this.setEluInTooltip(association?.elu)
+                                        this.setEluInTooltip(elu)
                                     }
                                     onClick={() => {
                                         if (!this.props.deleteMode) {
@@ -178,8 +196,8 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         style={{
                                             stroke: strokeChairColor,
                                             strokeWidth: '0.5px',
-                                            fill: 'white', //fillChairColor,
-                                            fillOpacity: 1, //fillChairOpacity,
+                                            fill: fillChairColor,
+                                            fillOpacity: fillChairOpacity,
                                             cursor: 'pointer'
                                         }}
                                     />
@@ -239,10 +257,10 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         }}
                                     >
                                         <tspan x={chair.baseX1 + 1} dy="1em">
-                                            {association?.elu.prenom}
+                                            {elu?.prenom}
                                         </tspan>
                                         <tspan x={chair.baseX1 + 1} dy="1em">
-                                            {association?.elu.nom}
+                                            {elu?.nom}
                                         </tspan>
                                     </text>
                                     <foreignObject
@@ -260,28 +278,21 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                                 'http://www.w3.org/1999/xhtml',
                                             children: (
                                                 <React.Fragment>
-                                                    {chair.number}
-                                                    {' '}
+                                                    {chair.number}{' '}
                                                     {groupePolitique?.nomCourt}
                                                     <br />
-                                                    {association?.elu
-                                                        .shortFonction && (
+                                                    {elu?.shortFonction && (
                                                         <React.Fragment>
                                                             <b>
                                                                 {
-                                                                    association
-                                                                        ?.elu
-                                                                        .shortFonction
+                                                                    elu?.shortFonction
                                                                 }
                                                             </b>{' '}
                                                         </React.Fragment>
                                                     )}
-                                                    {civilite(
-                                                        association?.elu
-                                                            .civilite
-                                                    )}
+                                                    {civilite(elu?.civilite)}
                                                     <br />
-                                                    {association?.elu.nom}
+                                                    {elu?.nom}
                                                 </React.Fragment>
                                             )
                                         })}
@@ -346,17 +357,18 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     {/*</g>*/}
                     <g
                         transform={`translate(${
-                            this.props.hemicycle.viewPortX + legendSquareWidth
+                            this.props.configurationRendu.viewPortX +
+                                legendSquareWidth
                             // +
                             //     this.props.hemicycle.viewPortWidth -
                             //     100
                         },
-                        ${this.props.hemicycle.viewPortY +
-                            this.props.hemicycle.viewPortHeight -
-                            60})`}
+                        ${this.props.configurationRendu.viewPortY +
+                            this.props.configurationRendu.viewPortHeight -
+                            62})`}
                     >
-                        {this.props.data.groupePolitiques.map((gp, index) => (
-                            <React.Fragment key={gp.id}>
+                        {this.props.groupePolitiques.map((gp, index) => (
+                            <React.Fragment key={numberifyNominalNumber(gp.id)}>
                                 <rect
                                     x={0}
                                     y={index * legendSquareWidth}

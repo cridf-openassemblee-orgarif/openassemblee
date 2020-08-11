@@ -4,17 +4,20 @@ import { useEffect, useState } from 'react';
 import { colors } from '../../constants';
 import { useCombobox } from 'downshift';
 import EluAutocompleteItem from './EluAutocompleteItem';
-import { AppData, SelectedEluSource } from '../App';
-import { eluToString } from '../../utils';
+import { SelectedEluSource, Selection } from '../App';
+import { Dict, eluToString, get } from '../../utils';
+import { Elu, GroupePolitique } from '../../domain/elu';
+import { EluId, GroupePolitiqueId } from '../../domain/nominal';
 
 interface Props {
-    selectedElu?: Elu;
-    selectedEluSource?: SelectedEluSource;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    selection: Selection;
+    elus: Elu[];
+    eluById: Dict<EluId, Elu>;
+    groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    data: AppData;
     deleteMode: boolean;
 }
 
@@ -30,7 +33,7 @@ const compare = (itemAsString: string, inputValue: string) =>
         .startsWith(inputValue.toLowerCase().latinize());
 
 const EluAutocomplete = (props: Props) => {
-    const [inputItems, setInputItems] = useState(props.data.elus);
+    const [inputItems, setInputItems] = useState(props.elus);
     const {
         isOpen,
         getInputProps,
@@ -49,7 +52,7 @@ const EluAutocomplete = (props: Props) => {
                         selectedItem &&
                         !isEqual(selectedItem, inputValue)
                     ) {
-                        props.updateSelectedElu(undefined, 'input');
+                        props.updateSelectedEluId(undefined, 'input');
                     }
                 }, 0);
             }
@@ -61,11 +64,11 @@ const EluAutocomplete = (props: Props) => {
                     selectedItem &&
                     isEqual(selectedItem, inputValue)
                 ) {
-                    props.updateSelectedElu(selectedItem, 'input');
+                    props.updateSelectedEluId(selectedItem.id, 'input');
                 }
             }, 0);
             setInputItems(
-                props.data.elus.filter(elu =>
+                props.elus.filter(elu =>
                     inputValue && inputValue !== ''
                         ? compare(eluToString(elu), inputValue) ||
                           compare(elu.prenom, inputValue) ||
@@ -77,16 +80,20 @@ const EluAutocomplete = (props: Props) => {
     });
     useEffect(
         () => {
-            if (props.selectedEluSource !== 'input') {
-                if (props.selectedElu) {
-                    setInputValue(eluToString(props.selectedElu));
+            if (props.selection.selectedEluSource !== 'input') {
+                if (props.selection.selectedEluId) {
+                    const elu = get(
+                        props.eluById,
+                        props.selection.selectedEluId
+                    );
+                    setInputValue(eluToString(elu));
                 } else {
                     setInputValue('');
                 }
             }
         },
         // eslint-disable-next-line
-        [props.selectedElu, props.selectedEluSource]
+        [props.selection.selectedEluId, props.selection.selectedEluSource]
     );
     return (
         <div
@@ -105,7 +112,7 @@ const EluAutocomplete = (props: Props) => {
                     &:focus {
                         border: 1px solid ${colors.black};
                     }
-                    ${props.selectedElu &&
+                    ${props.selection.selectedEluId &&
                         css`
                             background: ${colors.blue};
                         `}
@@ -135,7 +142,7 @@ const EluAutocomplete = (props: Props) => {
                             <EluAutocompleteItem
                                 elu={elu}
                                 highlighted={highlightedIndex === index}
-                                data={props.data}
+                                groupePolitiqueById={props.groupePolitiqueById}
                             />
                         </div>
                     ))}

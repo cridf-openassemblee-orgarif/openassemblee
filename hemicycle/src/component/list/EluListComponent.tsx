@@ -2,20 +2,32 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import GroupePolitiqueComponent from './GroupePolitiqueComponent';
-import { domUid } from '../../utils';
-import { AppData, Associations, SelectedEluSource } from '../App';
+import { Dict, domUid } from '../../utils';
 import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
 import LastAssociationsComponent from './LastAssociationsComponent';
+import {
+    ChairNumber,
+    EluId,
+    GroupePolitiqueId,
+    numberifyNominalNumber
+} from '../../domain/nominal';
+import { Elu, GroupePolitique } from '../../domain/elu';
+import { Association } from '../../domain/hemicycle';
+import { SelectedEluSource } from '../App';
 
 interface Props {
-    selectedElu?: Elu;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    eluById: Dict<EluId, Elu>;
+    groupePolitiques: GroupePolitique[];
+    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
+    elus: Elu[];
+    associationByEluId: Dict<EluId, Association>;
+    associations: Association[];
+    selectedEluId?: EluId;
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    removeAssociation: (chair: number) => void;
-    associations: Associations;
-    data: AppData;
+    removeAssociation: (chair: ChairNumber) => void;
     deleteMode: boolean;
 }
 
@@ -76,11 +88,12 @@ export default class EluListComponent extends React.Component<Props, State> {
                 `}
             >
                 <LastAssociationsComponent
+                    eluById={this.props.eluById}
+                    selectedEluId={this.props.selectedEluId}
                     associations={this.props.associations}
                     deleteMode={this.props.deleteMode}
-                    updateSelectedElu={this.props.updateSelectedElu}
+                    updateSelectedEluId={this.props.updateSelectedEluId}
                     removeAssociation={this.props.removeAssociation}
-                    selectedElu={this.props.selectedElu}
                 />
                 <div
                     css={css`
@@ -111,25 +124,25 @@ export default class EluListComponent extends React.Component<Props, State> {
                     Cacher les associations
                 </label>
                 {this.state.displayBy === 'groupePolitique' &&
-                    this.props.data.groupePolitiques.map(groupePolitique => (
+                    this.props.groupePolitiques.map(gp => (
                         <GroupePolitiqueComponent
-                            key={groupePolitique.id}
-                            groupePolitique={groupePolitique}
+                            key={numberifyNominalNumber(gp.id)}
+                            groupePolitique={gp}
+                            elusByGroupeId={this.props.elusByGroupeId}
+                            associationByEluId={this.props.associationByEluId}
                             hideAssociations={this.state.hideAssociations}
-                            associations={this.props.associations}
-                            selectedElu={this.props.selectedElu}
-                            updateSelectedElu={this.props.updateSelectedElu}
+                            selectedEluId={this.props.selectedEluId}
+                            updateSelectedEluId={this.props.updateSelectedEluId}
                             removeAssociation={this.props.removeAssociation}
-                            data={this.props.data}
                             deleteMode={this.props.deleteMode}
                         />
                     ))}
                 {this.state.displayBy === 'elu' && (
                     <EluAlphabeticalListComponent
-                        data={this.props.data}
-                        associations={this.props.associations}
-                        selectedElu={this.props.selectedElu}
-                        updateSelectedElu={this.props.updateSelectedElu}
+                        elus={this.props.elus}
+                        associationByEluId={this.props.associationByEluId}
+                        selectedEluId={this.props.selectedEluId}
+                        updateSelectedEluId={this.props.updateSelectedEluId}
                         removeAssociation={this.props.removeAssociation}
                         deleteMode={this.props.deleteMode}
                         hideAssociations={this.state.hideAssociations}

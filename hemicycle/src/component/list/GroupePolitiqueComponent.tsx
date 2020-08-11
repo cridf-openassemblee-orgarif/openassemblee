@@ -2,20 +2,29 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors } from '../../constants';
-import { AppData, Associations, SelectedEluSource } from '../App';
+import { SelectedEluSource } from '../App';
 import EluComponent from './EluComponent';
+import { Elu, GroupePolitique } from '../../domain/elu';
+import {
+    ChairNumber,
+    EluId,
+    GroupePolitiqueId,
+    numberifyNominalNumber
+} from '../../domain/nominal';
+import { Dict, get, getMaybe } from '../../utils';
+import { Association } from '../../domain/hemicycle';
 
 interface Props {
     groupePolitique: GroupePolitique;
-    data: AppData;
+    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
+    associationByEluId: Dict<EluId, Association>;
     hideAssociations: boolean;
-    associations: Associations;
-    selectedElu?: Elu;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    selectedEluId?: EluId;
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    removeAssociation: (chair: number) => void;
+    removeAssociation: (chair: ChairNumber) => void;
     deleteMode: boolean;
 }
 
@@ -23,18 +32,20 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
     Props
 > {
     public render() {
-        const eluAssociations = this.props.data.elusByGroupe[
-            this.props.groupePolitique.id
-        ]
+        const elusWithChairNumbers: {
+            elu: Elu;
+            chairNumber: ChairNumber | undefined;
+        }[] = get(this.props.elusByGroupeId, this.props.groupePolitique.id)
             .map((elu: Elu) => ({
                 elu,
-                association: this.props.associations.associationsByElu[elu.id]
+                chairNumber: getMaybe(this.props.associationByEluId, elu.id)
+                    ?.chairNumber
             }))
             .filter(
-                ({ elu, association }) =>
-                    !this.props.hideAssociations || !association
+                ({ chairNumber }) =>
+                    !this.props.hideAssociations || !chairNumber
             );
-        if (eluAssociations.length === 0) {
+        if (elusWithChairNumbers.length === 0) {
             return null;
         }
         return (
@@ -69,14 +80,14 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                         padding: 10px;
                     `}
                 >
-                    {eluAssociations.map(({ elu, association }) => (
+                    {elusWithChairNumbers.map(({ elu, chairNumber }) => (
                         <EluComponent
-                            key={elu.id}
+                            key={numberifyNominalNumber(elu.id)}
                             elu={elu}
-                            association={association}
-                            isSelected={this.props.selectedElu?.id === elu.id}
+                            chairNumber={chairNumber}
+                            isSelected={this.props.selectedEluId === elu.id}
                             deleteMode={this.props.deleteMode}
-                            updateSelectedElu={this.props.updateSelectedElu}
+                            updateSelectedEluId={this.props.updateSelectedEluId}
                             removeAssociation={this.props.removeAssociation}
                         />
                     ))}

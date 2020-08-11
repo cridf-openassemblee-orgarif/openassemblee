@@ -1,25 +1,25 @@
-type Civilite = 'MONSIEUR' | 'MADAME';
+import { EluId, GroupePolitiqueId, LocalDate } from './nominal';
 
-type LocalDate = string;
+export type Civilite = 'MONSIEUR' | 'MADAME';
 
-interface Elu {
-    id: number;
+export interface Elu {
+    id: EluId;
     civilite: Civilite;
     nom: string;
     prenom: string;
-    groupePolitiqueId: number;
+    groupePolitiqueId: GroupePolitiqueId;
     shortFonction?: string;
 }
 
-interface GroupePolitique {
-    id: number;
+export interface GroupePolitique {
+    id: GroupePolitiqueId;
     nom: string;
     nomCourt: string;
     couleur: string;
 }
 
-interface EluFromWs {
-    id: number;
+export interface EluFromWs {
+    id: EluId;
     civilite: Civilite;
     nom: string;
     prenom: string;
@@ -39,8 +39,8 @@ interface EluFromWs {
     shortUid: number;
 }
 
-interface GroupePolitiqueFromWs {
-    id: number;
+export interface GroupePolitiqueFromWs {
+    id: GroupePolitiqueId;
     nom: string;
     nomCourt: string;
     adressePostale: any;
@@ -58,7 +58,7 @@ interface GroupePolitiqueFromWs {
     shortUid: number;
 }
 
-interface EluListDTO {
+export interface EluListDTO {
     elu: EluFromWs;
     groupePolitique?: GroupePolitiqueFromWs;
     shortFonction?: string;

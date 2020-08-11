@@ -1,4 +1,4 @@
-import HttpService, { SecurityCsrfToken } from './HttpService';
+import HttpService from './HttpService';
 import EventBus from './EventBus';
 
 class Injector {

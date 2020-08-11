@@ -2,18 +2,35 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { injector } from '../service/injector';
-import { clearfix } from '../utils';
 import SizingContainer from './util/SizingContainer';
 import Hemicycle from './Hemicycle';
 import EluListComponent from './list/EluListComponent';
-import InputsComponent from './input/InputsComponent';
-import { colors } from '../constants';
-import { eluListDTOSample, hemicycleSample } from './sample';
-import { ReactElement } from 'react';
-import * as ReactDomServer from 'react-dom/server';
-import format from 'xml-formatter';
+import InputsComponent, { inputComponentHeight } from './input/InputsComponent';
+import { colors, options } from '../constants';
+import { Unsuscriber } from '../service/EventBus';
+import {
+    Elu,
+    EluListDTO,
+    GroupePolitique,
+    GroupePolitiqueFromWs
+} from '../domain/elu';
+import {
+    ChairNumber,
+    EluId,
+    GroupePolitiqueId,
+    instanciateNominalNumber,
+    PlanId
+} from '../domain/nominal';
+import { Dict, get, set } from '../utils';
+import { Errors } from './util/errors';
+import {
+    Association,
+    HemicyclePlanAssociationsFromWs
+} from '../domain/hemicycle';
+import { HemicycleConfigurationRendu } from '../domain/assemblee';
+import LoadingIcon from './util/LoadingIcon';
 
-const nonGroupePolitiqueId = -1;
+const nonGroupePolitiqueId = instanciateNominalNumber<GroupePolitiqueId>(-1);
 
 const convertElu = (dto: EluListDTO): Elu => ({
     id: dto.elu.id,
@@ -50,138 +67,127 @@ const alphabeticSort = (map: (item: any) => string) => (
     return 0;
 };
 
-export interface Association {
-    // FIXMENOW chairNumber
-    chair: number;
-    elu: Elu;
-}
-
 export type SelectedEluSource = 'input' | 'list';
 
-export interface Associations {
-    list: Association[];
-    associationsByChair: Record<number, Association | undefined>;
-    associationsByElu: Record<number, Association | undefined>;
-}
-
-export interface AppData {
-    elus: Elu[];
-    elusByGroupe: Record<number, Elu[]>;
-    groupePolitiques: GroupePolitique[];
-    groupePolitiquesById: Record<number, GroupePolitique>;
+interface Props {
+    planId: PlanId;
+    isProjet: boolean;
 }
 
 interface State {
-    selectedChairNumber?: number;
-    selectedElu?: Elu;
-    selectedEluSource?: SelectedEluSource;
-    associations: Associations;
-    hemicycle?: HemicycleDTO;
-    data?: AppData;
+    rawElus?: {
+        elus: Elu[];
+        groupePolitiques: GroupePolitique[];
+    };
+    hemicycle?: {
+        associations: Association[];
+        configurationRendu: HemicycleConfigurationRendu;
+    };
+    maps: {
+        eluById?: Dict<EluId, Elu>;
+        elusByGroupeId?: Dict<GroupePolitiqueId, Elu[]>;
+        groupePolitiqueById?: Dict<GroupePolitiqueId, GroupePolitique>;
+        associationByChair?: Dict<ChairNumber, Association>;
+        associationByEluId?: Dict<EluId, Association>;
+    };
+    selection: Selection;
     config: {
         hideAssociationsChairs: boolean;
         deleteMode: boolean;
-        displayTestHemicycleButton: boolean;
     };
 }
 
-export default class App extends React.PureComponent<{}, State> {
+export interface Selection {
+    selectedChairNumber?: ChairNumber;
+    selectedEluId?: EluId;
+    selectedEluSource?: SelectedEluSource;
+}
+
+export default class App extends React.PureComponent<Props, State> {
     state: State = {
-        selectedChairNumber: undefined,
-        selectedElu: undefined,
-        selectedEluSource: undefined,
+        rawElus: undefined,
         hemicycle: undefined,
-        data: undefined,
-        associations: {
-            list: [],
-            associationsByChair: {},
-            associationsByElu: {}
+        maps: {
+            eluById: undefined,
+            elusByGroupeId: undefined,
+            groupePolitiqueById: undefined,
+            associationByChair: undefined,
+            associationByEluId: undefined
+        },
+        selection: {
+            selectedChairNumber: undefined,
+            selectedEluId: undefined,
+            selectedEluSource: undefined
         },
         config: {
             hideAssociationsChairs: false,
-            deleteMode: false,
-            displayTestHemicycleButton: false
+            deleteMode: false
         }
     };
 
+    private unsuscriber: Unsuscriber | undefined;
+
     componentDidMount(): void {
-        injector()
-            .httpService.get(injector().urlBase + '/api/hemicycle')
-            .then(a => {
-                this.setState(state => ({
-                    ...state,
-                    hemicycle: a.body
-                }));
-            })
-            .catch(() => {
-                this.setState(state => ({
-                    ...state,
-                    config: {
-                        ...state.config,
-                        displayTestHemicycleButton: true
-                    }
-                }));
-            });
         injector()
             .httpService.get(injector().urlBase + '/api/elus')
             .then(a => {
-                const data = this.dataFromEluListDTO(a.body as EluListDTO[]);
+                const eluDtos = a.body as EluListDTO[];
+                const elus = eluDtos.map(d => convertElu(d));
+                const groupePolitiques = this.elusDtoToGroupePolitiques(
+                    eluDtos
+                );
                 this.setState(state => ({
                     ...state,
-                    data
-                }));
-                this.updateProtoAssociations(data.elus);
-            })
-            .catch(() => {
-                this.setState(state => ({
-                    ...state,
-                    config: {
-                        ...state.config,
-                        displayTestHemicycleButton: true
+                    rawElus: {
+                        ...state.rawElus,
+                        elus,
+                        groupePolitiques
                     }
                 }));
+                this.updateElusMaps();
+                this.updateAssociationsMaps();
             });
+        injector()
+            .httpService.get(
+                injector().urlBase +
+                    '/api/hemicyclePlans-associations/' +
+                    this.props.planId
+            )
+            .then(a => {
+                const hemicycle = a.body as HemicyclePlanAssociationsFromWs;
+                this.setState(state => ({
+                    ...state,
+                    hemicycle
+                }));
+                this.updateAssociationsMaps();
+            });
+        this.unsuscriber = injector().applicationEventBus.subscribe(
+            'activate_debug',
+            () => this.forceUpdate()
+        );
     }
 
-    private dataFromEluListDTO = (eluListDTOs: EluListDTO[]): AppData => {
-        const elus: Elu[] = [];
-        const elusByGroupe: Record<number, Elu[]> = {};
+    componentWillUnmount() {
+        if (this.unsuscriber) {
+            this.unsuscriber();
+        }
+    }
+
+    private elusDtoToGroupePolitiques = (
+        eluDtos: EluListDTO[]
+    ): GroupePolitique[] => {
         const gps: GroupePolitique[] = [];
-        const groupePolitiquesById: Record<number, GroupePolitique> = {};
-
-        eluListDTOs.forEach(d => {
-            const elu = convertElu(d);
-            elus.push(elu);
-
-            const groupePolitiqueId = d.groupePolitique
-                ? d.groupePolitique.id
-                : nonGroupePolitiqueId;
-            let groupeElus = elusByGroupe[groupePolitiqueId];
-            if (!groupeElus) {
-                groupeElus = [];
-                elusByGroupe[groupePolitiqueId] = groupeElus;
-            }
-            groupeElus.push(elu);
-
-            if (
-                d.groupePolitique &&
-                !Object.keys(groupePolitiquesById).includes(
-                    d.groupePolitique.id.toString()
-                )
-            ) {
-                const groupePolitique = convertGroupePolitique(
-                    d.groupePolitique
-                );
-                gps.push(groupePolitique);
-                groupePolitiquesById[d.groupePolitique.id] = groupePolitique;
-            }
-        });
-        Object.keys(elusByGroupe).forEach((idAsString: string) => {
-            const id = parseInt(idAsString);
-            elusByGroupe[id] = elusByGroupe[id].sort(
-                alphabeticSort((elu: Elu) => elu.nom)
-            );
-        });
+        eluDtos
+            .filter(d => d.groupePolitique)
+            .forEach(d => {
+                if (
+                    gps.filter(gp => gp.id === d.groupePolitique?.id).length ===
+                    0
+                ) {
+                    gps.push(convertGroupePolitique(d.groupePolitique!));
+                }
+            });
+        // tri par ordre alphabétique
         const groupePolitiques = gps.sort(
             alphabeticSort((gp: GroupePolitique) => gp.nom)
         );
@@ -196,30 +202,77 @@ export default class App extends React.PureComponent<{}, State> {
             couleur: colors.black
         };
         groupePolitiques.unshift(nonGroupe);
-        groupePolitiquesById[nonGroupePolitiqueId] = nonGroupe;
-        return {
-            elus: elus.sort(alphabeticSort((elu: Elu) => elu.nom)),
-            groupePolitiques,
-            elusByGroupe,
-            groupePolitiquesById
-        };
+        return groupePolitiques;
     };
 
-    private associationsCollections = (list: Association[]): Associations => {
-        const associationsByChair: Record<number, Association | undefined> = {};
-        const associationsByElu: Record<number, Association | undefined> = {};
-        list.forEach(a => {
-            associationsByChair[a.chair] = a;
-            associationsByElu[a.elu.id] = a;
+    private updateElusMaps = () =>
+        this.setState(state => {
+            const eluById: Dict<EluId, Elu> = {};
+            const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
+            const groupePolitiqueById: Dict<
+                GroupePolitiqueId,
+                GroupePolitique
+            > = {};
+            if (!state.rawElus) {
+                throw Errors._b7d84f98();
+            }
+            state.rawElus.elus.forEach(e => {
+                set(eluById, e.id, e);
+            });
+            state.rawElus.groupePolitiques.forEach(gp => {
+                set(elusByGroupeId, gp.id, []);
+                set(groupePolitiqueById, gp.id, gp);
+            });
+            // FIXMENOW filtrer les demissionaires ? ou et comment
+            state.rawElus.elus.forEach(e => {
+                get(elusByGroupeId, e.groupePolitiqueId).push(e);
+            });
+            // elus dans ordre alphabétique
+            Object.keys(elusByGroupeId).forEach((idAsString: string) => {
+                const gpId = instanciateNominalNumber<GroupePolitiqueId>(
+                    parseInt(idAsString)
+                );
+                set(
+                    elusByGroupeId,
+                    gpId,
+                    get(elusByGroupeId, gpId).sort(
+                        alphabeticSort((elu: Elu) => elu.nom)
+                    )
+                );
+            });
+            return {
+                ...state,
+                maps: {
+                    ...state.maps,
+                    eluById,
+                    elusByGroupeId,
+                    groupePolitiqueById
+                }
+            };
         });
-        return {
-            list,
-            associationsByChair,
-            associationsByElu
-        };
-    };
 
-    private checkSelections = () => {
+    private updateAssociationsMaps = () =>
+        this.setState(state => {
+            if (!state.hemicycle) {
+                return state;
+            }
+            const associationByChair: Dict<ChairNumber, Association> = {};
+            const associationByEluId: Dict<EluId, Association> = {};
+            state.hemicycle.associations.forEach(a => {
+                set(associationByChair, a.chairNumber, a);
+                set(associationByEluId, a.eluId, a);
+            });
+            return {
+                ...state,
+                maps: {
+                    ...state.maps,
+                    associationByChair,
+                    associationByEluId
+                }
+            };
+        });
+
+    private selectionsToAssociation = () => {
         // le fait de delayer ce set State permet à l'input de récupérer le selectedChairNumber via les props
         // pour le reprendre ensuite en undefined et détecter le changement effectif
         // est bugguy sans ça
@@ -229,218 +282,126 @@ export default class App extends React.PureComponent<{}, State> {
         // voire la dégager tout court en fait =]
         setTimeout(() => {
             this.setState(state => {
-                const selectedChairNumber = state.selectedChairNumber;
-                const selectedElu = state.selectedElu;
-                if (selectedChairNumber && selectedElu) {
+                const selectedChairNumber = state.selection.selectedChairNumber;
+                const selectedEluId = state.selection.selectedEluId;
+                if (selectedChairNumber && selectedEluId) {
+                    if (!state.hemicycle) {
+                        throw Errors._8459c73c();
+                    }
                     const newAssociation: Association = {
-                        chair: selectedChairNumber,
-                        elu: selectedElu
+                        chairNumber: selectedChairNumber,
+                        eluId: selectedEluId
                     };
-                    const newAssociations = state.associations.list.filter(
+                    const associations = state.hemicycle.associations.filter(
                         a =>
-                            a.chair !== selectedChairNumber &&
-                            a.elu.id !== selectedElu.id
+                            a.chairNumber !== selectedChairNumber &&
+                            a.eluId !== selectedEluId
                     );
-                    newAssociations.push(newAssociation);
+                    associations.push(newAssociation);
                     return {
                         ...state,
-                        selectedChairNumber: undefined,
-                        selectedElu: undefined,
-                        selectedEluSource: undefined,
-                        associations: this.associationsCollections(
-                            newAssociations
-                        )
+                        selection: {
+                            ...state.selection,
+                            selectedChairNumber: undefined,
+                            selectedEluId: undefined,
+                            selectedEluSource: undefined
+                        },
+                        hemicycle: {
+                            ...state.hemicycle,
+                            associations
+                        }
                     };
                 } else {
                     return state;
                 }
             });
+            this.updateAssociationsMaps();
         }, 200);
     };
 
-    private updateSelectedChairNumber = (selectedChairNumber: number) => {
+    private updateSelectedChairNumber = (selectedChairNumber: ChairNumber) => {
         this.setState(state => ({
             ...state,
-            selectedChairNumber
+            selection: {
+                ...state.selection,
+                selectedChairNumber
+            }
         }));
-        this.checkSelections();
+        this.selectionsToAssociation();
     };
 
-    private updateSelectedElu = (
-        selectedElu: Elu | undefined,
+    private updateSelectedEluId = (
+        selectedEluId: EluId | undefined,
         selectedEluSource: SelectedEluSource
     ) => {
-        this.setState(state => ({ ...state, selectedElu, selectedEluSource }));
-        this.checkSelections();
+        this.setState(state => ({
+            ...state,
+            selection: {
+                ...state.selection,
+                selectedEluId,
+                selectedEluSource
+            }
+        }));
+        this.selectionsToAssociation();
     };
 
-    private removeAssociation = (chair: number) =>
+    private removeAssociation = (chair: ChairNumber) => {
         this.setState(state => {
-            const newAssociations = state.associations.list.filter(
-                a => a.chair !== chair
+            if (!state.hemicycle) {
+                throw Errors._3405a5ec();
+            }
+            const newAssociations = state.hemicycle.associations.filter(
+                a => a.chairNumber !== chair
             );
             return {
                 ...state,
-                associations: this.associationsCollections(newAssociations)
+                hemicycle: {
+                    ...state.hemicycle,
+                    associations: newAssociations
+                }
             };
         });
-
-    private protoAlphaSort = () => {
-        this.setState(state => {
-            const hemicycle = state.hemicycle;
-            if (state.data && hemicycle) {
-                const associations = state.data.elus.map(
-                    (elu, index) =>
-                        ({
-                            chair: hemicycle.chairs[index].number,
-                            elu: elu
-                        } as Association)
-                );
-                return {
-                    ...state,
-                    associations: this.associationsCollections(associations)
-                };
-            } else {
-                return state;
-            }
-        });
+        this.updateAssociationsMaps();
     };
 
-    private download = () => {
-        // FIXME une implem "ouvrir pour print"
-        const renderReact = (svgElement: ReactElement) => {
-            const svg = ReactDomServer.renderToString(svgElement);
-            // FIXMENOW [doc] da fuck Batik semble ne pas aimer ça.... parce que je parse mal ?
-            // FIXMENOW rechecker en fait....
-            return '<?xml version="1.0" encoding="UTF-8"?>' + svg;
-            // return finalSvg;
-        };
-        if (!this.state.data || !this.state.hemicycle) {
-            throw Error();
+    private savePlan = (then: () => void) => {
+        if (!this.state.hemicycle) {
+            throw Errors._affb4796();
         }
-        const r = renderReact(
-            <Hemicycle
-                width={1600}
-                height={1000}
-                hemicycle={this.state.hemicycle}
-                data={this.state.data}
-                associations={this.state.associations}
-                selectedChairNumber={this.state.selectedChairNumber}
-                updateSelectedChairNumber={this.updateSelectedChairNumber}
-                hideAssociationsChairs={
-                    this.state.config.hideAssociationsChairs
-                }
-                removeAssociation={this.removeAssociation}
-                deleteMode={this.state.config.deleteMode}
-            />
-        );
-        // const formatXml = (xml:string) => {
-        //     const PADDING = ' '.repeat(4); // set desired indent size here
-        //     const reg = /(>)(<)(\/*)/g;
-        //     let pad = 0;
-        //
-        //     xml = xml.replace(reg, '$1\r\n$2$3');
-        //
-        //     return xml.split('\r\n').map((node, index) => {
-        //         let indent = 0;
-        //         if (node.match(/.+<\/\w[^>]*>$/)) {
-        //             indent = 0;
-        //         } else if (node.match(/^<\/\w/) && pad > 0) {
-        //             pad -= 1;
-        //         } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
-        //             indent = 1;
-        //         } else {
-        //             indent = 0;
-        //         }
-        //
-        //         pad += indent;
-        //
-        //         return PADDING.repeat(pad - indent) + node;
-        //     }).join('\r\n');
-        // }
-        console.log(format(r));
-        // const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(r);
-        const url = 'data:image/svg+xml;charset=utf-8,' + r;
-        // console.log(url)
-        var image = new Image();
-        image.src = url;
-
-        // var w = window.open("");
-        // w!.document.write(image.outerHTML);
-
-        var printWindow = window.open('', 'PrintMap');
-        printWindow!.document.writeln(r);
-        printWindow!.document.writeln(`
-        <style>
-        @page {
-            size: A3 landscape;
-        }
-        </style>
-        `);
-
-        printWindow!.document.close();
-        printWindow!.print();
-        // printWindow!.close();
-        // console.log(r)
+        // injector()
+        //     .httpService.post(
+        //         injector().urlBase + '/api/proto-associations',
+        //         this.state.hemicycle.associations
+        //     )
+        //     .then(() => {
+        //         setTimeout(then, 500);
+        //     });
     };
 
-    private updateProtoAssociations(elus: Elu[]) {
-        injector()
-            .httpService.get(injector().urlBase + '/api/proto-associations')
-            .then(a => {
-                const protoAssociations = a.body as [number, number][];
-                const eluById = {} as Record<number, Elu>;
-                elus.forEach(e => {
-                    eluById[e.id] = e;
-                });
-                const associations: Association[] = protoAssociations.map(
-                    a => ({
-                        chair: a[0],
-                        elu: eluById[a[1]]
-                    })
-                );
-                this.setState(state => ({
-                    ...state,
-                    associations: this.associationsCollections(associations)
-                }));
-            });
-    }
+    private download = () => {};
 
-    private saveProtoAssociations = () => {
-        const protoAssociations = this.state.associations.list.map(a => [
-            a.chair,
-            a.elu.id
-        ]);
-        injector().httpService.post(
-            injector().urlBase + '/api/proto-associations',
-            protoAssociations
-        );
-    };
+    private archive = (then: () => void) => {};
 
-    private protoEmpty = () =>
+    private protoEmpty = () => {
         this.setState(state => ({
             ...state,
-            associations: this.associationsCollections([])
+            associations: []
         }));
-
-    private setSampleData = () => {
-        const data = this.dataFromEluListDTO(eluListDTOSample);
-        this.setState(state => ({
-            ...state,
-            data,
-            hemicycle: hemicycleSample
-        }));
-        this.updateProtoAssociations(data.elus);
+        this.updateAssociationsMaps();
     };
 
     private switchHideAssociations = () =>
         this.setState(state => {
             const hideAssociationsChairs = !state.config.hideAssociationsChairs;
+            const selectedChairNumber = hideAssociationsChairs
+                ? undefined
+                : state.selection.selectedChairNumber;
             return {
                 ...state,
-                selectedChairNumber: hideAssociationsChairs
-                    ? undefined
-                    : state.selectedChairNumber,
+                selection: {
+                    ...state.selection,
+                    selectedChairNumber
+                },
                 config: {
                     ...state.config,
                     hideAssociationsChairs
@@ -451,18 +412,16 @@ export default class App extends React.PureComponent<{}, State> {
     private switchDeleteMode = () =>
         this.setState(state => {
             const deleteMode = !state.config.deleteMode;
-            const selectedChairNumber = deleteMode
-                ? undefined
-                : state.selectedChairNumber;
-            const selectedElu = deleteMode ? undefined : state.selectedElu;
-            const selectedEluSource = deleteMode
-                ? undefined
-                : state.selectedEluSource;
+            const selection = deleteMode
+                ? {
+                      selectedChairNumber: undefined,
+                      selectedElu: undefined,
+                      selectedEluSource: undefined
+                  }
+                : state.selection;
             return {
                 ...state,
-                selectedChairNumber,
-                selectedElu,
-                selectedEluSource,
+                selection,
                 config: {
                     ...state.config,
                     hideAssociationsChairs: false,
@@ -470,6 +429,31 @@ export default class App extends React.PureComponent<{}, State> {
                 }
             };
         });
+
+    private renderDebugButtons = () => (
+        <div
+            css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: ${colors.white};
+                border: 1px solid ${colors.grey};
+                padding: 4px;
+            `}
+        >
+            <button onClick={this.download}>Imprimer</button>
+            <br />
+            <button onClick={this.protoEmpty}>Vider</button>
+            <button
+                onClick={() => {}}
+                css={css`
+                    background: ${colors.redBackground};
+                `}
+            >
+                Sample data
+            </button>
+        </div>
+    );
 
     public render() {
         return (
@@ -480,161 +464,206 @@ export default class App extends React.PureComponent<{}, State> {
                     return (
                         <div
                             css={css`
-                                ${clearfix};
+                                display: flex;
                                 width: 100%;
                                 height: ${height}px;
+                                overflow: hidden;
                             `}
                         >
-                            <div
-                                css={css`
-                                    position: relative;
-                                    float: left;
-                                    width: ${hemicycleWidth}px;
-                                    height: ${height}px;
-                                `}
-                            >
+                            {options.debug && this.renderDebugButtons()}
+
+                            {(!this.state.rawElus || !this.state.hemicycle) && (
                                 <div
                                     css={css`
-                                        //display: none;
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        background: ${colors.white};
-                                        border: 1px solid ${colors.grey};
-                                        padding: 4px;
+                                        width: 100%;
+                                        height: 100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
                                     `}
                                 >
-                                    {this.state.data && (
-                                        <React.Fragment>
-                                            {/*<button*/}
-                                            {/*    onClick={*/}
-                                            {/*        this.saveProtoAssociations*/}
-                                            {/*    }*/}
-                                            {/*>*/}
-                                            {/*    Enregistrer*/}
-                                            {/*</button>*/}
-                                            <button onClick={this.protoEmpty}>
-                                                Vider
-                                            </button>
-                                            <br/>
-                                            <button
-                                                onClick={this.protoAlphaSort}
-                                            >
-                                                Ordre alpha
-                                            </button>
-                                            <br/>
-                                            <button onClick={this.download}>
-                                                Imprimer
-                                            </button>
-                                        </React.Fragment>
-                                    )}
-                                    {this.state.config
-                                        .displayTestHemicycleButton && (
-                                        <button
-                                            onClick={this.setSampleData}
+                                    <div>
+                                        <LoadingIcon
+                                            height={100}
+                                            color={colors.grey}
+                                        />
+                                        <div
                                             css={css`
-                                                background: ${colors.redBackground};
+                                                font-size: 20px;
+                                                color: ${colors.grey};
+                                                padding-top: 20px;
                                             `}
                                         >
-                                            Sample data
-                                        </button>
-                                    )}
-                                </div>
-                                {this.state.data && this.state.hemicycle && (
-                                    <div
-                                        css={css`
-                                            width: 60%;
-                                            margin: auto;
-                                        `}
-                                    >
-                                        <InputsComponent
-                                            selectedChairNumber={
-                                                this.state.selectedChairNumber
-                                            }
-                                            selectedElu={this.state.selectedElu}
-                                            selectedEluSource={
-                                                this.state.selectedEluSource
-                                            }
-                                            updateSelectedChairNumber={
-                                                this.updateSelectedChairNumber
-                                            }
-                                            updateSelectedElu={
-                                                this.updateSelectedElu
-                                            }
-                                            data={this.state.data}
-                                            associations={
-                                                this.state.associations
-                                            }
-                                            hemicycle={this.state.hemicycle}
-                                            deleteMode={
-                                                this.state.config.deleteMode
-                                            }
-                                            switchDeleteMode={
-                                                this.switchDeleteMode
-                                            }
-                                            hideAssociationsChairs={
-                                                this.state.config
-                                                    .hideAssociationsChairs
-                                            }
-                                            switchHideAssociations={
-                                                this.switchHideAssociations
-                                            }
-                                            saveProtoAssociations={
-                                                this.saveProtoAssociations
-                                            }
-                                        />
+                                            Chargement...
+                                        </div>
                                     </div>
+                                </div>
+                            )}
+
+                            {this.state.rawElus &&
+                                this.state.hemicycle &&
+                                this.state.maps.eluById &&
+                                this.state.maps.groupePolitiqueById &&
+                                this.state.maps.associationByChair &&
+                                this.state.maps.elusByGroupeId &&
+                                this.state.maps.associationByEluId && (
+                                    <React.Fragment>
+                                        <div
+                                            css={css`
+                                                position: relative;
+                                                width: ${hemicycleWidth}px;
+                                                height: ${height}px;
+                                            `}
+                                        >
+                                            <div
+                                                css={css`
+                                                    width: 60%;
+                                                    margin: auto;
+                                                    height: ${inputComponentHeight}px;
+                                                `}
+                                            >
+                                                <InputsComponent
+                                                    groupePolitiqueById={
+                                                        this.state.maps
+                                                            .groupePolitiqueById
+                                                    }
+                                                    selection={
+                                                        this.state.selection
+                                                    }
+                                                    elus={
+                                                        this.state.rawElus.elus
+                                                    }
+                                                    eluById={
+                                                        this.state.maps.eluById
+                                                    }
+                                                    associationByChair={
+                                                        this.state.maps
+                                                            .associationByChair
+                                                    }
+                                                    updateSelectedChairNumber={
+                                                        this
+                                                            .updateSelectedChairNumber
+                                                    }
+                                                    updateSelectedEluId={
+                                                        this.updateSelectedEluId
+                                                    }
+                                                    hemicycleConfigurationRendu={
+                                                        this.state.hemicycle
+                                                            .configurationRendu
+                                                    }
+                                                    deleteMode={
+                                                        this.state.config
+                                                            .deleteMode
+                                                    }
+                                                    switchDeleteMode={
+                                                        this.switchDeleteMode
+                                                    }
+                                                    hideAssociationsChairs={
+                                                        this.state.config
+                                                            .hideAssociationsChairs
+                                                    }
+                                                    switchHideAssociations={
+                                                        this
+                                                            .switchHideAssociations
+                                                    }
+                                                    savePlan={this.savePlan}
+                                                    archive={
+                                                        !this.props.isProjet
+                                                            ? this.archive
+                                                            : undefined
+                                                    }
+                                                />
+                                            </div>
+                                            <Hemicycle
+                                                eluById={
+                                                    this.state.maps.eluById
+                                                }
+                                                groupePolitiques={
+                                                    this.state.rawElus
+                                                        .groupePolitiques
+                                                }
+                                                groupePolitiqueById={
+                                                    this.state.maps
+                                                        .groupePolitiqueById
+                                                }
+                                                associationByChair={
+                                                    this.state.maps
+                                                        .associationByChair
+                                                }
+                                                width={hemicycleWidth}
+                                                height={
+                                                    height -
+                                                    inputComponentHeight
+                                                }
+                                                configurationRendu={
+                                                    this.state.hemicycle
+                                                        .configurationRendu
+                                                }
+                                                selectedChairNumber={
+                                                    this.state.selection
+                                                        .selectedChairNumber
+                                                }
+                                                updateSelectedChairNumber={
+                                                    this
+                                                        .updateSelectedChairNumber
+                                                }
+                                                hideAssociationsChairs={
+                                                    this.state.config
+                                                        .hideAssociationsChairs
+                                                }
+                                                removeAssociation={
+                                                    this.removeAssociation
+                                                }
+                                                deleteMode={
+                                                    this.state.config.deleteMode
+                                                }
+                                                printMode={false}
+                                            />
+                                        </div>
+                                        <div
+                                            css={css`
+                                                width: ${columnWidth}px;
+                                                height: ${height}px;
+                                            `}
+                                        >
+                                            <EluListComponent
+                                                elus={this.state.rawElus.elus}
+                                                groupePolitiques={
+                                                    this.state.rawElus
+                                                        .groupePolitiques
+                                                }
+                                                associationByEluId={
+                                                    this.state.maps
+                                                        .associationByEluId
+                                                }
+                                                elusByGroupeId={
+                                                    this.state.maps
+                                                        .elusByGroupeId
+                                                }
+                                                eluById={
+                                                    this.state.maps.eluById
+                                                }
+                                                associations={
+                                                    this.state.hemicycle
+                                                        .associations
+                                                }
+                                                selectedEluId={
+                                                    this.state.selection
+                                                        .selectedEluId
+                                                }
+                                                updateSelectedEluId={
+                                                    this.updateSelectedEluId
+                                                }
+                                                removeAssociation={
+                                                    this.removeAssociation
+                                                }
+                                                deleteMode={
+                                                    this.state.config.deleteMode
+                                                }
+                                            />
+                                        </div>
+                                    </React.Fragment>
                                 )}
-                                {this.state.hemicycle && this.state.data && (
-                                    <Hemicycle
-                                        width={hemicycleWidth}
-                                        height={height}
-                                        hemicycle={this.state.hemicycle}
-                                        data={this.state.data}
-                                        associations={this.state.associations}
-                                        selectedChairNumber={
-                                            this.state.selectedChairNumber
-                                        }
-                                        updateSelectedChairNumber={
-                                            this.updateSelectedChairNumber
-                                        }
-                                        hideAssociationsChairs={
-                                            this.state.config
-                                                .hideAssociationsChairs
-                                        }
-                                        removeAssociation={
-                                            this.removeAssociation
-                                        }
-                                        deleteMode={
-                                            this.state.config.deleteMode
-                                        }
-                                    />
-                                )}
-                            </div>
-                            <div
-                                css={css`
-                                    float: left;
-                                    width: ${columnWidth}px;
-                                    height: ${height}px;
-                                `}
-                            >
-                                {this.state.data && (
-                                    <EluListComponent
-                                        data={this.state.data}
-                                        associations={this.state.associations}
-                                        selectedElu={this.state.selectedElu}
-                                        updateSelectedElu={
-                                            this.updateSelectedElu
-                                        }
-                                        removeAssociation={
-                                            this.removeAssociation
-                                        }
-                                        deleteMode={
-                                            this.state.config.deleteMode
-                                        }
-                                    />
-                                )}
-                            </div>
                         </div>
                     );
                 }}

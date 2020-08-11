@@ -1,5 +1,7 @@
-interface HemicycleChairDTO {
-    number: number;
+import { ChairNumber } from './nominal';
+
+export interface ChairRendu {
+    number: ChairNumber;
     baseX1: number;
     baseY1: number;
     baseX2: number;
@@ -20,12 +22,12 @@ interface HemicycleChairDTO {
     centerY: number;
 }
 
-interface HemicycleDTO {
-    chairs: HemicycleChairDTO[];
+export interface HemicycleConfigurationRendu {
+    chairs: ChairRendu[];
     viewPortX: number;
     viewPortY: number;
     viewPortWidth: number;
     viewPortHeight: number;
-    minChairNumber: number;
-    maxChairNumber: number;
+    minChairNumber: ChairNumber;
+    maxChairNumber: ChairNumber;
 }

@@ -1,26 +1,28 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { colors } from '../../constants';
-import { Association, SelectedEluSource } from '../App';
 import * as React from 'react';
+import { Elu } from '../../domain/elu';
+import { ChairNumber, EluId } from '../../domain/nominal';
+import { SelectedEluSource } from '../App';
 
 interface Props {
     elu: Elu;
-    association?: Association;
+    chairNumber?: ChairNumber;
     isSelected: boolean;
     deleteMode: boolean;
-    updateSelectedElu: (
-        selectedElu: Elu | undefined,
+    updateSelectedEluId: (
+        selectedEluId: EluId | undefined,
         source: SelectedEluSource
     ) => void;
-    removeAssociation: (chair: number) => void;
+    removeAssociation: (chair: ChairNumber) => void;
 }
 
 const chairNumberWidth = 40;
 
 export default class EluComponent extends React.PureComponent<Props> {
     public render() {
-        const association = this.props.association;
+        const chairNumber = this.props.chairNumber;
         return (
             <div
                 css={css`
@@ -37,7 +39,7 @@ export default class EluComponent extends React.PureComponent<Props> {
                                   background: ${colors.clearGrey};
                               }
                           `}
-                    ${!association &&
+                    ${!chairNumber &&
                         this.props.deleteMode &&
                         css`
                             color: ${colors.grey};
@@ -49,10 +51,15 @@ export default class EluComponent extends React.PureComponent<Props> {
                 `}
                 onClick={() => {
                     if (!this.props.deleteMode) {
-                        this.props.updateSelectedElu(this.props.elu, 'list');
+                        this.props.updateSelectedEluId(
+                            this.props.elu.id,
+                            'list'
+                        );
                     } else {
-                        if (association) {
-                            this.props.removeAssociation(association.chair);
+                        if (this.props.chairNumber) {
+                            this.props.removeAssociation(
+                                this.props.chairNumber
+                            );
                         }
                     }
                 }}
@@ -65,7 +72,7 @@ export default class EluComponent extends React.PureComponent<Props> {
                         padding-right: 20px;
                     `}
                 >
-                    {association?.chair}
+                    {chairNumber}
                 </div>
                 <div
                     css={css`
@@ -73,7 +80,7 @@ export default class EluComponent extends React.PureComponent<Props> {
                     `}
                 >
                     {this.props.elu.prenom} {this.props.elu.nom}
-                    {association?.chair && !this.props.deleteMode && (
+                    {chairNumber && !this.props.deleteMode && (
                         <div
                             css={css`
                                 position: absolute;
@@ -81,7 +88,7 @@ export default class EluComponent extends React.PureComponent<Props> {
                                 right: 2px;
                             `}
                             onClick={e => {
-                                this.props.removeAssociation(association.chair);
+                                this.props.removeAssociation(chairNumber);
                                 e.stopPropagation();
                             }}
                         >

@@ -1,5 +1,9 @@
 export const productionBuild = process.env.NODE_ENV === 'production';
 
+export let options = {
+    debug: false
+};
+
 export const colors = {
     white: '#fff',
     blueBackground: '#e0f2ff',
@@ -11,7 +15,7 @@ export const colors = {
     clearGrey: '#eee',
     black: '#000',
     red: 'rgb(204, 0, 0, 1)',
-    redBackground: '#ffcccc',
+    redBackground: '#ffcccc'
 };
 
 export const hexToRgbA = (hex: string, opacity: number) => {

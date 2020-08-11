@@ -2,20 +2,23 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors, hexToRgbA } from '../../constants';
-import { AppData } from '../App';
+import { Elu, GroupePolitique } from '../../domain/elu';
+import { GroupePolitiqueId } from '../../domain/nominal';
+import { Dict, get } from '../../utils';
 
 interface Props {
     elu: Elu;
     highlighted: boolean;
-    data: AppData;
+    groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
 }
 
 export default class EluAutocompleteItem extends React.PureComponent<Props> {
     public render() {
         const elu = this.props.elu;
-        const groupePolitique = this.props.data.groupePolitiquesById[
+        const groupePolitique = get(
+            this.props.groupePolitiqueById,
             elu.groupePolitiqueId
-        ];
+        );
         const couleurGroupePolitique = groupePolitique
             ? groupePolitique.couleur
             : '000';

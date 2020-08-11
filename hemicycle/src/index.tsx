@@ -4,6 +4,8 @@ import './utilities-impl';
 import ReactDOM from 'react-dom';
 import App from './component/App';
 import { injector } from './service/injector';
+import { options } from './constants';
+import { instanciateNominalNumber } from './domain/nominal';
 
 window.addEventListener('resize', () =>
     injector().applicationEventBus.publish('window_resized_event')
@@ -28,10 +30,24 @@ setTimeout(() => {
     });
 }, 0);
 
-global.loadHemicycle = () => {
-    ReactDOM.render(<App />, document.getElementById('hemicycle-app'));
+global.loadHemicycle = (props: { planId: number; isProjet: boolean }) => {
+    ReactDOM.render(
+        <App
+            planId={instanciateNominalNumber(props.planId)}
+            isProjet={props.isProjet}
+        />,
+        document.getElementById('hemicycle-app')
+    );
+};
+
+global.activateDebug = () => {
+    options.debug = true;
+    injector().applicationEventBus.publish('activate_debug');
 };
 
 if (global.devHost) {
-    global.loadHemicycle();
+    global.loadHemicycle({
+        planId: 8,
+        isProjet: true
+    });
 }
