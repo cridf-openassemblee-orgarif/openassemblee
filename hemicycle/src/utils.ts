@@ -4,7 +4,8 @@ import { Elu } from './domain/elu';
 let uniqueIdIndex = 0;
 export const domUid = () => 'WivaldyUid_' + uniqueIdIndex++;
 
-export const eluToString = (elu: Elu) => elu.prenom + ' ' + elu.nom;
+export const eluToString = (elu: Elu | null) =>
+    elu ? elu.prenom + ' ' + elu.nom : '';
 
 export function assertUnreachable(x: never): never {
     throw new Error(

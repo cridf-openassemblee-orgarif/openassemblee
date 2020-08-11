@@ -22,9 +22,8 @@ interface Props {
 }
 
 const isEqual = (item: Elu, inputValue: string) =>
-    eluToString(item)
-        .toLowerCase()
-        .latinize() === inputValue.toLowerCase().latinize();
+    eluToString(item).toLowerCase().latinize() ===
+    inputValue.toLowerCase().latinize();
 
 const compare = (itemAsString: string, inputValue: string) =>
     itemAsString
@@ -39,7 +38,9 @@ const EluAutocomplete = (props: Props) => {
         getInputProps,
         highlightedIndex,
         getItemProps,
-        setInputValue
+        setInputValue,
+        getComboboxProps,
+        getMenuProps,
     } = useCombobox({
         items: inputItems,
         itemToString: eluToString,
@@ -68,7 +69,7 @@ const EluAutocomplete = (props: Props) => {
                 }
             }, 0);
             setInputItems(
-                props.elus.filter(elu =>
+                props.elus.filter((elu) =>
                     inputValue && inputValue !== ''
                         ? compare(eluToString(elu), inputValue) ||
                           compare(elu.prenom, inputValue) ||
@@ -76,7 +77,7 @@ const EluAutocomplete = (props: Props) => {
                         : []
                 )
             );
-        }
+        },
     });
     useEffect(
         () => {
@@ -100,6 +101,7 @@ const EluAutocomplete = (props: Props) => {
             css={css`
                 position: relative;
             `}
+            {...getComboboxProps()}
         >
             <input
                 css={css`
@@ -113,9 +115,9 @@ const EluAutocomplete = (props: Props) => {
                         border: 1px solid ${colors.black};
                     }
                     ${props.selection.selectedEluId &&
-                        css`
-                            background: ${colors.blue};
-                        `}
+                    css`
+                        background: ${colors.blue};
+                    `}
                     &:disabled {
                         background: ${colors.redBackground};
                         border-color: ${colors.red};
@@ -124,19 +126,24 @@ const EluAutocomplete = (props: Props) => {
                 {...getInputProps()}
                 disabled={props.deleteMode}
             />
-            <div
+            <ul
                 css={css`
                     position: absolute;
                     width: 100%;
                     top: 40px;
                     left: 0;
                     background: ${colors.white};
+                    padding-left: 0;
                 `}
+                {...getMenuProps()}
             >
                 {isOpen &&
                     inputItems.map((elu, index) => (
-                        <div
+                        <li
                             key={elu.id}
+                            css={css`
+                                list-style: none;
+                            `}
                             {...getItemProps({ item: elu, index })}
                         >
                             <EluAutocompleteItem
@@ -144,9 +151,9 @@ const EluAutocomplete = (props: Props) => {
                                 highlighted={highlightedIndex === index}
                                 groupePolitiqueById={props.groupePolitiqueById}
                             />
-                        </div>
+                        </li>
                     ))}
-            </div>
+            </ul>
         </div>
     );
 };
