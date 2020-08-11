@@ -4,10 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.HemicycleConfiguration;
 import openassemblee.repository.HemicycleConfigurationRepository;
 import openassemblee.repository.search.HemicycleConfigurationSearchRepository;
+import openassemblee.service.HemicycleConfigurationRendererService;
+import openassemblee.service.HemicycleConfigurationService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,13 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing HemicycleConfiguration.
@@ -38,6 +40,9 @@ public class HemicycleConfigurationResource {
 
     @Inject
     private HemicycleConfigurationSearchRepository hemicycleConfigurationSearchRepository;
+
+    @Inject
+    private HemicycleConfigurationService hemicycleConfigurationService;
 
     /**
      * POST  /hemicycleConfigurations -> Create a new hemicycleConfiguration.
@@ -86,7 +91,7 @@ public class HemicycleConfigurationResource {
     @Timed
     public List<HemicycleConfiguration> getAllHemicycleConfigurations() {
         log.debug("REST request to get all HemicycleConfigurations");
-        return hemicycleConfigurationRepository.findAll();
+        return hemicycleConfigurationService.getAllSorted();
     }
 
     /**

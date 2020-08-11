@@ -1,62 +1,71 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
-
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myHemicyclePlanLabel">Create or edit a HemicyclePlan</h4>
+                ng-click="clear()">&times;
+        </button>
+        <h4 class="modal-title" ng-if="hemicyclePlan.id == null">Créer un projet de plan</h4>
+        <h4 class="modal-title" ng-if="hemicyclePlan.id">Modifier un projet de plan</h4>
     </div>
     <div class="modal-body">
-        <jh-alert-error></jh-alert-error>
         <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="hemicyclePlan.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_label">Label</label>
+            <label class="control-label" for="field_label">Nom du projet</label>
             <input type="text" class="form-control" name="label" id="field_label"
-                    ng-model="hemicyclePlan.label"
-                    required />
+                   ng-model="hemicyclePlan.label"
+                   required/>
             <div ng-show="editForm.label.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.label.$error.required">
-                    This field is required.
+                   ng-show="editForm.label.$error.required">
+                    Requis
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="field_jsonPlan">JsonPlan</label>
-            <input type="text" class="form-control" name="jsonPlan" id="field_jsonPlan"
-                    ng-model="hemicyclePlan.jsonPlan"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_creationDate">CreationDate</label>
-            <input type="datetime-local" class="form-control" name="creationDate" id="field_creationDate"
-                    ng-model="hemicyclePlan.creationDate"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_lastModificationDate">LastModificationDate</label>
-            <input type="datetime-local" class="form-control" name="lastModificationDate" id="field_lastModificationDate"
-                    ng-model="hemicyclePlan.lastModificationDate"
-                     />
-        </div>
-
-        <div class="form-group">
-            <label for="field_configuration">configuration</label>
-            <select class="form-control" id="field_configuration" name="configuration" ng-model="hemicyclePlan.configuration" ng-options="hemicycleConfiguration as hemicycleConfiguration.label for hemicycleConfiguration in hemicycleconfigurations track by hemicycleConfiguration.id">
-                <option value=""></option>
+        <div class="form-group" ng-if="!hemicyclePlan.id">
+            <label for="field_configuration">Configuration de l'hémicycle</label>
+            <select class="form-control" id="field_configuration" name="configuration"
+                    ng-model="hemicyclePlan.configuration"
+                    ng-options="hemicycleConfiguration as hemicycleConfiguration.label for hemicycleConfiguration in hemicycleConfigurations track by hemicycleConfiguration.id">
             </select>
+            <div ng-show="editForm.configuration.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.configuration.$error.required">
+                    Requis
+                </p>
+            </div>
+        </div>
+        <div ng-if="hemicyclePlan.id == null">
+            <h2>Point de départ du plan :</h2>
+            <div class="fieldset">
+                <div class="form-group">
+                    <input type="checkbox" name="frozen" id="field_fromAlphabeticOrder"
+                           ng-model="properties.fromAlphabeticOrder"
+                    />
+                    <label for="field_fromAlphabeticOrder">Ordre alphabétique</label>
+                </div>
+                <div class="form-group">
+                    <label for="field_fromSeance">Plan de séance :</label>
+                    <select class="form-control" id="field_fromSeance" name="fromSeance"
+                            ng-model="properties.fromSeance"
+                            ng-options="fromSeance as fromSeance.intitule for fromSeance in seances track by fromSeance.id"
+                            ng-disabled="properties.fromAlphabeticOrder">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field_fromProjet">Projet :</label>
+                    <select class="form-control" id="field_fromProjet" name="fromProjet"
+                            ng-model="properties.fromProjet"
+                            ng-options="fromProjet as fromProjet.label for fromProjet in projets track by fromProjet.id"
+                            ng-disabled="properties.fromAlphabeticOrder || properties.fromSeance.id">
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
         </button>
         <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
         </button>
     </div>
 </form>

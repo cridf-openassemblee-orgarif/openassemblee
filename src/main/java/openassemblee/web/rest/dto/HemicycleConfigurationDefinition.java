@@ -2,12 +2,7 @@ package openassemblee.web.rest.dto;
 
 import java.util.List;
 
-public class HemicycleDefinition {
-
-    //    private double largeur = 24.0;
-    //    private double prof = 14.0;
-    //    private double largeur = 30.0;
-    //    private double prof = 20.0;
+public class HemicycleConfigurationDefinition {
 
     public enum RowOrientation {
         LEFT, CENTER, RIGHT
@@ -55,12 +50,12 @@ public class HemicycleDefinition {
     public int margin;
     public int frontChairs;
 
-    public HemicycleDefinition() {
+    public HemicycleConfigurationDefinition() {
     }
 
-    public HemicycleDefinition(int baseX, int baseY, double largeur, double prof, int lineBase, int lineHeight,
-                               double ratioHemicycle, double expectedPrecision, List<RowDefinition> rows, int margin,
-                               int frontChairs) {
+    public HemicycleConfigurationDefinition(int baseX, int baseY, double largeur, double prof, int lineBase, int lineHeight,
+                                            double ratioHemicycle, double expectedPrecision, List<RowDefinition> rows, int margin,
+                                            int frontChairs) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.largeur = largeur;

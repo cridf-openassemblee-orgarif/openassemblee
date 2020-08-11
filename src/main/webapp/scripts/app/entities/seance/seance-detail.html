@@ -1,312 +1,327 @@
-<div>
-    <section>
-        <div class="container">
-            <h1>Séance {{dto.seance.intitule}}</h1>
-            <h2>{{dto.seance.type | typeSeance}} du {{dto.seance.date | date:'mediumDate'}}</h2>
-            <br />
-            <div class="table-responsive info-box table-info-box">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a showtab="" href="#pouvoirs-container">Pouvoirs</a></li>
-                    <li><a showtab="" href="#signatures-container">Signatures</a></li>
-                    <li><a showtab="" href="#registre-container">Registre de présence</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div id="pouvoirs-container" class="tab-pane fade in active">
-                        <div ng-if="dto.pouvoirs.length == 0">
-                            <h3>Aucun pouvoir affecté à la séance</h3>
-                            <div class="row buttons">
-                                <div class="col-lg-12 align-right">
-                                    <button
-                                        class="btn btn-primary"
-                                        ui-sref="seance.detail.nouveauPouvoir"
-                                        has-authority="ROLE_ADMIN"
-                                    >
-                                        <span class="glyphicon glyphicon-flash"></span>
-                                        <span>Créer un pouvoir</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="dto.pouvoirs.length > 0">
-                            <h3>Liste des pouvoirs de la séance</h3>
-                            <div class="row buttons">
-                                <div class="col-lg-12 align-right">
-                                    <button class="btn btn-primary" ui-sref="seance.detail.nouveauPouvoir">
-                                        <span class="glyphicon glyphicon-flash"></span>
-                                        <span>Créer un pouvoir</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row buttons">
-                                <div class="col-lg-12 align-right">
-                                    <button class="btn btn-sm btn-primary" ui-sref="seance.detail.fermerTousPouvoirs">
-                                        <span class="glyphicon glyphicon-flash"></span>
-                                        <span>Fermer tous les pouvoirs ouverts</span>
-                                    </button>
-                                    <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-pouvoirs">
-                                        <span class="fa fa-table"></span>
-                                        <span>Export Excel</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <form class="form-horizontal">
-                                <div class="form-group col-md-6">
-                                    <label class="control-label col-md-4" for="field_type">Filtrer :</label>
-                                    <div class="col-md-8">
-                                        <select
-                                            class="form-control"
-                                            name="type"
-                                            ng-model="pouvoirsOptions.filter"
-                                            id="field_type"
-                                        >
-                                            <option value="tous">Tous (pas de filtre)</option>
-                                            <option value="actifs">Actifs maintenant</option>
-                                            <option value="nonActifs">Non actifs</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
-                                    <div class="col-md-8">
-                                        <select
-                                            class="form-control"
-                                            name="type"
-                                            ng-model="pouvoirsOptions.groupePolitique"
-                                            id="field_type"
-                                        >
-                                            <option value="tous">Tous (pas de filtre)</option>
-                                            <option
-                                                ng-repeat="gp in filteredGroupePolitiques track by gp.id"
-                                                value="{{gp.id}}"
-                                            >
-                                                {{gp.nom}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="table-responsive info-box table-info-box">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Élu mandant</th>
-                                            <th>Élu mandataire</th>
-                                            <th>Date de début</th>
-                                            <th>Date de fin</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            ng-repeat="pvDto in (dto.pouvoirs | pouvoirsFilter: pouvoirsOptions) track by pvDto.pouvoir.id"
-                                        >
-                                            <td>
-                                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
-                                                    {{pvDto.pouvoir.eluCedeur.prenom + ' ' +
-                                                    pvDto.pouvoir.eluCedeur.nom}}
-                                                    <span ng-if="pvDto.eluCedeur.groupePolitique">
-                                                        {{' (' + pvDto.eluCedeur.groupePolitique.nomCourt + ')'}}
-                                                    </span>
-                                                    <span ng-if="pvDto.eluCedeur.groupePolitique == null">
-                                                        (sans groupe)
-                                                    </span>
-                                                </a>
-                                            </td>
-
-                                            <td>
-                                                <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
-                                                    {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' +
-                                                    pvDto.pouvoir.eluBeneficiaire.nom}}
-                                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
-                                                        {{' (' + pvDto.eluBeneficiaire.groupePolitique.nomCourt + ')'}}
-                                                    </span>
-                                                    <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
-                                                        (sans groupe)
-                                                    </span>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                {{pvDto.pouvoir.dateDebut | date:'mediumDate'}} -
-                                                {{pvDto.pouvoir.heureDebut}}
-                                            </td>
-                                            <td>
-                                                {{pvDto.pouvoir.dateFin | date:'mediumDate'}} -
-                                                {{pvDto.pouvoir.heureFin}}
-                                            </td>
-                                            <td>
-                                                <button
-                                                    type="submit"
-                                                    ui-sref="seance.detail.pouvoirEdit({pouvoirId:pvDto.pouvoir.id})"
-                                                    class="btn btn-primary btn-sm"
-                                                >
-                                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span>
-                                                        Éditer / fermer</span
-                                                    >
-                                                </button>
-                                                <button
-                                                    type="submit"
-                                                    ui-sref="seance.detail.pouvoirDelete({pouvoirId:pvDto.pouvoir.id})"
-                                                    class="btn btn-danger btn-sm"
-                                                >
-                                                    <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>
-                                                        Supprimer</span
-                                                    >
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+<section>
+    <div class="container">
+        <h1>Séance {{dto.seance.intitule}}</h1>
+        <h2>{{dto.seance.type | typeSeance}} du {{dto.seance.date | date:'mediumDate'}}</h2>
+        <br/>
+        <div class="table-responsive info-box table-info-box">
+            <ul class="nav nav-tabs">
+                <li class="active"><a showtab="" href="#pouvoirs-container">Pouvoirs</a></li>
+                <li><a showtab="" href="#signatures-container">Signatures</a></li>
+                <li><a showtab="" href="#registre-container">Registre de présence</a></li>
+                <li><a showtab="" href="#plan">Plan d'hémicycle</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="pouvoirs-container" class="tab-pane fade in active">
+                    <div ng-if="dto.pouvoirs.length == 0">
+                        <h3>Aucun pouvoir affecté à la séance</h3>
+                        <div class="row buttons">
+                            <div class="col-lg-12 align-right">
+                                <button
+                                    class="btn btn-primary"
+                                    ui-sref="seance.detail.nouveauPouvoir"
+                                    has-authority="ROLE_ADMIN"
+                                >
+                                    <span class="glyphicon glyphicon-flash"></span>
+                                    <span>Créer un pouvoir</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div id="signatures-container" class="tab-pane fade">
-                        <h3>Signatures de la séance</h3>
-                        <div class="align-right">
-                            <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-signatures">
-                                <span class="fa fa-table"></span>
-                                <span>Export Excel</span>
-                            </a>
-                            <div class="dropdown" style="position: relative; float: right;" has-authority="ROLE_ADMIN">
-                                <button
-                                    id="dLabel"
-                                    type="button"
-                                    class="btn btn-sm btn-primary"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    Feuille d'émargement
-                                    <span class="caret"></span>
+                    <div ng-if="dto.pouvoirs.length > 0">
+                        <h3>Liste des pouvoirs de la séance</h3>
+                        <div class="row buttons">
+                            <div class="col-lg-12 align-right">
+                                <button class="btn btn-primary" ui-sref="seance.detail.nouveauPouvoir">
+                                    <span class="glyphicon glyphicon-flash"></span>
+                                    <span>Créer un pouvoir</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                    <li>
-                                        <a href="api/seances/{{dto.seance.id}}/feuille-emargement/1">1 signature</a>
-                                    </li>
-                                    <li>
-                                        <a href="api/seances/{{dto.seance.id}}/feuille-emargement/2">2 signature</a>
-                                    </li>
-                                    <li>
-                                        <a href="api/seances/{{dto.seance.id}}/feuille-emargement/3">3 signature</a>
-                                    </li>
-                                    <li>
-                                        <a href="api/seances/{{dto.seance.id}}/feuille-emargement/4">4 signature</a>
-                                    </li>
-                                    <li>
-                                        <a href="api/seances/{{dto.seance.id}}/feuille-emargement/5">5 signature</a>
-                                    </li>
-                                </ul>
                             </div>
-                            <br />
-                            <br />
                         </div>
-                        <div class="clearfix">
-                            <form class="form-horizontal">
-                                <div class="form-group col-md-6">
-                                    <label class="control-label col-md-4" for="field_type">Filtrer :</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control" name="type" ng-model="signaturesOptions.filter">
-                                            <option value="no-filter">Tous (pas de filtre)</option>
-                                            <option value="filter-missing-signature">Par signature manquante </option>
-                                        </select>
-                                    </div>
+                        <div class="row buttons">
+                            <div class="col-lg-12 align-right">
+                                <button class="btn btn-sm btn-primary" ui-sref="seance.detail.fermerTousPouvoirs">
+                                    <span class="glyphicon glyphicon-flash"></span>
+                                    <span>Fermer tous les pouvoirs ouverts</span>
+                                </button>
+                                <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-pouvoirs">
+                                    <span class="fa fa-table"></span>
+                                    <span>Export Excel</span>
+                                </a>
+                            </div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group col-md-6">
+                                <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                <div class="col-md-8">
+                                    <select
+                                        class="form-control"
+                                        name="type"
+                                        ng-model="pouvoirsOptions.filter"
+                                        id="field_type"
+                                    >
+                                        <option value="tous">Tous (pas de filtre)</option>
+                                        <option value="actifs">Actifs maintenant</option>
+                                        <option value="nonActifs">Non actifs</option>
+                                    </select>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
-                                    <div class="col-md-8">
-                                        <select
-                                            class="form-control"
-                                            name="type"
-                                            ng-model="signaturesOptions.groupePolitique"
-                                            id="field_type"
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                <div class="col-md-8">
+                                    <select
+                                        class="form-control"
+                                        name="type"
+                                        ng-model="pouvoirsOptions.groupePolitique"
+                                        id="field_type"
+                                    >
+                                        <option value="tous">Tous (pas de filtre)</option>
+                                        <option
+                                            ng-repeat="gp in filteredGroupePolitiques track by gp.id"
+                                            value="{{gp.id}}"
                                         >
-                                            <option value="no-filter">Tous (pas de filtre)</option>
-                                            <option
-                                                ng-repeat="gp in dto.groupePolitiques track by gp.id"
-                                                value="{{gp.nomCourt}}"
-                                            >
-                                                {{gp.nom}}
-                                            </option>
-                                        </select>
-                                    </div>
+                                            {{gp.nom}}
+                                        </option>
+                                    </select>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="clearfix">
-                            {{signaturesCount.totalMissing}} signatures manquantes
-                        </div>
+                            </div>
+                        </form>
                         <div class="table-responsive info-box table-info-box">
-                            <table class="table table-striped signature-table">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="elu">Élus</th>
-                                        <th ng-repeat="index in signaturesArray">
-                                            Signature {{index}}
-                                        </th>
+                                        <th>Élu mandant</th>
+                                        <th>Élu mandataire</th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr
-                                        ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions | orderBy:'elu.nom') track by presenceElu.id"
+                                        ng-repeat="pvDto in (dto.pouvoirs | pouvoirsFilter: pouvoirsOptions) track by pvDto.pouvoir.id"
                                     >
-                                        <td class="elu">
-                                            <a ui-sref="elu.detail({id:presenceElu.elu.id})">
-                                                {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
-                                                <br />
-                                                ({{presenceElu.elu.groupePolitique}})
+                                        <td>
+                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
+                                                {{pvDto.pouvoir.eluCedeur.prenom + ' ' +
+                                                pvDto.pouvoir.eluCedeur.nom}}
+                                                <span ng-if="pvDto.eluCedeur.groupePolitique">
+                                                    {{' (' + pvDto.eluCedeur.groupePolitique.nomCourt + ')'}}
+                                                </span>
+                                                <span ng-if="pvDto.eluCedeur.groupePolitique == null">
+                                                    (sans groupe)
+                                                </span>
                                             </a>
                                         </td>
-                                        <td ng-repeat="index in signaturesArray" class="signature-td">
-                                            <signature-seance></signature-seance>
+
+                                        <td>
+                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
+                                                {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' +
+                                                pvDto.pouvoir.eluBeneficiaire.nom}}
+                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
+                                                    {{' (' + pvDto.eluBeneficiaire.groupePolitique.nomCourt + ')'}}
+                                                </span>
+                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
+                                                    (sans groupe)
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{pvDto.pouvoir.dateDebut | date:'mediumDate'}} -
+                                            {{pvDto.pouvoir.heureDebut}}
+                                        </td>
+                                        <td>
+                                            {{pvDto.pouvoir.dateFin | date:'mediumDate'}} -
+                                            {{pvDto.pouvoir.heureFin}}
+                                        </td>
+                                        <td>
+                                            <button
+                                                type="submit"
+                                                ui-sref="seance.detail.pouvoirEdit({pouvoirId:pvDto.pouvoir.id})"
+                                                class="btn btn-primary btn-sm"
+                                            >
+                                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span>
+                                                    Éditer / fermer</span
+                                                >
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                ui-sref="seance.detail.pouvoirDelete({pouvoirId:pvDto.pouvoir.id})"
+                                                class="btn btn-danger btn-sm"
+                                            >
+                                                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>
+                                                    Supprimer</span
+                                                >
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div id="registre-container" class="tab-pane fade">
-                        <h3>Registre de présence</h3>
-                        <br />
-                        <div>
-                            {{signaturesCount.totalMissing}} signatures manquantes
+                </div>
+                <div id="signatures-container" class="tab-pane fade">
+                    <h3>Signatures de la séance</h3>
+                    <div class="align-right">
+                        <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-signatures">
+                            <span class="fa fa-table"></span>
+                            <span>Export Excel</span>
+                        </a>
+                        <div class="dropdown" style="position: relative; float: right;" has-authority="ROLE_ADMIN">
+                            <button
+                                id="dLabel"
+                                type="button"
+                                class="btn btn-sm btn-primary"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                Feuille d'émargement
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                <li>
+                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/1">1 signature</a>
+                                </li>
+                                <li>
+                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/2">2 signature</a>
+                                </li>
+                                <li>
+                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/3">3 signature</a>
+                                </li>
+                                <li>
+                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/4">4 signature</a>
+                                </li>
+                                <li>
+                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/5">5 signature</a>
+                                </li>
+                            </ul>
                         </div>
                         <br />
+                        <br />
+                    </div>
+                    <div class="clearfix">
+                        <form class="form-horizontal">
+                            <div class="form-group col-md-6">
+                                <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" name="type" ng-model="signaturesOptions.filter">
+                                        <option value="no-filter">Tous (pas de filtre)</option>
+                                        <option value="filter-missing-signature">Par signature manquante </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                <div class="col-md-8">
+                                    <select
+                                        class="form-control"
+                                        name="type"
+                                        ng-model="signaturesOptions.groupePolitique"
+                                        id="field_type"
+                                    >
+                                        <option value="no-filter">Tous (pas de filtre)</option>
+                                        <option
+                                            ng-repeat="gp in dto.groupePolitiques track by gp.id"
+                                            value="{{gp.nomCourt}}"
+                                        >
+                                            {{gp.nom}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix">
+                        {{signaturesCount.totalMissing}} signatures manquantes
+                    </div>
+                    <div class="table-responsive info-box table-info-box">
+                        <table class="table table-striped signature-table">
+                            <thead>
+                                <tr>
+                                    <th class="elu">Élus</th>
+                                    <th ng-repeat="index in signaturesArray">
+                                        Signature {{index}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions | orderBy:'elu.nom') track by presenceElu.id"
+                                >
+                                    <td class="elu">
+                                        <a ui-sref="elu.detail({id:presenceElu.elu.id})">
+                                            {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
+                                            <br />
+                                            ({{presenceElu.elu.groupePolitique}})
+                                        </a>
+                                    </td>
+                                    <td ng-repeat="index in signaturesArray" class="signature-td">
+                                        <signature-seance></signature-seance>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="registre-container" class="tab-pane fade">
+                    <h3>Registre de présence</h3>
+                    <br />
+                    <div>
+                        {{signaturesCount.totalMissing}} signatures manquantes
+                    </div>
+                    <br />
+                    <table class="table table-striped signature-table">
+                        <tr ng-repeat="index in signaturesArray">
+                            <td>Signature {{index}}</td>
+                            <td>{{signaturesCount.stats[index]['PRESENT']}} présents</td>
+                            <td>{{signaturesCount.stats[index]['ABSENT']}} absents</td>
+                            <td>{{signaturesCount.stats[index]['EXCUSE']}} excusés</td>
+                            <td>{{signaturesCount.stats[index]['missing']}} manquants</td>
+                        </tr>
+                    </table>
+
+                    <div ng-repeat="gp in dto.groupePolitiques">
+                        <h2>{{gp.nom}}</h2>
                         <table class="table table-striped signature-table">
                             <tr ng-repeat="index in signaturesArray">
                                 <td>Signature {{index}}</td>
-                                <td>{{signaturesCount.stats[index]['PRESENT']}} présents</td>
-                                <td>{{signaturesCount.stats[index]['ABSENT']}} absents</td>
-                                <td>{{signaturesCount.stats[index]['EXCUSE']}} excusés</td>
-                                <td>{{signaturesCount.stats[index]['missing']}} manquants</td>
+                                <td>{{signaturesCount.stats[gp.nomCourt][index]['PRESENT']}} présents</td>
+                                <td>{{signaturesCount.stats[gp.nomCourt][index]['ABSENT']}} absents</td>
+                                <td>{{signaturesCount.stats[gp.nomCourt][index]['EXCUSE']}} excusés</td>
+                                <td>{{signaturesCount.stats[gp.nomCourt][index]['missing']}} manquants</td>
                             </tr>
                         </table>
-
-                        <div ng-repeat="gp in dto.groupePolitiques">
-                            <h2>{{gp.nom}}</h2>
-                            <table class="table table-striped signature-table">
-                                <tr ng-repeat="index in signaturesArray">
-                                    <td>Signature {{index}}</td>
-                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['PRESENT']}} présents</td>
-                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['ABSENT']}} absents</td>
-                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['EXCUSE']}} excusés</td>
-                                    <td>{{signaturesCount.stats[gp.nomCourt][index]['missing']}} manquants</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div>
-                            <h2>Sans groupe</h2>
-                            <table class="table table-striped signature-table">
-                                <tr ng-repeat="index in signaturesArray">
-                                    <td>Signature {{index}}</td>
-                                    <td>{{signaturesCount.stats['sans_groupe'][index]['PRESENT']}} présents</td>
-                                    <td>{{signaturesCount.stats['sans_groupe'][index]['ABSENT']}} absents</td>
-                                    <td>{{signaturesCount.stats['sans_groupe'][index]['EXCUSE']}} excusés</td>
-                                    <td>{{signaturesCount.stats['sans_groupe'][index]['missing']}} manquants</td>
-                                </tr>
-                            </table>
-                        </div>
+                    </div>
+                    <div>
+                        <h2>Sans groupe</h2>
+                        <table class="table table-striped signature-table">
+                            <tr ng-repeat="index in signaturesArray">
+                                <td>Signature {{index}}</td>
+                                <td>{{signaturesCount.stats['sans_groupe'][index]['PRESENT']}} présents</td>
+                                <td>{{signaturesCount.stats['sans_groupe'][index]['ABSENT']}} absents</td>
+                                <td>{{signaturesCount.stats['sans_groupe'][index]['EXCUSE']}} excusés</td>
+                                <td>{{signaturesCount.stats['sans_groupe'][index]['missing']}} manquants</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="plan" class="tab-pane fade">
+                    <h3>Plan d'hémicycle</h3>
+                    <button type="submit"
+                            ui-sref="seance.hemicycle({hemicyclePlanId: dto.hemicyclePlanId})"
+                            class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
+                    </button>
+                    {{dto}}
+                    <h2>Archives</h2>
+                    <div
+                        ng-repeat="archive in archives track by archive.id"
+                        ng-click="printArchive(archive.id)"
+                    >
+                        Archive
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+</section>

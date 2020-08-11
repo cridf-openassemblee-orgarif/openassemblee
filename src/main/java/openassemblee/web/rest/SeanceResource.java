@@ -3,9 +3,11 @@ package openassemblee.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.itextpdf.text.DocumentException;
 import openassemblee.domain.*;
+import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.repository.SeanceRepository;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.*;
+import openassemblee.service.dto.SeanceCreationDTO;
 import openassemblee.service.dto.SeanceDTO;
 import openassemblee.service.util.EluNomComparator;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -67,13 +69,13 @@ public class SeanceResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Seance> createSeance(@RequestBody Seance seance) throws URISyntaxException {
+    public ResponseEntity<Seance> createSeance(@RequestBody SeanceCreationDTO seance) throws URISyntaxException {
         log.debug("REST request to save Seance : {}", seance);
-        if (seance.getId() != null) {
+        if (seance.getSeance().getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new seance cannot already have an ID").body(null);
         }
         Seance result = seanceService.create(seance);
-        auditTrailService.logCreation(result, result.getId());
+        auditTrailService.logCreation(seance, result.getId());
         return ResponseEntity.created(new URI("/api/seances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("seance", result.getId().toString()))
             .body(result);
@@ -89,7 +91,7 @@ public class SeanceResource {
     public ResponseEntity<Seance> updateSeance(@RequestBody Seance seance) throws URISyntaxException {
         log.debug("REST request to update Seance : {}", seance);
         if (seance.getId() == null) {
-            return createSeance(seance);
+            throw new RuntimeException("Seance sans id");
         }
         Seance result = seanceService.update(seance);
         auditTrailService.logUpdate(result, result.getId());

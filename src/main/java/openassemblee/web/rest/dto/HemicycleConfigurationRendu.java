@@ -2,9 +2,9 @@ package openassemblee.web.rest.dto;
 
 import java.util.List;
 
-public class HemicycleDTO {
+public class HemicycleConfigurationRendu {
 
-    private List<HemicycleChairDTO> chairs;
+    private List<ChairRendu> chairs;
     private int viewPortX;
     private int viewPortY;
     private int viewPortWidth;
@@ -12,11 +12,11 @@ public class HemicycleDTO {
     private int minChairNumber;
     private int maxChairNumber;
 
-    public HemicycleDTO() {
+    public HemicycleConfigurationRendu() {
     }
 
-    public HemicycleDTO(List<HemicycleChairDTO> chairs, int viewPortX, int viewPortY, int viewPortWidth,
-                        int viewPortHeight, int minChairNumber, int maxChairNumber) {
+    public HemicycleConfigurationRendu(List<ChairRendu> chairs, int viewPortX, int viewPortY, int viewPortWidth,
+                                       int viewPortHeight, int minChairNumber, int maxChairNumber) {
         this.chairs = chairs;
         this.viewPortX = viewPortX;
         this.viewPortY = viewPortY;
@@ -26,11 +26,11 @@ public class HemicycleDTO {
         this.maxChairNumber = maxChairNumber;
     }
 
-    public List<HemicycleChairDTO> getChairs() {
+    public List<ChairRendu> getChairs() {
         return chairs;
     }
 
-    public void setChairs(List<HemicycleChairDTO> chairs) {
+    public void setChairs(List<ChairRendu> chairs) {
         this.chairs = chairs;
     }
 

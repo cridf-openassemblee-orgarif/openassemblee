@@ -3,7 +3,7 @@
 const SANS_GROUPE = 'sans_groupe';
 
 angular.module('openassembleeApp')
-.controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance) {
+.controller('SeanceDetailController', function ($scope, $rootScope, $stateParams, entity, Seance, $http) {
     $scope.dto = entity;
     $scope.pouvoirsOptions = {
         filter: 'tous',
@@ -21,6 +21,13 @@ angular.module('openassembleeApp')
         totalMissing: 0,
         stats: {}
     };
+    $http({
+        method: 'GET',
+        url: 'api/proto-archive'
+    }).then(function successCallback(result) {
+        $scope.archives = result.data;
+    }, function errorCallback(response) {
+    });
 
     var initGroupePolitiques = function () {
         var groupesPolitiques = {};
@@ -127,5 +134,29 @@ angular.module('openassembleeApp')
         $scope.seance = result;
     });
     $scope.$on('$destroy', unsubscribe);
+
+    $scope.printArchive = function(id) {
+        const r = $scope.archives[0].svgPlan;
+        const url = 'data:image/svg+xml;charset=utf-8,' + r;
+        // console.log(url)
+        const image = new Image();
+        image.src = url;
+
+        // var w = window.open("");
+        // w!.document.write(image.outerHTML);
+
+        var printWindow = window.open('', 'PrintMap');
+        printWindow.document.writeln(r);
+        printWindow.document.writeln(`
+        <style>
+        @page {
+            size: A3 landscape;
+        }
+        </style>
+        `);
+
+        printWindow.document.close();
+        printWindow.print();
+    }
 
 });

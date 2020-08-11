@@ -28,6 +28,7 @@
             <column name="creation_date" type="timestamp"/>
             <column name="last_modification_date" type="timestamp"/>
             <column name="configuration_id" type="bigint"/>
+            <column name="seance_id" type="bigint"/>
         </createTable>
         <dropDefaultValue tableName="hemicycle_plan" columnName="creation_date" columnDataType="datetime"/>
 
@@ -38,6 +39,11 @@
                                  constraintName="fk_hemicycleplan_configuration_id"
                                  referencedColumnNames="id"
                                  referencedTableName="hemicycle_configuration"/>
+        <addForeignKeyConstraint baseColumnNames="seance_id"
+                                 baseTableName="hemicycle_plan"
+                                 constraintName="fk_hemicycleplan_seance_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seance"/>
 
     </changeSet>
 </databaseChangeLog>

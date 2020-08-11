@@ -25,9 +25,6 @@
     <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="seance"> <i class="fa fa-calendar"></i> <span>Séances</span></a>
     </li>
-    <!--<li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">-->
-        <!--<a ui-sref="pouvoir"> <i class="glyphicon glyphicon-hand-right"></i> <span>Pouvoirs</span></a>-->
-    <!--</li>-->
     <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="reunionCommissionThematique"> <i class="fa fa-calendar"></i> <span>Réunion de CT</span></a>
     </li>
@@ -35,16 +32,16 @@
         <a ui-sref="reunionCao"> <i class="fa fa-calendar"></i> <span>Réunion de CAO</span></a>
     </li>
     <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
-        <a ui-sref="hemicycle"> <i class="fa fa-wifi"></i> <span>Hémicycle</span></a>
+        <a ui-sref="hemicyclePlan"> <i class="fa fa-wifi"></i> <span>Projet de plan</span></a>
     </li>
     <li class="header" ng-switch-when="true" has-authority="ROLE_ADMIN">Administration</li>
     <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
         <a ui-sref="auditTrail"> <i class="fa fa-book"></i> <span>Logs d'activité</span></a>
     </li>
     <li ui-sref-active="active" ng-switch-when="true" has-authority="ROLE_ADMIN">
-        <a ui-sref="incoherences"> <i class="fa fa-book"></i> <span>Incohérences</span></a>
+        <a ui-sref="incoherences"> <i class="fa fa-warning"></i> <span>Incohérences</span></a>
     </li>
-    <li class="header">Comptes</li>
+    <li class="header">Compte</li>
     <li ui-sref-active="active" ng-switch-when="false">
         <a ui-sref="login"><i class="fa fa-sign-in"></i>&#xA0;<span>Me connecter</span></a>
     </li>
@@ -57,12 +54,6 @@
         </a>
     </li>
     <ul class="dropdown-menu">
-        <li ui-sref-active="active" ><a ui-sref="hemicycleConfiguration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >hemicycleConfiguration</span></a></li>
-        <li ui-sref-active="active" ><a ui-sref="hemicyclePlan" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >hemicyclePlan</span></a></li>
-        <li ui-sref-active="active" ><a ui-sref="hemicycleArchive" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >hemicycleArchive</span></a></li>
         <!-- JHipster will add entities to the menu here -->
     </ul>
 </ul>

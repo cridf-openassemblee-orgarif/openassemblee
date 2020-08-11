@@ -2,14 +2,13 @@ package openassemblee.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.ZonedDateTime;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,6 +19,31 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "hemicycleplan")
 public class HemicyclePlan implements Serializable {
+
+    public static class Association {
+        public Integer chairNumber;
+        public Long eluId;
+
+        // for serialization
+        public Association() {
+        }
+
+        public Association(Integer chairNumber, Long eluId) {
+            this.chairNumber = chairNumber;
+            this.eluId = eluId;
+        }
+    }
+
+    public static class JsonPlan {
+        public List<Association> associations;
+
+        // for serialization
+        public JsonPlan() {}
+
+        public JsonPlan(List<Association> associations) {
+            this.associations = associations;
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +66,8 @@ public class HemicyclePlan implements Serializable {
     @JoinColumn(name = "configuration_id")
     private HemicycleConfiguration configuration;
 
-    @OneToOne    private Seance seance;
+    @OneToOne
+    private Seance seance;
 
     public Long getId() {
         return id;

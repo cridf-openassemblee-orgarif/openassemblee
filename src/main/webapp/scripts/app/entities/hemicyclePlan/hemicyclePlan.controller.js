@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('openassembleeApp')
-    .controller('HemicyclePlanController', function ($scope, $state, $modal, HemicyclePlan, HemicyclePlanSearch) {
-      
-        $scope.hemicyclePlans = [];
-        $scope.loadAll = function() {
-            HemicyclePlan.query(function(result) {
-               $scope.hemicyclePlans = result;
-            });
-        };
-        $scope.loadAll();
+    .controller('HemicyclePlanController', function ($scope, $state, $modal, HemicyclePlan, HemicyclePlanSearch, $http) {
 
+        $scope.hemicyclePlans = [];
+        $http({
+            method: 'GET',
+            url: 'api/hemicyclePlans-projets'
+        }).then(function successCallback(result) {
+           $scope.hemicyclePlans = result.data;
+        }, function errorCallback(response) {
+        });
 
         $scope.search = function () {
             HemicyclePlanSearch.query({query: $scope.searchQuery}, function(result) {

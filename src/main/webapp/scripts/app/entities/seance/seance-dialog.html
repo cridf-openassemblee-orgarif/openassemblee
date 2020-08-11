@@ -41,6 +41,23 @@
                 <option value="10">10</option>
             </select>
         </div>
+        <h2>Point de départ du plan d'hémicycle :</h2>
+        <div class="fieldset">
+            <div class="form-group">
+                <label>Sur plan de séance :</label>
+                <select class="form-control" id="field_fromSeance" name="fromSeance"
+                        ng-model="properties.planFromSeance"
+                        ng-options="seance as seance.intitule for seance in seances track by seance.id">
+                </select>
+            </div>
+            <div class="form-group">
+                <label >Sur projet de plan :</label>
+                <select class="form-control" id="field_fromProjet" name="fromPlan"
+                        ng-model="properties.planFromProjet"
+                        ng-options="projet as projet.label for projet in projetsPlan track by projet.id">
+                </select>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

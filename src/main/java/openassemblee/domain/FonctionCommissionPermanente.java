@@ -136,6 +136,9 @@ public class FonctionCommissionPermanente implements Serializable {
         if (cleanFonction.contains("president")) {
             return "Président";
         }
+        if(cleanFonction.contains("conseillere deleguee")) {
+            return "CD";
+        }
         if(cleanFonction.trim().equals("")) {
             return null;
         }

@@ -3,7 +3,7 @@ package openassemblee.web.rest.dto;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public class HemicycleChairDTO {
+public class ChairRendu {
 
     public int number;
     public double baseX1, baseY1, baseX2, baseY2;
@@ -13,12 +13,12 @@ public class HemicycleChairDTO {
     public double chairBaseX, chairBaseY;
     public double centerX, centerY;
 
-    public HemicycleChairDTO(int number,
-                             double baseX1, double baseY1, double baseX2, double baseY2,
-                             double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4,
-                             double centerAngle,
-                             double chairBaseX, double chairBaseY,
-                             double centerX, double centerY) {
+    public ChairRendu(int number,
+                      double baseX1, double baseY1, double baseX2, double baseY2,
+                      double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4,
+                      double centerAngle,
+                      double chairBaseX, double chairBaseY,
+                      double centerX, double centerY) {
         this.number = number;
         this.baseX1 = baseX1;
         this.baseY1 = baseY1;

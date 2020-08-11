@@ -1,5 +1,7 @@
 package openassemblee.config;
 
+import java.time.ZoneId;
+
 /**
  * Application constants.
  */
@@ -18,6 +20,9 @@ public final class Constants {
     public static final String SPRING_PROFILE_MLO = "mlo";
 
     public static final String SYSTEM_ACCOUNT = "system";
+
+    public static final String parisZoneIdAsString = "Europe/Paris";
+    public static final ZoneId parisZoneId = ZoneId.of(parisZoneIdAsString);
 
     private Constants() {
     }

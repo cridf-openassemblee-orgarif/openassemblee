@@ -10,11 +10,13 @@ public class SeanceDTO {
     private final Seance seance;
     private final List<PouvoirListDTO> pouvoirs;
     private final List<GroupePolitique> groupePolitiques;
+    private final Long hemicyclePlanId;
 
-    public SeanceDTO(Seance seance, List<PouvoirListDTO> pouvoirs, List<GroupePolitique> groupePolitiques) {
+    public SeanceDTO(Seance seance, List<PouvoirListDTO> pouvoirs, List<GroupePolitique> groupePolitiques, Long hemicyclePlanId) {
         this.seance = seance;
         this.pouvoirs = pouvoirs;
         this.groupePolitiques = groupePolitiques;
+        this.hemicyclePlanId = hemicyclePlanId;
     }
 
     public Seance getSeance() {
@@ -27,5 +29,9 @@ public class SeanceDTO {
 
     public List<GroupePolitique> getGroupePolitiques() {
         return groupePolitiques;
+    }
+
+    public Long getHemicyclePlanId() {
+        return hemicyclePlanId;
     }
 }

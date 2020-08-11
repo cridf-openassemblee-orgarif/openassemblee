@@ -2,14 +2,13 @@ package openassemblee.service;
 
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.TypeSeance;
-import openassemblee.repository.GroupePolitiqueRepository;
-import openassemblee.repository.PouvoirRepository;
-import openassemblee.repository.PresenceEluRepository;
-import openassemblee.repository.SeanceRepository;
+import openassemblee.repository.*;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.dto.PouvoirListDTO;
+import openassemblee.service.dto.SeanceCreationDTO;
 import openassemblee.service.dto.SeanceDTO;
+import org.apache.poi.hpsf.HPSFException;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +37,8 @@ public class SeanceService {
     private PresenceEluRepository presenceEluRepository;
     @Inject
     private GroupePolitiqueRepository groupePolitiqueRepository;
+    @Inject
+    private HemicyclePlanRepository hemicyclePlanRepository;
 
     @Transactional(readOnly = true)
     public Seance get(Long id) {
@@ -71,7 +72,8 @@ public class SeanceService {
             }).collect(Collectors.toList());
 
         List<GroupePolitique> groupePolitiques = groupePolitiqueRepository.findAll();
-        return new SeanceDTO(seance, pouvoirs, groupePolitiques);
+        HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(seance);
+        return new SeanceDTO(seance, pouvoirs, groupePolitiques, hp != null ? hp.getId() : null);
     }
 
     @Transactional(readOnly = true)
@@ -89,20 +91,29 @@ public class SeanceService {
     }
 
     @Transactional
-    public Seance create(Seance seance) {
+    public Seance create(SeanceCreationDTO seance) {
         // FIXME demo ici, pour le coup, c'est un vrai problème si on a pas fixé le type de seance
         // de la possibilité de supprimer des présence ?
-        List<Elu> elus = seance.getType() == TypeSeance.COMMISSION_PERMANENTE ? eluService.getCommissionPermanente() :
+        List<Elu> elus = seance.getSeance().getType() == TypeSeance.COMMISSION_PERMANENTE ? eluService.getCommissionPermanente() :
             eluService.getActifsAssemblee();
         Set<PresenceElu> pes = elus.stream().map(e -> {
             PresenceElu pe = new PresenceElu();
             pe.setElu(e);
             return presenceEluRepository.save(pe);
         }).collect(Collectors.toSet());
-        seance.setPresenceElus(pes);
-        Seance result = seanceRepository.save(seance);
+        seance.getSeance().setPresenceElus(pes);
+        Seance result = seanceRepository.save(seance.getSeance());
         seanceSearchRepository.save(result);
-        return seance;
+        HemicyclePlan hemicyclePlan = new HemicyclePlan();
+        hemicyclePlan.setSeance(seance.getSeance());
+        if(seance.getSeancePlanId() != null) {
+            Seance s = seanceRepository.findOne(seance.getProjetPlanId());
+            HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(s);
+            hemicyclePlan.setConfiguration(hp.getConfiguration());
+            hemicyclePlan.setJsonPlan(hp.getJsonPlan());
+        }
+        hemicyclePlanRepository.save(hemicyclePlan);
+        return result;
     }
 
     @Transactional

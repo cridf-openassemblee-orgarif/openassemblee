@@ -1,67 +1,56 @@
 <div>
-    <h2>HemicyclePlans</h2>
-    <jh-alert></jh-alert>
+    <section class="content-header">
+        <h1>
+            Projets de plan
+        </h1>
+    </section>
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row buttons">
+            <div class="col-lg-12 align-right">
                 <button class="btn btn-primary" ui-sref="hemicyclePlan.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new HemicyclePlan</span>
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Nouveau projet</span>
                 </button>
-            </div>
-            <div class="col-md-8">
-                <form name="searchForm" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
-                    </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a HemicyclePlan</span>
-                    </button>
-                </form>
             </div>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
+    <div class="container">
+        <div class="table-responsive info-box table-info-box">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Label</th>
-                    <th>JsonPlan</th>
-                    <th>CreationDate</th>
-                    <th>LastModificationDate</th>
-                    <th>configuration</th>
+                    <th>Nom du projet</th>
+                    <th>Date de création</th>
+                    <th>Dernière modification</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="hemicyclePlan in hemicyclePlans track by hemicyclePlan.id">
-                    <td><a ui-sref="hemicyclePlan.detail({id:hemicyclePlan.id})">{{hemicyclePlan.id}}</a></td>
                     <td>{{hemicyclePlan.label}}</td>
-                    <td>{{hemicyclePlan.jsonPlan}}</td>
                     <td>{{hemicyclePlan.creationDate | date:'medium'}}</td>
                     <td>{{hemicyclePlan.lastModificationDate | date:'medium'}}</td>
-                    <td>
-                        <a ui-sref="hemicycleConfiguration.detail({id:hemicyclePlan.configuration.id})">{{hemicyclePlan.configuration.label}}</a>
-                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="hemicyclePlan.detail({id:hemicyclePlan.id})"
                                 class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Éditer plan</span>
                         </button>
                         <button type="submit"
                                 ui-sref="hemicyclePlan.edit({id:hemicyclePlan.id})"
                                 class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Modifier nom</span>
                         </button>
                         <button type="submit"
                                 ui-sref="hemicyclePlan.delete({id:hemicyclePlan.id})"
                                 class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
                         </button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            <tbody>
+            </table>
+        </div>
     </div>
 </div>

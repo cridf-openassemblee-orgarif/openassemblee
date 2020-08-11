@@ -45,6 +45,13 @@ public class Seance implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
+    @OneToMany
+    @JoinTable(name = "seance_hemicycle_archive",
+        joinColumns = @JoinColumn(name = "seance_id"),
+        inverseJoinColumns = @JoinColumn(name = "hemicycle_archive_id"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<HemicycleArchive> archives = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -91,6 +98,14 @@ public class Seance implements Serializable {
 
     public void setPresenceElus(Set<PresenceElu> PresenceElus) {
         this.presenceElus = PresenceElus;
+    }
+
+    public Set<HemicycleArchive> getArchives() {
+        return archives;
+    }
+
+    public void setArchives(Set<HemicycleArchive> archives) {
+        this.archives = archives;
     }
 
     @Override
