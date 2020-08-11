@@ -14,7 +14,7 @@ window.addEventListener('resize', () =>
 // Ce code pour redimensionner l'hemicycle à l'agrandissement/rétrécissement du menu admintle
 // setTimeout car sinon document.body est null à l'éxécution du code
 setTimeout(() => {
-    new MutationObserver(function(event) {
+    new MutationObserver(function (event) {
         setTimeout(
             () => {
                 injector().applicationEventBus.publish('window_resized_event');
@@ -26,7 +26,7 @@ setTimeout(() => {
         attributes: true,
         attributeFilter: ['class'],
         childList: false,
-        characterData: false
+        characterData: false,
     });
 }, 0);
 
@@ -46,8 +46,22 @@ global.activateDebug = () => {
 };
 
 if (global.devHost) {
-    global.loadHemicycle({
-        planId: 8,
-        isProjet: true
-    });
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const planId = urlParams.get('planId');
+    const isProjet = urlParams.get('isProjet');
+    if (planId && isProjet) {
+        global.loadHemicycle({
+            planId: parseInt(planId, 10),
+            isProjet: isProjet === 'true',
+        });
+    } else {
+        ReactDOM.render(
+            <div>
+                Mettre les paramètre 'planId' et 'isProjet' en url, par ex
+                "?planId=8&isProjet=true"
+            </div>,
+            document.getElementById('hemicycle-app')
+        );
+    }
 }
