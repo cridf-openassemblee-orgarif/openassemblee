@@ -5,8 +5,9 @@ import openassemblee.domain.HemicyclePlan;
 import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.HemicyclePlanService;
-import openassemblee.service.dto.HemicyclePlanCreationDTO;
 import openassemblee.web.rest.dto.HemicyclePlanAssociationsDTO;
+import openassemblee.web.rest.dto.HemicyclePlanCreationDTO;
+import openassemblee.web.rest.dto.HemicyclePlanUpdateDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +78,16 @@ public class HemicyclePlanResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("hemicyclePlan", hemicyclePlan.getId().toString()))
             .body(result);
+    }
+
+    @RequestMapping(value = "/" + hemicyclePlansAssociationsUrl,
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> updateHemicycleAssociations(@Valid @RequestBody HemicyclePlanUpdateDTO dto) {
+        hemicyclePlanService.update(dto);
+        auditTrailService.logUpdate(dto, dto.getId());
+        return ResponseEntity.ok().build();
     }
 
     /**

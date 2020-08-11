@@ -1,4 +1,4 @@
-package openassemblee.service.dto;
+package openassemblee.web.rest.dto;
 
 import openassemblee.domain.Seance;
 

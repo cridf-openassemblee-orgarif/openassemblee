@@ -9,14 +9,10 @@ import openassemblee.repository.HemicycleConfigurationRepository;
 import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.repository.search.HemicyclePlanSearchRepository;
 import openassemblee.service.dto.EluListDTO;
-import openassemblee.service.dto.HemicyclePlanCreationDTO;
-import openassemblee.web.rest.dto.HemicycleConfigurationDefinition;
-import openassemblee.web.rest.dto.HemicycleConfigurationRendu;
-import openassemblee.web.rest.dto.HemicyclePlanAssociationsDTO;
+import openassemblee.web.rest.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.time.Instant;
@@ -118,5 +114,18 @@ public class HemicyclePlanService {
         return new HemicyclePlanAssociationsDTO(jsonPlan.associations, rendu);
     }
 
+    public void update(HemicyclePlanUpdateDTO dto) {
+        HemicyclePlan hp = hemicyclePlanRepository.findOne(dto.getId());
+        HemicyclePlan.JsonPlan jsonPlan = new HemicyclePlan.JsonPlan(dto.getAssociations());
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(jsonPlan);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        hp.setJsonPlan(json);
+        hp.setLastModificationDate(Instant.now().atZone(parisZoneId));
+        hemicyclePlanRepository.save(hp);
+    }
 
 }

@@ -368,14 +368,17 @@ export default class App extends React.PureComponent<Props, State> {
         if (!this.state.hemicycle) {
             throw Errors._affb4796();
         }
-        // injector()
-        //     .httpService.post(
-        //         injector().urlBase + '/api/proto-associations',
-        //         this.state.hemicycle.associations
-        //     )
-        //     .then(() => {
-        //         setTimeout(then, 500);
-        //     });
+        injector()
+            .httpService.post(
+                injector().urlBase + '/api/hemicyclePlans-associations',
+                {
+                    id: this.props.planId,
+                    associations: this.state.hemicycle.associations,
+                }
+            )
+            .then(() => {
+                setTimeout(then, 500);
+            });
     };
 
     private download = () => {};

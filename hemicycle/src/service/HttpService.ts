@@ -86,7 +86,7 @@ export default class HttpService {
                 }
                 return response.text().then((t) => ({
                     status: response.status,
-                    body: JSON.parse(t),
+                    body: t ? JSON.parse(t) : undefined,
                 }));
             }
         );

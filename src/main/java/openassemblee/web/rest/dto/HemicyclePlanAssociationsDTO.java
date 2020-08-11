@@ -6,7 +6,7 @@ import java.util.List;
 
 public class HemicyclePlanAssociationsDTO {
 
-    private List<HemicyclePlan.Association> associations ;
+    private List<HemicyclePlan.Association> associations;
     private HemicycleConfigurationRendu configurationRendu;
 
     public HemicyclePlanAssociationsDTO(List<HemicyclePlan.Association> associations, HemicycleConfigurationRendu configurationRendu) {
