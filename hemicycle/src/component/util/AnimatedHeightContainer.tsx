@@ -15,13 +15,13 @@ export default class AnimatedHeightContainer extends React.PureComponent<
     State
 > {
     public state: State = {
-        subContainerHeight: undefined
+        subContainerHeight: undefined,
     };
 
     public setSubContainerHeight = (subContainerHeight: number | undefined) =>
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
-            subContainerHeight
+            subContainerHeight,
         }));
 
     public render() {

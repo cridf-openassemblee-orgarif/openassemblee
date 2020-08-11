@@ -53,7 +53,7 @@ export default class HttpService {
     ): Promise<Response> {
         const headers: HeadersInit = {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         };
         if (this.csrfToken) {
             headers['X-CSRF-TOKEN'] = this.csrfToken;
@@ -61,7 +61,7 @@ export default class HttpService {
         const params: RequestInit = {
             method: requestType,
             headers,
-            credentials: this.credentials
+            credentials: this.credentials,
         };
         if (body) {
             params.body = JSON.stringify(body);
@@ -84,9 +84,9 @@ export default class HttpService {
                 if (!response.ok) {
                     throw response.body;
                 }
-                return response.text().then(t => ({
+                return response.text().then((t) => ({
                     status: response.status,
-                    body: JSON.parse(t)
+                    body: JSON.parse(t),
                 }));
             }
         );

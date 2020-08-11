@@ -8,7 +8,7 @@ import {
     ChairNumber,
     GroupePolitiqueId,
     EluId,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../domain/nominal';
 import { Association } from '../domain/hemicycle';
 import { HemicycleConfigurationRendu } from '../domain/assemblee';
@@ -61,11 +61,11 @@ const civilite = (c: Civilite | undefined) => {
 
 export default class Hemicycle extends React.PureComponent<Props, State> {
     state = {
-        tooltipElu: undefined
+        tooltipElu: undefined,
     } as State;
 
     private setEluInTooltip = (tooltipElu?: Elu) =>
-        this.setState(state => ({ ...state, tooltipElu }));
+        this.setState((state) => ({ ...state, tooltipElu }));
 
     public render() {
         const tooltipId = domUid();
@@ -105,7 +105,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     {/*    fill="none"*/}
                     {/*    stroke={colors.red}*/}
                     {/*/>*/}
-                    {this.props.configurationRendu.chairs.map(chair => {
+                    {this.props.configurationRendu.chairs.map((chair) => {
                         const association = getMaybe(
                             this.props.associationByChair,
                             chair.number
@@ -198,7 +198,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                             strokeWidth: '0.5px',
                                             fill: fillChairColor,
                                             fillOpacity: fillChairOpacity,
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
                                         }}
                                     />
                                     {/*<line*/}
@@ -235,7 +235,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         <line
                                             style={{
                                                 stroke: groupePolitique.couleur,
-                                                strokeWidth: '4px'
+                                                strokeWidth: '4px',
                                             }}
                                             x1={chair.x3}
                                             y1={chair.y3}
@@ -253,7 +253,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                             fontSize: '8px',
                                             cursor: 'pointer',
                                             alignmentBaseline: 'central',
-                                            display: 'none'
+                                            display: 'none',
                                         }}
                                     >
                                         <tspan x={chair.baseX1 + 1} dy="1em">
@@ -270,7 +270,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                         height={26}
                                         style={{
                                             fontSize: '3.8px',
-                                            wordBreak: 'break-word'
+                                            wordBreak: 'break-word',
                                         }}
                                     >
                                         {React.createElement('div', {
@@ -294,7 +294,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                                     <br />
                                                     {elu?.nom}
                                                 </React.Fragment>
-                                            )
+                                            ),
                                         })}
                                     </foreignObject>
                                 </g>
@@ -358,14 +358,16 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     <g
                         transform={`translate(${
                             this.props.configurationRendu.viewPortX +
-                                legendSquareWidth
+                            legendSquareWidth
                             // +
                             //     this.props.hemicycle.viewPortWidth -
                             //     100
                         },
-                        ${this.props.configurationRendu.viewPortY +
+                        ${
+                            this.props.configurationRendu.viewPortY +
                             this.props.configurationRendu.viewPortHeight -
-                            62})`}
+                            62
+                        })`}
                     >
                         {this.props.groupePolitiques.map((gp, index) => (
                             <React.Fragment key={numberifyNominalNumber(gp.id)}>
@@ -375,14 +377,14 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                                     width={legendSquareWidth}
                                     height={legendSquareWidth}
                                     style={{
-                                        fill: gp.couleur
+                                        fill: gp.couleur,
                                     }}
                                 />
                                 <text
                                     x={legendSquareWidth * 1.5}
                                     y={(index + 1) * legendSquareWidth}
                                     style={{
-                                        fontSize: '6px'
+                                        fontSize: '6px',
                                     }}
                                 >
                                     {gp.nom}

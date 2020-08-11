@@ -17,7 +17,7 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
     timeout: any = undefined;
 
     public state: State = {
-        value: this.props.value as string
+        value: this.props.value as string,
     };
 
     componentDidUpdate(
@@ -25,9 +25,9 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
         prevState: Readonly<State>
     ): void {
         if (prevProps.value !== this.props.value) {
-            this.setState(state => ({
+            this.setState((state) => ({
                 ...state,
-                value: this.props.value as string
+                value: this.props.value as string,
             }));
         }
     }
@@ -41,7 +41,7 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
             () => this.props.onValueChange(value),
             delayTime
         );
-        this.setState(state => ({ ...state, value }));
+        this.setState((state) => ({ ...state, value }));
     };
 
     public render() {
@@ -54,10 +54,10 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
                 onChange={this.onChange}
                 css={css`
                     ${this.state.value &&
-                        this.state.value !== '' &&
-                        css`
-                            background: ${colors.blue};
-                        `}
+                    this.state.value !== '' &&
+                    css`
+                        background: ${colors.blue};
+                    `}
                 `}
             />
         );

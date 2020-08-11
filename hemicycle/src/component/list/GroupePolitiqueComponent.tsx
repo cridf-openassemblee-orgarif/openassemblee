@@ -9,7 +9,7 @@ import {
     ChairNumber,
     EluId,
     GroupePolitiqueId,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../../domain/nominal';
 import { Dict, get, getMaybe } from '../../utils';
 import { Association } from '../../domain/hemicycle';
@@ -39,7 +39,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
             .map((elu: Elu) => ({
                 elu,
                 chairNumber: getMaybe(this.props.associationByEluId, elu.id)
-                    ?.chairNumber
+                    ?.chairNumber,
             }))
             .filter(
                 ({ chairNumber }) =>

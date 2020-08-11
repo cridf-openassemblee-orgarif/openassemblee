@@ -15,7 +15,7 @@ import {
     EluId,
     GroupePolitiqueId,
     instanciateNominalNumber,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../../domain/nominal';
 import { Association } from '../../domain/hemicycle';
 
@@ -57,7 +57,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         chairInputIsValid: true,
         autoIncrement: false,
         isSaving: false,
-        isArchiving: false
+        isArchiving: false,
     };
 
     private initialChairNumber = () =>
@@ -107,15 +107,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                         );
                     }
                 } else {
-                    this.setState(state => ({
+                    this.setState((state) => ({
                         ...state,
-                        chairInput: ''
+                        chairInput: '',
                     }));
                 }
             } else {
-                this.setState(state => ({
+                this.setState((state) => ({
                     ...state,
-                    chairInput: selectedChairNumber.toString()
+                    chairInput: selectedChairNumber.toString(),
                 }));
             }
         }
@@ -124,18 +124,18 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
             (!prevProps.hideAssociationsChairs &&
                 this.props.hideAssociationsChairs)
         ) {
-            this.setState(state => ({
+            this.setState((state) => ({
                 ...state,
                 autoIncrement: false,
-                chairInput: ''
+                chairInput: '',
             }));
         }
     }
 
     private switchAutoIncrement = () => {
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
-            autoIncrement: !state.autoIncrement
+            autoIncrement: !state.autoIncrement,
         }));
         if (!this.props.selection.selectedChairNumber) {
             this.props.updateSelectedChairNumber(this.initialChairNumber());
@@ -143,16 +143,16 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     private updateChairInput = (chairInput: string) => {
-        this.setState(state => ({ ...state, chairInput }));
+        this.setState((state) => ({ ...state, chairInput }));
         this.props.updateSelectedChairNumber(
             instanciateNominalNumber<ChairNumber>(parseInt(chairInput))
         );
     };
 
     private savePlan = () => {
-        this.setState(state => ({ ...state, isSaving: true }));
+        this.setState((state) => ({ ...state, isSaving: true }));
         this.props.savePlan(() =>
-            this.setState(state => ({ ...state, isSaving: false }))
+            this.setState((state) => ({ ...state, isSaving: false }))
         );
     };
 
@@ -160,9 +160,9 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         if (!this.props.archive) {
             throw Errors._62651552();
         }
-        this.setState(state => ({ ...state, isArchiving: true }));
+        this.setState((state) => ({ ...state, isArchiving: true }));
         this.props.archive(() =>
-            this.setState(state => ({ ...state, isArchiving: false }))
+            this.setState((state) => ({ ...state, isArchiving: false }))
         );
     };
 

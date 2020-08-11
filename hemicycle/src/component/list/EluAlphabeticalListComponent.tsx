@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {
     ChairNumber,
     EluId,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../../domain/nominal';
 import { Dict, getMaybe } from '../../utils';
 import { Association } from '../../domain/hemicycle';
@@ -38,7 +38,7 @@ export default class EluAlphabeticalListComponent extends React.Component<
             .map((elu: Elu) => ({
                 elu,
                 chairNumber: getMaybe(this.props.associationByEluId, elu.id)
-                    ?.chairNumber
+                    ?.chairNumber,
             }))
             .filter(
                 ({ elu, chairNumber }) =>
@@ -46,7 +46,7 @@ export default class EluAlphabeticalListComponent extends React.Component<
             );
         const byFirstLetter = _.groupBy(
             elusWithChairNumbers,
-            a => a.elu.nom[0]
+            (a) => a.elu.nom[0]
         );
         return (
             <div
@@ -59,7 +59,7 @@ export default class EluAlphabeticalListComponent extends React.Component<
             >
                 {Object.keys(byFirstLetter)
                     .sort()
-                    .map(firstLetter => (
+                    .map((firstLetter) => (
                         <div
                             key={firstLetter}
                             css={css`
@@ -80,7 +80,7 @@ export default class EluAlphabeticalListComponent extends React.Component<
                                 >
                                     {_.sortBy(
                                         byFirstLetter[firstLetter],
-                                        a => a.elu.nom
+                                        (a) => a.elu.nom
                                     ).map(({ elu, chairNumber }) => (
                                         <EluComponent
                                             key={numberifyNominalNumber(elu.id)}

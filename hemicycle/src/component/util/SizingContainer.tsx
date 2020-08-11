@@ -8,7 +8,7 @@ const classes = {
     container: css`
         width: 100%;
         height: 100%;
-    `
+    `,
 };
 
 interface Props {
@@ -23,7 +23,7 @@ interface State {
 export default class SizingContainer extends React.PureComponent<Props, State> {
     state = {
         width: 1200,
-        height: 720
+        height: 720,
     };
 
     private unsuscriber?: Unsuscriber;
@@ -49,7 +49,7 @@ export default class SizingContainer extends React.PureComponent<Props, State> {
             const width = e.offsetWidth;
             const height = e.offsetHeight;
             if (width !== this.state.width || height !== this.state.height) {
-                this.setState(s => ({ ...s, width, height }));
+                this.setState((s) => ({ ...s, width, height }));
             }
         }
     };
@@ -58,7 +58,7 @@ export default class SizingContainer extends React.PureComponent<Props, State> {
         const rendered = this.props.render(this.state.width, this.state.height);
         // so this.props.render return is optional
         return (
-            <div ref={e => this.sizing(e)} css={classes.container}>
+            <div ref={(e) => this.sizing(e)} css={classes.container}>
                 {rendered ? rendered : null}
             </div>
         );

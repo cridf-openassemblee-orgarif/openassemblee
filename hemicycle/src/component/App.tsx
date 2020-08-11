@@ -12,20 +12,20 @@ import {
     Elu,
     EluListDTO,
     GroupePolitique,
-    GroupePolitiqueFromWs
+    GroupePolitiqueFromWs,
 } from '../domain/elu';
 import {
     ChairNumber,
     EluId,
     GroupePolitiqueId,
     instanciateNominalNumber,
-    PlanId
+    PlanId,
 } from '../domain/nominal';
 import { Dict, get, set } from '../utils';
 import { Errors } from './util/errors';
 import {
     Association,
-    HemicyclePlanAssociationsFromWs
+    HemicyclePlanAssociationsFromWs,
 } from '../domain/hemicycle';
 import { HemicycleConfigurationRendu } from '../domain/assemblee';
 import LoadingIcon from './util/LoadingIcon';
@@ -40,7 +40,7 @@ const convertElu = (dto: EluListDTO): Elu => ({
     groupePolitiqueId: dto.groupePolitique
         ? dto.groupePolitique.id
         : nonGroupePolitiqueId,
-    shortFonction: dto.shortFonction
+    shortFonction: dto.shortFonction,
 });
 
 const convertGroupePolitique = (
@@ -49,7 +49,7 @@ const convertGroupePolitique = (
     id: gp.id,
     nom: gp.nom,
     nomCourt: gp.nomCourt,
-    couleur: '#' + gp.couleur
+    couleur: '#' + gp.couleur,
 });
 
 const alphabeticSort = (map: (item: any) => string) => (
@@ -112,17 +112,17 @@ export default class App extends React.PureComponent<Props, State> {
             elusByGroupeId: undefined,
             groupePolitiqueById: undefined,
             associationByChair: undefined,
-            associationByEluId: undefined
+            associationByEluId: undefined,
         },
         selection: {
             selectedChairNumber: undefined,
             selectedEluId: undefined,
-            selectedEluSource: undefined
+            selectedEluSource: undefined,
         },
         config: {
             hideAssociationsChairs: false,
-            deleteMode: false
-        }
+            deleteMode: false,
+        },
     };
 
     private unsuscriber: Unsuscriber | undefined;
@@ -130,19 +130,19 @@ export default class App extends React.PureComponent<Props, State> {
     componentDidMount(): void {
         injector()
             .httpService.get(injector().urlBase + '/api/elus')
-            .then(a => {
+            .then((a) => {
                 const eluDtos = a.body as EluListDTO[];
-                const elus = eluDtos.map(d => convertElu(d));
+                const elus = eluDtos.map((d) => convertElu(d));
                 const groupePolitiques = this.elusDtoToGroupePolitiques(
                     eluDtos
                 );
-                this.setState(state => ({
+                this.setState((state) => ({
                     ...state,
                     rawElus: {
                         ...state.rawElus,
                         elus,
-                        groupePolitiques
-                    }
+                        groupePolitiques,
+                    },
                 }));
                 this.updateElusMaps();
                 this.updateAssociationsMaps();
@@ -153,11 +153,11 @@ export default class App extends React.PureComponent<Props, State> {
                     '/api/hemicyclePlans-associations/' +
                     this.props.planId
             )
-            .then(a => {
+            .then((a) => {
                 const hemicycle = a.body as HemicyclePlanAssociationsFromWs;
-                this.setState(state => ({
+                this.setState((state) => ({
                     ...state,
-                    hemicycle
+                    hemicycle,
                 }));
                 this.updateAssociationsMaps();
             });
@@ -178,11 +178,11 @@ export default class App extends React.PureComponent<Props, State> {
     ): GroupePolitique[] => {
         const gps: GroupePolitique[] = [];
         eluDtos
-            .filter(d => d.groupePolitique)
-            .forEach(d => {
+            .filter((d) => d.groupePolitique)
+            .forEach((d) => {
                 if (
-                    gps.filter(gp => gp.id === d.groupePolitique?.id).length ===
-                    0
+                    gps.filter((gp) => gp.id === d.groupePolitique?.id)
+                        .length === 0
                 ) {
                     gps.push(convertGroupePolitique(d.groupePolitique!));
                 }
@@ -199,14 +199,14 @@ export default class App extends React.PureComponent<Props, State> {
             id: nonGroupePolitiqueId,
             nom: 'Sans groupe',
             nomCourt: 'Sans groupe',
-            couleur: colors.black
+            couleur: colors.black,
         };
         groupePolitiques.unshift(nonGroupe);
         return groupePolitiques;
     };
 
     private updateElusMaps = () =>
-        this.setState(state => {
+        this.setState((state) => {
             const eluById: Dict<EluId, Elu> = {};
             const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
             const groupePolitiqueById: Dict<
@@ -216,15 +216,15 @@ export default class App extends React.PureComponent<Props, State> {
             if (!state.rawElus) {
                 throw Errors._b7d84f98();
             }
-            state.rawElus.elus.forEach(e => {
+            state.rawElus.elus.forEach((e) => {
                 set(eluById, e.id, e);
             });
-            state.rawElus.groupePolitiques.forEach(gp => {
+            state.rawElus.groupePolitiques.forEach((gp) => {
                 set(elusByGroupeId, gp.id, []);
                 set(groupePolitiqueById, gp.id, gp);
             });
             // FIXMENOW filtrer les demissionaires ? ou et comment
-            state.rawElus.elus.forEach(e => {
+            state.rawElus.elus.forEach((e) => {
                 get(elusByGroupeId, e.groupePolitiqueId).push(e);
             });
             // elus dans ordre alphabétique
@@ -246,19 +246,19 @@ export default class App extends React.PureComponent<Props, State> {
                     ...state.maps,
                     eluById,
                     elusByGroupeId,
-                    groupePolitiqueById
-                }
+                    groupePolitiqueById,
+                },
             };
         });
 
     private updateAssociationsMaps = () =>
-        this.setState(state => {
+        this.setState((state) => {
             if (!state.hemicycle) {
                 return state;
             }
             const associationByChair: Dict<ChairNumber, Association> = {};
             const associationByEluId: Dict<EluId, Association> = {};
-            state.hemicycle.associations.forEach(a => {
+            state.hemicycle.associations.forEach((a) => {
                 set(associationByChair, a.chairNumber, a);
                 set(associationByEluId, a.eluId, a);
             });
@@ -267,8 +267,8 @@ export default class App extends React.PureComponent<Props, State> {
                 maps: {
                     ...state.maps,
                     associationByChair,
-                    associationByEluId
-                }
+                    associationByEluId,
+                },
             };
         });
 
@@ -281,7 +281,7 @@ export default class App extends React.PureComponent<Props, State> {
         // FIXMENOW éventuellement supprimer cette latence quand la saisie est dans l'input ? car ralentie la saisie
         // voire la dégager tout court en fait =]
         setTimeout(() => {
-            this.setState(state => {
+            this.setState((state) => {
                 const selectedChairNumber = state.selection.selectedChairNumber;
                 const selectedEluId = state.selection.selectedEluId;
                 if (selectedChairNumber && selectedEluId) {
@@ -290,10 +290,10 @@ export default class App extends React.PureComponent<Props, State> {
                     }
                     const newAssociation: Association = {
                         chairNumber: selectedChairNumber,
-                        eluId: selectedEluId
+                        eluId: selectedEluId,
                     };
                     const associations = state.hemicycle.associations.filter(
-                        a =>
+                        (a) =>
                             a.chairNumber !== selectedChairNumber &&
                             a.eluId !== selectedEluId
                     );
@@ -304,12 +304,12 @@ export default class App extends React.PureComponent<Props, State> {
                             ...state.selection,
                             selectedChairNumber: undefined,
                             selectedEluId: undefined,
-                            selectedEluSource: undefined
+                            selectedEluSource: undefined,
                         },
                         hemicycle: {
                             ...state.hemicycle,
-                            associations
-                        }
+                            associations,
+                        },
                     };
                 } else {
                     return state;
@@ -320,12 +320,12 @@ export default class App extends React.PureComponent<Props, State> {
     };
 
     private updateSelectedChairNumber = (selectedChairNumber: ChairNumber) => {
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
             selection: {
                 ...state.selection,
-                selectedChairNumber
-            }
+                selectedChairNumber,
+            },
         }));
         this.selectionsToAssociation();
     };
@@ -334,31 +334,31 @@ export default class App extends React.PureComponent<Props, State> {
         selectedEluId: EluId | undefined,
         selectedEluSource: SelectedEluSource
     ) => {
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
             selection: {
                 ...state.selection,
                 selectedEluId,
-                selectedEluSource
-            }
+                selectedEluSource,
+            },
         }));
         this.selectionsToAssociation();
     };
 
     private removeAssociation = (chair: ChairNumber) => {
-        this.setState(state => {
+        this.setState((state) => {
             if (!state.hemicycle) {
                 throw Errors._3405a5ec();
             }
             const newAssociations = state.hemicycle.associations.filter(
-                a => a.chairNumber !== chair
+                (a) => a.chairNumber !== chair
             );
             return {
                 ...state,
                 hemicycle: {
                     ...state.hemicycle,
-                    associations: newAssociations
-                }
+                    associations: newAssociations,
+                },
             };
         });
         this.updateAssociationsMaps();
@@ -383,15 +383,15 @@ export default class App extends React.PureComponent<Props, State> {
     private archive = (then: () => void) => {};
 
     private protoEmpty = () => {
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
-            associations: []
+            associations: [],
         }));
         this.updateAssociationsMaps();
     };
 
     private switchHideAssociations = () =>
-        this.setState(state => {
+        this.setState((state) => {
             const hideAssociationsChairs = !state.config.hideAssociationsChairs;
             const selectedChairNumber = hideAssociationsChairs
                 ? undefined
@@ -400,23 +400,23 @@ export default class App extends React.PureComponent<Props, State> {
                 ...state,
                 selection: {
                     ...state.selection,
-                    selectedChairNumber
+                    selectedChairNumber,
                 },
                 config: {
                     ...state.config,
-                    hideAssociationsChairs
-                }
+                    hideAssociationsChairs,
+                },
             };
         });
 
     private switchDeleteMode = () =>
-        this.setState(state => {
+        this.setState((state) => {
             const deleteMode = !state.config.deleteMode;
             const selection = deleteMode
                 ? {
                       selectedChairNumber: undefined,
                       selectedElu: undefined,
-                      selectedEluSource: undefined
+                      selectedEluSource: undefined,
                   }
                 : state.selection;
             return {
@@ -425,8 +425,8 @@ export default class App extends React.PureComponent<Props, State> {
                 config: {
                     ...state.config,
                     hideAssociationsChairs: false,
-                    deleteMode
-                }
+                    deleteMode,
+                },
             };
         });
 

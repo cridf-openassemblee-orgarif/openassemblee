@@ -9,7 +9,7 @@ import {
     ChairNumber,
     EluId,
     GroupePolitiqueId,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../../domain/nominal';
 import { Elu, GroupePolitique } from '../../domain/elu';
 import { Association } from '../../domain/hemicycle';
@@ -41,7 +41,7 @@ interface State {
 export default class EluListComponent extends React.Component<Props, State> {
     public state: State = {
         hideAssociations: false,
-        displayBy: 'groupePolitique'
+        displayBy: 'groupePolitique',
     };
 
     componentDidUpdate(
@@ -50,17 +50,17 @@ export default class EluListComponent extends React.Component<Props, State> {
         snapshot?: any
     ): void {
         if (!prevProps.deleteMode && this.props.deleteMode) {
-            this.setState(state => ({
+            this.setState((state) => ({
                 ...state,
-                hideAssociations: false
+                hideAssociations: false,
             }));
         }
     }
 
     private switchDisplayAssociations = () =>
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
-            hideAssociations: !state.hideAssociations
+            hideAssociations: !state.hideAssociations,
         }));
 
     private selectDisplay = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -68,9 +68,9 @@ export default class EluListComponent extends React.Component<Props, State> {
             ? (event.target.value as DisplayBy)
             : undefined;
         if (value) {
-            this.setState(state => ({
+            this.setState((state) => ({
                 ...state,
-                displayBy: value
+                displayBy: value,
             }));
         }
     };
@@ -124,7 +124,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                     Cacher les associations
                 </label>
                 {this.state.displayBy === 'groupePolitique' &&
-                    this.props.groupePolitiques.map(gp => (
+                    this.props.groupePolitiques.map((gp) => (
                         <GroupePolitiqueComponent
                             key={numberifyNominalNumber(gp.id)}
                             groupePolitique={gp}

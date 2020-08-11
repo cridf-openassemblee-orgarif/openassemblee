@@ -40,14 +40,14 @@ export default class EluComponent extends React.PureComponent<Props> {
                               }
                           `}
                     ${!chairNumber &&
-                        this.props.deleteMode &&
-                        css`
-                            color: ${colors.grey};
-                            cursor: auto;
-                            &:hover {
-                                background: ${colors.white};
-                            }
-                        `}
+                    this.props.deleteMode &&
+                    css`
+                        color: ${colors.grey};
+                        cursor: auto;
+                        &:hover {
+                            background: ${colors.white};
+                        }
+                    `}
                 `}
                 onClick={() => {
                     if (!this.props.deleteMode) {
@@ -87,7 +87,7 @@ export default class EluComponent extends React.PureComponent<Props> {
                                 top: 2px;
                                 right: 2px;
                             `}
-                            onClick={e => {
+                            onClick={(e) => {
                                 this.props.removeAssociation(chairNumber);
                                 e.stopPropagation();
                             }}

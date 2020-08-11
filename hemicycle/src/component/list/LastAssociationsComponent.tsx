@@ -8,7 +8,7 @@ import { colors } from '../../constants';
 import {
     ChairNumber,
     EluId,
-    numberifyNominalNumber
+    numberifyNominalNumber,
 } from '../../domain/nominal';
 import { Association } from '../../domain/hemicycle';
 import { Dict, get } from '../../utils';
@@ -35,13 +35,13 @@ export default class LastAssociationsComponent extends React.Component<
     State
 > {
     public state: State = {
-        isOpen: true
+        isOpen: true,
     };
 
     private switchOpen = () =>
-        this.setState(state => ({
+        this.setState((state) => ({
             ...state,
-            isOpen: !state.isOpen
+            isOpen: !state.isOpen,
         }));
 
     render() {
@@ -103,7 +103,7 @@ export default class LastAssociationsComponent extends React.Component<
                         {[...this.props.associations]
                             .reverse()
                             .splice(0, 5)
-                            .map(a => {
+                            .map((a) => {
                                 const elu = get(this.props.eluById, a.eluId);
                                 return (
                                     <EluComponent

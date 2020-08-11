@@ -825,9 +825,9 @@ const latinMap: Record<string, string | undefined> = {
     ᵣ: 'r',
     ᵤ: 'u',
     ᵥ: 'v',
-    ₓ: 'x'
+    ₓ: 'x',
 };
 // eslint-disable-next-line
-String.prototype.latinize = function() {
+String.prototype.latinize = function () {
     return this.replace(/[^A-Za-z0-9]/g, (x: string) => latinMap[x] || x);
 };
