@@ -6,19 +6,19 @@ import java.util.List;
 
 public class HemicyclePlanAssociationsDTO {
 
-    private List<HemicyclePlan.Association> associations;
+    private List<HemicycleAssociationDTO> associations;
     private HemicycleConfigurationRendu configurationRendu;
 
-    public HemicyclePlanAssociationsDTO(List<HemicyclePlan.Association> associations, HemicycleConfigurationRendu configurationRendu) {
+    public HemicyclePlanAssociationsDTO(List<HemicycleAssociationDTO> associations, HemicycleConfigurationRendu configurationRendu) {
         this.associations = associations;
         this.configurationRendu = configurationRendu;
     }
 
-    public List<HemicyclePlan.Association> getAssociations() {
+    public List<HemicycleAssociationDTO> getAssociations() {
         return associations;
     }
 
-    public void setAssociations(List<HemicyclePlan.Association> associations) {
+    public void setAssociations(List<HemicycleAssociationDTO> associations) {
         this.associations = associations;
     }
 

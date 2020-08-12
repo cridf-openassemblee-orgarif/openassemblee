@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './component/App';
 import { injector } from './service/injector';
 import { options } from './constants';
-import { instanciateNominalNumber } from './domain/nominal';
+import ArchiveDisplayApp from './component/ArchiveDisplayApp';
 
 window.addEventListener('resize', () =>
     injector().applicationEventBus.publish('window_resized_event')
@@ -30,11 +30,20 @@ setTimeout(() => {
     });
 }, 0);
 
-global.loadHemicycle = (props: { planId: number; isProjet: boolean }) => {
+global.loadHemicycle = (props: { planId: any; isProjet: boolean }) => {
     ReactDOM.render(
         <App
-            planId={instanciateNominalNumber(props.planId)}
+            planId={props.planId}
             isProjet={props.isProjet}
+        />,
+        document.getElementById('hemicycle-app')
+    );
+};
+
+global.loadHemicycleArchive = (props: { archiveId: any; }) => {
+    ReactDOM.render(
+        <ArchiveDisplayApp
+            archiveId={props.archiveId}
         />,
         document.getElementById('hemicycle-app')
     );
@@ -50,16 +59,23 @@ if (global.devHost) {
     const urlParams = new URLSearchParams(queryString);
     const planId = urlParams.get('planId');
     const isProjet = urlParams.get('isProjet');
+    const archiveId = urlParams.get('archiveId');
     if (planId && isProjet) {
         global.loadHemicycle({
             planId: parseInt(planId, 10),
             isProjet: isProjet === 'true',
         });
+    } else if(archiveId) {
+        global.loadHemicycleArchive({
+            archiveId: parseInt(archiveId, 10)
+        })
     } else {
         ReactDOM.render(
             <div>
                 Mettre les paramètre 'planId' et 'isProjet' en url, par ex
-                "?planId=8&isProjet=true"
+                "?planId=8&isProjet=true".
+                <br />
+                Ou archiveId
             </div>,
             document.getElementById('hemicycle-app')
         );

@@ -6,17 +6,21 @@ import openassemblee.repository.*;
 import openassemblee.repository.search.SeanceSearchRepository;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.dto.PouvoirListDTO;
-import openassemblee.web.rest.dto.SeanceCreationDTO;
 import openassemblee.service.dto.SeanceDTO;
+import openassemblee.web.rest.dto.SeanceCreationDTO;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static openassemblee.config.Constants.parisZoneId;
 
 // FIXME une incohérence possible
 // j'enleve une présence
@@ -38,6 +42,8 @@ public class SeanceService {
     private GroupePolitiqueRepository groupePolitiqueRepository;
     @Inject
     private HemicyclePlanRepository hemicyclePlanRepository;
+    @Inject
+    private HemicycleArchiveRepository hemicycleArchiveRepository;
 
     @Transactional(readOnly = true)
     public Seance get(Long id) {
@@ -72,7 +78,10 @@ public class SeanceService {
 
         List<GroupePolitique> groupePolitiques = groupePolitiqueRepository.findAll();
         HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(seance);
-        return new SeanceDTO(seance, pouvoirs, groupePolitiques, hp != null ? hp.getId() : null);
+        if(hp != null) {
+            Hibernate.initialize(hp.getArchives());
+        }
+        return new SeanceDTO(seance, pouvoirs, groupePolitiques, hp);
     }
 
     @Transactional(readOnly = true)
@@ -103,15 +112,25 @@ public class SeanceService {
         seance.getSeance().setPresenceElus(pes);
         Seance result = seanceRepository.save(seance.getSeance());
         seanceSearchRepository.save(result);
-        HemicyclePlan hemicyclePlan = new HemicyclePlan();
-        hemicyclePlan.setSeance(seance.getSeance());
-        if(seance.getSeancePlanId() != null) {
-            Seance s = seanceRepository.findOne(seance.getProjetPlanId());
-            HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(s);
-            hemicyclePlan.setConfiguration(hp.getConfiguration());
-            hemicyclePlan.setJsonPlan(hp.getJsonPlan());
+        if (seance.getSeancePlanId() != null || seance.getProjetPlanId() != null) {
+            HemicyclePlan hemicyclePlan = new HemicyclePlan();
+            ZonedDateTime now = Instant.now().atZone(parisZoneId);
+            hemicyclePlan.setLabel("Plan de la séance " + seance.getSeance().getId());
+            hemicyclePlan.setSeance(seance.getSeance());
+            hemicyclePlan.setCreationDate(now);
+            hemicyclePlan.setLastModificationDate(now);
+            if (seance.getSeancePlanId() != null) {
+                Seance s = seanceRepository.findOne(seance.getSeancePlanId());
+                HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(s);
+                hemicyclePlan.setConfiguration(hp.getConfiguration());
+                hemicyclePlan.setJsonPlan(hp.getJsonPlan());
+            } else if (seance.getProjetPlanId() != null) {
+                HemicyclePlan hp = hemicyclePlanRepository.findOne(seance.getProjetPlanId());
+                hemicyclePlan.setConfiguration(hp.getConfiguration());
+                hemicyclePlan.setJsonPlan(hp.getJsonPlan());
+            }
+            hemicyclePlanRepository.save(hemicyclePlan);
         }
-        hemicyclePlanRepository.save(hemicyclePlan);
         return result;
     }
 

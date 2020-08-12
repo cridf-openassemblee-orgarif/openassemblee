@@ -1,19 +1,15 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { injector } from '../service/injector';
 import SizingContainer from './util/SizingContainer';
 import Hemicycle from './Hemicycle';
 import EluListComponent from './list/EluListComponent';
 import InputsComponent, { inputComponentHeight } from './input/InputsComponent';
-import { colors, options } from '../constants';
+import { colors, options, urls } from '../constants';
 import { Unsuscriber } from '../service/EventBus';
-import {
-    Elu,
-    EluListDTO,
-    GroupePolitique,
-    GroupePolitiqueFromWs,
-} from '../domain/elu';
+import { Elu, GroupePolitique } from '../domain/elu';
 import {
     ChairNumber,
     EluId,
@@ -29,8 +25,63 @@ import {
 } from '../domain/hemicycle';
 import { HemicycleConfigurationRendu } from '../domain/assemblee';
 import LoadingIcon from './util/LoadingIcon';
+import {
+    EluListDTO,
+    GroupePolitiqueFromWs,
+    HemicycleArchiveCreationDTO,
+    HemicyclePlanUpdateDTO,
+} from '../domain/ws';
+import * as ReactDomServer from 'react-dom/server';
 
 const nonGroupePolitiqueId = instanciateNominalNumber<GroupePolitiqueId>(-1);
+
+export const associationMaps = (associations: Association[]) => {
+    const associationByChair: Dict<ChairNumber, Association> = {};
+    const associationByEluId: Dict<EluId, Association> = {};
+    associations.forEach((a) => {
+        set(associationByChair, a.chairNumber, a);
+        set(associationByEluId, a.eluId, a);
+    });
+    return { associationByChair, associationByEluId };
+};
+
+export const rawElusMaps = (rawElus: {
+    elus: Elu[];
+    groupePolitiques: GroupePolitique[];
+}) => {
+    const eluById: Dict<EluId, Elu> = {};
+    const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
+    const groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique> = {};
+    rawElus.elus.forEach((e) => {
+        set(eluById, e.id, e);
+    });
+    rawElus.groupePolitiques.forEach((gp) => {
+        set(elusByGroupeId, gp.id, []);
+        set(groupePolitiqueById, gp.id, gp);
+    });
+    // FIXMENOW filtrer les demissionaires ? ou et comment
+    rawElus.elus.forEach((e) => {
+        get(elusByGroupeId, e.groupePolitiqueId).push(e);
+    });
+    // elus dans ordre alphabétique
+    Object.keys(elusByGroupeId).forEach((idAsString: string) => {
+        const gpId = instanciateNominalNumber<GroupePolitiqueId>(
+            parseInt(idAsString)
+        );
+        set(
+            elusByGroupeId,
+            gpId,
+            get(elusByGroupeId, gpId).sort(
+                alphabeticSort((elu: Elu) => elu.nom)
+            )
+        );
+    });
+    return {
+        eluById,
+        elusByGroupeId,
+        groupePolitiqueById,
+    };
+};
 
 const convertElu = (dto: EluListDTO): Elu => ({
     id: dto.elu.id,
@@ -129,7 +180,7 @@ export default class App extends React.PureComponent<Props, State> {
 
     componentDidMount(): void {
         injector()
-            .httpService.get(injector().urlBase + '/api/elus')
+            .httpService.get(injector().urlBase + urls.elus)
             .then((a) => {
                 const eluDtos = a.body as EluListDTO[];
                 const elus = eluDtos.map((d) => convertElu(d));
@@ -150,7 +201,8 @@ export default class App extends React.PureComponent<Props, State> {
         injector()
             .httpService.get(
                 injector().urlBase +
-                    '/api/hemicyclePlans-associations/' +
+                    urls.hemicyclePlansAssociations +
+                    '/' +
                     this.props.planId
             )
             .then((a) => {
@@ -192,7 +244,7 @@ export default class App extends React.PureComponent<Props, State> {
             alphabeticSort((gp: GroupePolitique) => gp.nom)
         );
         // FIXMENOW doc : potentiellement relou mais pas censé avoir d'élu sans groupe !
-        // ou reprendre les couleurs du groupe "sans groupe" effectif
+        // ou reprendre les couleurs du groupe"sans groupe" effetif
         // dans la conf de l'hemicycle =)))
         // et redescendre le groupe avec l'hemicycle pour être sur de l'avoir
         const nonGroupe: GroupePolitique = {
@@ -207,39 +259,14 @@ export default class App extends React.PureComponent<Props, State> {
 
     private updateElusMaps = () =>
         this.setState((state) => {
-            const eluById: Dict<EluId, Elu> = {};
-            const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
-            const groupePolitiqueById: Dict<
-                GroupePolitiqueId,
-                GroupePolitique
-            > = {};
             if (!state.rawElus) {
                 throw Errors._b7d84f98();
             }
-            state.rawElus.elus.forEach((e) => {
-                set(eluById, e.id, e);
-            });
-            state.rawElus.groupePolitiques.forEach((gp) => {
-                set(elusByGroupeId, gp.id, []);
-                set(groupePolitiqueById, gp.id, gp);
-            });
-            // FIXMENOW filtrer les demissionaires ? ou et comment
-            state.rawElus.elus.forEach((e) => {
-                get(elusByGroupeId, e.groupePolitiqueId).push(e);
-            });
-            // elus dans ordre alphabétique
-            Object.keys(elusByGroupeId).forEach((idAsString: string) => {
-                const gpId = instanciateNominalNumber<GroupePolitiqueId>(
-                    parseInt(idAsString)
-                );
-                set(
-                    elusByGroupeId,
-                    gpId,
-                    get(elusByGroupeId, gpId).sort(
-                        alphabeticSort((elu: Elu) => elu.nom)
-                    )
-                );
-            });
+            const {
+                eluById,
+                elusByGroupeId,
+                groupePolitiqueById,
+            } = rawElusMaps(state.rawElus);
             return {
                 ...state,
                 maps: {
@@ -256,12 +283,9 @@ export default class App extends React.PureComponent<Props, State> {
             if (!state.hemicycle) {
                 return state;
             }
-            const associationByChair: Dict<ChairNumber, Association> = {};
-            const associationByEluId: Dict<EluId, Association> = {};
-            state.hemicycle.associations.forEach((a) => {
-                set(associationByChair, a.chairNumber, a);
-                set(associationByEluId, a.eluId, a);
-            });
+            const { associationByChair, associationByEluId } = associationMaps(
+                state.hemicycle.associations
+            );
             return {
                 ...state,
                 maps: {
@@ -368,29 +392,65 @@ export default class App extends React.PureComponent<Props, State> {
         if (!this.state.hemicycle) {
             throw Errors._affb4796();
         }
+        const dto: HemicyclePlanUpdateDTO = {
+            id: this.props.planId,
+            associations: this.state.hemicycle.associations,
+        };
         injector()
             .httpService.post(
-                injector().urlBase + '/api/hemicyclePlans-associations',
-                {
-                    id: this.props.planId,
-                    associations: this.state.hemicycle.associations,
-                }
+                injector().urlBase + urls.hemicyclePlansAssociations,
+                dto
             )
-            .then(() => {
-                setTimeout(then, 500);
-            });
+            .then(() =>
+                setTimeout(then, 500)
+            );
     };
 
-    private download = () => {};
-
-    private archive = (then: () => void) => {};
-
-    private protoEmpty = () => {
-        this.setState((state) => ({
-            ...state,
-            associations: [],
-        }));
-        this.updateAssociationsMaps();
+    private archive = (then: () => void) => {
+        if (
+            !this.state.hemicycle ||
+            !this.state.rawElus ||
+            !this.state.maps.eluById ||
+            !this.state.maps.groupePolitiqueById ||
+            !this.state.maps.associationByChair
+        ) {
+            throw Errors._affb4796();
+        }
+        const renderReact = (svgElement: ReactElement) => {
+            const svg = ReactDomServer.renderToString(svgElement);
+            // FIXMENOW [doc] da fuck Batik semble ne pas aimer ça.... parce que je parse mal ?
+            // FIXMENOW rechecker en fait....
+            return '<?xml version="1.0" encoding="UTF-8"?>' + svg;
+            // return finalSvg;
+        };
+        const svg = renderReact(
+            <Hemicycle
+                width={1600}
+                height={1000}
+                eluById={this.state.maps.eluById}
+                groupePolitiques={this.state.rawElus.groupePolitiques}
+                groupePolitiqueById={this.state.maps.groupePolitiqueById}
+                associationByChair={this.state.maps.associationByChair}
+                configurationRendu={this.state.hemicycle.configurationRendu}
+                selectedChairNumber={undefined}
+                updateSelectedChairNumber={this.updateSelectedChairNumber}
+                hideAssociationsChairs={false}
+                removeAssociation={this.removeAssociation}
+                deleteMode={false}
+                printMode={true}
+            />
+        );
+        const dto: HemicycleArchiveCreationDTO = {
+            planId: this.props.planId,
+            data: {
+                associations: this.state.hemicycle.associations,
+                ...this.state.rawElus,
+            },
+            svgPlan: svg,
+        };
+        injector()
+            .httpService.post(injector().urlBase + urls.hemicycleArchives, dto)
+            .then(() => setTimeout(then, 500));
     };
 
     private switchHideAssociations = () =>
@@ -444,17 +504,8 @@ export default class App extends React.PureComponent<Props, State> {
                 padding: 4px;
             `}
         >
-            <button onClick={this.download}>Imprimer</button>
-            <br />
-            <button onClick={this.protoEmpty}>Vider</button>
-            <button
-                onClick={() => {}}
-                css={css`
-                    background: ${colors.redBackground};
-                `}
-            >
-                Sample data
-            </button>
+            <button onClick={() => {}}>Vider</button>
+            <button onClick={() => {}}>Sample data</button>
         </div>
     );
 

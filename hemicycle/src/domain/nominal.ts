@@ -20,6 +20,7 @@ export const instanciateNominalNumber = <T extends NominalNumber<any>>(
     value: number
 ) => (value as unknown) as T;
 
+export type ArchiveId = NominalNumber<'ArchiveId'>;
 export type EluId = NominalNumber<'EluId'>;
 export type GroupePolitiqueId = NominalNumber<'GroupePolitiqueId'>;
 export type PlanId = NominalNumber<'PlanId'>;

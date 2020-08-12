@@ -3,6 +3,7 @@ package openassemblee.config;
 import openassemblee.security.*;
 import openassemblee.web.filter.CsrfCookieGeneratorFilter;
 import openassemblee.web.filter.DevCorsFilter;
+import openassemblee.web.rest.HemicycleArchiveResource;
 import openassemblee.web.rest.HemicyclePlanResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -86,11 +87,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/" + HemicyclePlanResource.hemicyclePlansAssociationsUrl + "/**").permitAll()
+                .antMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesUrl + "/**").permitAll()
+                .antMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesDataUrl + "/**").permitAll()
                 .antMatchers("/api/elus").permitAll();
             // Pour désactiver le csrf en dev sur l'hémicycle en React (post requests only)
             http
                 .csrf()
-                .ignoringAntMatchers("/api/" + HemicyclePlanResource.hemicyclePlansAssociationsUrl + "/**");
+                .ignoringAntMatchers("/api/" + HemicyclePlanResource.hemicyclePlansAssociationsUrl + "/**")
+                .ignoringAntMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesUrl + "/**");
         }
         http
             .csrf()

@@ -8,7 +8,15 @@ import java.util.List;
 public class HemicyclePlanUpdateDTO implements Serializable {
 
     private Long id;
-    private List<HemicyclePlan.Association> associations ;
+    private List<HemicycleAssociationDTO> associations ;
+
+    public HemicyclePlanUpdateDTO() {
+    }
+
+    public HemicyclePlanUpdateDTO(Long id, List<HemicycleAssociationDTO> associations) {
+        this.id = id;
+        this.associations = associations;
+    }
 
     public Long getId() {
         return id;
@@ -18,11 +26,11 @@ public class HemicyclePlanUpdateDTO implements Serializable {
         this.id = id;
     }
 
-    public List<HemicyclePlan.Association> getAssociations() {
+    public List<HemicycleAssociationDTO> getAssociations() {
         return associations;
     }
 
-    public void setAssociations(List<HemicyclePlan.Association> associations) {
+    public void setAssociations(List<HemicycleAssociationDTO> associations) {
         this.associations = associations;
     }
 }

@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('openassembleeApp').controller('SeanceDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Seance', 'PresenceElu', 'HemicycleDisposition',
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Seance', 'PresenceElu', 'HemicyclePlan',
         function ($scope, $stateParams, $modalInstance, entity, Seance, PresenceElu, HemicyclePlan) {
 
             $scope.seance = entity;
             $scope.seances = [];
             $scope.projetsPlan = [];
+            $scope.properties = {};
 
-            // $scope.presenceelus = PresenceElu.query();
             $scope.load = function (id) {
                 Seance.get({id: id}, function (result) {
                     $scope.seance = result;
@@ -36,7 +36,17 @@ angular.module('openassembleeApp').controller('SeanceDialogController',
                 if ($scope.seance.id != null) {
                     Seance.update($scope.seance, onSaveSuccess, onSaveError);
                 } else {
-                    Seance.save($scope.seance, onSaveSuccess, onSaveError);
+                    var dto = {
+                        seance: $scope.seance,
+                        seancePlanId: undefined,
+                        projetPlanId: undefined
+                    }
+                    if($scope.properties.planFromSeance) {
+                        dto.seancePlanId = $scope.properties.planFromSeance.id
+                    } else if($scope.properties.planFromProjet) {
+                        dto.projetPlanId = $scope.properties.planFromProjet.id
+                    }
+                    Seance.save(dto, onSaveSuccess, onSaveError);
                 }
             };
 

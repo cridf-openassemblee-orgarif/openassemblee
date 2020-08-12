@@ -1,5 +1,6 @@
 package openassemblee.domain;
 
+import openassemblee.web.rest.dto.HemicycleAssociationDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,8 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A HemicyclePlan.
@@ -20,27 +23,13 @@ import java.util.Objects;
 @Document(indexName = "hemicycleplan")
 public class HemicyclePlan implements Serializable {
 
-    public static class Association {
-        public Integer chairNumber;
-        public Long eluId;
-
-        // for serialization
-        public Association() {
-        }
-
-        public Association(Integer chairNumber, Long eluId) {
-            this.chairNumber = chairNumber;
-            this.eluId = eluId;
-        }
-    }
-
     public static class JsonPlan {
-        public List<Association> associations;
+        public List<HemicycleAssociationDTO> associations;
 
         // for serialization
         public JsonPlan() {}
 
-        public JsonPlan(List<Association> associations) {
+        public JsonPlan(List<HemicycleAssociationDTO> associations) {
             this.associations = associations;
         }
     }
@@ -68,6 +57,10 @@ public class HemicyclePlan implements Serializable {
 
     @OneToOne
     private Seance seance;
+
+    @OneToMany(mappedBy = "hemicyclePlan")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    private Set<HemicycleArchive> archives = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -123,6 +116,14 @@ public class HemicyclePlan implements Serializable {
 
     public void setSeance(Seance Seance) {
         this.seance = Seance;
+    }
+
+    public Set<HemicycleArchive> getArchives() {
+        return archives;
+    }
+
+    public void setArchives(Set<HemicycleArchive> archives) {
+        this.archives = archives;
     }
 
     @Override

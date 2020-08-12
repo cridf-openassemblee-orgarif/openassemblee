@@ -1,6 +1,13 @@
 export const productionBuild = process.env.NODE_ENV === 'production';
 
-export let options = {
+export const urls = {
+    elus: 'elus',
+    hemicycleArchives: 'hemicycleArchives',
+    hemicycleArchivesData: 'hemicycleArchives-data',
+    hemicyclePlansAssociations: 'hemicyclePlans-associations',
+};
+
+export const options = {
     debug: false,
 };
 

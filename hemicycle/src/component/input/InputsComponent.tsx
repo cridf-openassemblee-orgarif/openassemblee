@@ -150,6 +150,9 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     private savePlan = () => {
+        if(this.state.isSaving) {
+            return
+        }
         this.setState((state) => ({ ...state, isSaving: true }));
         this.props.savePlan(() =>
             this.setState((state) => ({ ...state, isSaving: false }))
@@ -157,6 +160,9 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     private archive = () => {
+        if(this.state.isArchiving) {
+            return
+        }
         if (!this.props.archive) {
             throw Errors._62651552();
         }
@@ -310,7 +316,15 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                                 `}
                                 onClick={this.archive}
                             >
-                                Archiver
+                                {!this.state.isArchiving && (
+                                    <React.Fragment>Archiver</React.Fragment>
+                                )}
+                                {this.state.isArchiving && (
+                                    <LoadingIcon
+                                        height={20}
+                                        color={colors.grey}
+                                    />
+                                )}
                             </div>
                         </div>
                     )}

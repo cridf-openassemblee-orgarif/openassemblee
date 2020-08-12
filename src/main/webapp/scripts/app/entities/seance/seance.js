@@ -51,6 +51,20 @@ angular.module('openassembleeApp')
                     }
                 }
             })
+            .state('seance.hemicycleArchive', {
+                parent: 'seance.detail',
+                url: '/hemicycle-archive/{archiveId}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'Seance'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/seance/seance-hemicycle-archive.html',
+                        controller: 'SeanceHemicycleArchiveController'
+                    }
+                }
+            })
             .state('seance.new', {
                 parent: 'seance',
                 url: '/new',

@@ -307,18 +307,29 @@
                 </div>
                 <div id="plan" class="tab-pane fade">
                     <h3>Plan d'hémicycle</h3>
-                    <button type="submit"
-                            ui-sref="seance.hemicycle({hemicyclePlanId: dto.hemicyclePlanId})"
-                            class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
-                    </button>
-                    {{dto}}
-                    <h2>Archives</h2>
-                    <div
-                        ng-repeat="archive in archives track by archive.id"
-                        ng-click="printArchive(archive.id)"
-                    >
-                        Archive
+                    <div ng-if="dto.hemicyclePlan">
+                        <button type="submit"
+                                ui-sref="seance.hemicycle({hemicyclePlanId: dto.hemicyclePlan.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
+                        </button>
+                        <div ng-if="dto.hemicyclePlan.archives.length !== 0">
+                            <br/>
+                            <h2>Archives</h2>
+                            <div
+                                ng-repeat="archive in dto.hemicyclePlan.archives track by archive.id"
+                            >
+                                Archive du {{archive.date | date:'mediumDate'}}
+                                <br/>
+                                <button ng-click="printArchive(archive.svgPlan)">Imprimer</button>
+                                <button ui-sref="seance.hemicycleArchive({archiveId: archive.id})">Visualiser</button>
+                                <br/>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="!dto.hemicyclePlan">
+                        Pas de plan pour cette séance
                     </div>
                 </div>
             </div>

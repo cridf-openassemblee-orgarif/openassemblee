@@ -65,9 +65,9 @@ public class HemicyclePlanService {
             Integer startChairNumber = d.frontChairs + 1;
             List<EluListDTO> elus = eluService.getAll(false, false, true);
             AtomicInteger index = new AtomicInteger(startChairNumber);
-            List<HemicyclePlan.Association> associations = elus.stream()
+            List<HemicycleAssociationDTO> associations = elus.stream()
                 .sorted(Comparator.comparing(o -> StringUtils.stripAccents(o.getElu().getNom().toLowerCase())))
-                .map(eluListDTO -> new HemicyclePlan.Association(index.getAndIncrement(), eluListDTO.getElu().getId()))
+                .map(eluListDTO -> new HemicycleAssociationDTO(index.getAndIncrement(), eluListDTO.getElu().getId()))
                 .collect(Collectors.toList());
             try {
                 jsonPlan = objectMapper.writeValueAsString(new HemicyclePlan.JsonPlan(associations));
