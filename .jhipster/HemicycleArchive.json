@@ -3,7 +3,7 @@
     "fields": [
         {
             "fieldId": 1,
-            "fieldName": "jsonPlan",
+            "fieldName": "jsonArchive",
             "fieldType": "String"
         },
         {

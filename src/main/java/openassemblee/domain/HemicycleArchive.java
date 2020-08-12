@@ -1,5 +1,12 @@
 package openassemblee.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import openassemblee.domain.jackson.JacksonEluIdSerializer;
+import openassemblee.web.rest.dto.HemicycleAssociationDTO;
+import openassemblee.web.rest.dto.HemicycleEluDTO;
+import openassemblee.web.rest.dto.HemicycleGroupePolitiqueDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.time.ZonedDateTime;
@@ -7,6 +14,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,14 +30,20 @@ public class HemicycleArchive implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "json_plan")
-    private String jsonPlan;
+    @Column(name = "json_archive")
+    private String jsonArchive;
 
     @Column(name = "svg_plan")
     private String svgPlan;
 
     @Column(name = "date")
     private ZonedDateTime date;
+
+    @ManyToOne
+    @JoinColumn(name = "hemicycle_plan_id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
+    private HemicyclePlan hemicyclePlan;
 
     public Long getId() {
         return id;
@@ -39,12 +53,12 @@ public class HemicycleArchive implements Serializable {
         this.id = id;
     }
 
-    public String getJsonPlan() {
-        return jsonPlan;
+    public String getJsonArchive() {
+        return jsonArchive;
     }
 
-    public void setJsonPlan(String jsonPlan) {
-        this.jsonPlan = jsonPlan;
+    public void setJsonArchive(String jsonArchive) {
+        this.jsonArchive = jsonArchive;
     }
 
     public String getSvgPlan() {
@@ -61,6 +75,14 @@ public class HemicycleArchive implements Serializable {
 
     public void setDate(ZonedDateTime date) {
         this.date = date;
+    }
+
+    public HemicyclePlan getHemicyclePlan() {
+        return hemicyclePlan;
+    }
+
+    public void setHemicyclePlan(HemicyclePlan hemicyclePlan) {
+        this.hemicyclePlan = hemicyclePlan;
     }
 
     @Override
@@ -84,7 +106,7 @@ public class HemicycleArchive implements Serializable {
     public String toString() {
         return "HemicycleArchive{" +
             "id=" + id +
-            ", jsonPlan='" + jsonPlan + "'" +
+            ", jsonPlan='" + jsonArchive + "'" +
             ", svgPlan='" + svgPlan + "'" +
             ", date='" + date + "'" +
             '}';
