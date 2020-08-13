@@ -3,7 +3,15 @@ spring:
         active: prod-local
     datasource:
         driver-class-name: com.mysql.cj.jdbc.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/openassemblee_local?useUnicode=true&characterEncoding=utf8&max_allowed_packet=21167764
+        url: jdbc:mysql://localhost:3306/openassemblee_local?useUnicode=true&characterEncoding=utf8&max_allowed_packet=21167764&serverTimezone=UTC
         name:
         username: root
         password:
+    data:
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                    logs: /Users/mlo/temp/openassemblee/target/elasticsearch/logs
+                    data: /Users/mlo/temp/openassemblee/target/elasticsearch/data
