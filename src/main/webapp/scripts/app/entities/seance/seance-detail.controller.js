@@ -134,13 +134,7 @@ angular.module('openassembleeApp')
         image.src = url;
         var printWindow = window.open('', 'PrintMap');
         printWindow.document.writeln(svgPlan);
-        printWindow.document.writeln(`
-        <style>
-        @page {
-            size: A3 landscape;
-        }
-        </style>
-        `);
+        printWindow.document.writeln('<style>@page {size: A3 landscape;}</style>');
         printWindow.document.close();
         printWindow.print();
     }
