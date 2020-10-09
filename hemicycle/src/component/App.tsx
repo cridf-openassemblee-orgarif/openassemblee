@@ -401,9 +401,7 @@ export default class App extends React.PureComponent<Props, State> {
                 injector().urlBase + urls.hemicyclePlansAssociations,
                 dto
             )
-            .then(() =>
-                setTimeout(then, 500)
-            );
+            .then(() => setTimeout(then, 500));
     };
 
     private archive = (then: () => void) => {

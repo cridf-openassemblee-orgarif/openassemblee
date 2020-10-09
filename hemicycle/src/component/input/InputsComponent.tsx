@@ -150,8 +150,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     private savePlan = () => {
-        if(this.state.isSaving) {
-            return
+        if (this.state.isSaving) {
+            return;
         }
         this.setState((state) => ({ ...state, isSaving: true }));
         this.props.savePlan(() =>
@@ -160,8 +160,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
     };
 
     private archive = () => {
-        if(this.state.isArchiving) {
-            return
+        if (this.state.isArchiving) {
+            return;
         }
         if (!this.props.archive) {
             throw Errors._62651552();

@@ -32,19 +32,14 @@ setTimeout(() => {
 
 global.loadHemicycle = (props: { planId: any; isProjet: boolean }) => {
     ReactDOM.render(
-        <App
-            planId={props.planId}
-            isProjet={props.isProjet}
-        />,
+        <App planId={props.planId} isProjet={props.isProjet} />,
         document.getElementById('hemicycle-app')
     );
 };
 
-global.loadHemicycleArchive = (props: { archiveId: any; }) => {
+global.loadHemicycleArchive = (props: { archiveId: any }) => {
     ReactDOM.render(
-        <ArchiveDisplayApp
-            archiveId={props.archiveId}
-        />,
+        <ArchiveDisplayApp archiveId={props.archiveId} />,
         document.getElementById('hemicycle-app')
     );
 };
@@ -65,10 +60,10 @@ if (global.devHost) {
             planId: parseInt(planId, 10),
             isProjet: isProjet === 'true',
         });
-    } else if(archiveId) {
+    } else if (archiveId) {
         global.loadHemicycleArchive({
-            archiveId: parseInt(archiveId, 10)
-        })
+            archiveId: parseInt(archiveId, 10),
+        });
     } else {
         ReactDOM.render(
             <div>
