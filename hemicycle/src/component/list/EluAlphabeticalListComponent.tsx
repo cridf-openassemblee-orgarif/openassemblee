@@ -25,6 +25,7 @@ interface Props {
     removeAssociation: (chair: ChairNumber) => void;
     deleteMode: boolean;
     hideAssociations: boolean;
+    hideDemissionnaires: boolean;
 }
 
 export default class EluAlphabeticalListComponent extends React.Component<
@@ -42,7 +43,8 @@ export default class EluAlphabeticalListComponent extends React.Component<
             }))
             .filter(
                 ({ elu, chairNumber }) =>
-                    !this.props.hideAssociations || !chairNumber
+                    (!this.props.hideAssociations || !chairNumber) &&
+                    (!this.props.hideDemissionnaires || elu.actif)
             );
         const byFirstLetter = _.groupBy(
             elusWithChairNumbers,

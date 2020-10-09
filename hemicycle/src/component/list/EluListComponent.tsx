@@ -37,12 +37,14 @@ type DisplayBy = 'groupePolitique' | 'elu';
 
 interface State {
     hideAssociations: boolean;
+    hideDemissionnaires: boolean;
     displayBy: DisplayBy;
 }
 
 export default class EluListComponent extends React.Component<Props, State> {
     public state: State = {
         hideAssociations: false,
+        hideDemissionnaires: true,
         displayBy: 'groupePolitique',
     };
 
@@ -65,6 +67,12 @@ export default class EluListComponent extends React.Component<Props, State> {
             hideAssociations: !state.hideAssociations,
         }));
 
+    private switchDisplayDemissionnaires = () =>
+        this.setState((state) => ({
+            ...state,
+            hideDemissionnaires: !state.hideDemissionnaires,
+        }));
+
     private selectDisplay = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target
             ? (event.target.value as DisplayBy)
@@ -78,7 +86,8 @@ export default class EluListComponent extends React.Component<Props, State> {
     };
 
     render() {
-        const checkboxId = domUid();
+        const checkboxAssociationsId = domUid();
+        const checkboxDemissionnairesId = domUid();
         return (
             <div
                 css={css`
@@ -100,9 +109,10 @@ export default class EluListComponent extends React.Component<Props, State> {
                 <div
                     css={css`
                         padding-top: 6px;
+                        font-size: 14px;
                     `}
                 >
-                    Liste des élus par :{' '}
+                    Liste par :{' '}
                     <select
                         css={css`
                             font-size: 16px;
@@ -115,16 +125,27 @@ export default class EluListComponent extends React.Component<Props, State> {
                         </option>
                         <option value="elu">Élu</option>
                     </select>
+                    <br />
+                    Cacher :
+                    <label htmlFor={checkboxAssociationsId}>
+                        <input
+                            type="checkbox"
+                            id={checkboxAssociationsId}
+                            checked={this.state.hideAssociations}
+                            onChange={this.switchDisplayAssociations}
+                        />{' '}
+                        associations
+                    </label>
+                    <label htmlFor={checkboxDemissionnairesId}>
+                        <input
+                            type="checkbox"
+                            id={checkboxDemissionnairesId}
+                            checked={this.state.hideDemissionnaires}
+                            onChange={this.switchDisplayDemissionnaires}
+                        />{' '}
+                        démissionnaires
+                    </label>
                 </div>
-                <label htmlFor={checkboxId}>
-                    <input
-                        type="checkbox"
-                        id={checkboxId}
-                        checked={this.state.hideAssociations}
-                        onChange={this.switchDisplayAssociations}
-                    />{' '}
-                    Cacher les associations
-                </label>
                 {this.state.displayBy === 'groupePolitique' && (
                     <React.Fragment>
                         {this.props.groupePolitiques.map((gp) => (
@@ -156,17 +177,23 @@ export default class EluListComponent extends React.Component<Props, State> {
                             removeAssociation={this.props.removeAssociation}
                             deleteMode={this.props.deleteMode}
                         />
-                        <GroupePolitiqueComponent
-                            groupePolitiqueNomCourt={'Démissionaires'}
-                            groupePolitiqueCouleur={'black'}
-                            elus={this.props.elusDemissionaires}
-                            associationByEluId={this.props.associationByEluId}
-                            hideAssociations={this.state.hideAssociations}
-                            selectedEluId={this.props.selectedEluId}
-                            updateSelectedEluId={this.props.updateSelectedEluId}
-                            removeAssociation={this.props.removeAssociation}
-                            deleteMode={this.props.deleteMode}
-                        />
+                        {!this.state.hideDemissionnaires && (
+                            <GroupePolitiqueComponent
+                                groupePolitiqueNomCourt={'Démissionaires'}
+                                groupePolitiqueCouleur={'black'}
+                                elus={this.props.elusDemissionaires}
+                                associationByEluId={
+                                    this.props.associationByEluId
+                                }
+                                hideAssociations={this.state.hideAssociations}
+                                selectedEluId={this.props.selectedEluId}
+                                updateSelectedEluId={
+                                    this.props.updateSelectedEluId
+                                }
+                                removeAssociation={this.props.removeAssociation}
+                                deleteMode={this.props.deleteMode}
+                            />
+                        )}
                     </React.Fragment>
                 )}
                 {this.state.displayBy === 'elu' && (
@@ -178,6 +205,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                         removeAssociation={this.props.removeAssociation}
                         deleteMode={this.props.deleteMode}
                         hideAssociations={this.state.hideAssociations}
+                        hideDemissionnaires={this.state.hideDemissionnaires}
                     />
                 )}
             </div>

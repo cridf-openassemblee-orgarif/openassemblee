@@ -4,14 +4,13 @@ import * as React from 'react';
 import { colors } from '../../constants';
 import { SelectedEluSource } from '../App';
 import EluComponent from './EluComponent';
-import { Elu, GroupePolitique } from '../../domain/elu';
+import { Elu } from '../../domain/elu';
 import {
     ChairNumber,
     EluId,
-    GroupePolitiqueId,
     numberifyNominalNumber,
 } from '../../domain/nominal';
-import { Dict, get, getOrNull } from '../../utils';
+import { Dict, getOrNull } from '../../utils';
 import { Association } from '../../domain/hemicycle';
 
 interface Props {
