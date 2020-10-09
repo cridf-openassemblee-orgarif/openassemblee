@@ -7,8 +7,9 @@ export interface Elu {
     civilite: Civilite;
     nom: string;
     prenom: string;
-    groupePolitiqueId: GroupePolitiqueId;
+    groupePolitiqueId?: GroupePolitiqueId;
     shortFonction?: string;
+    actif: Boolean;
 }
 
 export interface GroupePolitique {

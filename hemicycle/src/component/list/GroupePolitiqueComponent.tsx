@@ -15,8 +15,9 @@ import { Dict, get, getOrNull } from '../../utils';
 import { Association } from '../../domain/hemicycle';
 
 interface Props {
-    groupePolitique: GroupePolitique;
-    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
+    groupePolitiqueNomCourt: string;
+    groupePolitiqueCouleur: string;
+    elus: Elu[];
     associationByEluId: Dict<EluId, Association>;
     hideAssociations: boolean;
     selectedEluId?: EluId;
@@ -35,7 +36,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
         const elusWithChairNumbers: {
             elu: Elu;
             chairNumber: ChairNumber | undefined;
-        }[] = get(this.props.elusByGroupeId, this.props.groupePolitique.id)
+        }[] = this.props.elus
             .map((elu: Elu) => ({
                 elu,
                 chairNumber: getOrNull(this.props.associationByEluId, elu.id)
@@ -58,7 +59,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                 <div
                     css={css`
                         height: 18px;
-                        background: ${this.props.groupePolitique.couleur};
+                        background: ${this.props.groupePolitiqueCouleur};
                         padding-left: 20px;
                     `}
                 >
@@ -70,12 +71,12 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
                             padding: 0 10px;
                         `}
                     >
-                        {this.props.groupePolitique.nomCourt}
+                        {this.props.groupePolitiqueNomCourt}
                     </span>
                 </div>
                 <div
                     css={css`
-                        border: 4px solid ${this.props.groupePolitique.couleur};
+                        border: 4px solid ${this.props.groupePolitiqueCouleur};
                         border-top: 0;
                         padding: 10px;
                     `}

@@ -15,10 +15,9 @@ interface Props {
 export default class EluAutocompleteItem extends React.PureComponent<Props> {
     public render() {
         const elu = this.props.elu;
-        const groupePolitique = get(
-            this.props.groupePolitiqueById,
-            elu.groupePolitiqueId
-        );
+        const groupePolitique = elu.groupePolitiqueId
+            ? get(this.props.groupePolitiqueById, elu.groupePolitiqueId)
+            : undefined;
         const couleurGroupePolitique = groupePolitique
             ? groupePolitique.couleur
             : '000';

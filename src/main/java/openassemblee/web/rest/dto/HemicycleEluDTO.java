@@ -9,6 +9,7 @@ public class HemicycleEluDTO {
     private String prenom;
     private Long groupePolitiqueId;
     private String shortFonction;
+    private Boolean actif;
 
     public Long getId() {
         return id;
@@ -56,5 +57,13 @@ public class HemicycleEluDTO {
 
     public void setShortFonction(String shortFonction) {
         this.shortFonction = shortFonction;
+    }
+
+    public Boolean getActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
     }
 }

@@ -33,8 +33,6 @@ import {
 } from '../domain/ws';
 import * as ReactDomServer from 'react-dom/server';
 
-const nonGroupePolitiqueId = instanciateNominalNumber<GroupePolitiqueId>(-1);
-
 export const associationMaps = (associations: Association[]) => {
     const associationByChair: Dict<ChairNumber, Association> = {};
     const associationByEluId: Dict<EluId, Association> = {};
@@ -51,6 +49,8 @@ export const rawElusMaps = (rawElus: {
 }) => {
     const eluById: Dict<EluId, Elu> = {};
     const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
+    const elusSansGroupe: Elu[] = [];
+    const elusDemissionaires: Elu[] = [];
     const groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique> = {};
     rawElus.elus.forEach((e) => {
         set(eluById, e.id, e);
@@ -61,7 +61,13 @@ export const rawElusMaps = (rawElus: {
     });
     // FIXMENOW filtrer les demissionaires ? ou et comment
     rawElus.elus.forEach((e) => {
-        get(elusByGroupeId, e.groupePolitiqueId).push(e);
+        if (!e.actif) {
+            elusDemissionaires.push(e);
+        } else if (!e.groupePolitiqueId) {
+            elusSansGroupe.push(e);
+        } else {
+            get(elusByGroupeId, e.groupePolitiqueId).push(e);
+        }
     });
     // elus dans ordre alphabétique
     Object.keys(elusByGroupeId).forEach((idAsString: string) => {
@@ -80,6 +86,8 @@ export const rawElusMaps = (rawElus: {
         eluById,
         elusByGroupeId,
         groupePolitiqueById,
+        elusDemissionaires,
+        elusSansGroupe,
     };
 };
 
@@ -88,10 +96,9 @@ const convertElu = (dto: EluListDTO): Elu => ({
     civilite: dto.elu.civilite,
     nom: dto.elu.nom,
     prenom: dto.elu.prenom,
-    groupePolitiqueId: dto.groupePolitique
-        ? dto.groupePolitique.id
-        : nonGroupePolitiqueId,
+    groupePolitiqueId: dto.groupePolitique ? dto.groupePolitique.id : undefined,
     shortFonction: dto.shortFonction,
+    actif: !dto.elu.dateDemission,
 });
 
 const convertGroupePolitique = (
@@ -134,12 +141,14 @@ interface State {
         associations: Association[];
         configurationRendu: HemicycleConfigurationRendu;
     };
-    maps: {
+    data: {
         eluById?: Dict<EluId, Elu>;
         elusByGroupeId?: Dict<GroupePolitiqueId, Elu[]>;
         groupePolitiqueById?: Dict<GroupePolitiqueId, GroupePolitique>;
         associationByChair?: Dict<ChairNumber, Association>;
         associationByEluId?: Dict<EluId, Association>;
+        elusDemissionaires?: Elu[];
+        elusSansGroupe?: Elu[];
     };
     selection: Selection;
     config: {
@@ -158,12 +167,14 @@ export default class App extends React.PureComponent<Props, State> {
     state: State = {
         rawElus: undefined,
         hemicycle: undefined,
-        maps: {
+        data: {
             eluById: undefined,
             elusByGroupeId: undefined,
             groupePolitiqueById: undefined,
             associationByChair: undefined,
             associationByEluId: undefined,
+            elusDemissionaires: undefined,
+            elusSansGroupe: undefined,
         },
         selection: {
             selectedChairNumber: undefined,
@@ -240,21 +251,7 @@ export default class App extends React.PureComponent<Props, State> {
                 }
             });
         // tri par ordre alphabétique
-        const groupePolitiques = gps.sort(
-            alphabeticSort((gp: GroupePolitique) => gp.nom)
-        );
-        // FIXMENOW doc : potentiellement relou mais pas censé avoir d'élu sans groupe !
-        // ou reprendre les couleurs du groupe"sans groupe" effetif
-        // dans la conf de l'hemicycle =)))
-        // et redescendre le groupe avec l'hemicycle pour être sur de l'avoir
-        const nonGroupe: GroupePolitique = {
-            id: nonGroupePolitiqueId,
-            nom: 'Sans groupe',
-            nomCourt: 'Sans groupe',
-            couleur: colors.black,
-        };
-        groupePolitiques.unshift(nonGroupe);
-        return groupePolitiques;
+        return gps.sort(alphabeticSort((gp: GroupePolitique) => gp.nom));
     };
 
     private updateElusMaps = () =>
@@ -266,14 +263,18 @@ export default class App extends React.PureComponent<Props, State> {
                 eluById,
                 elusByGroupeId,
                 groupePolitiqueById,
+                elusDemissionaires,
+                elusSansGroupe,
             } = rawElusMaps(state.rawElus);
             return {
                 ...state,
-                maps: {
-                    ...state.maps,
+                data: {
+                    ...state.data,
                     eluById,
                     elusByGroupeId,
                     groupePolitiqueById,
+                    elusDemissionaires,
+                    elusSansGroupe,
                 },
             };
         });
@@ -288,8 +289,8 @@ export default class App extends React.PureComponent<Props, State> {
             );
             return {
                 ...state,
-                maps: {
-                    ...state.maps,
+                data: {
+                    ...state.data,
                     associationByChair,
                     associationByEluId,
                 },
@@ -408,9 +409,11 @@ export default class App extends React.PureComponent<Props, State> {
         if (
             !this.state.hemicycle ||
             !this.state.rawElus ||
-            !this.state.maps.eluById ||
-            !this.state.maps.groupePolitiqueById ||
-            !this.state.maps.associationByChair
+            !this.state.data.eluById ||
+            !this.state.data.groupePolitiqueById ||
+            !this.state.data.associationByChair ||
+            !this.state.data.elusDemissionaires ||
+            !this.state.data.elusSansGroupe
         ) {
             throw Errors._affb4796();
         }
@@ -425,10 +428,10 @@ export default class App extends React.PureComponent<Props, State> {
             <Hemicycle
                 width={1600}
                 height={1000}
-                eluById={this.state.maps.eluById}
+                eluById={this.state.data.eluById}
                 groupePolitiques={this.state.rawElus.groupePolitiques}
-                groupePolitiqueById={this.state.maps.groupePolitiqueById}
-                associationByChair={this.state.maps.associationByChair}
+                groupePolitiqueById={this.state.data.groupePolitiqueById}
+                associationByChair={this.state.data.associationByChair}
                 configurationRendu={this.state.hemicycle.configurationRendu}
                 selectedChairNumber={undefined}
                 updateSelectedChairNumber={this.updateSelectedChairNumber}
@@ -554,11 +557,13 @@ export default class App extends React.PureComponent<Props, State> {
 
                             {this.state.rawElus &&
                                 this.state.hemicycle &&
-                                this.state.maps.eluById &&
-                                this.state.maps.groupePolitiqueById &&
-                                this.state.maps.associationByChair &&
-                                this.state.maps.elusByGroupeId &&
-                                this.state.maps.associationByEluId && (
+                                this.state.data.eluById &&
+                                this.state.data.groupePolitiqueById &&
+                                this.state.data.associationByChair &&
+                                this.state.data.elusByGroupeId &&
+                                this.state.data.associationByEluId &&
+                                this.state.data.elusDemissionaires &&
+                                this.state.data.elusSansGroupe && (
                                     <React.Fragment>
                                         <div
                                             css={css`
@@ -576,7 +581,7 @@ export default class App extends React.PureComponent<Props, State> {
                                             >
                                                 <InputsComponent
                                                     groupePolitiqueById={
-                                                        this.state.maps
+                                                        this.state.data
                                                             .groupePolitiqueById
                                                     }
                                                     selection={
@@ -586,10 +591,10 @@ export default class App extends React.PureComponent<Props, State> {
                                                         this.state.rawElus.elus
                                                     }
                                                     eluById={
-                                                        this.state.maps.eluById
+                                                        this.state.data.eluById
                                                     }
                                                     associationByChair={
-                                                        this.state.maps
+                                                        this.state.data
                                                             .associationByChair
                                                     }
                                                     updateSelectedChairNumber={
@@ -628,18 +633,18 @@ export default class App extends React.PureComponent<Props, State> {
                                             </div>
                                             <Hemicycle
                                                 eluById={
-                                                    this.state.maps.eluById
+                                                    this.state.data.eluById
                                                 }
                                                 groupePolitiques={
                                                     this.state.rawElus
                                                         .groupePolitiques
                                                 }
                                                 groupePolitiqueById={
-                                                    this.state.maps
+                                                    this.state.data
                                                         .groupePolitiqueById
                                                 }
                                                 associationByChair={
-                                                    this.state.maps
+                                                    this.state.data
                                                         .associationByChair
                                                 }
                                                 width={hemicycleWidth}
@@ -685,15 +690,23 @@ export default class App extends React.PureComponent<Props, State> {
                                                         .groupePolitiques
                                                 }
                                                 associationByEluId={
-                                                    this.state.maps
+                                                    this.state.data
                                                         .associationByEluId
                                                 }
                                                 elusByGroupeId={
-                                                    this.state.maps
+                                                    this.state.data
                                                         .elusByGroupeId
                                                 }
+                                                elusDemissionaires={
+                                                    this.state.data
+                                                        .elusDemissionaires
+                                                }
+                                                elusSansGroupe={
+                                                    this.state.data
+                                                        .elusSansGroupe
+                                                }
                                                 eluById={
-                                                    this.state.maps.eluById
+                                                    this.state.data.eluById
                                                 }
                                                 associations={
                                                     this.state.hemicycle

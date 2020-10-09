@@ -113,7 +113,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                         const elu = association
                             ? get(this.props.eluById, association.eluId)
                             : undefined;
-                        const groupePolitique = elu
+                        const groupePolitique = elu?.groupePolitiqueId
                             ? get(
                                   this.props.groupePolitiqueById,
                                   elu.groupePolitiqueId

@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import GroupePolitiqueComponent from './GroupePolitiqueComponent';
-import { Dict, domUid } from '../../utils';
+import { Dict, domUid, get } from '../../utils';
 import EluAlphabeticalListComponent from './EluAlphabeticalListComponent';
 import LastAssociationsComponent from './LastAssociationsComponent';
 import {
@@ -19,6 +19,8 @@ interface Props {
     eluById: Dict<EluId, Elu>;
     groupePolitiques: GroupePolitique[];
     elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
+    elusDemissionaires: Elu[];
+    elusSansGroupe: Elu[];
     elus: Elu[];
     associationByEluId: Dict<EluId, Association>;
     associations: Association[];
@@ -123,12 +125,30 @@ export default class EluListComponent extends React.Component<Props, State> {
                     />{' '}
                     Cacher les associations
                 </label>
-                {this.state.displayBy === 'groupePolitique' &&
-                    this.props.groupePolitiques.map((gp) => (
+                {this.state.displayBy === 'groupePolitique' && (
+                    <React.Fragment>
+                        {this.props.groupePolitiques.map((gp) => (
+                            <GroupePolitiqueComponent
+                                key={numberifyNominalNumber(gp.id)}
+                                groupePolitiqueNomCourt={gp.nomCourt}
+                                groupePolitiqueCouleur={gp.couleur}
+                                elus={get(this.props.elusByGroupeId, gp.id)}
+                                associationByEluId={
+                                    this.props.associationByEluId
+                                }
+                                hideAssociations={this.state.hideAssociations}
+                                selectedEluId={this.props.selectedEluId}
+                                updateSelectedEluId={
+                                    this.props.updateSelectedEluId
+                                }
+                                removeAssociation={this.props.removeAssociation}
+                                deleteMode={this.props.deleteMode}
+                            />
+                        ))}
                         <GroupePolitiqueComponent
-                            key={numberifyNominalNumber(gp.id)}
-                            groupePolitique={gp}
-                            elusByGroupeId={this.props.elusByGroupeId}
+                            groupePolitiqueNomCourt={'Sans groupe'}
+                            groupePolitiqueCouleur={'black'}
+                            elus={this.props.elusSansGroupe}
                             associationByEluId={this.props.associationByEluId}
                             hideAssociations={this.state.hideAssociations}
                             selectedEluId={this.props.selectedEluId}
@@ -136,7 +156,19 @@ export default class EluListComponent extends React.Component<Props, State> {
                             removeAssociation={this.props.removeAssociation}
                             deleteMode={this.props.deleteMode}
                         />
-                    ))}
+                        <GroupePolitiqueComponent
+                            groupePolitiqueNomCourt={'Démissionaires'}
+                            groupePolitiqueCouleur={'black'}
+                            elus={this.props.elusDemissionaires}
+                            associationByEluId={this.props.associationByEluId}
+                            hideAssociations={this.state.hideAssociations}
+                            selectedEluId={this.props.selectedEluId}
+                            updateSelectedEluId={this.props.updateSelectedEluId}
+                            removeAssociation={this.props.removeAssociation}
+                            deleteMode={this.props.deleteMode}
+                        />
+                    </React.Fragment>
+                )}
                 {this.state.displayBy === 'elu' && (
                     <EluAlphabeticalListComponent
                         elus={this.props.elus}
