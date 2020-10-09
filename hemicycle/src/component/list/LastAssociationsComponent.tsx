@@ -66,7 +66,7 @@ export default class LastAssociationsComponent extends React.Component<
                             padding-left: 4px;
                         `}
                     >
-                        Dernières associations
+                        Dernier placements
                     </div>
                     <div
                         css={css`

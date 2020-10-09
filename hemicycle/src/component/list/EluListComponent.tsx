@@ -134,7 +134,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                             checked={this.state.hideAssociations}
                             onChange={this.switchDisplayAssociations}
                         />{' '}
-                        associations
+                        déjà placés
                     </label>
                     <label htmlFor={checkboxDemissionnairesId}>
                         <input
