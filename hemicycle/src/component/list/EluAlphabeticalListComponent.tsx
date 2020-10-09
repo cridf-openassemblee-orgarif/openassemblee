@@ -10,7 +10,7 @@ import {
     EluId,
     numberifyNominalNumber,
 } from '../../domain/nominal';
-import { Dict, getMaybe } from '../../utils';
+import { Dict, getOrNull } from '../../utils';
 import { Association } from '../../domain/hemicycle';
 import { Elu } from '../../domain/elu';
 
@@ -37,7 +37,7 @@ export default class EluAlphabeticalListComponent extends React.Component<
         }[] = this.props.elus
             .map((elu: Elu) => ({
                 elu,
-                chairNumber: getMaybe(this.props.associationByEluId, elu.id)
+                chairNumber: getOrNull(this.props.associationByEluId, elu.id)
                     ?.chairNumber,
             }))
             .filter(

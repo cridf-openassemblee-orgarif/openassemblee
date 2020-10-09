@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors } from '../constants';
-import { assertUnreachable, Dict, domUid, get, getMaybe } from '../utils';
+import { assertUnreachable, Dict, domUid, get, getOrNull } from '../utils';
 import { Civilite, Elu, GroupePolitique } from '../domain/elu';
 import {
     ChairNumber,
@@ -106,7 +106,7 @@ export default class Hemicycle extends React.PureComponent<Props, State> {
                     {/*    stroke={colors.red}*/}
                     {/*/>*/}
                     {this.props.configurationRendu.chairs.map((chair) => {
-                        const association = getMaybe(
+                        const association = getOrNull(
                             this.props.associationByChair,
                             chair.number
                         );

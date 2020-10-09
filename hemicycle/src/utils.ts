@@ -21,7 +21,7 @@ export type Dict<K extends NominalNumber<any> | NominalString<any>, T> = Record<
     T | undefined
 >;
 
-export const getMaybe = <K extends NominalNumber<any> | NominalString<any>, T>(
+export const getOrNull = <K extends NominalNumber<any> | NominalString<any>, T>(
     dict: Dict<K, T>,
     key: K
 ): T | undefined => dict[key];
@@ -30,7 +30,7 @@ export const get = <K extends NominalNumber<any> | NominalString<any>, T>(
     dict: Dict<K, T>,
     key: K
 ): T => {
-    const r = getMaybe(dict, key);
+    const r = getOrNull(dict, key);
     if (!r) {
         throw new Error(`Could not find item ${key}`);
     }

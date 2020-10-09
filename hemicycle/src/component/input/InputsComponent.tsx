@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 import { colors } from '../../constants';
-import { Dict, domUid, getMaybe } from '../../utils';
+import { Dict, domUid, getOrNull } from '../../utils';
 import EluAutocomplete from './EluAutocomplete';
 import { SelectedEluSource, Selection } from '../App';
 import DelayedChangeInput from './DelayedChangeInput';
@@ -73,7 +73,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
         const newChairNumber = instanciateNominalNumber<ChairNumber>(
             numberifyNominalNumber(chairNumber) + 1
         );
-        if (getMaybe(this.props.associationByChair, newChairNumber)) {
+        if (getOrNull(this.props.associationByChair, newChairNumber)) {
             return this.increment(newChairNumber);
         } else if (
             numberifyNominalNumber(newChairNumber) >

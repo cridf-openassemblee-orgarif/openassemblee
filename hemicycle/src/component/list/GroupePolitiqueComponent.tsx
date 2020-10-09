@@ -11,7 +11,7 @@ import {
     GroupePolitiqueId,
     numberifyNominalNumber,
 } from '../../domain/nominal';
-import { Dict, get, getMaybe } from '../../utils';
+import { Dict, get, getOrNull } from '../../utils';
 import { Association } from '../../domain/hemicycle';
 
 interface Props {
@@ -38,7 +38,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
         }[] = get(this.props.elusByGroupeId, this.props.groupePolitique.id)
             .map((elu: Elu) => ({
                 elu,
-                chairNumber: getMaybe(this.props.associationByEluId, elu.id)
+                chairNumber: getOrNull(this.props.associationByEluId, elu.id)
                     ?.chairNumber,
             }))
             .filter(
