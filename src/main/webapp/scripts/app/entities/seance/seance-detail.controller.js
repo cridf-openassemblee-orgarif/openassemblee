@@ -129,14 +129,7 @@ angular.module('openassembleeApp')
     $scope.$on('$destroy', unsubscribe);
 
     $scope.printArchive = function(svgPlan) {
-        var url = 'data:image/svg+xml;charset=utf-8,' + svgPlan;
-        var image = new Image();
-        image.src = url;
-        var printWindow = window.open('', 'PrintMap');
-        printWindow.document.writeln(svgPlan);
-        printWindow.document.writeln('<style>@page {size: A3 landscape;}</style>');
-        printWindow.document.close();
-        printWindow.print();
+        window.printPlan(svgPlan)
     }
 
 });

@@ -29,13 +29,16 @@ interface Props {
     isProjet: boolean;
 }
 
-export interface MapData {
+export interface HemicycleMapData {
     eluById: Dict<EluId, Elu>;
-    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
     groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
+    associationByChair: Dict<ChairNumber, Association>;
+}
+
+export interface MapData extends HemicycleMapData {
+    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
     elusDemissionaires: Elu[];
     elusSansGroupe: Elu[];
-    associationByChair: Dict<ChairNumber, Association>;
     associationByEluId: Dict<EluId, Association>;
 }
 
@@ -323,6 +326,17 @@ export default class App extends React.PureComponent<Props, State> {
         </div>
     );
 
+    private print = () => {
+        if (!this.state.rawElus || !this.state.hemicycle || !this.state.data) {
+            throw Errors._b7d84f98();
+        }
+        injector().archiveService.printPlanFromData(
+            this.state.rawElus,
+            this.state.hemicycle,
+            this.state.data
+        );
+    };
+
     public render() {
         return (
             <SizingContainer
@@ -436,6 +450,7 @@ export default class App extends React.PureComponent<Props, State> {
                                                             ? this.archive
                                                             : undefined
                                                     }
+                                                    print={this.print}
                                                 />
                                             </div>
                                             <Hemicycle

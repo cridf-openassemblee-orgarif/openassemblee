@@ -4,6 +4,7 @@ declare namespace NodeJS {
         devHost: boolean | undefined;
         loadHemicycle: (props: { planId: any; isProjet: boolean }) => void;
         loadHemicycleArchive: (props: { archiveId: any }) => void;
+        printPlan: (svgPlan: string) => void;
         saveArchive: (props: { planId: any; then: () => void }) => void;
         activateDebug: () => void;
     }

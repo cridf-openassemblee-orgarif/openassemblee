@@ -1,24 +1,23 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { PlanId } from '../../domain/nominal';
 import { injector } from '../../service/injector';
 import { urls } from '../../constants';
 import { HemicycleArchiveCreationDTO } from '../../domain/ws';
 import { HemicyclePlanAssociations } from '../../domain/hemicycle';
 import Hemicycle from '../Hemicycle';
-import { ReactElement } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { RawElus } from './DataService';
-import { MapData } from '../App';
+import { HemicycleMapData, MapData } from '../App';
+import { Errors } from './errors';
 
 export class ArchiveService {
-    saveArchive = (
-        planId: PlanId,
+    private svg = (
         rawElus: RawElus,
         hemicycle: HemicyclePlanAssociations,
-        mapData: MapData,
-        then: () => void
+        mapData: HemicycleMapData
     ) => {
         const renderReact = (svgElement: ReactElement) => {
             const svg = ReactDomServer.renderToString(svgElement);
@@ -44,6 +43,54 @@ export class ArchiveService {
                 printMode={true}
             />
         );
+        return svg;
+    };
+
+    printPlan = (svgPlan: string) => {
+        const url = 'data:image/svg+xml;charset=utf-8,' + svgPlan;
+        const image = new Image();
+        image.src = url;
+        const printWindow = window.open('', 'PrintMap');
+        if (!printWindow) {
+            throw Errors._fec8a42c();
+        }
+        printWindow.document.writeln(svgPlan);
+        printWindow.document.writeln(
+            '<style>@page {size: A3 landscape;}</style>'
+        );
+        printWindow.document.close();
+        printWindow.print();
+    };
+
+    printPlanFromData = (
+        rawElus: RawElus,
+        hemicycle: HemicyclePlanAssociations,
+        mapData: HemicycleMapData
+    ) => {
+        const svgPlan = this.svg(rawElus, hemicycle, mapData);
+        const url = 'data:image/svg+xml;charset=utf-8,' + svgPlan;
+        const image = new Image();
+        image.src = url;
+        const printWindow = window.open('', 'PrintMap');
+        if (!printWindow) {
+            throw Errors._fec8a42c();
+        }
+        printWindow.document.writeln(svgPlan);
+        printWindow.document.writeln(
+            '<style>@page {size: A3 landscape;}</style>'
+        );
+        printWindow.document.close();
+        printWindow.print();
+    };
+
+    saveArchive = (
+        planId: PlanId,
+        rawElus: RawElus,
+        hemicycle: HemicyclePlanAssociations,
+        mapData: MapData,
+        then: () => void
+    ) => {
+        const svg = this.svg(rawElus, hemicycle, mapData);
         const dto: HemicycleArchiveCreationDTO = {
             planId: planId,
             data: {

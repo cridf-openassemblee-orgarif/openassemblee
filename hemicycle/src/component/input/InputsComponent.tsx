@@ -21,6 +21,34 @@ import { Association } from '../../domain/hemicycle';
 
 export const inputComponentHeight = 70;
 
+export const PrintButton = (props: { print: () => void }) => (
+    <div
+        css={css`
+            flex: 2;
+            padding-left: 4px;
+        `}
+    >
+        <div
+            css={css`
+                background: ${colors.blueBackground2};
+                border: 1px solid ${colors.blueborder2};
+                color: ${colors.blueborder2};
+                height: 36px;
+                margin: 2px;
+                border-radius: 2px;
+                padding-top: 9px;
+                text-align: center;
+                font-size: 12px;
+                cursor: pointer;
+                font-weight: bold;
+            `}
+            onClick={props.print}
+        >
+            Imprimer
+        </div>
+    </div>
+);
+
 interface Props {
     selection: Selection;
     elus: Elu[];
@@ -39,6 +67,7 @@ interface Props {
     switchHideAssociations: () => void;
     savePlan: (then: () => void) => void;
     archive?: (then: () => void) => void;
+    print: () => void;
 }
 
 interface State {
@@ -328,31 +357,7 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             </div>
                         </div>
                     )}
-                    <div
-                        css={css`
-                            display: none;
-                            flex: 2;
-                            padding-left: 4px;
-                        `}
-                    >
-                        <div
-                            css={css`
-                                background: ${colors.blueBackground2};
-                                border: 1px solid ${colors.blueborder2};
-                                color: ${colors.blueborder2};
-                                height: 36px;
-                                margin: 2px;
-                                border-radius: 2px;
-                                padding-top: 9px;
-                                text-align: center;
-                                font-size: 12px;
-                                cursor: pointer;
-                                font-weight: bold;
-                            `}
-                        >
-                            Figer
-                        </div>
-                    </div>
+                    <PrintButton print={this.props.print} />
                 </div>
                 <div>
                     <label

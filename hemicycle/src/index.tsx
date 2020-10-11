@@ -65,6 +65,10 @@ global.loadHemicycleArchive = (props: { archiveId: any }) => {
     );
 };
 
+global.printPlan = (svgPlan: string) => {
+    injector().archiveService.printPlan(svgPlan);
+};
+
 global.activateDebug = () => {
     options.debug = true;
     injector().applicationEventBus.publish('activate_debug');
