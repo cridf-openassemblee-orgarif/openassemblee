@@ -11,6 +11,7 @@ import openassemblee.service.dto.SeanceDTO;
 import openassemblee.service.util.EluNomComparator;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
+import org.apache.commons.lang3.tuple.Pair;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

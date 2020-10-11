@@ -1,7 +1,7 @@
 import { ChairNumber, EluId } from './nominal';
 import { HemicycleConfigurationRendu } from './assemblee';
 
-export interface HemicyclePlanAssociationsFromWs {
+export interface HemicyclePlanAssociations {
     associations: Association[];
     configurationRendu: HemicycleConfigurationRendu;
 }

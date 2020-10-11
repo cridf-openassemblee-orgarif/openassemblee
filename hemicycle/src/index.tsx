@@ -30,6 +30,27 @@ setTimeout(() => {
     });
 }, 0);
 
+global.saveArchive = (props: { planId: any; then: () => void }) => {
+    injector()
+        .dataService.fetchData(props.planId)
+        .then((d) => {
+            const maps1 = injector().dataService.rawElusMaps(d.rawElus);
+            const maps2 = injector().dataService.associationMaps(
+                d.hemicycle.associations
+            );
+            injector().archiveService.saveArchive(
+                props.planId,
+                d.rawElus,
+                d.hemicycle,
+                {
+                    ...maps1,
+                    ...maps2,
+                },
+                props.then
+            );
+        });
+};
+
 global.loadHemicycle = (props: { planId: any; isProjet: boolean }) => {
     ReactDOM.render(
         <App planId={props.planId} isProjet={props.isProjet} />,

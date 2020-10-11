@@ -112,24 +112,20 @@ public class SeanceService {
         seance.getSeance().setPresenceElus(pes);
         Seance result = seanceRepository.save(seance.getSeance());
         seanceSearchRepository.save(result);
-        if (seance.getSeancePlanId() != null || seance.getProjetPlanId() != null) {
+        if (seance.getProjetPlanId() != null) {
             HemicyclePlan hemicyclePlan = new HemicyclePlan();
             ZonedDateTime now = Instant.now().atZone(parisZoneId);
             hemicyclePlan.setLabel("Plan de la séance " + seance.getSeance().getId());
             hemicyclePlan.setSeance(seance.getSeance());
             hemicyclePlan.setCreationDate(now);
             hemicyclePlan.setLastModificationDate(now);
-            if (seance.getSeancePlanId() != null) {
-                Seance s = seanceRepository.findOne(seance.getSeancePlanId());
-                HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(s);
-                hemicyclePlan.setConfiguration(hp.getConfiguration());
-                hemicyclePlan.setJsonPlan(hp.getJsonPlan());
-            } else if (seance.getProjetPlanId() != null) {
+            if (seance.getProjetPlanId() != null) {
                 HemicyclePlan hp = hemicyclePlanRepository.findOne(seance.getProjetPlanId());
                 hemicyclePlan.setConfiguration(hp.getConfiguration());
                 hemicyclePlan.setJsonPlan(hp.getJsonPlan());
             }
-            hemicyclePlanRepository.save(hemicyclePlan);
+            HemicyclePlan hemiResult = hemicyclePlanRepository.save(hemicyclePlan);
+            result.setPlanId(hemiResult.getId());
         }
         return result;
     }

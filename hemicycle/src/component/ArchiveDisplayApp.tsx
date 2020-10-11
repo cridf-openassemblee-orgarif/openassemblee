@@ -16,7 +16,6 @@ import { HemicycleConfigurationRendu } from '../domain/assemblee';
 import { injector } from '../service/injector';
 import { urls } from '../constants';
 import { HemicycleArchiveDataWithConfigurationDTO } from '../domain/ws';
-import { associationMaps, rawElusMaps } from './App';
 
 interface Props {
     archiveId: ArchiveId;
@@ -58,10 +57,13 @@ export default class ArchiveDisplayApp extends React.PureComponent<
                     elus: r.data.elus,
                     groupePolitiques: r.data.groupePolitiques,
                 };
-                const { eluById, groupePolitiqueById } = rawElusMaps(rawElus);
-                const { associationByChair } = associationMaps(
-                    r.data.associations
-                );
+                const {
+                    eluById,
+                    groupePolitiqueById,
+                } = injector().dataService.rawElusMaps(rawElus);
+                const {
+                    associationByChair,
+                } = injector().dataService.associationMaps(r.data.associations);
                 this.setState((state) => ({
                     rawElus,
                     hemicycle: {

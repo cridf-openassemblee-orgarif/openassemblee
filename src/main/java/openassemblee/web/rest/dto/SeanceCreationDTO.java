@@ -8,7 +8,6 @@ public class SeanceCreationDTO implements Serializable {
 
     private Seance seance;
     private Long projetPlanId;
-    private Long seancePlanId;
 
     public Seance getSeance() {
         return seance;
@@ -26,11 +25,4 @@ public class SeanceCreationDTO implements Serializable {
         this.projetPlanId = projetPlanId;
     }
 
-    public Long getSeancePlanId() {
-        return seancePlanId;
-    }
-
-    public void setSeancePlanId(Long seancePlanId) {
-        this.seancePlanId = seancePlanId;
-    }
 }

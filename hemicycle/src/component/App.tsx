@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { injector } from '../service/injector';
 import SizingContainer from './util/SizingContainer';
 import Hemicycle from './Hemicycle';
@@ -14,116 +13,14 @@ import {
     ChairNumber,
     EluId,
     GroupePolitiqueId,
-    instanciateNominalNumber,
     PlanId,
 } from '../domain/nominal';
-import { Dict, get, set } from '../utils';
+import { Dict } from '../utils';
 import { Errors } from './util/errors';
-import {
-    Association,
-    HemicyclePlanAssociationsFromWs,
-} from '../domain/hemicycle';
-import { HemicycleConfigurationRendu } from '../domain/assemblee';
+import { Association, HemicyclePlanAssociations } from '../domain/hemicycle';
 import LoadingIcon from './util/LoadingIcon';
-import {
-    EluListDTO,
-    GroupePolitiqueFromWs,
-    HemicycleArchiveCreationDTO,
-    HemicyclePlanUpdateDTO,
-} from '../domain/ws';
-import * as ReactDomServer from 'react-dom/server';
-
-export const associationMaps = (associations: Association[]) => {
-    const associationByChair: Dict<ChairNumber, Association> = {};
-    const associationByEluId: Dict<EluId, Association> = {};
-    associations.forEach((a) => {
-        set(associationByChair, a.chairNumber, a);
-        set(associationByEluId, a.eluId, a);
-    });
-    return { associationByChair, associationByEluId };
-};
-
-export const rawElusMaps = (rawElus: {
-    elus: Elu[];
-    groupePolitiques: GroupePolitique[];
-}) => {
-    const eluById: Dict<EluId, Elu> = {};
-    const elusByGroupeId: Dict<GroupePolitiqueId, Elu[]> = {};
-    const elusSansGroupe: Elu[] = [];
-    const elusDemissionaires: Elu[] = [];
-    const groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique> = {};
-    rawElus.elus.forEach((e) => {
-        set(eluById, e.id, e);
-    });
-    rawElus.groupePolitiques.forEach((gp) => {
-        set(elusByGroupeId, gp.id, []);
-        set(groupePolitiqueById, gp.id, gp);
-    });
-    // FIXMENOW filtrer les demissionaires ? ou et comment
-    rawElus.elus.forEach((e) => {
-        if (!e.actif) {
-            elusDemissionaires.push(e);
-        } else if (!e.groupePolitiqueId) {
-            elusSansGroupe.push(e);
-        } else {
-            get(elusByGroupeId, e.groupePolitiqueId).push(e);
-        }
-    });
-    // elus dans ordre alphabétique
-    Object.keys(elusByGroupeId).forEach((idAsString: string) => {
-        const gpId = instanciateNominalNumber<GroupePolitiqueId>(
-            parseInt(idAsString)
-        );
-        set(
-            elusByGroupeId,
-            gpId,
-            get(elusByGroupeId, gpId).sort(
-                alphabeticSort((elu: Elu) => elu.nom)
-            )
-        );
-    });
-    return {
-        eluById,
-        elusByGroupeId,
-        groupePolitiqueById,
-        elusDemissionaires,
-        elusSansGroupe,
-    };
-};
-
-const convertElu = (dto: EluListDTO): Elu => ({
-    id: dto.elu.id,
-    civilite: dto.elu.civilite,
-    nom: dto.elu.nom,
-    prenom: dto.elu.prenom,
-    groupePolitiqueId: dto.groupePolitique ? dto.groupePolitique.id : undefined,
-    shortFonction: dto.shortFonction,
-    actif: !dto.elu.dateDemission,
-});
-
-const convertGroupePolitique = (
-    gp: GroupePolitiqueFromWs
-): GroupePolitique => ({
-    id: gp.id,
-    nom: gp.nom,
-    nomCourt: gp.nomCourt,
-    couleur: '#' + gp.couleur,
-});
-
-const alphabeticSort = (map: (item: any) => string) => (
-    first: any,
-    second: any
-) => {
-    const a = map(first);
-    const b = map(second);
-    if (a > b) {
-        return 1;
-    }
-    if (b > a) {
-        return -1;
-    }
-    return 0;
-};
+import { HemicyclePlanUpdateDTO } from '../domain/ws';
+import { RawElus } from './util/DataService';
 
 export type SelectedEluSource = 'input' | 'list';
 
@@ -132,24 +29,20 @@ interface Props {
     isProjet: boolean;
 }
 
+export interface MapData {
+    eluById: Dict<EluId, Elu>;
+    elusByGroupeId: Dict<GroupePolitiqueId, Elu[]>;
+    groupePolitiqueById: Dict<GroupePolitiqueId, GroupePolitique>;
+    elusDemissionaires: Elu[];
+    elusSansGroupe: Elu[];
+    associationByChair: Dict<ChairNumber, Association>;
+    associationByEluId: Dict<EluId, Association>;
+}
+
 interface State {
-    rawElus?: {
-        elus: Elu[];
-        groupePolitiques: GroupePolitique[];
-    };
-    hemicycle?: {
-        associations: Association[];
-        configurationRendu: HemicycleConfigurationRendu;
-    };
-    data: {
-        eluById?: Dict<EluId, Elu>;
-        elusByGroupeId?: Dict<GroupePolitiqueId, Elu[]>;
-        groupePolitiqueById?: Dict<GroupePolitiqueId, GroupePolitique>;
-        associationByChair?: Dict<ChairNumber, Association>;
-        associationByEluId?: Dict<EluId, Association>;
-        elusDemissionaires?: Elu[];
-        elusSansGroupe?: Elu[];
-    };
+    rawElus?: RawElus;
+    hemicycle?: HemicyclePlanAssociations;
+    data?: MapData;
     selection: Selection;
     config: {
         hideAssociationsChairs: boolean;
@@ -167,15 +60,7 @@ export default class App extends React.PureComponent<Props, State> {
     state: State = {
         rawElus: undefined,
         hemicycle: undefined,
-        data: {
-            eluById: undefined,
-            elusByGroupeId: undefined,
-            groupePolitiqueById: undefined,
-            associationByChair: undefined,
-            associationByEluId: undefined,
-            elusDemissionaires: undefined,
-            elusSansGroupe: undefined,
-        },
+        data: undefined,
         selection: {
             selectedChairNumber: undefined,
             selectedEluId: undefined,
@@ -191,38 +76,37 @@ export default class App extends React.PureComponent<Props, State> {
 
     componentDidMount(): void {
         injector()
-            .httpService.get(injector().urlBase + urls.elus)
-            .then((a) => {
-                const eluDtos = a.body as EluListDTO[];
-                const elus = eluDtos.map((d) => convertElu(d));
-                const groupePolitiques = this.elusDtoToGroupePolitiques(
-                    eluDtos
+            .dataService.fetchData(this.props.planId)
+            .then((r) => {
+                const rawElus = r.rawElus;
+                const hemicycle = r.hemicycle;
+                const {
+                    eluById,
+                    elusByGroupeId,
+                    groupePolitiqueById,
+                    elusDemissionaires,
+                    elusSansGroupe,
+                } = injector().dataService.rawElusMaps(r.rawElus);
+                const {
+                    associationByChair,
+                    associationByEluId,
+                } = injector().dataService.associationMaps(
+                    hemicycle.associations
                 );
                 this.setState((state) => ({
                     ...state,
-                    rawElus: {
-                        ...state.rawElus,
-                        elus,
-                        groupePolitiques,
+                    rawElus,
+                    hemicycle,
+                    data: {
+                        eluById,
+                        elusByGroupeId,
+                        groupePolitiqueById,
+                        elusDemissionaires,
+                        elusSansGroupe,
+                        associationByChair,
+                        associationByEluId,
                     },
                 }));
-                this.updateElusMaps();
-                this.updateAssociationsMaps();
-            });
-        injector()
-            .httpService.get(
-                injector().urlBase +
-                    urls.hemicyclePlansAssociations +
-                    '/' +
-                    this.props.planId
-            )
-            .then((a) => {
-                const hemicycle = a.body as HemicyclePlanAssociationsFromWs;
-                this.setState((state) => ({
-                    ...state,
-                    hemicycle,
-                }));
-                this.updateAssociationsMaps();
             });
         this.unsuscriber = injector().applicationEventBus.subscribe(
             'activate_debug',
@@ -236,57 +120,20 @@ export default class App extends React.PureComponent<Props, State> {
         }
     }
 
-    private elusDtoToGroupePolitiques = (
-        eluDtos: EluListDTO[]
-    ): GroupePolitique[] => {
-        const gps: GroupePolitique[] = [];
-        eluDtos
-            .filter((d) => d.groupePolitique)
-            .forEach((d) => {
-                if (
-                    gps.filter((gp) => gp.id === d.groupePolitique?.id)
-                        .length === 0
-                ) {
-                    gps.push(convertGroupePolitique(d.groupePolitique!));
-                }
-            });
-        // tri par ordre alphabétique
-        return gps.sort(alphabeticSort((gp: GroupePolitique) => gp.nom));
-    };
-
-    private updateElusMaps = () =>
+    private updateAssociationsMaps = () => {
+        if (!this.state.hemicycle) {
+            throw Errors._c72c4a64();
+        }
+        const {
+            associationByChair,
+            associationByEluId,
+        } = injector().dataService.associationMaps(
+            this.state.hemicycle.associations
+        );
         this.setState((state) => {
-            if (!state.rawElus) {
-                throw Errors._b7d84f98();
+            if (!state.data) {
+                throw Errors._f37f755a();
             }
-            const {
-                eluById,
-                elusByGroupeId,
-                groupePolitiqueById,
-                elusDemissionaires,
-                elusSansGroupe,
-            } = rawElusMaps(state.rawElus);
-            return {
-                ...state,
-                data: {
-                    ...state.data,
-                    eluById,
-                    elusByGroupeId,
-                    groupePolitiqueById,
-                    elusDemissionaires,
-                    elusSansGroupe,
-                },
-            };
-        });
-
-    private updateAssociationsMaps = () =>
-        this.setState((state) => {
-            if (!state.hemicycle) {
-                return state;
-            }
-            const { associationByChair, associationByEluId } = associationMaps(
-                state.hemicycle.associations
-            );
             return {
                 ...state,
                 data: {
@@ -296,6 +143,7 @@ export default class App extends React.PureComponent<Props, State> {
                 },
             };
         });
+    };
 
     private selectionsToAssociation = () => {
         // le fait de delayer ce set State permet à l'input de récupérer le selectedChairNumber via les props
@@ -340,6 +188,7 @@ export default class App extends React.PureComponent<Props, State> {
                     return state;
                 }
             });
+
             this.updateAssociationsMaps();
         }, 200);
     };
@@ -406,52 +255,16 @@ export default class App extends React.PureComponent<Props, State> {
     };
 
     private archive = (then: () => void) => {
-        if (
-            !this.state.hemicycle ||
-            !this.state.rawElus ||
-            !this.state.data.eluById ||
-            !this.state.data.groupePolitiqueById ||
-            !this.state.data.associationByChair ||
-            !this.state.data.elusDemissionaires ||
-            !this.state.data.elusSansGroupe
-        ) {
+        if (!this.state.hemicycle || !this.state.rawElus || !this.state.data) {
             throw Errors._affb4796();
         }
-        const renderReact = (svgElement: ReactElement) => {
-            const svg = ReactDomServer.renderToString(svgElement);
-            // FIXMENOW [doc] da fuck Batik semble ne pas aimer ça.... parce que je parse mal ?
-            // FIXMENOW rechecker en fait....
-            return '<?xml version="1.0" encoding="UTF-8"?>' + svg;
-            // return finalSvg;
-        };
-        const svg = renderReact(
-            <Hemicycle
-                width={1600}
-                height={1000}
-                eluById={this.state.data.eluById}
-                groupePolitiques={this.state.rawElus.groupePolitiques}
-                groupePolitiqueById={this.state.data.groupePolitiqueById}
-                associationByChair={this.state.data.associationByChair}
-                configurationRendu={this.state.hemicycle.configurationRendu}
-                selectedChairNumber={undefined}
-                updateSelectedChairNumber={this.updateSelectedChairNumber}
-                hideAssociationsChairs={false}
-                removeAssociation={this.removeAssociation}
-                deleteMode={false}
-                printMode={true}
-            />
+        injector().archiveService.saveArchive(
+            this.props.planId,
+            this.state.rawElus,
+            this.state.hemicycle,
+            this.state.data,
+            then
         );
-        const dto: HemicycleArchiveCreationDTO = {
-            planId: this.props.planId,
-            data: {
-                associations: this.state.hemicycle.associations,
-                ...this.state.rawElus,
-            },
-            svgPlan: svg,
-        };
-        injector()
-            .httpService.post(injector().urlBase + urls.hemicycleArchives, dto)
-            .then(() => setTimeout(then, 500));
     };
 
     private switchHideAssociations = () =>
@@ -557,13 +370,7 @@ export default class App extends React.PureComponent<Props, State> {
 
                             {this.state.rawElus &&
                                 this.state.hemicycle &&
-                                this.state.data.eluById &&
-                                this.state.data.groupePolitiqueById &&
-                                this.state.data.associationByChair &&
-                                this.state.data.elusByGroupeId &&
-                                this.state.data.associationByEluId &&
-                                this.state.data.elusDemissionaires &&
-                                this.state.data.elusSansGroupe && (
+                                this.state.data && (
                                     <React.Fragment>
                                         <div
                                             css={css`

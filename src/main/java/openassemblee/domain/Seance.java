@@ -1,8 +1,10 @@
 package openassemblee.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import openassemblee.domain.enumeration.TypeSeance;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -44,6 +46,13 @@ public class Seance implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
+
+    // [doc] est juste utilisé au moment de la création de la seance
+    // @Transient provoque la necessité du @JsonSerialize
+    // => https://stackoverflow.com/questions/46683141/json-transient-field-not-seralizing
+    @Transient
+    @JsonSerialize
+    private Long planId;
 
     public Long getId() {
         return id;
@@ -91,6 +100,14 @@ public class Seance implements Serializable {
 
     public void setPresenceElus(Set<PresenceElu> PresenceElus) {
         this.presenceElus = PresenceElus;
+    }
+
+    public Long getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(Long planId) {
+        this.planId = planId;
     }
 
     @Override

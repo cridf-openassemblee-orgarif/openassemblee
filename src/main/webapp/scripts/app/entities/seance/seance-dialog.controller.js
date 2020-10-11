@@ -23,6 +23,18 @@ angular.module('openassembleeApp').controller('SeanceDialogController',
                 $scope.isSaving = false;
             };
 
+            var saveArchive = function (result) {
+                if (result.planId) {
+                    window.saveArchive({
+                        planId: result.planId, then: function () {
+                            onSaveSuccess(result);
+                        }
+                    });
+                } else {
+                    onSaveSuccess(result);
+                }
+            }
+
             var onSaveError = function (result) {
                 $scope.isSaving = false;
             };
@@ -37,12 +49,10 @@ angular.module('openassembleeApp').controller('SeanceDialogController',
                         seancePlanId: undefined,
                         projetPlanId: undefined
                     }
-                    if($scope.properties.planFromSeance) {
-                        dto.seancePlanId = $scope.properties.planFromSeance.id
-                    } else if($scope.properties.planFromProjet) {
-                        dto.projetPlanId = $scope.properties.planFromProjet.id
+                    if ($scope.properties.planFromProjet) {
+                        dto.projetPlanId = $scope.properties.planFromProjet.id;
                     }
-                    Seance.save(dto, onSaveSuccess, onSaveError);
+                    Seance.save(dto, saveArchive, onSaveError);
                 }
             };
 
