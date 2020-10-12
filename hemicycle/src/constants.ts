@@ -18,6 +18,7 @@ export const colors = {
     blueborder: '#256eb0',
     blueBackground2: '#98b8f5',
     blueborder2: '#153c85',
+    darkGrey: `#333`,
     grey: `#888`,
     clearGrey: '#eee',
     black: '#000',

@@ -332,8 +332,8 @@ export default class InputsComponent extends React.PureComponent<Props, State> {
                             <div
                                 css={css`
                                     background: ${colors.clearGrey};
-                                    border: 1px solid ${colors.grey};
-                                    color: ${colors.grey};
+                                    border: 1px solid ${colors.darkGrey};
+                                    color: ${colors.darkGrey};
                                     height: 36px;
                                     margin: 2px;
                                     border-radius: 2px;
