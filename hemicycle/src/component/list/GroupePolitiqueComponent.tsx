@@ -18,7 +18,7 @@ interface Props {
     groupePolitiqueCouleur: string;
     elus: Elu[];
     associationByEluId: Dict<EluId, Association>;
-    hideAssociations: boolean;
+    displayAssociations: boolean;
     selectedEluId?: EluId;
     updateSelectedEluId: (
         selectedEluId: EluId | undefined,
@@ -43,7 +43,7 @@ export default class GroupePolitiqueComponent extends React.PureComponent<
             }))
             .filter(
                 ({ chairNumber }) =>
-                    !this.props.hideAssociations || !chairNumber
+                    this.props.displayAssociations || !chairNumber
             );
         if (elusWithChairNumbers.length === 0) {
             return null;

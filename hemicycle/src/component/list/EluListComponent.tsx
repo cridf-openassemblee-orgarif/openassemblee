@@ -36,15 +36,15 @@ interface Props {
 type DisplayBy = 'groupePolitique' | 'elu';
 
 interface State {
-    hideAssociations: boolean;
-    hideDemissionnaires: boolean;
+    displayAssociations: boolean;
+    displayDemissionnaires: boolean;
     displayBy: DisplayBy;
 }
 
 export default class EluListComponent extends React.Component<Props, State> {
     public state: State = {
-        hideAssociations: false,
-        hideDemissionnaires: true,
+        displayAssociations: true,
+        displayDemissionnaires: false,
         displayBy: 'groupePolitique',
     };
 
@@ -56,7 +56,7 @@ export default class EluListComponent extends React.Component<Props, State> {
         if (!prevProps.deleteMode && this.props.deleteMode) {
             this.setState((state) => ({
                 ...state,
-                hideAssociations: false,
+                displayAssociations: true,
             }));
         }
     }
@@ -64,13 +64,13 @@ export default class EluListComponent extends React.Component<Props, State> {
     private switchDisplayAssociations = () =>
         this.setState((state) => ({
             ...state,
-            hideAssociations: !state.hideAssociations,
+            displayAssociations: !state.displayAssociations,
         }));
 
     private switchDisplayDemissionnaires = () =>
         this.setState((state) => ({
             ...state,
-            hideDemissionnaires: !state.hideDemissionnaires,
+            displayDemissionnaires: !state.displayDemissionnaires,
         }));
 
     private selectDisplay = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -109,13 +109,13 @@ export default class EluListComponent extends React.Component<Props, State> {
                 <div
                     css={css`
                         padding-top: 6px;
-                        font-size: 14px;
+                        font-size: 12px;
                     `}
                 >
                     Liste par :{' '}
                     <select
                         css={css`
-                            font-size: 16px;
+                            font-size: 14px;
                         `}
                         onChange={this.selectDisplay}
                         value={this.state.displayBy}
@@ -126,12 +126,12 @@ export default class EluListComponent extends React.Component<Props, State> {
                         <option value="elu">Élu</option>
                     </select>
                     <br />
-                    Cacher :
+                    Afficher :
                     <label htmlFor={checkboxAssociationsId}>
                         <input
                             type="checkbox"
                             id={checkboxAssociationsId}
-                            checked={this.state.hideAssociations}
+                            checked={this.state.displayAssociations}
                             onChange={this.switchDisplayAssociations}
                         />{' '}
                         déjà placés
@@ -140,7 +140,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                         <input
                             type="checkbox"
                             id={checkboxDemissionnairesId}
-                            checked={this.state.hideDemissionnaires}
+                            checked={this.state.displayDemissionnaires}
                             onChange={this.switchDisplayDemissionnaires}
                         />{' '}
                         démissionnaires
@@ -157,7 +157,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                                 associationByEluId={
                                     this.props.associationByEluId
                                 }
-                                hideAssociations={this.state.hideAssociations}
+                                displayAssociations={this.state.displayAssociations}
                                 selectedEluId={this.props.selectedEluId}
                                 updateSelectedEluId={
                                     this.props.updateSelectedEluId
@@ -171,13 +171,13 @@ export default class EluListComponent extends React.Component<Props, State> {
                             groupePolitiqueCouleur={'black'}
                             elus={this.props.elusSansGroupe}
                             associationByEluId={this.props.associationByEluId}
-                            hideAssociations={this.state.hideAssociations}
+                            displayAssociations={this.state.displayAssociations}
                             selectedEluId={this.props.selectedEluId}
                             updateSelectedEluId={this.props.updateSelectedEluId}
                             removeAssociation={this.props.removeAssociation}
                             deleteMode={this.props.deleteMode}
                         />
-                        {!this.state.hideDemissionnaires && (
+                        {this.state.displayDemissionnaires && (
                             <GroupePolitiqueComponent
                                 groupePolitiqueNomCourt={'Démissionaires'}
                                 groupePolitiqueCouleur={'black'}
@@ -185,7 +185,7 @@ export default class EluListComponent extends React.Component<Props, State> {
                                 associationByEluId={
                                     this.props.associationByEluId
                                 }
-                                hideAssociations={this.state.hideAssociations}
+                                displayAssociations={this.state.displayAssociations}
                                 selectedEluId={this.props.selectedEluId}
                                 updateSelectedEluId={
                                     this.props.updateSelectedEluId
@@ -204,8 +204,8 @@ export default class EluListComponent extends React.Component<Props, State> {
                         updateSelectedEluId={this.props.updateSelectedEluId}
                         removeAssociation={this.props.removeAssociation}
                         deleteMode={this.props.deleteMode}
-                        hideAssociations={this.state.hideAssociations}
-                        hideDemissionnaires={this.state.hideDemissionnaires}
+                        displayAssociations={this.state.displayAssociations}
+                        displayDemissionnaires={this.state.displayDemissionnaires}
                     />
                 )}
             </div>
