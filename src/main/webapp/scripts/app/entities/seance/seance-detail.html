@@ -319,7 +319,7 @@
                             <div
                                 ng-repeat="archive in dto.hemicyclePlan.archives track by archive.id"
                             >
-                                Archive du {{archive.date | date:'mediumDate'}}
+                                Archive du {{archive.date | date:'short'}}
                                 <br/>
                                 <button ng-click="printArchive(archive.svgPlan)">Imprimer</button>
                                 <button ui-sref="seance.hemicycleArchive({archiveId: archive.id})">Visualiser</button>
