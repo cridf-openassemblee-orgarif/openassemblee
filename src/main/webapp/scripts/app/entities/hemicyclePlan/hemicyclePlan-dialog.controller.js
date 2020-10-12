@@ -16,7 +16,6 @@ angular.module('openassembleeApp').controller('HemicyclePlanDialogController',
                 });
                 $scope.hemicyclePlan.configuration = $scope.hemicycleConfigurations[0];
             });
-            // FIXMENOW juste choper les dernières séances
             $scope.seances = [{intitule: ''}];
             Seance.query(function(result) {
                 angular.forEach(result, function (d) {

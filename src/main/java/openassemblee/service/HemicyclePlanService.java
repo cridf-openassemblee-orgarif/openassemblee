@@ -54,7 +54,7 @@ public class HemicyclePlanService {
         ZonedDateTime now = Instant.now().atZone(parisZoneId);
         hd.setCreationDate(now);
         hd.setLastModificationDate(now);
-        String jsonPlan;
+        String jsonPlan = null;
         if (dto.isFromAlphabeticOrder()) {
             HemicycleConfigurationDefinition d;
             try {
@@ -81,8 +81,11 @@ public class HemicyclePlanService {
             Seance s = new Seance();
             s.setId(dto.getFromSeanceId());
             HemicyclePlan projet = hemicyclePlanRepository.findOneBySeance(s);
-            jsonPlan = projet.getJsonPlan();
-        } else {
+            if (projet != null) {
+                jsonPlan = projet.getJsonPlan();
+            }
+        }
+        if (jsonPlan == null) {
             HemicyclePlan.JsonPlan p = new HemicyclePlan.JsonPlan(new ArrayList<>());
             try {
                 jsonPlan = objectMapper.writeValueAsString(p);
