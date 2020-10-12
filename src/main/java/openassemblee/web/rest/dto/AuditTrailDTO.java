@@ -28,12 +28,14 @@ public class AuditTrailDTO implements Serializable {
 
     private String details;
 
+    private String dto;
+
     private String reason;
 
     public AuditTrailDTO() {
     }
 
-    public AuditTrailDTO(Long id, String entity, Long entityId, String parentEntity, Long parentEntityId, AuditTrailAction action, String user, String date, String details, String reason) {
+    public AuditTrailDTO(Long id, String entity, Long entityId, String parentEntity, Long parentEntityId, AuditTrailAction action, String user, String date, String details, String dto, String reason) {
         this.id = id;
         this.entity = entity;
         this.entityId = entityId;
@@ -43,6 +45,7 @@ public class AuditTrailDTO implements Serializable {
         this.user = user;
         this.date = date;
         this.details = details;
+        this.dto = dto;
         this.reason = reason;
     }
 
@@ -116,6 +119,14 @@ public class AuditTrailDTO implements Serializable {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getDto() {
+        return dto;
+    }
+
+    public void setDto(String dto) {
+        this.dto = dto;
     }
 
     public String getReason() {

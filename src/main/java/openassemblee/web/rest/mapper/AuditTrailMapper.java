@@ -22,6 +22,7 @@ public class AuditTrailMapper {
             at.getUser(),
             formatDate(at.getDate()),
             at.getDetails(),
+            at.getDto(),
             at.getReason());
     }
 

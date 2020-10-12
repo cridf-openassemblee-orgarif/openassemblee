@@ -48,6 +48,9 @@ public class AuditTrail implements Serializable {
     @Column(name = "details")
     private String details;
 
+    @Column(name = "dto")
+    private String dto;
+
     @Column(name = "reason")
     private String reason;
 
@@ -130,6 +133,14 @@ public class AuditTrail implements Serializable {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getDto() {
+        return dto;
+    }
+
+    public void setDto(String dto) {
+        this.dto = dto;
     }
 
     public String getReason() {

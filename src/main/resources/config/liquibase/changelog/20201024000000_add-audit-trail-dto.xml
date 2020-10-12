@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <property name="mediumTextType" value="MEDIUMTEXT" dbms="postgresql, mysql, oracle"/>
+    <property name="mediumTextType" value="varchar(25500)" dbms="h2"/>
+    <changeSet author="mlo (generated)" id="2020-10-12">
+        <modifyDataType columnName="details"
+                        newDataType="${mediumTextType}"
+                        tableName="audit_trail"/>
+        <addColumn tableName="audit_trail">
+            <column name="dto" type="${mediumTextType}"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

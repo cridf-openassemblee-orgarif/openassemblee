@@ -75,7 +75,7 @@ public class SeanceResource {
             return ResponseEntity.badRequest().header("Failure", "A new seance cannot already have an ID").body(null);
         }
         Seance result = seanceService.create(seance);
-        auditTrailService.logCreation(seance, result.getId());
+        auditTrailService.logCreation(result, result.getId(), seance);
         return ResponseEntity.created(new URI("/api/seances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("seance", result.getId().toString()))
             .body(result);

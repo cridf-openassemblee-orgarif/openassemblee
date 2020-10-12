@@ -54,7 +54,7 @@ public class HemicyclePlanResource {
     public ResponseEntity<HemicyclePlan> createHemicyclePlan(@Valid @RequestBody HemicyclePlanCreationDTO hemicyclePlan) throws URISyntaxException {
         log.debug("REST request to save HemicyclePlan : {}", hemicyclePlan);
         HemicyclePlan result = hemicyclePlanService.save(hemicyclePlan);
-        auditTrailService.logCreation(hemicyclePlan, result.getId());
+        auditTrailService.logCreation(result, result.getId(), hemicyclePlan);
         return ResponseEntity.created(new URI("/api/hemicyclePlans/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("hemicyclePlan", result.getId().toString()))
             .body(result);

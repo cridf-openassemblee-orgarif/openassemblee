@@ -6,6 +6,8 @@ angular.module('openassembleeApp')
 
         var jsonDetail = function() {
             var obj = JSON.parse($scope.auditTrail.details);
+            // TODO bon marche très partiellement... ne sert à rien s'il y a une collection par ex
+            // et de toute façon on s'en fout avec un widget qui présente un tree
             Object.keys(obj).forEach(function(k) {
                 if(typeof obj[k] === 'object' && obj[k] && obj[k].id) {
                     obj[k] = {
@@ -14,6 +16,7 @@ angular.module('openassembleeApp')
                 }
             });
             $scope.json = obj;
+            $scope.dto = JSON.parse($scope.auditTrail.dto);
             $scope.stringifiedJson = JSON.stringify(obj, null, "\t");
         };
 

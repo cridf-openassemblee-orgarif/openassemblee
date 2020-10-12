@@ -67,7 +67,7 @@ public class HemicycleArchiveResource {
         HemicycleArchive result = hemicycleArchiveService.save(dto);
         dto.setSvgPlan("HemicycleArchiveCreationDTO est simplifié pour l'audit log car trop long.");
         dto.setData(null);
-        auditTrailService.logCreation(dto, result.getId(), HemicyclePlan.class, dto.getPlanId());
+        auditTrailService.logCreation(result, result.getId(), HemicyclePlan.class, dto.getPlanId(), dto);
         return ResponseEntity.created(new URI("/api/hemicycleArchives/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("hemicycleArchive", result.getId().toString()))
             .body(result);
