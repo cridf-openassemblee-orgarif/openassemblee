@@ -1,0 +1,27 @@
+{
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "anneeDebut",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "anneeFin",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "current",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20210419185301",
+    "dto": "no",
+    "pagination": "no"
+}

@@ -1,0 +1,55 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "elu",
+            "otherEntityName": "elu",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "mandature",
+            "otherEntityName": "mandature",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipId": 3,
+            "relationshipName": "listeElectorale",
+            "otherEntityName": "listeElectorale",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "codeDepartement",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "departement",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "dateDemission",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "motifDemission",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20210419185302",
+    "dto": "no",
+    "pagination": "no"
+}
