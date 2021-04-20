@@ -1,0 +1,77 @@
+<div>
+    <h2>Mandats</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="mandat.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new Mandat</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Mandat</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>DateDebut</th>
+                    <th>CodeDepartement</th>
+                    <th>Departement</th>
+                    <th>DateDemission</th>
+                    <th>MotifDemission</th>
+                    <th>elu</th>
+                    <th>mandature</th>
+                    <th>listeElectorale</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="mandat in mandats track by mandat.id">
+                    <td><a ui-sref="mandat.detail({id:mandat.id})">{{mandat.id}}</a></td>
+                        <td>{{mandat.dateDebut | date:'mediumDate'}}</td>
+                    <td>{{mandat.codeDepartement}}</td>
+                    <td>{{mandat.departement}}</td>
+                        <td>{{mandat.dateDemission | date:'mediumDate'}}</td>
+                    <td>{{mandat.motifDemission}}</td>
+                    <td>
+                        <a ui-sref="elu.detail({id:mandat.elu.id})">{{mandat.elu.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="mandature.detail({id:mandat.mandature.id})">{{mandat.mandature.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="listeElectorale.detail({id:mandat.listeElectorale.id})">{{mandat.listeElectorale.id}}</a>
+                    </td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="mandat.detail({id:mandat.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="mandat.edit({id:mandat.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="mandat.delete({id:mandat.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -63,5 +63,6 @@
     <include file="classpath:config/liquibase/changelog/20201024000000_add-audit-trail-dto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20210419185301_added_entity_Mandature.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20210619185302_added_entity_ListeElectorale.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20210419185302_added_entity_Mandat.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
