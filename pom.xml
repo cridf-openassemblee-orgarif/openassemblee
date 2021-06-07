@@ -688,7 +688,6 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <executions>
                             <execution>
-                                <id>Version Calculation</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>exec</goal>
