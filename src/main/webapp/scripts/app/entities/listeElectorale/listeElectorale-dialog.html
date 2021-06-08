@@ -1,0 +1,44 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myListeElectoraleLabel">Create or edit a ListeElectorale</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="listeElectorale.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nom">Nom</label>
+            <input type="text" class="form-control" name="nom" id="field_nom"
+                    ng-model="listeElectorale.nom"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_nomCourt">NomCourt</label>
+            <input type="text" class="form-control" name="nomCourt" id="field_nomCourt"
+                    ng-model="listeElectorale.nomCourt"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label for="field_mandature">mandature</label>
+            <select class="form-control" id="field_mandature" name="mandature" ng-model="listeElectorale.mandature" ng-options="mandature as mandature.id for mandature in mandatures track by mandature.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
