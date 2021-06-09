@@ -103,13 +103,7 @@ public class DatabaseConfiguration {
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
         liquibase.setShouldRun(liquibaseProperties.isEnabled());
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
-            if ("org.h2.jdbcx.JdbcDataSource".equals(dataSourceProperties.getDriverClassName())) {
-                liquibase.setShouldRun(true);
-                log.warn("Using '{}' profile with H2 database in memory is not optimal, you should consider switching to" +
-                    " MySQL or Postgresql to avoid rebuilding your database upon each start.", Constants.SPRING_PROFILE_FAST);
-            } else {
-                liquibase.setShouldRun(false);
-            }
+            liquibase.setShouldRun(false);
         } else {
             log.debug("Configuring Liquibase");
         }
