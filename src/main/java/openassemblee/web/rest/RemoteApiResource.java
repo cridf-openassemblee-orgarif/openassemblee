@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/remote-api")
+@RequestMapping("/remote")
 public class RemoteApiResource {
 
     @Value("${fakeData}")

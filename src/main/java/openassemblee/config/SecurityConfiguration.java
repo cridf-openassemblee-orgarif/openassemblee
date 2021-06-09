@@ -98,7 +98,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
         http
             .csrf()
-            .ignoringAntMatchers("/remote-api/**")
+            .ignoringAntMatchers("/remote/**")
             .ignoringAntMatchers("/api/publicdata/**")
             .ignoringAntMatchers("/api/inject/**")
             .ignoringAntMatchers("/healthcheck")
