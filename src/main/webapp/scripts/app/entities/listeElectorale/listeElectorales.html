@@ -5,15 +5,24 @@
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" ui-sref="listeElectorale.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new ListeElectorale</span>
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Create a new ListeElectorale</span>
                 </button>
             </div>
             <div class="col-md-8">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        <input
+                            type="text"
+                            class="form-control"
+                            ng-model="searchQuery"
+                            id="searchQuery"
+                            placeholder="query"
+                        />
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a ListeElectorale</span>
+                    <button class="btn btn-info" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>Search a ListeElectorale</span>
                     </button>
                 </form>
             </div>
@@ -32,28 +41,49 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="listeElectorale in listeElectorales track by listeElectorale.id">
-                    <td><a ui-sref="listeElectorale.detail({id:listeElectorale.id})">{{listeElectorale.id}}</a></td>
+                <tr
+                    ng-repeat="listeElectorale in listeElectorales track by listeElectorale.id"
+                >
+                    <td>
+                        <a
+                            ui-sref="listeElectorale.detail({id:listeElectorale.id})"
+                            >{{listeElectorale.id}}</a
+                        >
+                    </td>
                     <td>{{listeElectorale.nom}}</td>
                     <td>{{listeElectorale.nomCourt}}</td>
                     <td>
-                        <a ui-sref="mandature.detail({id:listeElectorale.mandature.id})">{{listeElectorale.mandature.id}}</a>
+                        <a
+                            ui-sref="mandature.detail({id:listeElectorale.mandature.id})"
+                            >{{listeElectorale.mandature.id}}</a
+                        >
                     </td>
                     <td>
-                        <button type="submit"
-                                ui-sref="listeElectorale.detail({id:listeElectorale.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        <button
+                            type="submit"
+                            ui-sref="listeElectorale.detail({id:listeElectorale.id})"
+                            class="btn btn-info btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-eye-open"></span
+                            >&nbsp;<span> View</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="listeElectorale.edit({id:listeElectorale.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        <button
+                            type="submit"
+                            ui-sref="listeElectorale.edit({id:listeElectorale.id})"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-pencil"></span
+                            >&nbsp;<span> Edit</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="listeElectorale.delete({id:listeElectorale.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        <button
+                            type="submit"
+                            ui-sref="listeElectorale.delete({id:listeElectorale.id})"
+                            class="btn btn-danger btn-sm"
+                        >
+                            <span
+                                class="glyphicon glyphicon-remove-circle"
+                            ></span
+                            >&nbsp;<span> Delete</span>
                         </button>
                     </td>
                 </tr>

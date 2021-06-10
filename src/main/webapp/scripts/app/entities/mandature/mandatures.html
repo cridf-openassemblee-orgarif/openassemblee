@@ -5,15 +5,24 @@
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" ui-sref="mandature.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new Mandature</span>
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Create a new Mandature</span>
                 </button>
             </div>
             <div class="col-md-8">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        <input
+                            type="text"
+                            class="form-control"
+                            ng-model="searchQuery"
+                            id="searchQuery"
+                            placeholder="query"
+                        />
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Mandature</span>
+                    <button class="btn btn-info" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>Search a Mandature</span>
                     </button>
                 </form>
             </div>
@@ -34,26 +43,41 @@
             </thead>
             <tbody>
                 <tr ng-repeat="mandature in mandatures track by mandature.id">
-                    <td><a ui-sref="mandature.detail({id:mandature.id})">{{mandature.id}}</a></td>
+                    <td>
+                        <a ui-sref="mandature.detail({id:mandature.id})"
+                            >{{mandature.id}}</a
+                        >
+                    </td>
                     <td>{{mandature.anneeDebut}}</td>
                     <td>{{mandature.anneeFin}}</td>
-                        <td>{{mandature.dateDebut | date:'mediumDate'}}</td>
+                    <td>{{mandature.dateDebut | date:'mediumDate'}}</td>
                     <td>{{mandature.current}}</td>
                     <td>
-                        <button type="submit"
-                                ui-sref="mandature.detail({id:mandature.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        <button
+                            type="submit"
+                            ui-sref="mandature.detail({id:mandature.id})"
+                            class="btn btn-info btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-eye-open"></span
+                            >&nbsp;<span> View</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="mandature.edit({id:mandature.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        <button
+                            type="submit"
+                            ui-sref="mandature.edit({id:mandature.id})"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-pencil"></span
+                            >&nbsp;<span> Edit</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="mandature.delete({id:mandature.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        <button
+                            type="submit"
+                            ui-sref="mandature.delete({id:mandature.id})"
+                            class="btn btn-danger btn-sm"
+                        >
+                            <span
+                                class="glyphicon glyphicon-remove-circle"
+                            ></span
+                            >&nbsp;<span> Delete</span>
                         </button>
                     </td>
                 </tr>

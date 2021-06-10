@@ -1,21 +1,36 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp').controller('MandatDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Mandat', 'Elu', 'Mandature', 'ListeElectorale',
-        function($scope, $stateParams, $modalInstance, entity, Mandat, Elu, Mandature, ListeElectorale) {
-
+angular.module("openassembleeApp").controller("MandatDialogController", [
+    "$scope",
+    "$stateParams",
+    "$modalInstance",
+    "entity",
+    "Mandat",
+    "Elu",
+    "Mandature",
+    "ListeElectorale",
+    function (
+        $scope,
+        $stateParams,
+        $modalInstance,
+        entity,
+        Mandat,
+        Elu,
+        Mandature,
+        ListeElectorale
+    ) {
         $scope.mandat = entity;
         $scope.elus = Elu.query();
         $scope.mandatures = Mandature.query();
         $scope.listeelectorales = ListeElectorale.query();
-        $scope.load = function(id) {
-            Mandat.get({id : id}, function(result) {
+        $scope.load = function (id) {
+            Mandat.get({ id: id }, function (result) {
                 $scope.mandat = result;
             });
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('openassembleeApp:mandatUpdate', result);
+            $scope.$emit("openassembleeApp:mandatUpdate", result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };
@@ -33,7 +48,8 @@ angular.module('openassembleeApp').controller('MandatDialogController',
             }
         };
 
-        $scope.clear = function() {
-            $modalInstance.dismiss('cancel');
+        $scope.clear = function () {
+            $modalInstance.dismiss("cancel");
         };
-}]);
+    },
+]);

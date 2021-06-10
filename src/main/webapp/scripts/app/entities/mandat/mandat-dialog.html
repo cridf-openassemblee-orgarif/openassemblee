@@ -1,74 +1,144 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
         <h4 class="modal-title" id="myMandatLabel">Create or edit a Mandat</h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
         <div class="form-group">
             <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="mandat.id" readonly />
+            <input
+                type="text"
+                class="form-control"
+                id="id"
+                name="id"
+                ng-model="mandat.id"
+                readonly
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateDebut">DateDebut</label>
-            <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
-                    ng-model="mandat.dateDebut"
-                     />
+            <input
+                type="date"
+                class="form-control"
+                name="dateDebut"
+                id="field_dateDebut"
+                ng-model="mandat.dateDebut"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_codeDepartement">CodeDepartement</label>
-            <input type="text" class="form-control" name="codeDepartement" id="field_codeDepartement"
-                    ng-model="mandat.codeDepartement"
-                     />
+            <label class="control-label" for="field_codeDepartement"
+                >CodeDepartement</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="codeDepartement"
+                id="field_codeDepartement"
+                ng-model="mandat.codeDepartement"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_departement">Departement</label>
-            <input type="text" class="form-control" name="departement" id="field_departement"
-                    ng-model="mandat.departement"
-                     />
+            <label class="control-label" for="field_departement"
+                >Departement</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="departement"
+                id="field_departement"
+                ng-model="mandat.departement"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDemission">DateDemission</label>
-            <input type="date" class="form-control" name="dateDemission" id="field_dateDemission"
-                    ng-model="mandat.dateDemission"
-                     />
+            <label class="control-label" for="field_dateDemission"
+                >DateDemission</label
+            >
+            <input
+                type="date"
+                class="form-control"
+                name="dateDemission"
+                id="field_dateDemission"
+                ng-model="mandat.dateDemission"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifDemission">MotifDemission</label>
-            <input type="text" class="form-control" name="motifDemission" id="field_motifDemission"
-                    ng-model="mandat.motifDemission"
-                     />
+            <label class="control-label" for="field_motifDemission"
+                >MotifDemission</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="motifDemission"
+                id="field_motifDemission"
+                ng-model="mandat.motifDemission"
+            />
         </div>
 
         <div class="form-group">
             <label for="field_elu">elu</label>
-            <select class="form-control" id="field_elu" name="elu" ng-model="mandat.elu" ng-options="elu as elu.id for elu in elus track by elu.id">
+            <select
+                class="form-control"
+                id="field_elu"
+                name="elu"
+                ng-model="mandat.elu"
+                ng-options="elu as elu.id for elu in elus track by elu.id"
+            >
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_mandature">mandature</label>
-            <select class="form-control" id="field_mandature" name="mandature" ng-model="mandat.mandature" ng-options="mandature as mandature.id for mandature in mandatures track by mandature.id">
+            <select
+                class="form-control"
+                id="field_mandature"
+                name="mandature"
+                ng-model="mandat.mandature"
+                ng-options="mandature as mandature.id for mandature in mandatures track by mandature.id"
+            >
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_listeElectorale">listeElectorale</label>
-            <select class="form-control" id="field_listeElectorale" name="listeElectorale" ng-model="mandat.listeElectorale" ng-options="listeElectorale as listeElectorale.id for listeElectorale in listeelectorales track by listeElectorale.id">
+            <select
+                class="form-control"
+                id="field_listeElectorale"
+                name="listeElectorale"
+                ng-model="mandat.listeElectorale"
+                ng-options="listeElectorale as listeElectorale.id for listeElectorale in listeelectorales track by listeElectorale.id"
+            >
                 <option value=""></option>
             </select>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Cancel</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Save</span
+            >
         </button>
     </div>
 </form>

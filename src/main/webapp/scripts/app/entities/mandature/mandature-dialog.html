@@ -1,50 +1,93 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myMandatureLabel">Create or edit a Mandature</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myMandatureLabel">
+            Create or edit a Mandature
+        </h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
         <div class="form-group">
             <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="mandature.id" readonly />
+            <input
+                type="text"
+                class="form-control"
+                id="id"
+                name="id"
+                ng-model="mandature.id"
+                readonly
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_anneeDebut">AnneeDebut</label>
-            <input type="number" class="form-control" name="anneeDebut" id="field_anneeDebut"
-                    ng-model="mandature.anneeDebut"
-                     />
+            <label class="control-label" for="field_anneeDebut"
+                >AnneeDebut</label
+            >
+            <input
+                type="number"
+                class="form-control"
+                name="anneeDebut"
+                id="field_anneeDebut"
+                ng-model="mandature.anneeDebut"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_anneeFin">AnneeFin</label>
-            <input type="number" class="form-control" name="anneeFin" id="field_anneeFin"
-                    ng-model="mandature.anneeFin"
-                     />
+            <input
+                type="number"
+                class="form-control"
+                name="anneeFin"
+                id="field_anneeFin"
+                ng-model="mandature.anneeFin"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateDebut">DateDebut</label>
-            <input type="date" class="form-control" name="dateDebut" id="field_dateDebut"
-                    ng-model="mandature.dateDebut"
-                     />
+            <input
+                type="date"
+                class="form-control"
+                name="dateDebut"
+                id="field_dateDebut"
+                ng-model="mandature.dateDebut"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_current">Current</label>
-            <input type="checkbox" class="form-control" name="current" id="field_current"
-                    ng-model="mandature.current"
-                     />
+            <input
+                type="checkbox"
+                class="form-control"
+                name="current"
+                id="field_current"
+                ng-model="mandature.current"
+            />
         </div>
-
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Cancel</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Save</span
+            >
         </button>
     </div>
 </form>
