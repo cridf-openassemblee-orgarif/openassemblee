@@ -10,6 +10,7 @@
   "dependencies": {
     "bower": "^1.6.3",
     "node-sass": "^4.14.1",
+    "prettier": "^2.3.1",
     "protractor": "^2.5.1"
   },
   "devDependencies": {
@@ -68,6 +69,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "webdriver-manager update"
+    "postinstall": "webdriver-manager update",
+    "prettier": "prettier --config package.json --write \"src/main/webapp/scripts/**/*.{js,html}\""
   }
 }
