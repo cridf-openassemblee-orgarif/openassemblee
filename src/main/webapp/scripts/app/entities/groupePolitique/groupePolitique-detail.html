@@ -4,43 +4,56 @@
             <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="info-box title-box">
                     <div class="info-box-content-elu">
-                        <h1>
-                            {{dto.groupePolitique.nom}}
-                        </h1>
+                        <h1>{{dto.groupePolitique.nom}}</h1>
                     </div>
                 </div>
                 <div class="info-box">
                     <div class="info-box-content-elu">
                         <span class="info-box-info-elu">
                             <div>
-                                <span class="lg">Nom court</span> {{dto.groupePolitique.nomCourt}}
+                                <span class="lg">Nom court</span>
+                                {{dto.groupePolitique.nomCourt}}
                             </div>
                             <div>
-                                <span class="lg">Date de début</span> {{dto.groupePolitique.dateDebut | date:'mediumDate'}}
+                                <span class="lg">Date de début</span>
+                                {{dto.groupePolitique.dateDebut |
+                                date:'mediumDate'}}
                             </div>
                             <div ng-if="dto.groupePolitique.dateFin">
-                                <span class="lg">Dissolu le</span> {{dto.groupePolitique.dateFin | date:'mediumDate'}}
-                                <span class="lg">pour le motif suivant :</span> {{dto.groupePolitique.motifFin}}
+                                <span class="lg">Dissolu le</span>
+                                {{dto.groupePolitique.dateFin |
+                                date:'mediumDate'}}
+                                <span class="lg">pour le motif suivant :</span>
+                                {{dto.groupePolitique.motifFin}}
                             </div>
                             <div>
-                                <span class="lg">Adresse</span> {{dto.groupePolitique.adressePostale.oneline}}
+                                <span class="lg">Adresse</span>
+                                {{dto.groupePolitique.adressePostale.oneline}}
                             </div>
                             <div>
-                                <span class="lg">Site web</span> {{dto.groupePolitique.website}}
+                                <span class="lg">Site web</span>
+                                {{dto.groupePolitique.website}}
                             </div>
                             <div>
-                                <span class="lg">Téléphone</span> {{dto.groupePolitique.phone}}
+                                <span class="lg">Téléphone</span>
+                                {{dto.groupePolitique.phone}}
                             </div>
                             <div>
-                                <span class="lg">Adresse mail</span> {{dto.groupePolitique.mail}}
+                                <span class="lg">Adresse mail</span>
+                                {{dto.groupePolitique.mail}}
                             </div>
                             <div>
-                                <span class="lg">Fax</span> {{dto.groupePolitique.fax}}
+                                <span class="lg">Fax</span>
+                                {{dto.groupePolitique.fax}}
                             </div>
                         </span>
                         <div class="btn-group elu-action">
-                            <button type="button" class="btn btn-default" ui-sref="groupesPolitiques.detail.edit"
-                                    has-authority="ROLE_ADMIN">
+                            <button
+                                type="button"
+                                class="btn btn-default"
+                                ui-sref="groupesPolitiques.detail.edit"
+                                has-authority="ROLE_ADMIN"
+                            >
                                 <span class="fa fa-pencil"></span>
                             </button>
                         </div>
@@ -50,14 +63,23 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="info-box">
                     <div class="info-box-photo-big">
-                        <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
-                             has-not-authority="ROLE_ADMIN"/>
-                        <img ng-if="dto.groupePolitique.image" ng-src="images/{{dto.groupePolitique.image}}"
-                             ui-sref="groupesPolitiques.detail.uploadImage"
-                             has-authority="ROLE_ADMIN"/>
-                        <button ng-if="dto.groupePolitique.image == null" class="btn btn-sm btn-primary"
-                                ui-sref="groupesPolitiques.detail.uploadImage"
-                                has-authority="ROLE_ADMIN">
+                        <img
+                            ng-if="dto.groupePolitique.image"
+                            ng-src="images/{{dto.groupePolitique.image}}"
+                            has-not-authority="ROLE_ADMIN"
+                        />
+                        <img
+                            ng-if="dto.groupePolitique.image"
+                            ng-src="images/{{dto.groupePolitique.image}}"
+                            ui-sref="groupesPolitiques.detail.uploadImage"
+                            has-authority="ROLE_ADMIN"
+                        />
+                        <button
+                            ng-if="dto.groupePolitique.image == null"
+                            class="btn btn-sm btn-primary"
+                            ui-sref="groupesPolitiques.detail.uploadImage"
+                            has-authority="ROLE_ADMIN"
+                        >
                             Ajouter une image
                         </button>
                     </div>
@@ -65,28 +87,43 @@
             </div>
         </div>
         <div class="container">
-            <h2 class="col-md-12"
-                ng-if="!appartenances.length && !fonctions.length">
+            <h2
+                class="col-md-12"
+                ng-if="!appartenances.length && !fonctions.length"
+            >
                 Aucun élu dans le groupe politique
             </h2>
             <div class="col-md-12" ng-if="appartenances.length">
                 <h2>Les élus du groupe</h2>
                 <div class="row" ng-init="chunks = _.chunk(appartenances, 3)">
-                    <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="aChunks in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks">
-                            <div class="info-box entity-component"
-                                 ui-sref="elu.detail({id:a.elu.id})">
+                    <div
+                        class="col-md-12 col-sm-12 col-xs-12"
+                        ng-repeat="aChunks in chunks"
+                    >
+                        <div
+                            class="col-md-4 col-sm-6 col-xs-12"
+                            ng-repeat="a in aChunks"
+                        >
+                            <div
+                                class="info-box entity-component"
+                                ui-sref="elu.detail({id:a.elu.id})"
+                            >
                                 <span class="info-box-photo">
-                                    <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                    <img
+                                        ng-if="a.elu.image"
+                                        ng-src="images/{{a.elu.image}}"
+                                    />
                                 </span>
 
                                 <div class="info-box-content">
-                                    <span
-                                        class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
+                                    <span class="info-box-titre"
+                                        >{{a.elu.civilite | civilite}}
+                                        {{a.elu.prenom}} {{a.elu.nom}}</span
+                                    >
                                     <div class="info-box-info">
-                                        <span class="grey">Depuis le</span> {{a.appartenanceGroupePolitique.dateDebut |
-                                        date:'mediumDate'}}
+                                        <span class="grey">Depuis le</span>
+                                        {{a.appartenanceGroupePolitique.dateDebut
+                                        | date:'mediumDate'}}
                                     </div>
                                 </div>
                             </div>
@@ -97,83 +134,140 @@
             <div class="col-md-12" ng-if="fonctions.length">
                 <h2>Les élus en fonction dans le groupe</h2>
                 <div class="row" ng-init="chunks = _.chunk(fonctions, 3)">
-                    <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="aChunks in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks | orderBy:'elu.nom'">
-                        <div class="info-box entity-component"
-                             ui-sref="elu.detail({id:a.elu.id})">
+                    <div
+                        class="col-md-12 col-sm-12 col-xs-12"
+                        ng-repeat="aChunks in chunks"
+                    >
+                        <div
+                            class="col-md-4 col-sm-6 col-xs-12"
+                            ng-repeat="a in aChunks | orderBy:'elu.nom'"
+                        >
+                            <div
+                                class="info-box entity-component"
+                                ui-sref="elu.detail({id:a.elu.id})"
+                            >
                                 <span class="info-box-photo">
-                                    <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                    <img
+                                        ng-if="a.elu.image"
+                                        ng-src="images/{{a.elu.image}}"
+                                    />
                                 </span>
 
-                            <div class="info-box-content">
-                        <span
-                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                <div class="info-box-info">
-                                    {{a.fonctionGroupePolitique.fonction}} <span class="grey">depuis le</span>
-                                    {{a.fonctionGroupePolitique.dateDebut | date:'mediumDate'}}
+                                <div class="info-box-content">
+                                    <span class="info-box-titre"
+                                        >{{a.elu.civilite | civilite}}
+                                        {{a.elu.prenom}} {{a.elu.nom}}</span
+                                    >
+                                    <div class="info-box-info">
+                                        {{a.fonctionGroupePolitique.fonction}}
+                                        <span class="grey">depuis le</span>
+                                        {{a.fonctionGroupePolitique.dateDebut |
+                                        date:'mediumDate'}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="box box-default box-solid collapsed-box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Anciens membres</h3>
+            <div class="col-md-12">
+                <div class="box box-default box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Anciens membres</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                            class="fa fa-plus"></i>
-                        </button>
+                        <div class="box-tools pull-right">
+                            <button
+                                type="button"
+                                class="btn btn-box-tool"
+                                data-widget="collapse"
+                            >
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="box-body" style="display: none;">
-                    <h2>Anciens élus</h2>
-                    <div class="row" ng-init="chunks = _.chunk(appartenancesAnciens, 3)"
-                         ng-if="appartenancesAnciens.length">
-                        <div class="col-md-12 col-sm-12 col-xs-12"
-                             ng-repeat="aChunks in chunks">
-                            <div class="col-md-4 col-sm-6 col-xs-12"
-                                 ng-repeat="a in aChunks">
-                                <div class="info-box entity-component"
-                                     ui-sref="elu.detail({id:a.elu.id})">
+                    <div class="box-body" style="display: none">
+                        <h2>Anciens élus</h2>
+                        <div
+                            class="row"
+                            ng-init="chunks = _.chunk(appartenancesAnciens, 3)"
+                            ng-if="appartenancesAnciens.length"
+                        >
+                            <div
+                                class="col-md-12 col-sm-12 col-xs-12"
+                                ng-repeat="aChunks in chunks"
+                            >
+                                <div
+                                    class="col-md-4 col-sm-6 col-xs-12"
+                                    ng-repeat="a in aChunks"
+                                >
+                                    <div
+                                        class="info-box entity-component"
+                                        ui-sref="elu.detail({id:a.elu.id})"
+                                    >
                                         <span class="info-box-photo">
-                                            <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
+                                            <img
+                                                ng-if="a.elu.image"
+                                                ng-src="images/{{a.elu.image}}"
+                                            />
                                         </span>
 
-                                    <div class="info-box-content">
-                                        <span
-                                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                        <div class="info-box-info">
-                                            <span class="grey">Depuis le</span>
-                                            {{a.appartenanceGroupePolitique.dateDebut | date:'mediumDate'}}
+                                        <div class="info-box-content">
+                                            <span class="info-box-titre"
+                                                >{{a.elu.civilite | civilite}}
+                                                {{a.elu.prenom}}
+                                                {{a.elu.nom}}</span
+                                            >
+                                            <div class="info-box-info">
+                                                <span class="grey"
+                                                    >Depuis le</span
+                                                >
+                                                {{a.appartenanceGroupePolitique.dateDebut
+                                                | date:'mediumDate'}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <h2>Anciens élus en fonction</h2>
-                    <div class="row" ng-init="chunks = _.chunk(fonctionsAnciens, 3)" ng-if="fonctionsAnciens.length">
-                        <div class="col-md-12 col-sm-12 col-xs-12"
-                             ng-repeat="aChunks in chunks">
-                            <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="a in aChunks">
-                                <div class="info-box entity-component"
-                                     ui-sref="elu.detail({id:a.elu.id})">
-                                    <span class="info-box-photo">
-                                        <img ng-if="a.elu.image" ng-src="images/{{a.elu.image}}"/>
-                                    </span>
+                        <h2>Anciens élus en fonction</h2>
+                        <div
+                            class="row"
+                            ng-init="chunks = _.chunk(fonctionsAnciens, 3)"
+                            ng-if="fonctionsAnciens.length"
+                        >
+                            <div
+                                class="col-md-12 col-sm-12 col-xs-12"
+                                ng-repeat="aChunks in chunks"
+                            >
+                                <div
+                                    class="col-md-4 col-sm-6 col-xs-12"
+                                    ng-repeat="a in aChunks"
+                                >
+                                    <div
+                                        class="info-box entity-component"
+                                        ui-sref="elu.detail({id:a.elu.id})"
+                                    >
+                                        <span class="info-box-photo">
+                                            <img
+                                                ng-if="a.elu.image"
+                                                ng-src="images/{{a.elu.image}}"
+                                            />
+                                        </span>
 
-                                    <div class="info-box-content">
-                                        <span
-                                            class="info-box-titre">{{a.elu.civilite | civilite}} {{a.elu.prenom}} {{a.elu.nom}}</span>
-                                        <div class="info-box-info">
-                                            {{a.fonctionGroupePolitique.fonction}} <span
-                                            class="grey">depuis le</span>
-                                            {{a.fonctionGroupePolitique.dateDebut | date:'mediumDate'}}
+                                        <div class="info-box-content">
+                                            <span class="info-box-titre"
+                                                >{{a.elu.civilite | civilite}}
+                                                {{a.elu.prenom}}
+                                                {{a.elu.nom}}</span
+                                            >
+                                            <div class="info-box-info">
+                                                {{a.fonctionGroupePolitique.fonction}}
+                                                <span class="grey"
+                                                    >depuis le</span
+                                                >
+                                                {{a.fonctionGroupePolitique.dateDebut
+                                                | date:'mediumDate'}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +276,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
 </div>

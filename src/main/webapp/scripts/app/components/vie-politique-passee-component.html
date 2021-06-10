@@ -3,84 +3,135 @@
         <h3 class="box-title">Vie politique passée</h3>
 
         <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                class="fa fa-plus"></i>
+            <button
+                type="button"
+                class="btn btn-box-tool"
+                data-widget="collapse"
+            >
+                <i class="fa fa-plus"></i>
             </button>
         </div>
     </div>
-    <div class="box-body" style="display: none;">
+    <div class="box-body" style="display: none">
         <h2>Groupes politiques</h2>
-        <div class="unit-bloc" ng-repeat="a in dto.elu.appartenancesGroupePolitique"
-             ng-if="a.dateFin != null">
+        <div
+            class="unit-bloc"
+            ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+            ng-if="a.dateFin != null"
+        >
             {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
-            <span class="grey">({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span>
-            <div class="lg"><span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
-            <span class="grey">au</span> {{a.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
-                {{a.motifFin}}</div>
-        </div>
-        <div class="unit-bloc" ng-repeat="f in dto.elu.fonctionsGroupePolitique"
-             ng-if="f.dateFin != null">
-            <span class="grey">Fonction :</span> {{f.fonction}} <span class="grey">dans le groupe</span>
-            {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
-            <div class="lg"><span class="grey">Du</span> {{f.dateDebut | date:'mediumDate'}}
-            <span class="grey">au</span> {{f.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
-            {{f.motifFin}}</div>
-        </div>
-        <h2>Commission permanente</h2>
-        <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
-             ng-if="a.dateFin != null">
-            <div class="unit-bloc">
-                <span class="grey">Membre de la commission du</span> {{a.dateDebut | date:'mediumDate'}}
-                <span class="grey">au</span> {{a.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+            <span class="grey"
+                >({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span
+            >
+            <div class="lg">
+                <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{a.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
                 {{a.motifFin}}
             </div>
         </div>
-        <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
-             ng-if="f.dateFin != null">
-            <div class="unit-bloc">
-                <span class="grey">Fonction :</span> {{f.fonction}}
-                <span class="grey">du</span> {{f.dateDebut | date:'mediumDate'}}
-                <span class="grey">au</span> {{f.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+        <div
+            class="unit-bloc"
+            ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+            ng-if="f.dateFin != null"
+        >
+            <span class="grey">Fonction :</span> {{f.fonction}}
+            <span class="grey">dans le groupe</span>
+            {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
+            <div class="lg">
+                <span class="grey">Du</span> {{f.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{f.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
                 {{f.motifFin}}
             </div>
         </div>
-        <div ng-repeat="f in dto.elu.fonctionsExecutives"
-             ng-if="f.dateFin != null">
+        <h2>Commission permanente</h2>
+        <div
+            ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+            ng-if="a.dateFin != null"
+        >
+            <div class="unit-bloc">
+                <span class="grey">Membre de la commission du</span>
+                {{a.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{a.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                {{a.motifFin}}
+            </div>
+        </div>
+        <div
+            ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+            ng-if="f.dateFin != null"
+        >
+            <div class="unit-bloc">
+                <span class="grey">Fonction :</span> {{f.fonction}}
+                <span class="grey">du</span> {{f.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{f.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                {{f.motifFin}}
+            </div>
+        </div>
+        <div
+            ng-repeat="f in dto.elu.fonctionsExecutives"
+            ng-if="f.dateFin != null"
+        >
             <div class="unit-bloc">
                 <span class="grey">Fonction exécutive :</span> {{f.fonction}}
                 <span class="grey">du</span> {{f.dateDebut | date:'mediumDate'}}
-                <span class="grey">au</span> {{f.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                <span class="grey">au</span> {{f.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
                 {{f.motifFin}}
             </div>
         </div>
         <h2>Commissions thématiques</h2>
-        <div class="unit-bloc " ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
-             ng-if="a.dateFin != null">
+        <div
+            class="unit-bloc"
+            ng-repeat="a in dto.elu.appartenancesCommissionsThematiques"
+            ng-if="a.dateFin != null"
+        >
             {{dto.commissionsThematiques[a.commissionThematique.id].nom}}
-            <div class="lg"><span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
-            <span class="grey">au</span> {{a.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
-            {{a.motifFin}}</div>
+            <div class="lg">
+                <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{a.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                {{a.motifFin}}
+            </div>
         </div>
-        <div class="unit-bloc action-bloc" ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
-             ng-if="f.dateFin != null">
-            <span class="grey">Fonction :</span> {{f.fonction}}<span class="grey">, </span>
+        <div
+            class="unit-bloc action-bloc"
+            ng-repeat="f in dto.elu.fonctionsCommissionsThematiques"
+            ng-if="f.dateFin != null"
+        >
+            <span class="grey">Fonction :</span> {{f.fonction}}<span
+                class="grey"
+                >,
+            </span>
             {{dto.commissionsThematiques[f.commissionThematique.id].nom}}
-            <div class="lg"><span class="grey">Du</span> {{f.dateDebut | date:'mediumDate'}}
-            <span class="grey">au</span> {{f.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
-            {{f.motifFin}}</div>
+            <div class="lg">
+                <span class="grey">Du</span> {{f.dateDebut | date:'mediumDate'}}
+                <span class="grey">au</span> {{f.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                {{f.motifFin}}
+            </div>
         </div>
         <h2>Organismes</h2>
-        <div class="unit-bloc"
-             ng-repeat="a in dto.elu.appartenancesOrganismes"
-             ng-if="a.dateFin != null">
+        <div
+            class="unit-bloc"
+            ng-repeat="a in dto.elu.appartenancesOrganismes"
+            ng-if="a.dateFin != null"
+        >
             {{a.organisme}}
-            <div class="lg"><span class="grey">Statut :</span> {{a.statut}}</div>
+            <div class="lg">
+                <span class="grey">Statut :</span> {{a.statut}}
+            </div>
             <span ng-if="a.codeRNE">
-                (<span class="lg"><span class="grey">Code RNE :</span> {{a.codeRNE}}</span>)
+                (<span class="lg"
+                    ><span class="grey">Code RNE :</span> {{a.codeRNE}}</span
+                >)
             </span>
             <div class="lg">
                 <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
-                <span class="grey">au</span> {{a.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                <span class="grey">au</span> {{a.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
                 {{a.motifFin}}
             </div>
             <div class="lg">
@@ -88,14 +139,19 @@
             </div>
         </div>
         <h2>Autres mandats</h2>
-        <div class="unit-bloc"
-             ng-repeat="a in dto.elu.autreMandats"
-             ng-if="a.dateFin != null">
+        <div
+            class="unit-bloc"
+            ng-repeat="a in dto.elu.autreMandats"
+            ng-if="a.dateFin != null"
+        >
             {{a.collectiviteOuOrganisme}}
-            <div class="lg"><span class="grey">Fonction :</span> {{a.fonction}}</div>
+            <div class="lg">
+                <span class="grey">Fonction :</span> {{a.fonction}}
+            </div>
             <div class="lg">
                 <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
-                <span class="grey">au</span> {{a.dateFin | date:'mediumDate'}}<span class="grey">, motif de fin :</span>
+                <span class="grey">au</span> {{a.dateFin |
+                date:'mediumDate'}}<span class="grey">, motif de fin :</span>
                 {{a.motifFin}}
             </div>
         </div>

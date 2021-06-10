@@ -4,22 +4,29 @@
             <h3 class="box-title"><i class="fa fa-book"></i> Autres mandats</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc info-bloc"
-                 ng-repeat="a in dto.elu.autreMandats"
-                 ng-if="a.dateFin == null">
+            <div
+                class="unit-bloc action-bloc info-bloc"
+                ng-repeat="a in dto.elu.autreMandats"
+                ng-if="a.dateFin == null"
+            >
                 <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
                     <edit-button
-                        ui-sref="elu.detail.editAutreMandat({mandatId: a.id})"></edit-button>
+                        ui-sref="elu.detail.editAutreMandat({mandatId: a.id})"
+                    ></edit-button>
                     <delete-button
-                        ui-sref="elu.detail.supprimerAutreMandat({mandatId: a.id})"></delete-button>
+                        ui-sref="elu.detail.supprimerAutreMandat({mandatId: a.id})"
+                    ></delete-button>
                 </div>
                 {{a.collectiviteOuOrganisme}}
-                <br/>
-                <span class="lg"><span class="grey">Fonction :</span> {{a.fonction}}</span>
+                <br />
+                <span class="lg"
+                    ><span class="grey">Fonction :</span> {{a.fonction}}</span
+                >
                 <div class="lg">
                     <!--<span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}<span class="grey">,-->
                     <!--nomination le</span> {{a.dateNomination}}-->
-                <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
+                    <span class="grey">Du</span> {{a.dateDebut |
+                    date:'mediumDate'}}
                 </div>
             </div>
             <div class="unit-bloc" ng-if="!eluAAutreMandats">
@@ -27,7 +34,12 @@
             </div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.autreMandat" has-authority="ROLE_ADMIN">
+            <button
+                type="button"
+                class="btn btn-default"
+                ui-sref="elu.detail.autreMandat"
+                has-authority="ROLE_ADMIN"
+            >
                 <span class="fa fa-plus"></span>
             </button>
         </div>

@@ -4,15 +4,22 @@
             <h3 class="box-title"><i class="fa fa-book"></i> Organismes</h3>
         </div>
         <div class="box-body">
-            <div class="unit-bloc action-bloc"
-                 ng-repeat="a in dto.elu.appartenancesOrganismes"
-                 ng-if="a.dateFin == null"
-                 ui-sref="elu.detail.editAppartenanceOrganisme({appartenanceId: a.id})">
+            <div
+                class="unit-bloc action-bloc"
+                ng-repeat="a in dto.elu.appartenancesOrganismes"
+                ng-if="a.dateFin == null"
+                ui-sref="elu.detail.editAppartenanceOrganisme({appartenanceId: a.id})"
+            >
                 {{a.organisme}}
-                <br/>
-                <span class="lg"><span class="grey">Statut :</span> {{a.statut}}</span>
+                <br />
+                <span class="lg"
+                    ><span class="grey">Statut :</span> {{a.statut}}</span
+                >
                 <span ng-if="a.codeRNE">
-                    (<span class="lg"><span class="grey">Code RNE :</span> {{a.codeRNE}}</span>)
+                    (<span class="lg"
+                        ><span class="grey">Code RNE :</span>
+                        {{a.codeRNE}}</span
+                    >)
                 </span>
                 <div class="lg">
                     <!--<span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}<span class="grey">,-->
@@ -20,13 +27,15 @@
                     <span class="grey">Nomination le</span> {{a.dateNomination}}
                 </div>
             </div>
-            <div class="unit-bloc" ng-if="!eluAOrganismes">
-                Aucun organisme
-            </div>
+            <div class="unit-bloc" ng-if="!eluAOrganismes">Aucun organisme</div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterOrganisme"
-                    has-authority="ROLE_ADMIN">
+            <button
+                type="button"
+                class="btn btn-default"
+                ui-sref="elu.detail.ajouterOrganisme"
+                has-authority="ROLE_ADMIN"
+            >
                 <span class="fa fa-plus"></span>
             </button>
         </div>
