@@ -16,12 +16,11 @@
                 {{a.collectiviteOuOrganisme}}
                 <br/>
                 <span class="lg"><span class="grey">Fonction :</span> {{a.fonction}}</span>
-                <br/>
-                <span class="lg">
+                <div class="lg">
                     <!--<span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}<span class="grey">,-->
                     <!--nomination le</span> {{a.dateNomination}}-->
-                    <span class="grey"><span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
-                </span>
+                <span class="grey">Du</span> {{a.dateDebut | date:'mediumDate'}}
+                </div>
             </div>
             <div class="unit-bloc" ng-if="!eluAAutreMandats">
                 Aucun autre mandat
