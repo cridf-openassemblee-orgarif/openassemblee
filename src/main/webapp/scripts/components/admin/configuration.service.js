@@ -1,17 +1,18 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .factory('ConfigurationService', function ($rootScope, $filter, $http) {
+angular
+    .module("openassembleeApp")
+    .factory("ConfigurationService", function ($rootScope, $filter, $http) {
         return {
-            get: function() {
-                return $http.get('configprops').then(function (response) {
+            get: function () {
+                return $http.get("configprops").then(function (response) {
                     var properties = [];
                     angular.forEach(response.data, function (data) {
                         properties.push(data);
                     });
-                    var orderBy = $filter('orderBy');
-                    return orderBy(properties, 'prefix');
+                    var orderBy = $filter("orderBy");
+                    return orderBy(properties, "prefix");
                 });
-            }
+            },
         };
     });

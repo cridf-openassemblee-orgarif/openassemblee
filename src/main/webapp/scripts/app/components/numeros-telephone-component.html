@@ -1,32 +1,44 @@
 <div class="col-md-6 col-sm-6 col-xs-12">
     <div class="box box-elu-sec box-solid">
         <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-phone"></i> Numéros de téléphone</h3>
+            <h3 class="box-title">
+                <i class="fa fa-phone"></i> Numéros de téléphone
+            </h3>
         </div>
         <div class="box-body">
             <div class="info-bloc" ng-repeat="a in dto.elu.numerosTelephones">
                 <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                    <edit-button ui-sref="elu.detail.editerNumeroTelephone({numeroTelephoneId: a.id})"></edit-button>
-                    <delete-button ui-sref="elu.detail.supprimerNumeroTelephone({numeroTelephoneId: a.id})"></delete-button>
+                    <edit-button
+                        ui-sref="elu.detail.editerNumeroTelephone({numeroTelephoneId: a.id})"
+                    ></edit-button>
+                    <delete-button
+                        ui-sref="elu.detail.supprimerNumeroTelephone({numeroTelephoneId: a.id})"
+                    ></delete-button>
                 </div>
                 {{a.numero}}
-                <br/>
+                <br />
                 <span class="lg">
                     <span class="grey">Nature :</span>
                     {{a.natureProPerso | properso}}
                     <span class="grey">| Niveau de confidentialité :</span>
                     {{a.niveauConfidentialite | confidentialite}}
-                    <br/>
+                    <br />
                     {{a.natureFixeMobile | natureFixeMobile}}
                     <span class="grey">| Publication dans l'annuaire :</span>
                     {{a.publicationAnnuaire | ouinon}}
                 </span>
             </div>
-            <div ng-hide="dto.elu.numerosTelephones.length">Aucun numéro connu</div>
+            <div ng-hide="dto.elu.numerosTelephones.length">
+                Aucun numéro connu
+            </div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterNumeroTelephone"
-                    has-authority="ROLE_ADMIN">
+            <button
+                type="button"
+                class="btn btn-default"
+                ui-sref="elu.detail.ajouterNumeroTelephone"
+                has-authority="ROLE_ADMIN"
+            >
                 <span class="fa fa-plus"></span>
             </button>
         </div>

@@ -1,53 +1,106 @@
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myReunionCommissionThematiqueLabel">Nouvelle réunion de commissions thématiques</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myReunionCommissionThematiqueLabel">
+            Nouvelle réunion de commissions thématiques
+        </h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_libelle">Libellé</label>
-            <input type="text" class="form-control" name="libelle" id="field_libelle"
-                   ng-model="reunion.libelle"/>
+            <input
+                type="text"
+                class="form-control"
+                name="libelle"
+                id="field_libelle"
+                ng-model="reunion.libelle"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_date">Date</label>
-            <input type="text" bs-datepicker class="form-control" name="date" id="field_date"
-                   ng-model="reunion.date"
-                   autocomplete="off"/>
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="date"
+                id="field_date"
+                ng-model="reunion.date"
+                autocomplete="off"
+            />
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_heureDebut">Heure de début</label>
-                <input type="time" class="form-control" name="heureDebut" id="field_heureDebut"
-                       ng-model="reunionTemp.heureDebutAsTime"/>
+                <label class="control-label" for="field_heureDebut"
+                    >Heure de début</label
+                >
+                <input
+                    type="time"
+                    class="form-control"
+                    name="heureDebut"
+                    id="field_heureDebut"
+                    ng-model="reunionTemp.heureDebutAsTime"
+                />
             </div>
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_heureFin">Heure de fin</label>
-                <input type="time" class="form-control" name="heureDebut" id="field_heureFin"
-                       ng-model="reunionTemp.heureFinAsTime"/>
+                <label class="control-label" for="field_heureFin"
+                    >Heure de fin</label
+                >
+                <input
+                    type="time"
+                    class="form-control"
+                    name="heureDebut"
+                    id="field_heureFin"
+                    ng-model="reunionTemp.heureFinAsTime"
+                />
             </div>
         </div>
         <div class="form-group">
             <label>Commissions présentes</label>
-            <ui-select multiple ng-model="reunion.commissionsThematiques" close-on-select="false">
+            <ui-select
+                multiple
+                ng-model="reunion.commissionsThematiques"
+                close-on-select="false"
+            >
                 <ui-select-match>
                     <span ng-bind="$item.nom"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="commission in (commissions | nomPrenomFilter: $select.search) track by commission.id">
+                <ui-select-choices
+                    repeat="commission in (commissions | nomPrenomFilter: $select.search) track by commission.id"
+                >
                     <span
-                        ng-bind-html="commission.nom | highlight: $select.search"></span>
+                        ng-bind-html="commission.nom | highlight: $select.search"
+                    ></span>
                 </ui-select-choices>
             </ui-select>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

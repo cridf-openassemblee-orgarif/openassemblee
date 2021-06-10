@@ -1,23 +1,26 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .controller('SettingsController', function ($scope, Principal, Auth) {
+angular
+    .module("openassembleeApp")
+    .controller("SettingsController", function ($scope, Principal, Auth) {
         $scope.success = null;
         $scope.error = null;
-        Principal.identity(true).then(function(account) {
+        Principal.identity(true).then(function (account) {
             $scope.settingsAccount = account;
         });
 
         $scope.save = function () {
-            Auth.updateAccount($scope.settingsAccount).then(function() {
-                $scope.error = null;
-                $scope.success = 'OK';
-                Principal.identity().then(function(account) {
-                    $scope.settingsAccount = account;
+            Auth.updateAccount($scope.settingsAccount)
+                .then(function () {
+                    $scope.error = null;
+                    $scope.success = "OK";
+                    Principal.identity().then(function (account) {
+                        $scope.settingsAccount = account;
+                    });
+                })
+                .catch(function () {
+                    $scope.success = null;
+                    $scope.error = "ERROR";
                 });
-            }).catch(function() {
-                $scope.success = null;
-                $scope.error = 'ERROR';
-            });
         };
     });

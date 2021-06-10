@@ -1,14 +1,16 @@
 <div>
     <section class="content-header">
-        <h1>
-            Configuration d'hémicycle
-        </h1>
+        <h1>Configuration d'hémicycle</h1>
     </section>
     <div class="container">
         <div class="row buttons">
             <div class="col-lg-12 align-right">
-                <button class="btn btn-primary" ui-sref="hemicycleConfiguration.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Nouvelle configuration</span>
+                <button
+                    class="btn btn-primary"
+                    ui-sref="hemicycleConfiguration.new"
+                >
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Nouvelle configuration</span>
                 </button>
             </div>
         </div>
@@ -18,43 +20,71 @@
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Label</th>
-                    <th>CreationDate</th>
-                    <th>LastModificationDate</th>
-                    <th>Frozen</th>
-                    <th>FrozenDate</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Label</th>
+                        <th>CreationDate</th>
+                        <th>LastModificationDate</th>
+                        <th>Frozen</th>
+                        <th>FrozenDate</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="hemicycleConfiguration in hemicycleConfigurations track by hemicycleConfiguration.id">
-                    <td><a ui-sref="hemicycleConfiguration.detail({id:hemicycleConfiguration.id})">{{hemicycleConfiguration.id}}</a>
-                    </td>
-                    <td>{{hemicycleConfiguration.label}}</td>
-                    <td>{{hemicycleConfiguration.creationDate | date:'medium'}}</td>
-                    <td>{{hemicycleConfiguration.lastModificationDate | date:'medium'}}</td>
-                    <td>{{hemicycleConfiguration.frozen}}</td>
-                    <td>{{hemicycleConfiguration.frozenDate | date:'medium'}}</td>
-                    <td>
-                        <button type="submit"
+                    <tr
+                        ng-repeat="hemicycleConfiguration in hemicycleConfigurations track by hemicycleConfiguration.id"
+                    >
+                        <td>
+                            <a
                                 ui-sref="hemicycleConfiguration.detail({id:hemicycleConfiguration.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
-                        </button>
-                        <button type="submit"
+                                >{{hemicycleConfiguration.id}}</a
+                            >
+                        </td>
+                        <td>{{hemicycleConfiguration.label}}</td>
+                        <td>
+                            {{hemicycleConfiguration.creationDate |
+                            date:'medium'}}
+                        </td>
+                        <td>
+                            {{hemicycleConfiguration.lastModificationDate |
+                            date:'medium'}}
+                        </td>
+                        <td>{{hemicycleConfiguration.frozen}}</td>
+                        <td>
+                            {{hemicycleConfiguration.frozenDate |
+                            date:'medium'}}
+                        </td>
+                        <td>
+                            <button
+                                type="submit"
+                                ui-sref="hemicycleConfiguration.detail({id:hemicycleConfiguration.id})"
+                                class="btn btn-info btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-eye-open"
+                                ></span
+                                >&nbsp;<span> View</span>
+                            </button>
+                            <button
+                                type="submit"
                                 ui-sref="hemicycleConfiguration.edit({id:hemicycleConfiguration.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
-                        </button>
-                        <button type="submit"
+                                class="btn btn-primary btn-sm"
+                            >
+                                <span class="glyphicon glyphicon-pencil"></span
+                                >&nbsp;<span> Edit</span>
+                            </button>
+                            <button
+                                type="submit"
                                 ui-sref="hemicycleConfiguration.delete({id:hemicycleConfiguration.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
-                        </button>
-                    </td>
-                </tr>
+                                class="btn btn-danger btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-remove-circle"
+                                ></span
+                                >&nbsp;<span> Delete</span>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

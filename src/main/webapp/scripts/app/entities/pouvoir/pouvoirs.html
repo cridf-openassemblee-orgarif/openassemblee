@@ -1,61 +1,113 @@
 <div>
     <section class="content-header">
-        <h1>
-            Pouvoirs
-        </h1>
+        <h1>Pouvoirs</h1>
     </section>
 
     <div class="container">
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Élu mandant</th>
-                    <th>Élu mandataire</th>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Élu mandant</th>
+                        <th>Élu mandataire</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="pouvoir in pouvoirs track by pouvoir.id">
-                    <td>
-                        <a ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">
-                            {{pouvoir.eluCedeur.prenom + ' ' + pouvoir.eluCedeur.nom}}
-                        </a>
-                    <td>
-                        <a ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})">
-                            {{pouvoir.eluBeneficiaire.prenom + ' ' + pouvoir.eluBeneficiaire.nom}}
-                        </a>
-                    </td>
-                    <td>{{pouvoir.dateDebut | date:'mediumDate'}} - {{pouvoir.heureDebut}}</td>
-                    <td>{{pouvoir.dateFin | date:'mediumDate'}} - {{pouvoir.heureFin}}</td>
-                    <td>
-                        <button type="submit"
+                    <tr ng-repeat="pouvoir in pouvoirs track by pouvoir.id">
+                        <td>
+                            <a ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">
+                                {{pouvoir.eluCedeur.prenom + ' ' +
+                                pouvoir.eluCedeur.nom}}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})"
+                            >
+                                {{pouvoir.eluBeneficiaire.prenom + ' ' +
+                                pouvoir.eluBeneficiaire.nom}}
+                            </a>
+                        </td>
+                        <td>
+                            {{pouvoir.dateDebut | date:'mediumDate'}} -
+                            {{pouvoir.heureDebut}}
+                        </td>
+                        <td>
+                            {{pouvoir.dateFin | date:'mediumDate'}} -
+                            {{pouvoir.heureFin}}
+                        </td>
+                        <td>
+                            <button
+                                type="submit"
                                 ui-sref="pouvoir.edit({id:pouvoir.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer / fermer</span>
-                        </button>
-                        <button type="submit"
+                                class="btn btn-primary btn-sm"
+                            >
+                                <span class="glyphicon glyphicon-pencil"></span
+                                >&nbsp;<span> Éditer / fermer</span>
+                            </button>
+                            <button
+                                type="submit"
                                 ui-sref="pouvoir.delete({id:pouvoir.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
-                        </button>
-                    </td>
-                </tr>
+                                class="btn btn-danger btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-remove-circle"
+                                ></span
+                                >&nbsp;<span> Supprimer</span>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <nav>
                 <ul class="pagination">
-                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
-                    <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                    <li
+                        ng-show="links['first'] >= 0"
+                        ng-click="loadPage(links['first'])"
+                    >
+                        <a>&lt;&lt;</a>
+                    </li>
+                    <li
+                        ng-show="page > 0"
+                        ng-click="loadPage(links['prev'] || 0)"
+                    >
+                        <a>&lt;</a>
+                    </li>
+                    <li ng-show="page > 1" ng-click="loadPage(page - 2)">
+                        <a>{{page - 1}}</a>
+                    </li>
+                    <li ng-show="page > 0" ng-click="loadPage(page - 1)">
+                        <a>{{page}}</a>
+                    </li>
                     <li class="active"><a>{{page + 1}}</a></li>
-                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a></li>
-                    <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                    <li
+                        ng-show="page < links['last']"
+                        ng-click="loadPage(page + 1)"
+                    >
+                        <a>{{page + 2}}</a>
+                    </li>
+                    <li
+                        ng-show="page < links['last'] - 1"
+                        ng-click="loadPage(page + 2)"
+                    >
+                        <a>{{page + 3}}</a>
+                    </li>
+                    <li
+                        ng-show="links['next']"
+                        ng-click="loadPage(links['next'])"
+                    >
+                        <a>&gt;</a>
+                    </li>
+                    <li
+                        ng-show="links['last'] > 0"
+                        ng-click="loadPage(links['last'])"
+                    >
+                        <a>&gt;&gt;</a>
+                    </li>
                 </ul>
             </nav>
         </div>

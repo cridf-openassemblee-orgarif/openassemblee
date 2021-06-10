@@ -1,7 +1,8 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .factory('Principal', function Principal($q, Account) {
+angular
+    .module("openassembleeApp")
+    .factory("Principal", function Principal($q, Account) {
         var _identity,
             _authenticated = false;
 
@@ -17,11 +18,17 @@ angular.module('openassembleeApp')
                     return $q.when(false);
                 }
 
-                return this.identity().then(function(_id) {
-                    return _id.authorities && _id.authorities.indexOf(authority) !== -1;
-                }, function(err){
-                    return false;
-                });
+                return this.identity().then(
+                    function (_id) {
+                        return (
+                            _id.authorities &&
+                            _id.authorities.indexOf(authority) !== -1
+                        );
+                    },
+                    function (err) {
+                        return false;
+                    }
+                );
             },
             hasAnyAuthority: function (authorities) {
                 if (!_authenticated || !_identity || !_identity.authorities) {
@@ -56,18 +63,18 @@ angular.module('openassembleeApp')
                 }
 
                 // retrieve the identity data from the server, update the identity object, and then resolve.
-                Account.get().$promise
-                    .then(function (account) {
+                Account.get()
+                    .$promise.then(function (account) {
                         _identity = account.data;
                         _authenticated = true;
                         deferred.resolve(_identity);
                     })
-                    .catch(function() {
+                    .catch(function () {
                         _identity = null;
                         _authenticated = false;
                         deferred.resolve(_identity);
                     });
                 return deferred.promise;
-            }
+            },
         };
     });

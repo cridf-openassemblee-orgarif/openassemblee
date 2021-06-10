@@ -1,9 +1,7 @@
 <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
-            Les commissions thématiques
-        </h1>
+        <h1>Les commissions thématiques</h1>
     </section>
 
     <!-- Main content -->
@@ -14,15 +12,24 @@
             </div>
 
             <div class="col-lg-8 align-right" has-authority="ROLE_ADMIN">
-                <button class="btn btn-sm btn-primary" ui-sref="commissionThematique.new">
+                <button
+                    class="btn btn-sm btn-primary"
+                    ui-sref="commissionThematique.new"
+                >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span>Créer une nouvelle commission thématique</span>
                 </button>
-                <a class="btn btn-sm btn-primary" href="api/commissionThematiques/export">
+                <a
+                    class="btn btn-sm btn-primary"
+                    href="api/commissionThematiques/export"
+                >
                     <span class="fa fa-table"></span>
                     <span>Export Excel</span>
                 </a>
-                <a class="btn btn-sm btn-primary" href="api/commissionThematiques/export-pdf">
+                <a
+                    class="btn btn-sm btn-primary"
+                    href="api/commissionThematiques/export-pdf"
+                >
                     <span class="fa fa-file-text"></span>
                     <span>Export PDF</span>
                 </a>
@@ -30,8 +37,10 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="dto in dtos">
-                <div class="info-box entity-component"
-                     ui-sref="commissionThematique.detail({id:dto.commissionThematique.id})">
+                <div
+                    class="info-box entity-component"
+                    ui-sref="commissionThematique.detail({id:dto.commissionThematique.id})"
+                >
                     <div class="info-box-content-ct">
                         <span class="info-box-titre">
                             {{dto.commissionThematique.nom}}

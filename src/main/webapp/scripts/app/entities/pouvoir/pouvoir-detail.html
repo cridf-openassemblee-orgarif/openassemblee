@@ -1,70 +1,85 @@
-
 <div>
     <h2><span>Pouvoir</span> {{pouvoir.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <span>DateDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{pouvoir.dateDebut | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>HeureDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{pouvoir.heureDebut}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{pouvoir.dateFin | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>HeureFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{pouvoir.heureFin}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>eluCedeur</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="elu.detail({id:pouvoir.eluCedeur.id})">{{pouvoir.eluCedeur.id}}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>eluBeneficiaire</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})">{{pouvoir.eluBeneficiaire.id}}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <span>DateDebut</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{pouvoir.dateDebut | date:'mediumDate'}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>HeureDebut</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{pouvoir.heureDebut}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>DateFin</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{pouvoir.dateFin | date:'mediumDate'}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>HeureFin</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{pouvoir.heureFin}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>eluCedeur</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="elu.detail({id:pouvoir.eluCedeur.id})"
+                            >{{pouvoir.eluCedeur.id}}</a
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>eluBeneficiaire</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="elu.detail({id:pouvoir.eluBeneficiaire.id})"
+                            >{{pouvoir.eluBeneficiaire.id}}</a
+                        >
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    <button type="submit" onclick="window.history.back()" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>
+            Back</span
+        >
     </button>
 </div>

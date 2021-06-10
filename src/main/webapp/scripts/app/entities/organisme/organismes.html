@@ -1,24 +1,29 @@
 <div>
     <section class="content-header">
-        <h1>
-            Organismes
-        </h1>
+        <h1>Organismes</h1>
     </section>
 
     <div class="container">
         <div class="row buttons">
             <div class="col-lg-12 align-right">
                 <button class="btn btn-sm btn-primary" ui-sref="organisme.new">
-                    <span class="glyphicon glyphicon-plus"></span> <span>Créer un nouvel organisme</span>
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Créer un nouvel organisme</span>
                 </button>
                 <br />
                 <br />
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery"
-                               placeholder="Recherche">
+                        <input
+                            type="text"
+                            class="form-control"
+                            ng-model="searchQuery"
+                            id="searchQuery"
+                            placeholder="Recherche"
+                        />
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span>
+                    <button class="btn btn-info" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span>
                         <span>Chercher</span>
                     </button>
                 </form>
@@ -28,48 +33,100 @@
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Code RNE / Siret</th>
-                    <th>Sigle</th>
-                    <th>Type</th>
-                    <th>Secteur</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Code RNE / Siret</th>
+                        <th>Sigle</th>
+                        <th>Type</th>
+                        <th>Secteur</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="organisme in organismes track by organisme.id">
-                    <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.nom}}</a></td>
-                    <td><a ui-sref="organisme.detail({id:organisme.id})">{{organisme.codeRNE}}</a></td>
-                    <td>{{organisme.sigle}}</td>
-                    <td>{{organisme.type}}</td>
-                    <td>{{organisme.secteur}}</td>
-                    <td>
-                        <button type="submit"
+                    <tr
+                        ng-repeat="organisme in organismes track by organisme.id"
+                    >
+                        <td>
+                            <a ui-sref="organisme.detail({id:organisme.id})"
+                                >{{organisme.nom}}</a
+                            >
+                        </td>
+                        <td>
+                            <a ui-sref="organisme.detail({id:organisme.id})"
+                                >{{organisme.codeRNE}}</a
+                            >
+                        </td>
+                        <td>{{organisme.sigle}}</td>
+                        <td>{{organisme.type}}</td>
+                        <td>{{organisme.secteur}}</td>
+                        <td>
+                            <button
+                                type="submit"
                                 ui-sref="organisme.edit({id:organisme.id})"
-                                class="btn btn-sm btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
-                        </button>
-                        <button type="submit"
+                                class="btn btn-sm btn-primary btn-sm"
+                            >
+                                <span class="glyphicon glyphicon-pencil"></span
+                                >&nbsp;<span> Éditer</span>
+                            </button>
+                            <button
+                                type="submit"
                                 ui-sref="organisme.delete({id:organisme.id})"
-                                class="btn btn-sm btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
-                        </button>
-                    </td>
-                </tr>
+                                class="btn btn-sm btn-danger btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-remove-circle"
+                                ></span
+                                >&nbsp;<span> Supprimer</span>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <nav>
                 <ul class="pagination">
-                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
-                    <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                    <li
+                        ng-show="links['first'] >= 0"
+                        ng-click="loadPage(links['first'])"
+                    >
+                        <a>&lt;&lt;</a>
+                    </li>
+                    <li
+                        ng-show="page > 0"
+                        ng-click="loadPage(links['prev'] || 0)"
+                    >
+                        <a>&lt;</a>
+                    </li>
+                    <li ng-show="page > 1" ng-click="loadPage(page - 2)">
+                        <a>{{page - 1}}</a>
+                    </li>
+                    <li ng-show="page > 0" ng-click="loadPage(page - 1)">
+                        <a>{{page}}</a>
+                    </li>
                     <li class="active"><a>{{page + 1}}</a></li>
-                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a></li>
-                    <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                    <li
+                        ng-show="page < links['last']"
+                        ng-click="loadPage(page + 1)"
+                    >
+                        <a>{{page + 2}}</a>
+                    </li>
+                    <li
+                        ng-show="page < links['last'] - 1"
+                        ng-click="loadPage(page + 2)"
+                    >
+                        <a>{{page + 3}}</a>
+                    </li>
+                    <li
+                        ng-show="links['next']"
+                        ng-click="loadPage(links['next'])"
+                    >
+                        <a>&gt;</a>
+                    </li>
+                    <li
+                        ng-show="links['last'] > 0"
+                        ng-click="loadPage(links['last'])"
+                    >
+                        <a>&gt;&gt;</a>
+                    </li>
                 </ul>
             </nav>
         </div>

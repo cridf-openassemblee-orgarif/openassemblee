@@ -1,38 +1,45 @@
-
 <div>
     <h2><span>PresenceElu</span> {{presenceElu.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <span>elu</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="elu.detail({id:presenceElu.elu.id})">{{presenceElu.elu.id}}</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>seance</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="Seance.detail({id:presenceElu.seance.id})">{{presenceElu.seance.id}}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <span>elu</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="elu.detail({id:presenceElu.elu.id})"
+                            >{{presenceElu.elu.id}}</a
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>seance</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="Seance.detail({id:presenceElu.seance.id})"
+                            >{{presenceElu.seance.id}}</a
+                        >
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    <button type="submit" onclick="window.history.back()" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>
+            Back</span
+        >
     </button>
 </div>

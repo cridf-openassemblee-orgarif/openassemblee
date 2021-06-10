@@ -1,9 +1,5 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .factory('Register', function ($resource) {
-        return $resource('api/register', {}, {
-        });
-    });
-
-
+angular.module("openassembleeApp").factory("Register", function ($resource) {
+    return $resource("api/register", {}, {});
+});

@@ -5,7 +5,8 @@
                 <div class="info-box title-box title-box-elu">
                     <div class="info-box-content-elu">
                         <h1>
-                            {{dto.elu.civilite | civilite}} {{dto.elu.prenom}} {{dto.elu.nom}}
+                            {{dto.elu.civilite | civilite}} {{dto.elu.prenom}}
+                            {{dto.elu.nom}}
                         </h1>
                     </div>
                 </div>
@@ -13,90 +14,156 @@
                     <div class="info-box-content-elu">
                         <span class="info-box-info-elu">
                             <div>
-                                <span class="lg">{{dto.elu.civilite | neOuNee}} le</span> {{dto.elu.dateNaissance | date:'mediumDate'}}
-                                <span class="lg" ng-if="dto.elu.lieuNaissance && dto.elu.lieuNaissance !== ''">à</span> {{dto.elu.lieuNaissance}}
+                                <span class="lg"
+                                    >{{dto.elu.civilite | neOuNee}} le</span
+                                >
+                                {{dto.elu.dateNaissance | date:'mediumDate'}}
+                                <span
+                                    class="lg"
+                                    ng-if="dto.elu.lieuNaissance && dto.elu.lieuNaissance !== ''"
+                                    >à</span
+                                >
+                                {{dto.elu.lieuNaissance}}
                             </div>
                             <div ng-if="dto.elu.nomJeuneFille">
-                                <span class="lg">Nom de jeune fille</span> {{dto.elu.nomJeuneFille}}
+                                <span class="lg">Nom de jeune fille</span>
+                                {{dto.elu.nomJeuneFille}}
                             </div>
                             <div>
-                                <span class="lg">Profession :</span> {{dto.elu.profession}}
+                                <span class="lg">Profession :</span>
+                                {{dto.elu.profession}}
                             </div>
                             <div>
-                                <span class="lg">Département :</span> {{dto.elu.departement}}
+                                <span class="lg">Département :</span>
+                                {{dto.elu.departement}}
                             </div>
-                            <div ng-if="dto.elu.dateDemission || dto.elu.motifDemission">
-                                <span class="lg">Élu non actif, cause :</span> {{dto.elu.motifDemission}}
-                                <span class="lg">depuis le</span> {{dto.elu.dateDemission | date:'mediumDate'}}
+                            <div
+                                ng-if="dto.elu.dateDemission || dto.elu.motifDemission"
+                            >
+                                <span class="lg">Élu non actif, cause :</span>
+                                {{dto.elu.motifDemission}}
+                                <span class="lg">depuis le</span>
+                                {{dto.elu.dateDemission | date:'mediumDate'}}
                             </div>
-                            <br/>
-                            <div ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
-                                 ng-if="f.dateFin == null">
+                            <br />
+                            <div
+                                ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
+                                ng-if="f.dateFin == null"
+                            >
                                 <div class="action-bloc info-bloc">
-                                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                                        <edit-button ui-sref="elu.detail.editFonctionCommissionPermanente({fonctionId: f.id})"></edit-button>
-                                        <delete-button ui-sref="elu.detail.supprimerFonctionCommissionPermanente({fonctionId: f.id})"></delete-button>
+                                    <div
+                                        class="edition-buttons-bloc"
+                                        has-authority="ROLE_ADMIN"
+                                    >
+                                        <edit-button
+                                            ui-sref="elu.detail.editFonctionCommissionPermanente({fonctionId: f.id})"
+                                        ></edit-button>
+                                        <delete-button
+                                            ui-sref="elu.detail.supprimerFonctionCommissionPermanente({fonctionId: f.id})"
+                                        ></delete-button>
                                     </div>
-                                    <span class="lg">Fonction :</span> {{f.fonction}}
-                                    <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
+                                    <span class="lg">Fonction :</span>
+                                    {{f.fonction}}
+                                    <span class="lg">depuis le</span>
+                                    {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
-                            <div ng-repeat="f in dto.elu.fonctionsExecutives"
-                                 ng-if="f.dateFin == null">
+                            <div
+                                ng-repeat="f in dto.elu.fonctionsExecutives"
+                                ng-if="f.dateFin == null"
+                            >
                                 <div class="action-bloc info-bloc">
-                                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                                        <edit-button ui-sref="elu.detail.editFonctionExecutive({fonctionId: f.id})"></edit-button>
-                                        <delete-button ui-sref="elu.detail.supprimerFonctionExecutive({fonctionId: f.id})"></delete-button>
+                                    <div
+                                        class="edition-buttons-bloc"
+                                        has-authority="ROLE_ADMIN"
+                                    >
+                                        <edit-button
+                                            ui-sref="elu.detail.editFonctionExecutive({fonctionId: f.id})"
+                                        ></edit-button>
+                                        <delete-button
+                                            ui-sref="elu.detail.supprimerFonctionExecutive({fonctionId: f.id})"
+                                        ></delete-button>
                                     </div>
-                                    <span class="lg">Fonction exécutive :</span> {{f.fonction}}
-                                    <span class="lg">depuis le</span> {{f.dateDebut | date:'mediumDate'}}
+                                    <span class="lg">Fonction exécutive :</span>
+                                    {{f.fonction}}
+                                    <span class="lg">depuis le</span>
+                                    {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
-                            <br/>
-                            <div ng-repeat="d in dto.elu.distinctionHonorifiques">
+                            <br />
+                            <div
+                                ng-repeat="d in dto.elu.distinctionHonorifiques"
+                            >
                                 <div class="action-bloc info-bloc">
-                                     <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                                        <edit-button ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})"></edit-button>
-                                        <delete-button ui-sref="elu.detail.supprimerDistinctionHonorifique({distinctionHonorifiqueId: d.id})"></delete-button>
+                                    <div
+                                        class="edition-buttons-bloc"
+                                        has-authority="ROLE_ADMIN"
+                                    >
+                                        <edit-button
+                                            ui-sref="elu.detail.editionDistinctionHonorifique({distinctionHonorifiqueId: d.id})"
+                                        ></edit-button>
+                                        <delete-button
+                                            ui-sref="elu.detail.supprimerDistinctionHonorifique({distinctionHonorifiqueId: d.id})"
+                                        ></delete-button>
                                     </div>
                                     <span class="lg">Titre :</span> {{d.titre}}
-                                    <br/>
-                                    <span class="lg">Date :</span> {{d.date | date:'mediumDate'}}
+                                    <br />
+                                    <span class="lg">Date :</span> {{d.date |
+                                    date:'mediumDate'}}
                                 </div>
                             </div>
                         </span>
-                        <div class="btn-group elu-action" has-authority="ROLE_ADMIN">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false">
+                        <div
+                            class="btn-group elu-action"
+                            has-authority="ROLE_ADMIN"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                            >
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a href="#" ui-sref="elu.edit({id:dto.elu.id})">
+                                    <a
+                                        href="#"
+                                        ui-sref="elu.edit({id:dto.elu.id})"
+                                    >
                                         <span class="fa fa-pencil"></span>
                                         Éditer
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                       ui-sref="elu.detail.nouvelleFonctionCommissionPermanente">
+                                    <a
+                                        href="#"
+                                        ui-sref="elu.detail.nouvelleFonctionCommissionPermanente"
+                                    >
                                         Ajouter une fonction (délégué etc.)
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                       ui-sref="elu.detail.nouvelleFonctionExecutive">
+                                    <a
+                                        href="#"
+                                        ui-sref="elu.detail.nouvelleFonctionExecutive"
+                                    >
                                         Ajouter une fonction exécutive
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
-                                       ui-sref="elu.detail.ajoutDistinctionHonorifique">
+                                    <a
+                                        href="#"
+                                        ui-sref="elu.detail.ajoutDistinctionHonorifique"
+                                    >
                                         Ajouter une distinction honorifique
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" ng-href="api/elus/{{dto.elu.id}}/export">
+                                    <a
+                                        href="#"
+                                        ng-href="api/elus/{{dto.elu.id}}/export"
+                                    >
                                         <span class="fa fa-table"></span>
                                         <span>Export Excel</span>
                                     </a>
@@ -111,13 +178,23 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="info-box">
                     <div class="info-box-photo-big">
-                        <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}"
-                             has-not-authority="ROLE_ADMIN"/>
-                        <img ng-if="dto.elu.image" ng-src="images/{{dto.elu.image}}" ui-sref="elu.detail.uploadImage"
-                             has-authority="ROLE_ADMIN"/>
-                        <button ng-if="dto.elu.image == null" class="btn btn-sm btn-primary"
-                                ui-sref="elu.detail.uploadImage"
-                                has-authority="ROLE_ADMIN">
+                        <img
+                            ng-if="dto.elu.image"
+                            ng-src="images/{{dto.elu.image}}"
+                            has-not-authority="ROLE_ADMIN"
+                        />
+                        <img
+                            ng-if="dto.elu.image"
+                            ng-src="images/{{dto.elu.image}}"
+                            ui-sref="elu.detail.uploadImage"
+                            has-authority="ROLE_ADMIN"
+                        />
+                        <button
+                            ng-if="dto.elu.image == null"
+                            class="btn btn-sm btn-primary"
+                            ui-sref="elu.detail.uploadImage"
+                            has-authority="ROLE_ADMIN"
+                        >
                             Ajouter une image
                         </button>
                     </div>

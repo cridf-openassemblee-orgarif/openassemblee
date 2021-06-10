@@ -1,37 +1,32 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .config(function ($stateProvider) {
-        $stateProvider
-            .state('error', {
-                parent: 'site',
-                url: '/error',
-                data: {
-                    authorities: [],
-                    pageTitle: 'Error page!'
+angular.module("openassembleeApp").config(function ($stateProvider) {
+    $stateProvider
+        .state("error", {
+            parent: "site",
+            url: "/error",
+            data: {
+                authorities: [],
+                pageTitle: "Error page!",
+            },
+            views: {
+                "content@": {
+                    templateUrl: "scripts/app/error/error.html",
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/error/error.html'
-                    }
+            },
+            resolve: {},
+        })
+        .state("accessdenied", {
+            parent: "site",
+            url: "/accessdenied",
+            data: {
+                authorities: [],
+            },
+            views: {
+                "content@": {
+                    templateUrl: "scripts/app/error/accessdenied.html",
                 },
-                resolve: {
-
-                }
-            })
-            .state('accessdenied', {
-                parent: 'site',
-                url: '/accessdenied',
-                data: {
-                    authorities: []
-                },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/error/accessdenied.html'
-                    }
-                },
-                resolve: {
-
-                }
-            });
-    });
+            },
+            resolve: {},
+        });
+});

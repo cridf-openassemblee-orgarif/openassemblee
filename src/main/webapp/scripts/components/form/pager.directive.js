@@ -1,9 +1,10 @@
 /* globals $ */
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .directive('openassembleeAppPager', function() {
+angular
+    .module("openassembleeApp")
+    .directive("openassembleeAppPager", function () {
         return {
-            templateUrl: 'scripts/components/form/pager.html'
+            templateUrl: "scripts/components/form/pager.html",
         };
     });

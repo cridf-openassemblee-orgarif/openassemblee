@@ -1,20 +1,39 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp').controller('AppartenanceCommissionPermanenteDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'AppartenanceCommissionPermanente', 'Elu',
-        function ($scope, $stateParams, $modalInstance, entity, AppartenanceCommissionPermanente, Elu) {
-
+angular
+    .module("openassembleeApp")
+    .controller("AppartenanceCommissionPermanenteDialogController", [
+        "$scope",
+        "$stateParams",
+        "$modalInstance",
+        "entity",
+        "AppartenanceCommissionPermanente",
+        "Elu",
+        function (
+            $scope,
+            $stateParams,
+            $modalInstance,
+            entity,
+            AppartenanceCommissionPermanente,
+            Elu
+        ) {
             $scope.appartenanceCommissionPermanente = entity;
             // FIXME vérifier
             //$scope.elus = Elu.query();
             $scope.load = function (id) {
-                AppartenanceCommissionPermanente.get({id: id}, function (result) {
-                    $scope.appartenanceCommissionPermanente = result;
-                });
+                AppartenanceCommissionPermanente.get(
+                    { id: id },
+                    function (result) {
+                        $scope.appartenanceCommissionPermanente = result;
+                    }
+                );
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('openassembleeApp:appartenanceCommissionPermanenteUpdate', result);
+                $scope.$emit(
+                    "openassembleeApp:appartenanceCommissionPermanenteUpdate",
+                    result
+                );
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };
@@ -25,15 +44,26 @@ angular.module('openassembleeApp').controller('AppartenanceCommissionPermanenteD
 
             $scope.save = function () {
                 $scope.isSaving = true;
-                $scope.appartenanceCommissionPermanente.elu = {id: $stateParams.id};
+                $scope.appartenanceCommissionPermanente.elu = {
+                    id: $stateParams.id,
+                };
                 if ($scope.appartenanceCommissionPermanente.id != null) {
-                    AppartenanceCommissionPermanente.update($scope.appartenanceCommissionPermanente, onSaveSuccess, onSaveError);
+                    AppartenanceCommissionPermanente.update(
+                        $scope.appartenanceCommissionPermanente,
+                        onSaveSuccess,
+                        onSaveError
+                    );
                 } else {
-                    AppartenanceCommissionPermanente.save($scope.appartenanceCommissionPermanente, onSaveSuccess, onSaveError);
+                    AppartenanceCommissionPermanente.save(
+                        $scope.appartenanceCommissionPermanente,
+                        onSaveSuccess,
+                        onSaveError
+                    );
                 }
             };
 
             $scope.clear = function () {
-                $modalInstance.dismiss('cancel');
+                $modalInstance.dismiss("cancel");
             };
-        }]);
+        },
+    ]);

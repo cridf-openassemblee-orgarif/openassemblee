@@ -1,8 +1,14 @@
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
         <h4 class="modal-title" id="myAppartenanceOrganismeLabel">
             Ajouter à un organisme
         </h4>
@@ -10,16 +16,30 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_statut">Statut</label>
-            <input type="text" class="typeahead form-control" name="statut" id="field_statut"
-                   options="typeaheadOptionsZeroChar" datasets="statutsAppartenanceOrganismeAutocomplete"
-                   ng-model="appartenanceOrganisme.statut"
-                   sf-typeahead autocomplete="off"/>
+            <input
+                type="text"
+                class="typeahead form-control"
+                name="statut"
+                id="field_statut"
+                options="typeaheadOptionsZeroChar"
+                datasets="statutsAppartenanceOrganismeAutocomplete"
+                ng-model="appartenanceOrganisme.statut"
+                sf-typeahead
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_organisme">Organisme</label>
-            <input type="text" class="typeahead form-control organisme-typeahead" name="organisme" id="field_organisme"
-                   options="typeaheadOptionsThreeChars" datasets="organismesAutocomplete"
-                   sf-typeahead ng-model="organisme"/>
+            <input
+                type="text"
+                class="typeahead form-control organisme-typeahead"
+                name="organisme"
+                id="field_organisme"
+                options="typeaheadOptionsThreeChars"
+                datasets="organismesAutocomplete"
+                sf-typeahead
+                ng-model="organisme"
+            />
             Code RNE / Siret : {{organisme.codeRNE}}
         </div>
         <!--<div class="form-group">-->
@@ -29,35 +49,79 @@
         <!--autocomplete="off"/>-->
         <!--</div>-->
         <div class="form-group">
-            <label class="control-label" for="field_dateNomination">Date de nomination</label>
-            <input type="text" bs-datepicker class="form-control" name="dateNomination" id="field_dateNomination"
-                   ng-model="appartenanceOrganisme.dateNomination"
-                   autocomplete="off"/>
+            <label class="control-label" for="field_dateNomination"
+                >Date de nomination</label
+            >
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateNomination"
+                id="field_dateNomination"
+                ng-model="appartenanceOrganisme.dateNomination"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_reference">Référence de nomination</label>
-            <input type="text" class="form-control" name="reference" id="field_reference"
-                   ng-model="appartenanceOrganisme.reference"/>
+            <label class="control-label" for="field_reference"
+                >Référence de nomination</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="reference"
+                id="field_reference"
+                ng-model="appartenanceOrganisme.reference"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_type">Type de nomination</label>
-            <input type="text" class="typeahead form-control" name="type" id="field_type"
-                   options="typeaheadOptionsZeroChar" datasets="typesNominationAutocomplete"
-                   ng-model="appartenanceOrganisme.type"
-                   sf-typeahead autocomplete="off"/>
+            <label class="control-label" for="field_type"
+                >Type de nomination</label
+            >
+            <input
+                type="text"
+                class="typeahead form-control"
+                name="type"
+                id="field_type"
+                options="typeaheadOptionsZeroChar"
+                datasets="typesNominationAutocomplete"
+                ng-model="appartenanceOrganisme.type"
+                sf-typeahead
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_lienPiece">Lien vers fichier de référence</label>
-            <input type="text" class="form-control" name="lienPiece" id="field_lienPiece"
-                   ng-model="appartenanceOrganisme.lienPiece"/>
+            <label class="control-label" for="field_lienPiece"
+                >Lien vers fichier de référence</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="lienPiece"
+                id="field_lienPiece"
+                ng-model="appartenanceOrganisme.lienPiece"
+            />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

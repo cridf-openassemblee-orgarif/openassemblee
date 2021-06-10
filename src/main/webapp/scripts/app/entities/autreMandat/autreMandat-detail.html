@@ -1,70 +1,83 @@
-
 <div>
     <h2><span>AutreMandat</span> {{autreMandat.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <span>CollectiviteOuOrganisme</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{autreMandat.collectiviteOuOrganisme}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Fonction</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{autreMandat.fonction}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateDebut</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{autreMandat.dateDebut | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>DateFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{autreMandat.dateFin | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>MotifFin</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{autreMandat.motifFin}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>elu</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="elu.detail({id:autreMandat.elu.id})">{{autreMandat.elu.id}}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <span>CollectiviteOuOrganisme</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{autreMandat.collectiviteOuOrganisme}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Fonction</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{autreMandat.fonction}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>DateDebut</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{autreMandat.dateDebut | date:'mediumDate'}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>DateFin</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{autreMandat.dateFin | date:'mediumDate'}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>MotifFin</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{autreMandat.motifFin}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>elu</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="elu.detail({id:autreMandat.elu.id})"
+                            >{{autreMandat.elu.id}}</a
+                        >
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    <button type="submit" onclick="window.history.back()" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>
+            Back</span
+        >
     </button>
 </div>

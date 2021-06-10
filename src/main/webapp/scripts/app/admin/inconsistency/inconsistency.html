@@ -1,21 +1,23 @@
 <div>
     <section class="content-header">
-        <h1>
-            Incohérences
-        </h1>
+        <h1>Incohérences</h1>
     </section>
 
     <section class="content">
-
-        <div ng-repeat="is in inconsistencies" ng-if="is.inconsistencies.length">
+        <div
+            ng-repeat="is in inconsistencies"
+            ng-if="is.inconsistencies.length"
+        >
             <h2>{{is.category | inconsistencyCategory}}</h2>
             <u>
                 <li ng-repeat="i in is.inconsistencies" ng-switch="i.entity">
-                    <a ng-switch-when="Pouvoir" ng-href="{{'#/seance/' + i.parentEntityId + '/pouvoir/' + i.entityId + '/edit'}}">{{i | inconsistency}}</a>
+                    <a
+                        ng-switch-when="Pouvoir"
+                        ng-href="{{'#/seance/' + i.parentEntityId + '/pouvoir/' + i.entityId + '/edit'}}"
+                        >{{i | inconsistency}}</a
+                    >
                 </li>
             </u>
         </div>
     </section>
-
 </div>
-

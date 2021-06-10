@@ -1,19 +1,30 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp').controller('SignatureDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Signature', 'PresenceElu',
-        function($scope, $stateParams, $modalInstance, entity, Signature, PresenceElu) {
-
+angular.module("openassembleeApp").controller("SignatureDialogController", [
+    "$scope",
+    "$stateParams",
+    "$modalInstance",
+    "entity",
+    "Signature",
+    "PresenceElu",
+    function (
+        $scope,
+        $stateParams,
+        $modalInstance,
+        entity,
+        Signature,
+        PresenceElu
+    ) {
         $scope.signature = entity;
         $scope.presenceelus = PresenceElu.query();
-        $scope.load = function(id) {
-            Signature.get({id : id}, function(result) {
+        $scope.load = function (id) {
+            Signature.get({ id: id }, function (result) {
                 $scope.signature = result;
             });
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('openassembleeApp:signatureUpdate', result);
+            $scope.$emit("openassembleeApp:signatureUpdate", result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };
@@ -31,7 +42,8 @@ angular.module('openassembleeApp').controller('SignatureDialogController',
             }
         };
 
-        $scope.clear = function() {
-            $modalInstance.dismiss('cancel');
+        $scope.clear = function () {
+            $modalInstance.dismiss("cancel");
         };
-}]);
+    },
+]);

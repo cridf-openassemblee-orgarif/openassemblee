@@ -1,8 +1,6 @@
 <div>
     <section class="content-header">
-        <h1>
-            Projets de plan
-        </h1>
+        <h1>Projets de plan</h1>
     </section>
     <div class="container">
         <div class="row buttons">
@@ -19,37 +17,54 @@
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Nom du projet</th>
-                    <th>Date de création</th>
-                    <th>Dernière modification</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="hemicyclePlan in hemicyclePlans track by hemicyclePlan.id">
-                    <td>{{hemicyclePlan.label}}</td>
-                    <td>{{hemicyclePlan.creationDate | date:'medium'}}</td>
-                    <td>{{hemicyclePlan.lastModificationDate | date:'medium'}}</td>
-                    <td>
-                        <button type="submit"
+                    <tr>
+                        <th>Nom du projet</th>
+                        <th>Date de création</th>
+                        <th>Dernière modification</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        ng-repeat="hemicyclePlan in hemicyclePlans track by hemicyclePlan.id"
+                    >
+                        <td>{{hemicyclePlan.label}}</td>
+                        <td>{{hemicyclePlan.creationDate | date:'medium'}}</td>
+                        <td>
+                            {{hemicyclePlan.lastModificationDate |
+                            date:'medium'}}
+                        </td>
+                        <td>
+                            <button
+                                type="submit"
                                 ui-sref="hemicyclePlan.detail({id:hemicyclePlan.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Éditer plan</span>
-                        </button>
-                        <!--<button type="submit"-->
-                        <!--        ui-sref="hemicyclePlan.edit({id:hemicyclePlan.id})"-->
-                        <!--        class="btn btn-primary btn-sm">-->
-                        <!--    <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Modifier nom</span>-->
-                        <!--</button>-->
-                        <button type="submit"
+                                class="btn btn-info btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-eye-open"
+                                ></span
+                                >&nbsp;<span> Éditer plan</span>
+                            </button>
+                            <!--<button type="submit"-->
+                            <!--        ui-sref="hemicyclePlan.edit({id:hemicyclePlan.id})"-->
+                            <!--        class="btn btn-primary btn-sm">-->
+                            <!--    <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Modifier nom</span>-->
+                            <!--</button>-->
+                            <button
+                                type="submit"
                                 ui-sref="hemicyclePlan.delete({id:hemicyclePlan.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
-                        </button>
-                    </td>
-                </tr>
-            <tbody>
+                                class="btn btn-danger btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-remove-circle"
+                                ></span
+                                >&nbsp;<span> Supprimer</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody></tbody>
             </table>
         </div>
     </div>

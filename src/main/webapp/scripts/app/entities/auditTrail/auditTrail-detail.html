@@ -2,103 +2,123 @@
     <section>
         <div class="container">
             <h1>Détail log</h1>
-            <br/>
+            <br />
 
             <div class="table-responsive info-box table-info-box">
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Field</th>
-                        <th>Value</th>
-                    </tr>
+                        <tr>
+                            <th>Field</th>
+                            <th>Value</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-if="auditTrail.parentEntity">
-                        <td>
-                            <span>Entité parente</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">
-                                {{auditTrail.parentEntity + ' ' + auditTrail.parentEntityId}}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Entité</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">
-                                {{auditTrail.entity + ' ' + auditTrail.entityId}}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Action</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{auditTrail.action | auditTrailAction}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Utilisateur</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{auditTrail.user}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Date</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">
-                                {{auditTrail.date | date:'mediumDate'}} à {{auditTrail.date | date:'mediumTime'}}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr ng-if="auditTrail.reason">
-                        <td>
-                            <span>Raison</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{auditTrail.reason}}</span>
-                        </td>
-                    </tr>
-                    <!--<tr>-->
+                        <tr ng-if="auditTrail.parentEntity">
+                            <td>
+                                <span>Entité parente</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static">
+                                    {{auditTrail.parentEntity + ' ' +
+                                    auditTrail.parentEntityId}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Entité</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static">
+                                    {{auditTrail.entity + ' ' +
+                                    auditTrail.entityId}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Action</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{auditTrail.action |
+                                    auditTrailAction}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Utilisateur</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{auditTrail.user}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Date</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static">
+                                    {{auditTrail.date | date:'mediumDate'}} à
+                                    {{auditTrail.date | date:'mediumTime'}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr ng-if="auditTrail.reason">
+                            <td>
+                                <span>Raison</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{auditTrail.reason}}</span
+                                >
+                            </td>
+                        </tr>
+                        <!--<tr>-->
                         <!--<td>-->
-                            <!--<span>Détails</span>-->
+                        <!--<span>Détails</span>-->
                         <!--</td>-->
                         <!--<td>-->
-                            <!--<pre>{{stringifiedJson}}</pre>-->
+                        <!--<pre>{{stringifiedJson}}</pre>-->
                         <!--</td>-->
-                    <!--</tr>-->
-                    <tr>
-                        <td>
-                            <span>Détails</span>
-                        </td>
-                        <td>
-                            <json-formatter open="2" json="json"></json-formatter>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>DTO</span>
-                        </td>
-                        <td>
-                            <json-formatter open="2" json="dto"></json-formatter>
-                        </td>
-                    </tr>
+                        <!--</tr>-->
+                        <tr>
+                            <td>
+                                <span>Détails</span>
+                            </td>
+                            <td>
+                                <json-formatter
+                                    open="2"
+                                    json="json"
+                                ></json-formatter>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>DTO</span>
+                            </td>
+                            <td>
+                                <json-formatter
+                                    open="2"
+                                    json="dto"
+                                ></json-formatter>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <button type="submit"
-                    onclick="window.history.back()"
-                    class="btn btn-info">
-                <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+            <button
+                type="submit"
+                onclick="window.history.back()"
+                class="btn btn-info"
+            >
+                <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>
+                    Back</span
+                >
             </button>
         </div>
     </section>

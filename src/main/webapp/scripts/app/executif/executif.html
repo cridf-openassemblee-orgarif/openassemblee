@@ -1,9 +1,7 @@
 <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
-            L'exécutif
-        </h1>
+        <h1>L'exécutif</h1>
     </section>
 
     <!-- Main content -->
@@ -12,14 +10,23 @@
             <h2 ng-if="!fonctions.length && !fonctionsExecutives.length">
                 Aucun membre à la commission permanente
             </h2>
-            <div ng-if="fonctions.length || fonctionsExecutives.length" has-authority="ROLE_ADMIN">
+            <div
+                ng-if="fonctions.length || fonctionsExecutives.length"
+                has-authority="ROLE_ADMIN"
+            >
                 <div class="row">
                     <div class="col-md-12 align-right">
-                        <a class="btn btn-sm btn-primary" href="api/executif/export">
+                        <a
+                            class="btn btn-sm btn-primary"
+                            href="api/executif/export"
+                        >
                             <span class="fa fa-table"></span>
                             <span>Export Excel</span>
                         </a>
-                        <a class="btn btn-sm btn-primary" href="api/executif/export-pdf">
+                        <a
+                            class="btn btn-sm btn-primary"
+                            href="api/executif/export-pdf"
+                        >
                             <span class="fa fa-file-text"></span>
                             <span>Export PDF</span>
                         </a>
@@ -29,25 +36,46 @@
             <div ng-if="fonctionsExecutives.length">
                 <br />
                 <!--<h2 class="commission-permanente-titre">Les élus ayant une fonction exécutive</h2>-->
-                <div class="row" ng-init="chunks = _.chunk(fonctionsExecutives, 3)">
-                    <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="fonctionsExecutives in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctionsExecutives"
-                             ng-if="f.dateFin == null">
-                            <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                                 ui-sref="elu.detail({id:elu.id})">
+                <div
+                    class="row"
+                    ng-init="chunks = _.chunk(fonctionsExecutives, 3)"
+                >
+                    <div
+                        class="col-md-12 col-sm-12 col-xs-12"
+                        ng-repeat="fonctionsExecutives in chunks"
+                    >
+                        <div
+                            class="col-md-4 col-sm-6 col-xs-12"
+                            ng-repeat="f in fonctionsExecutives"
+                            ng-if="f.dateFin == null"
+                        >
+                            <div
+                                class="info-box entity-component"
+                                ng-init="elu = comm.elus[f.elu.id]"
+                                ui-sref="elu.detail({id:elu.id})"
+                            >
                                 <span class="info-box-photo">
-                                    <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
+                                    <img
+                                        ng-if="elu.image"
+                                        ng-src="images/{{elu.image}}"
+                                    />
                                 </span>
 
                                 <div class="info-box-content">
-                                <span
-                                    class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                                    <span class="info-box-info fonction">{{f.fonction}}</span>
+                                    <span class="info-box-titre"
+                                        >{{elu.civilite | civilite}}
+                                        {{elu.prenom}} {{elu.nom}}</span
+                                    >
+                                    <span class="info-box-info fonction"
+                                        >{{f.fonction}}</span
+                                    >
                                     <div class="info-box-info">
-                                        Depuis le {{f.dateDebut | date:'mediumDate'}}
-                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :
-                                            {{f.motifFin}}
+                                        Depuis le {{f.dateDebut |
+                                        date:'mediumDate'}}
+                                        <div ng-if="a.dateFin">
+                                            Prend fin le {{f.dateFin |
+                                            date:'mediumDate'}} pour le motif
+                                            suivant : {{f.motifFin}}
                                         </div>
                                     </div>
                                 </div>
@@ -56,28 +84,46 @@
                     </div>
                 </div>
             </div>
-            <hr class="commission-permanente-separator"/>
+            <hr class="commission-permanente-separator" />
             <div ng-if="fonctions.length">
                 <!--<h2>Les élus ayant une fonction à la commission</h2>-->
                 <div class="row" ng-init="chunks = _.chunk(fonctions, 3)">
-                    <div class="col-md-12 col-sm-12 col-xs-12"
-                         ng-repeat="fonctions in chunks">
-                        <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="f in fonctions"
-                             ng-if="f.dateFin == null">
-                            <div class="info-box entity-component" ng-init="elu = comm.elus[f.elu.id]"
-                                 ui-sref="elu.detail({id:elu.id})">
+                    <div
+                        class="col-md-12 col-sm-12 col-xs-12"
+                        ng-repeat="fonctions in chunks"
+                    >
+                        <div
+                            class="col-md-4 col-sm-6 col-xs-12"
+                            ng-repeat="f in fonctions"
+                            ng-if="f.dateFin == null"
+                        >
+                            <div
+                                class="info-box entity-component"
+                                ng-init="elu = comm.elus[f.elu.id]"
+                                ui-sref="elu.detail({id:elu.id})"
+                            >
                                 <span class="info-box-photo">
-                                    <img ng-if="elu.image" ng-src="images/{{elu.image}}"/>
+                                    <img
+                                        ng-if="elu.image"
+                                        ng-src="images/{{elu.image}}"
+                                    />
                                 </span>
 
                                 <div class="info-box-content">
-                                <span
-                                    class="info-box-titre">{{elu.civilite | civilite}} {{elu.prenom}} {{elu.nom}}</span>
-                                    <span class="info-box-info fonction">{{f.fonction}}</span>
+                                    <span class="info-box-titre"
+                                        >{{elu.civilite | civilite}}
+                                        {{elu.prenom}} {{elu.nom}}</span
+                                    >
+                                    <span class="info-box-info fonction"
+                                        >{{f.fonction}}</span
+                                    >
                                     <div class="info-box-info">
-                                        Depuis le {{f.dateDebut | date:'mediumDate'}}
-                                        <div ng-if="a.dateFin">Prend fin le {{f.dateFin | date:'mediumDate'}} pour le motif suivant :
-                                            {{f.motifFin}}
+                                        Depuis le {{f.dateDebut |
+                                        date:'mediumDate'}}
+                                        <div ng-if="a.dateFin">
+                                            Prend fin le {{f.dateFin |
+                                            date:'mediumDate'}} pour le motif
+                                            suivant : {{f.motifFin}}
                                         </div>
                                     </div>
                                 </div>

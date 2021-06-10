@@ -1,45 +1,83 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myAuditTrailLabel">Create or edit a AuditTrail</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myAuditTrailLabel">
+            Create or edit a AuditTrail
+        </h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
         <div class="form-group">
             <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="auditTrail.id" readonly />
+            <input
+                type="text"
+                class="form-control"
+                id="id"
+                name="id"
+                ng-model="auditTrail.id"
+                readonly
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_entity">Entity</label>
-            <input type="text" class="form-control" name="entity" id="field_entity"
-                    ng-model="auditTrail.entity"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="entity"
+                id="field_entity"
+                ng-model="auditTrail.entity"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_entityId">EntityId</label>
-            <input type="text" class="form-control" name="entityId" id="field_entityId"
-                    ng-model="auditTrail.entityId"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="entityId"
+                id="field_entityId"
+                ng-model="auditTrail.entityId"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_parentEntity">ParentEntity</label>
-            <input type="text" class="form-control" name="parentEntity" id="field_parentEntity"
-                    ng-model="auditTrail.parentEntity"
-                     />
+            <label class="control-label" for="field_parentEntity"
+                >ParentEntity</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="parentEntity"
+                id="field_parentEntity"
+                ng-model="auditTrail.parentEntity"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_parentEntityId">ParentEntityId</label>
-            <input type="text" class="form-control" name="parentEntityId" id="field_parentEntityId"
-                    ng-model="auditTrail.parentEntityId"
-                     />
+            <label class="control-label" for="field_parentEntityId"
+                >ParentEntityId</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="parentEntityId"
+                id="field_parentEntityId"
+                ng-model="auditTrail.parentEntityId"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_action">Action</label>
-            <select class="form-control" name="action" ng-model="auditTrail.action" id="field_action">
+            <select
+                class="form-control"
+                name="action"
+                ng-model="auditTrail.action"
+                id="field_action"
+            >
                 <option value="CREATE">CREATE</option>
                 <option value="UPDATE">UPDATE</option>
                 <option value="CLOSE">CLOSE</option>
@@ -48,36 +86,64 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_user">User</label>
-            <input type="text" class="form-control" name="user" id="field_user"
-                    ng-model="auditTrail.user"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="user"
+                id="field_user"
+                ng-model="auditTrail.user"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_date">Date</label>
-            <input type="date" class="form-control" name="date" id="field_date"
-                    ng-model="auditTrail.date"
-                     />
+            <input
+                type="date"
+                class="form-control"
+                name="date"
+                id="field_date"
+                ng-model="auditTrail.date"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_details">Details</label>
-            <input type="text" class="form-control" name="details" id="field_details"
-                    ng-model="auditTrail.details"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="details"
+                id="field_details"
+                ng-model="auditTrail.details"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_reason">Reason</label>
-            <input type="text" class="form-control" name="reason" id="field_reason"
-                    ng-model="auditTrail.reason"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="reason"
+                id="field_reason"
+                ng-model="auditTrail.reason"
+            />
         </div>
-
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Cancel</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Save</span
+            >
         </button>
     </div>
 </form>

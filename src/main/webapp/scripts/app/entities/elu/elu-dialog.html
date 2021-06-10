@@ -1,91 +1,200 @@
 <form name="editForm" role="form" novalidate ng-submit="save()">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
         <h4 class="modal-title" id="myEluLabel">Créer / éditer un élu</h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_civilite">Civilite</label>
-            <select class="form-control" name="civilite" ng-model="dto.elu.civilite" id="field_civilite">
+            <select
+                class="form-control"
+                name="civilite"
+                ng-model="dto.elu.civilite"
+                id="field_civilite"
+            >
                 <option value="MONSIEUR">Monsieur</option>
                 <option value="MADAME">Madame</option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_nom">Nom</label>
-            <input type="text" class="form-control" name="nom" id="field_nom"
-                   ng-model="dto.elu.nom"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="nom"
+                id="field_nom"
+                ng-model="dto.elu.nom"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_prenom">Prénom</label>
-            <input type="text" class="form-control" name="prenom" id="field_prenom"
-                   ng-model="dto.elu.prenom"
-                     />
+            <input
+                type="text"
+                class="form-control"
+                name="prenom"
+                id="field_prenom"
+                ng-model="dto.elu.prenom"
+            />
         </div>
-        <div class="form-group" ng-if="dto.elu.civilite != null && dto.elu.civilite == 'Madame'">
-            <label class="control-label" for="field_nomJeuneFille">Nom de jeune fille</label>
-            <input type="text" class="form-control" name="nomJeuneFille" id="field_nomJeuneFille"
-                   ng-model="dto.elu.nomJeuneFille"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_profession">Profession</label>
-            <input type="text" class="typeahead form-control" name="profession" id="field_profession"
-                   options="typeaheadOptionsThreeChars" datasets="professionsAutocomplete"
-                   ng-model="dto.elu.profession" sf-typeahead autocomplete="off"/>
-
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_dateNaissance">Date de naissance</label>
-            <input type="text" bs-datepicker class="form-control" name="dateNaissance"
-                   id="field_dateNaissance" ng-model="dto.elu.dateNaissance"
-                   autocomplete="off" />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_lieuNaissance">Lieu de naissance</label>
-            <input type="text" class="form-control" name="lieuNaissance" id="field_lieuNaissance"
-                   ng-model="dto.elu.lieuNaissance"/>
+        <div
+            class="form-group"
+            ng-if="dto.elu.civilite != null && dto.elu.civilite == 'Madame'"
+        >
+            <label class="control-label" for="field_nomJeuneFille"
+                >Nom de jeune fille</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="nomJeuneFille"
+                id="field_nomJeuneFille"
+                ng-model="dto.elu.nomJeuneFille"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_departement">Code département</label>
-            <input type="text" class="form-control" name="codeDepartement" id="field_codeDepartement"
-                   ng-model="dto.elu.codeDepartement"/>
+            <label class="control-label" for="field_profession"
+                >Profession</label
+            >
+            <input
+                type="text"
+                class="typeahead form-control"
+                name="profession"
+                id="field_profession"
+                options="typeaheadOptionsThreeChars"
+                datasets="professionsAutocomplete"
+                ng-model="dto.elu.profession"
+                sf-typeahead
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_departement">Département</label>
-            <input type="text" class="form-control" name="departement" id="field_departement"
-                   ng-model="dto.elu.departement"/>
+            <label class="control-label" for="field_dateNaissance"
+                >Date de naissance</label
+            >
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateNaissance"
+                id="field_dateNaissance"
+                ng-model="dto.elu.dateNaissance"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_departement">Liste électorale</label>
-            <input type="text" class="form-control" name="listeElectorale" id="field_listeElectorale"
-                   ng-model="dto.elu.listeElectorale"/>
+            <label class="control-label" for="field_lieuNaissance"
+                >Lieu de naissance</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="lieuNaissance"
+                id="field_lieuNaissance"
+                ng-model="dto.elu.lieuNaissance"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_departement">Liste électorale (court)</label>
-            <input type="text" class="form-control" name="listeCourt" id="field_listeCourt"
-                   ng-model="dto.elu.listeCourt"/>
+            <label class="control-label" for="field_departement"
+                >Code département</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="codeDepartement"
+                id="field_codeDepartement"
+                ng-model="dto.elu.codeDepartement"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifDemission">Motif démission</label>
-            <input type="text" class="form-control" name="departement" id="field_motifDemission"
-                   ng-model="dto.elu.motifDemission"/>
+            <label class="control-label" for="field_departement"
+                >Département</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="departement"
+                id="field_departement"
+                ng-model="dto.elu.departement"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDemission">Date de démission</label>
-            <input type="text" bs-datepicker class="form-control" name="dateDemission" id="field_dateDemission"
-                   ng-model="dto.elu.dateDemission"
-                   autocomplete="off"  />
+            <label class="control-label" for="field_departement"
+                >Liste électorale</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="listeElectorale"
+                id="field_listeElectorale"
+                ng-model="dto.elu.listeElectorale"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_departement"
+                >Liste électorale (court)</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="listeCourt"
+                id="field_listeCourt"
+                ng-model="dto.elu.listeCourt"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_motifDemission"
+                >Motif démission</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="departement"
+                id="field_motifDemission"
+                ng-model="dto.elu.motifDemission"
+            />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_dateDemission"
+                >Date de démission</label
+            >
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateDemission"
+                id="field_dateDemission"
+                ng-model="dto.elu.dateDemission"
+                autocomplete="off"
+            />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

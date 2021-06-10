@@ -6,17 +6,21 @@
         <div class="box-body">
             <div class="info-bloc" ng-repeat="a in dto.elu.numerosFax">
                 <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                    <edit-button ui-sref="elu.detail.editerNumeroFax({numeroFaxId: a.id})"></edit-button>
-                    <delete-button ui-sref="elu.detail.supprimerNumeroFax({numeroFaxId: a.id})"></delete-button>
+                    <edit-button
+                        ui-sref="elu.detail.editerNumeroFax({numeroFaxId: a.id})"
+                    ></edit-button>
+                    <delete-button
+                        ui-sref="elu.detail.supprimerNumeroFax({numeroFaxId: a.id})"
+                    ></delete-button>
                 </div>
                 {{a.numero}}
-                <br/>
+                <br />
                 <span class="lg">
                     <span class="grey">Nature :</span>
                     {{a.natureProPerso | properso}}
                     <span class="grey">| Niveau de confidentialité :</span>
                     {{a.niveauConfidentialite | confidentialite}}
-                    <br/>
+                    <br />
                     <span class="grey">Publication dans l'annuaire :</span>
                     {{a.publicationAnnuaire | ouinon}}
                 </span>
@@ -24,8 +28,12 @@
             <div ng-hide="dto.elu.numerosFax.length">Aucun numéro connu</div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default" ui-sref="elu.detail.ajouterNumeroFax"
-                    has-authority="ROLE_ADMIN">
+            <button
+                type="button"
+                class="btn btn-default"
+                ui-sref="elu.detail.ajouterNumeroFax"
+                has-authority="ROLE_ADMIN"
+            >
                 <span class="fa fa-plus"></span>
             </button>
         </div>

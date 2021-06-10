@@ -8,48 +8,69 @@
 
     <section class="content">
         <div class="container">
-
             <div class="search-bloc">
                 <label class="search-label" for="search-input">Recherche</label>
-                <input id="search-input" ng-model="$root.searchToken"/>
+                <input id="search-input" ng-model="$root.searchToken" />
             </div>
 
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="dto in dtos" ng-switch="dto.resultType">
-                    <div class="info-box entity-component" ng-switch-when="ELU" ui-sref="elu.detail({id:dto.id})">
+                <div
+                    class="col-md-4 col-sm-6 col-xs-12"
+                    ng-repeat="dto in dtos"
+                    ng-switch="dto.resultType"
+                >
+                    <div
+                        class="info-box entity-component"
+                        ng-switch-when="ELU"
+                        ui-sref="elu.detail({id:dto.id})"
+                    >
                         <span class="info-box-photo">
-                            <img ng-if="dto.image" ng-src="images/{{dto.image}}"/>
+                            <img
+                                ng-if="dto.image"
+                                ng-src="images/{{dto.image}}"
+                            />
                         </span>
 
                         <div class="info-box-content">
                             <span class="info-box-titre">{{dto.display}}</span>
                         </div>
                     </div>
-                    <div class="info-box entity-component" ng-switch-when="GROUPE_POLITIQUE"
-                         ui-sref="groupesPolitiques.detail({id:dto.id})">
+                    <div
+                        class="info-box entity-component"
+                        ng-switch-when="GROUPE_POLITIQUE"
+                        ui-sref="groupesPolitiques.detail({id:dto.id})"
+                    >
                         <span class="info-box-photo">
-                            <img ng-if="dto.image" ng-src="images/{{dto.image}}"/>
+                            <img
+                                ng-if="dto.image"
+                                ng-src="images/{{dto.image}}"
+                            />
                         </span>
 
                         <div class="info-box-content">
                             <span class="info-box-titre">{{dto.display}}</span>
                         </div>
                     </div>
-                    <div class="info-box entity-component" ng-switch-when="COMMISSION_THEMATIQUE"
-                         ui-sref="commissionThematique.detail({id:dto.id})">
+                    <div
+                        class="info-box entity-component"
+                        ng-switch-when="COMMISSION_THEMATIQUE"
+                        ui-sref="commissionThematique.detail({id:dto.id})"
+                    >
                         <div class="info-box-content">
                             <span class="info-box-titre">{{dto.display}}</span>
                         </div>
                     </div>
-                    <div class="info-box entity-component" ng-switch-when="ORGANISME    "
-                         ui-sref="organisme.detail({id:dto.id})">
+                    <div
+                        class="info-box entity-component"
+                        ng-switch-when="ORGANISME    "
+                        ui-sref="organisme.detail({id:dto.id})"
+                    >
                         <div class="info-box-content">
                             <span class="info-box-titre">{{dto.display}}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 </div>

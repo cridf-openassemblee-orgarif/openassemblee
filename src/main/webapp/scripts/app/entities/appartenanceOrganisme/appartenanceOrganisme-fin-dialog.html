@@ -1,8 +1,14 @@
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
         <h4 class="modal-title" id="myAppartenanceOrganismeLabel">
             Fixer une date et un motif de départ d'un organisme
         </h4>
@@ -10,22 +16,48 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
-            <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
-                   ng-model="appartenanceOrganisme.dateFin"
-                   autocomplete="off"/>
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateFin"
+                id="field_dateFin"
+                ng-model="appartenanceOrganisme.dateFin"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifFin">Motif de fin</label>
-            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                   ng-model="appartenanceOrganisme.motifFin"/>
+            <label class="control-label" for="field_motifFin"
+                >Motif de fin</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="motifFin"
+                id="field_motifFin"
+                ng-model="appartenanceOrganisme.motifFin"
+            />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

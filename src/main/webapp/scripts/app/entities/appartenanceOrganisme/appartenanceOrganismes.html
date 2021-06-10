@@ -4,16 +4,28 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <button class="btn btn-primary" ui-sref="appartenanceOrganisme.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Create a new AppartenanceOrganisme</span>
+                <button
+                    class="btn btn-primary"
+                    ui-sref="appartenanceOrganisme.new"
+                >
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Create a new AppartenanceOrganisme</span>
                 </button>
             </div>
             <div class="col-md-8">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        <input
+                            type="text"
+                            class="form-control"
+                            ng-model="searchQuery"
+                            id="searchQuery"
+                            placeholder="query"
+                        />
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a AppartenanceOrganisme</span>
+                    <button class="btn btn-info" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>Search a AppartenanceOrganisme</span>
                     </button>
                 </form>
             </div>
@@ -39,35 +51,63 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="appartenanceOrganisme in appartenanceOrganismes track by appartenanceOrganisme.id">
-                    <td><a ui-sref="appartenanceOrganisme.detail({id:appartenanceOrganisme.id})">{{appartenanceOrganisme.id}}</a></td>
+                <tr
+                    ng-repeat="appartenanceOrganisme in appartenanceOrganismes track by appartenanceOrganisme.id"
+                >
+                    <td>
+                        <a
+                            ui-sref="appartenanceOrganisme.detail({id:appartenanceOrganisme.id})"
+                            >{{appartenanceOrganisme.id}}</a
+                        >
+                    </td>
                     <td>{{appartenanceOrganisme.statut}}</td>
                     <td>{{appartenanceOrganisme.codeRNE}}</td>
-                        <td>{{appartenanceOrganisme.dateDebut | date:'mediumDate'}}</td>
-                        <td>{{appartenanceOrganisme.dateFin | date:'mediumDate'}}</td>
+                    <td>
+                        {{appartenanceOrganisme.dateDebut | date:'mediumDate'}}
+                    </td>
+                    <td>
+                        {{appartenanceOrganisme.dateFin | date:'mediumDate'}}
+                    </td>
                     <td>{{appartenanceOrganisme.motifFin}}</td>
-                        <td>{{appartenanceOrganisme.dateNomination | date:'mediumDate'}}</td>
+                    <td>
+                        {{appartenanceOrganisme.dateNomination |
+                        date:'mediumDate'}}
+                    </td>
                     <td>{{appartenanceOrganisme.reference}}</td>
                     <td>{{appartenanceOrganisme.type}}</td>
                     <td>{{appartenanceOrganisme.lienPiece}}</td>
                     <td>
-                        <a ui-sref="elu.detail({id:appartenanceOrganisme.elu.id})">{{appartenanceOrganisme.elu.id}}</a>
+                        <a
+                            ui-sref="elu.detail({id:appartenanceOrganisme.elu.id})"
+                            >{{appartenanceOrganisme.elu.id}}</a
+                        >
                     </td>
                     <td>
-                        <button type="submit"
-                                ui-sref="appartenanceOrganisme.detail({id:appartenanceOrganisme.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> View</span>
+                        <button
+                            type="submit"
+                            ui-sref="appartenanceOrganisme.detail({id:appartenanceOrganisme.id})"
+                            class="btn btn-info btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-eye-open"></span
+                            >&nbsp;<span> View</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="appartenanceOrganisme.edit({id:appartenanceOrganisme.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Edit</span>
+                        <button
+                            type="submit"
+                            ui-sref="appartenanceOrganisme.edit({id:appartenanceOrganisme.id})"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-pencil"></span
+                            >&nbsp;<span> Edit</span>
                         </button>
-                        <button type="submit"
-                                ui-sref="appartenanceOrganisme.delete({id:appartenanceOrganisme.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Delete</span>
+                        <button
+                            type="submit"
+                            ui-sref="appartenanceOrganisme.delete({id:appartenanceOrganisme.id})"
+                            class="btn btn-danger btn-sm"
+                        >
+                            <span
+                                class="glyphicon glyphicon-remove-circle"
+                            ></span
+                            >&nbsp;<span> Delete</span>
                         </button>
                     </td>
                 </tr>

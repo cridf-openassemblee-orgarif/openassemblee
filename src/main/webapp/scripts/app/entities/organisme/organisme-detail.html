@@ -2,72 +2,92 @@
     <section>
         <div class="container">
             <h1>{{dto.organisme.nom}}</h1>
-            <button type="submit"
-                    ui-sref="organisme.edit({id:dto.organisme.id})"
-                    class="btn btn-sm btn-primary btn-sm">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
+            <button
+                type="submit"
+                ui-sref="organisme.edit({id:dto.organisme.id})"
+                class="btn btn-sm btn-primary btn-sm"
+            >
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span>
+                    Éditer</span
+                >
             </button>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <div class="table-responsive info-box table-info-box">
                 <table class="table table-striped">
                     <tbody>
-                    <tr>
-                        <td>
-                            <span>Code RNE / Siret</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.codeRNE}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Sigle</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.sigle}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Type d'organisme</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.type}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Secteur d'activité</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.secteur}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Date de création</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.dateDebut | date:'mediumDate'}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Date de fin</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.dateFin | date:'mediumDate'}}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span>Motif de fin</span>
-                        </td>
-                        <td>
-                            <span class="form-control-static">{{dto.organisme.motifFin}}</span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <span>Code RNE / Siret</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.codeRNE}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Sigle</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.sigle}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Type d'organisme</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.type}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Secteur d'activité</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.secteur}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Date de création</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.dateDebut |
+                                    date:'mediumDate'}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Date de fin</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.dateFin |
+                                    date:'mediumDate'}}</span
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Motif de fin</span>
+                            </td>
+                            <td>
+                                <span class="form-control-static"
+                                    >{{dto.organisme.motifFin}}</span
+                                >
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -79,22 +99,35 @@
             <div class="col-md-12" ng-if="dto.appartenances.length">
                 <h2>Les élus en fonction dans l'organisme</h2>
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12"
-                         ng-repeat="a in dto.appartenances"
-                         ng-if="!a.appartenance.dateFin">
-                        <div class="info-box entity-component"
-                             ui-sref="elu.detail({id:a.eluDto.elu.id})">
+                    <div
+                        class="col-md-4 col-sm-6 col-xs-12"
+                        ng-repeat="a in dto.appartenances"
+                        ng-if="!a.appartenance.dateFin"
+                    >
+                        <div
+                            class="info-box entity-component"
+                            ui-sref="elu.detail({id:a.eluDto.elu.id})"
+                        >
                             <span class="info-box-photo">
-                                <img ng-if="a.eluDto.elu.image" ng-src="images/{{a.eluDto.elu.image}}"/>
+                                <img
+                                    ng-if="a.eluDto.elu.image"
+                                    ng-src="images/{{a.eluDto.elu.image}}"
+                                />
                             </span>
 
                             <div class="info-box-content">
-                                <span
-                                    class="info-box-titre">{{a.eluDto.elu.civilite | civilite}} {{a.eluDto.elu.prenom}} {{a.eluDto.elu.nom}}</span>
-                                {{a.eluDto.groupePolitique != null ? a.eluDto.groupePolitique.nomCourt : 'Sans groupe'}}
+                                <span class="info-box-titre"
+                                    >{{a.eluDto.elu.civilite | civilite}}
+                                    {{a.eluDto.elu.prenom}}
+                                    {{a.eluDto.elu.nom}}</span
+                                >
+                                {{a.eluDto.groupePolitique != null ?
+                                a.eluDto.groupePolitique.nomCourt : 'Sans
+                                groupe'}}
                                 <div class="info-box-info">
                                     <span>{{a.appartenance.statut}}</span>
-                                    <span class="grey">depuis le</span> {{a.appartenance.dateNomination}}
+                                    <span class="grey">depuis le</span>
+                                    {{a.appartenance.dateNomination}}
                                 </div>
                             </div>
                         </div>
@@ -109,31 +142,51 @@
                                 <h3 class="box-title">Anciens élus</h3>
 
                                 <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <button
+                                        type="button"
+                                        class="btn btn-box-tool"
+                                        data-widget="collapse"
+                                    >
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="box-body" style="display: none;">
+                            <div class="box-body" style="display: none">
                                 <div class="row">
-                                    <div class="col-md-4 col-sm-6 col-xs-12"
-                                         ng-repeat="a in dto.appartenances"
-                                         ng-if="a.appartenance.dateFin">
-                                        <div class="info-box entity-component"
-                                             ui-sref="elu.detail({id:a.eluDto.elu.id})">
+                                    <div
+                                        class="col-md-4 col-sm-6 col-xs-12"
+                                        ng-repeat="a in dto.appartenances"
+                                        ng-if="a.appartenance.dateFin"
+                                    >
+                                        <div
+                                            class="info-box entity-component"
+                                            ui-sref="elu.detail({id:a.eluDto.elu.id})"
+                                        >
                                             <span class="info-box-photo">
-                                                <img ng-if="a.eluDto.elu.image" ng-src="images/{{a.eluDto.elu.image}}"/>
+                                                <img
+                                                    ng-if="a.eluDto.elu.image"
+                                                    ng-src="images/{{a.eluDto.elu.image}}"
+                                                />
                                             </span>
 
                                             <div class="info-box-content">
                                                 <span class="info-box-titre">
-                                                    {{a.eluDto.elu.civilite | civilite}} {{a.eluDto.elu.prenom}} {{a.eluDto.elu.nom}}
+                                                    {{a.eluDto.elu.civilite |
+                                                    civilite}}
+                                                    {{a.eluDto.elu.prenom}}
+                                                    {{a.eluDto.elu.nom}}
                                                 </span>
-                                                {{a.eluDto.groupePolitique != null ? a.eluDto.groupePolitique.nomCourt :
-                                                'Sans groupe'}}
+                                                {{a.eluDto.groupePolitique !=
+                                                null ?
+                                                a.eluDto.groupePolitique.nomCourt
+                                                : 'Sans groupe'}}
                                                 <div class="info-box-info">
-                                                    <span>{{a.appartenance.statut}}</span>
-                                                    <span class="grey">depuis le</span>
+                                                    <span
+                                                        >{{a.appartenance.statut}}</span
+                                                    >
+                                                    <span class="grey"
+                                                        >depuis le</span
+                                                    >
                                                     {{a.appartenance.dateNomination}}
                                                 </div>
                                             </div>

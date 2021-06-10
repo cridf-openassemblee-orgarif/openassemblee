@@ -1,18 +1,21 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp').controller('OrganismeDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Organisme',
-        function ($scope, $stateParams, $modalInstance, entity, Organisme) {
-
+angular.module("openassembleeApp").controller("OrganismeDialogController", [
+    "$scope",
+    "$stateParams",
+    "$modalInstance",
+    "entity",
+    "Organisme",
+    function ($scope, $stateParams, $modalInstance, entity, Organisme) {
         $scope.organisme = entity;
-        $scope.load = function(id) {
-            Organisme.get({id : id}, function(result) {
+        $scope.load = function (id) {
+            Organisme.get({ id: id }, function (result) {
                 $scope.organisme = result;
             });
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('openassembleeApp:organismeUpdate', result);
+            $scope.$emit("openassembleeApp:organismeUpdate", result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };
@@ -30,7 +33,8 @@ angular.module('openassembleeApp').controller('OrganismeDialogController',
             }
         };
 
-        $scope.clear = function() {
-            $modalInstance.dismiss('cancel');
+        $scope.clear = function () {
+            $modalInstance.dismiss("cancel");
         };
-}]);
+    },
+]);

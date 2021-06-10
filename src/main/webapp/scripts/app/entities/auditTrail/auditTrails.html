@@ -1,8 +1,6 @@
 <div>
     <section class="content-header">
-        <h1>
-            Logs d'activité
-        </h1>
+        <h1>Logs d'activité</h1>
     </section>
 
     <div class="container">
@@ -10,9 +8,15 @@
             <div class="col-lg-12 align-right">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery">
+                        <input
+                            type="text"
+                            class="form-control"
+                            ng-model="searchQuery"
+                            id="searchQuery"
+                        />
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span>
+                    <button class="btn btn-info" ng-click="search()">
+                        <span class="glyphicon glyphicon-search"></span>
                         <span>Chercher</span>
                     </button>
                 </form>
@@ -22,39 +26,80 @@
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Entité</th>
-                    <th>Entité parente</th>
-                    <th>Action</th>
-                    <th>Utilisateur</th>
-                    <th>Date</th>
-                    <th>Heure</th>
-                </tr>
+                    <tr>
+                        <th>Entité</th>
+                        <th>Entité parente</th>
+                        <th>Action</th>
+                        <th>Utilisateur</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="auditTrail in auditTrails track by auditTrail.id"
-                    ui-sref="auditTrail.detail({id:auditTrail.id})"
-                    class="link-line">
-                    <td>{{auditTrail.entity + ' ' + auditTrail.entityId}}</td>
-                    <td>{{auditTrail.parentEntity ? auditTrail.parentEntity + ' ' + auditTrail.parentEntityId : ''}}</td>
-                    <td>{{auditTrail.action | auditTrailAction}}</td>
-                    <td>{{auditTrail.user}}</td>
-                    <td>{{auditTrail.date | date:'mediumDate'}}</td>
-                    <td>{{auditTrail.date | date:'mediumTime'}}</td>
-                </tr>
+                    <tr
+                        ng-repeat="auditTrail in auditTrails track by auditTrail.id"
+                        ui-sref="auditTrail.detail({id:auditTrail.id})"
+                        class="link-line"
+                    >
+                        <td>
+                            {{auditTrail.entity + ' ' + auditTrail.entityId}}
+                        </td>
+                        <td>
+                            {{auditTrail.parentEntity ? auditTrail.parentEntity
+                            + ' ' + auditTrail.parentEntityId : ''}}
+                        </td>
+                        <td>{{auditTrail.action | auditTrailAction}}</td>
+                        <td>{{auditTrail.user}}</td>
+                        <td>{{auditTrail.date | date:'mediumDate'}}</td>
+                        <td>{{auditTrail.date | date:'mediumTime'}}</td>
+                    </tr>
                 </tbody>
             </table>
             <nav>
                 <ul class="pagination">
-                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
-                    <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                    <li
+                        ng-show="links['first'] >= 0"
+                        ng-click="loadPage(links['first'])"
+                    >
+                        <a>&lt;&lt;</a>
+                    </li>
+                    <li
+                        ng-show="page > 0"
+                        ng-click="loadPage(links['prev'] || 0)"
+                    >
+                        <a>&lt;</a>
+                    </li>
+                    <li ng-show="page > 1" ng-click="loadPage(page - 2)">
+                        <a>{{page - 1}}</a>
+                    </li>
+                    <li ng-show="page > 0" ng-click="loadPage(page - 1)">
+                        <a>{{page}}</a>
+                    </li>
                     <li class="active"><a>{{page + 1}}</a></li>
-                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a></li>
-                    <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                    <li
+                        ng-show="page < links['last']"
+                        ng-click="loadPage(page + 1)"
+                    >
+                        <a>{{page + 2}}</a>
+                    </li>
+                    <li
+                        ng-show="page < links['last'] - 1"
+                        ng-click="loadPage(page + 2)"
+                    >
+                        <a>{{page + 3}}</a>
+                    </li>
+                    <li
+                        ng-show="links['next']"
+                        ng-click="loadPage(links['next'])"
+                    >
+                        <a>&gt;</a>
+                    </li>
+                    <li
+                        ng-show="links['last'] > 0"
+                        ng-click="loadPage(links['last'])"
+                    >
+                        <a>&gt;&gt;</a>
+                    </li>
                 </ul>
             </nav>
         </div>

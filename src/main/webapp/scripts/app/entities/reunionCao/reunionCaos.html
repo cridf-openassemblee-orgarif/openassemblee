@@ -1,14 +1,13 @@
 <div>
     <section class="content-header">
-        <h1>
-            Réunions de CAO / jurys de concours
-        </h1>
+        <h1>Réunions de CAO / jurys de concours</h1>
     </section>
     <div class="container">
         <div class="row buttons">
             <div class="col-lg-12 align-right">
                 <button class="btn btn-primary" ui-sref="reunionCao.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span>Nouvelle réunion</span>
+                    <span class="glyphicon glyphicon-flash"></span>
+                    <span>Nouvelle réunion</span>
                 </button>
             </div>
         </div>
@@ -18,46 +17,94 @@
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Libelle</th>
-                    <th>Date</th>
-                    <th>HeureDebut</th>
-                    <th>HeureFin</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Date</th>
+                        <th>HeureDebut</th>
+                        <th>HeureFin</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="reunionCao in reunionCaos track by reunionCao.id">
-                    <td><a ui-sref="reunionCao.detail({id:reunionCao.id})">{{reunionCao.libelle}}</a></td>
-                    <td>{{reunionCao.date | date:'mediumDate'}}</td>
-                    <td>{{reunionCao.heureDebut}}</td>
-                    <td>{{reunionCao.heureFin}}</td>
-                    <td>
-                        <button type="submit"
+                    <tr
+                        ng-repeat="reunionCao in reunionCaos track by reunionCao.id"
+                    >
+                        <td>
+                            <a ui-sref="reunionCao.detail({id:reunionCao.id})"
+                                >{{reunionCao.libelle}}</a
+                            >
+                        </td>
+                        <td>{{reunionCao.date | date:'mediumDate'}}</td>
+                        <td>{{reunionCao.heureDebut}}</td>
+                        <td>{{reunionCao.heureFin}}</td>
+                        <td>
+                            <button
+                                type="submit"
                                 ui-sref="reunionCao.edit({id:reunionCao.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
-                        </button>
-                        <button type="submit"
+                                class="btn btn-primary btn-sm"
+                            >
+                                <span class="glyphicon glyphicon-pencil"></span
+                                >&nbsp;<span> Éditer</span>
+                            </button>
+                            <button
+                                type="submit"
                                 ui-sref="reunionCao.delete({id:reunionCao.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
-                        </button>
-                    </td>
-                </tr>
+                                class="btn btn-danger btn-sm"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-remove-circle"
+                                ></span
+                                >&nbsp;<span> Supprimer</span>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <nav>
                 <ul class="pagination">
-                    <li ng-show="links['first'] >= 0" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(links['prev'] || 0)"><a>&lt;</a></li>
-                    <li ng-show="page > 1" ng-click="loadPage(page - 2)"><a>{{page - 1}}</a></li>
-                    <li ng-show="page > 0" ng-click="loadPage(page - 1)"><a>{{page}}</a></li>
+                    <li
+                        ng-show="links['first'] >= 0"
+                        ng-click="loadPage(links['first'])"
+                    >
+                        <a>&lt;&lt;</a>
+                    </li>
+                    <li
+                        ng-show="page > 0"
+                        ng-click="loadPage(links['prev'] || 0)"
+                    >
+                        <a>&lt;</a>
+                    </li>
+                    <li ng-show="page > 1" ng-click="loadPage(page - 2)">
+                        <a>{{page - 1}}</a>
+                    </li>
+                    <li ng-show="page > 0" ng-click="loadPage(page - 1)">
+                        <a>{{page}}</a>
+                    </li>
                     <li class="active"><a>{{page + 1}}</a></li>
-                    <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 2}}</a></li>
-                    <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 3}}</a></li>
-                    <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
-                    <li ng-show="links['last'] > 0" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+                    <li
+                        ng-show="page < links['last']"
+                        ng-click="loadPage(page + 1)"
+                    >
+                        <a>{{page + 2}}</a>
+                    </li>
+                    <li
+                        ng-show="page < links['last'] - 1"
+                        ng-click="loadPage(page + 2)"
+                    >
+                        <a>{{page + 3}}</a>
+                    </li>
+                    <li
+                        ng-show="links['next']"
+                        ng-click="loadPage(links['next'])"
+                    >
+                        <a>&gt;</a>
+                    </li>
+                    <li
+                        ng-show="links['last'] > 0"
+                        ng-click="loadPage(links['last'])"
+                    >
+                        <a>&gt;&gt;</a>
+                    </li>
                 </ul>
             </nav>
         </div>

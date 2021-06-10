@@ -1,17 +1,29 @@
 <div class="col-md-6 col-sm-6 col-xs-12">
     <div class="box box-elu box-solid">
         <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-users"></i> Commission permanente</h3>
+            <h3 class="box-title">
+                <i class="fa fa-users"></i> Commission permanente
+            </h3>
         </div>
         <div class="box-body">
-            <div ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
-                 ng-if="a.dateFin == null">
+            <div
+                ng-repeat="a in dto.elu.appartenancesCommissionPermanente"
+                ng-if="a.dateFin == null"
+            >
                 <div class="unit-bloc info-bloc action-bloc">
-                    <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                        <edit-button ui-sref="elu.detail.editAppartenanceCommissionPermanente({appartenanceId: a.id})"></edit-button>
-                        <delete-button ui-sref="elu.detail.supprimerAppartenanceCommissionPermanente({fonctionId: a.id})"></delete-button>
+                    <div
+                        class="edition-buttons-bloc"
+                        has-authority="ROLE_ADMIN"
+                    >
+                        <edit-button
+                            ui-sref="elu.detail.editAppartenanceCommissionPermanente({appartenanceId: a.id})"
+                        ></edit-button>
+                        <delete-button
+                            ui-sref="elu.detail.supprimerAppartenanceCommissionPermanente({fonctionId: a.id})"
+                        ></delete-button>
                     </div>
-                    <span class="grey">Membre depuis le</span> {{a.dateDebut | date:'mediumDate'}}
+                    <span class="grey">Membre depuis le</span> {{a.dateDebut |
+                    date:'mediumDate'}}
                 </div>
             </div>
             <div class="unit-bloc" ng-if="!eluEnCommissionPermanenteOuFonction">
@@ -19,9 +31,12 @@
             </div>
         </div>
         <div class="btn-group elu-action">
-            <button type="button" class="btn btn-default"
-                    ui-sref="elu.detail.ajouterCommissionPermanente"
-                    has-authority="ROLE_ADMIN">
+            <button
+                type="button"
+                class="btn btn-default"
+                ui-sref="elu.detail.ajouterCommissionPermanente"
+                has-authority="ROLE_ADMIN"
+            >
                 <span class="fa fa-plus"></span>
             </button>
         </div>

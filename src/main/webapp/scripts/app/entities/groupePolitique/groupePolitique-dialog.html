@@ -1,72 +1,146 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myGroupePolitiqueLabel">Ajouter ou modifier un groupe politique</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myGroupePolitiqueLabel">
+            Ajouter ou modifier un groupe politique
+        </h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_nom">Nom</label>
-            <input type="text" class="form-control" name="nom" id="field_nom"
-                    ng-model="groupePolitique.nom"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nom"
+                id="field_nom"
+                ng-model="groupePolitique.nom"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_nomCourt">Nom court</label>
-            <input type="text" class="form-control" name="nomCourt" id="field_nomCourt"
-                    ng-model="groupePolitique.nomCourt"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nomCourt"
+                id="field_nomCourt"
+                ng-model="groupePolitique.nomCourt"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDebut">Date de début</label>
-            <input type="text" bs-datepicker class="form-control" name="dateDebut"
-                   id="field_dateDebut"
-                   ng-model="groupePolitique.dateDebut"
-                   autocomplete="off"/>
+            <label class="control-label" for="field_dateDebut"
+                >Date de début</label
+            >
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateDebut"
+                id="field_dateDebut"
+                ng-model="groupePolitique.dateDebut"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_website">Site web</label>
-            <input type="text" class="form-control" name="nomCourt" id="field_website"
-                   ng-model="groupePolitique.website"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nomCourt"
+                id="field_website"
+                ng-model="groupePolitique.website"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_phone">Téléphone</label>
-            <input type="text" class="form-control" name="nomCourt" id="field_phone"
-                   ng-model="groupePolitique.phone"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nomCourt"
+                id="field_phone"
+                ng-model="groupePolitique.phone"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_mail">Adresse mail</label>
-            <input type="text" class="form-control" name="nomCourt" id="field_mail"
-                   ng-model="groupePolitique.mail"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nomCourt"
+                id="field_mail"
+                ng-model="groupePolitique.mail"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_fax">Fax</label>
-            <input type="text" class="form-control" name="nomCourt" id="field_fax"
-                   ng-model="groupePolitique.fax"/>
+            <input
+                type="text"
+                class="form-control"
+                name="nomCourt"
+                id="field_fax"
+                ng-model="groupePolitique.fax"
+            />
         </div>
         <h3>Adresse postale</h3>
         <div class="form-group">
             <label class="control-label" for="field_voie">Voie</label>
-            <input type="text" class="form-control" name="voie" id="field_voie"
-                   ng-model="groupePolitique.adressePostale.voie"/>
+            <input
+                type="text"
+                class="form-control"
+                name="voie"
+                id="field_voie"
+                ng-model="groupePolitique.adressePostale.voie"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_codePostal">Code postal</label>
-            <input type="text" class="form-control" name="codePostal" id="field_codePostal"
-                   ng-model="groupePolitique.adressePostale.codePostal"/>
+            <label class="control-label" for="field_codePostal"
+                >Code postal</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="codePostal"
+                id="field_codePostal"
+                ng-model="groupePolitique.adressePostale.codePostal"
+            />
         </div>
         <div class="form-group">
             <label class="control-label" for="field_ville">Ville</label>
-            <input type="text" class="form-control" name="ville" id="field_ville"
-                   ng-model="groupePolitique.adressePostale.ville"/>
+            <input
+                type="text"
+                class="form-control"
+                name="ville"
+                id="field_ville"
+                ng-model="groupePolitique.adressePostale.ville"
+            />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

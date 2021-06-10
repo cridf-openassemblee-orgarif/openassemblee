@@ -1,46 +1,54 @@
-
 <div>
     <h2><span>DistinctionHonorifique</span> {{distinctionHonorifique.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Field</th>
-                <th>Value</th>
-            </tr>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <span>Titre</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{distinctionHonorifique.titre}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Date</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{distinctionHonorifique.date | date:'mediumDate'}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>elu</span>
-                </td>
-                <td>
-                    <a class="form-control-static" ui-sref="elu.detail({id:distinctionHonorifique.elu.id})">{{distinctionHonorifique.elu.id}}</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <span>Titre</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{distinctionHonorifique.titre}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Date</span>
+                    </td>
+                    <td>
+                        <span class="form-control-static"
+                            >{{distinctionHonorifique.date |
+                            date:'mediumDate'}}</span
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>elu</span>
+                    </td>
+                    <td>
+                        <a
+                            class="form-control-static"
+                            ui-sref="elu.detail({id:distinctionHonorifique.elu.id})"
+                            >{{distinctionHonorifique.elu.id}}</a
+                        >
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    <button type="submit" onclick="window.history.back()" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span>
+            Back</span
+        >
     </button>
 </div>

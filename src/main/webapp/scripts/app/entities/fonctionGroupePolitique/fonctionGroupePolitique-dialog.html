@@ -1,49 +1,99 @@
-
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myFonctionGroupePolitiqueLabel">Ajouter une fonction à un groupe politique</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myFonctionGroupePolitiqueLabel">
+            Ajouter une fonction à un groupe politique
+        </h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label" for="field_fonction">Fonction</label>
-            <input type="text" class="form-control" name="fonction" id="field_fonction"
-                    ng-model="fonctionGroupePolitique.fonction"/>
+            <input
+                type="text"
+                class="form-control"
+                name="fonction"
+                id="field_fonction"
+                ng-model="fonctionGroupePolitique.fonction"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_dateDebut">Date de début</label>
-            <input type="text" bs-datepicker class="form-control" name="dateDebut" id="field_dateDebut"
-                   ng-model="fonctionGroupePolitique.dateDebut"
-                   autocomplete="off"/>
+            <label class="control-label" for="field_dateDebut"
+                >Date de début</label
+            >
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateDebut"
+                id="field_dateDebut"
+                ng-model="fonctionGroupePolitique.dateDebut"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
             <label for="field_groupePolitique">Groupe politique</label>
-            <select class="form-control" id="field_groupePolitique" name="groupePolitique"
-                    ng-model="fonctionGroupePolitique.groupePolitique"
-                    ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques track by groupePolitique.id">
+            <select
+                class="form-control"
+                id="field_groupePolitique"
+                name="groupePolitique"
+                ng-model="fonctionGroupePolitique.groupePolitique"
+                ng-options="groupePolitique as groupePolitique.nom for groupePolitique in groupepolitiques track by groupePolitique.id"
+            >
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateFin">Date de fin</label>
-            <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
-                   ng-model="fonctionGroupePolitique.dateFin"
-                   autocomplete="off"/>
+            <input
+                type="text"
+                bs-datepicker
+                class="form-control"
+                name="dateFin"
+                id="field_dateFin"
+                ng-model="fonctionGroupePolitique.dateFin"
+                autocomplete="off"
+            />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_motifFin">Motif de fin</label>
-            <input type="text" class="form-control" name="motifFin" id="field_motifFin"
-                   ng-model="fonctionGroupePolitique.motifFin"/>
+            <label class="control-label" for="field_motifFin"
+                >Motif de fin</label
+            >
+            <input
+                type="text"
+                class="form-control"
+                name="motifFin"
+                id="field_motifFin"
+                ng-model="fonctionGroupePolitique.motifFin"
+            />
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        <button
+            type="submit"
+            ng-disabled="editForm.$invalid || isSaving"
+            class="btn btn-primary"
+        >
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

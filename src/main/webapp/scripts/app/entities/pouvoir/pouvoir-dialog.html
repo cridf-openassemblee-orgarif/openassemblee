@@ -1,9 +1,17 @@
 <form name="editForm" role="form" novalidate ng-submit="save()">
-
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
-        <h4 class="modal-title" id="myPouvoirLabel">Créer ou éditer un pouvoir</h4>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
+        <h4 class="modal-title" id="myPouvoirLabel">
+            Créer ou éditer un pouvoir
+        </h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
@@ -11,11 +19,15 @@
             <ui-select ng-model="pouvoir.eluCedeur">
                 <ui-select-match>
                     <span
-                        ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "></span>
+                        ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "
+                    ></span>
                 </ui-select-match>
-                <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
+                <ui-select-choices
+                    repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id"
+                >
                     <span
-                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
+                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"
+                    ></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -24,85 +36,134 @@
             <ui-select ng-model="pouvoir.eluBeneficiaire">
                 <ui-select-match>
                     <span
-                        ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "></span>
+                        ng-bind="$select.selected.prenom + ' ' + $select.selected.nom + ' (' + $select.selected.groupePolitique + ')' "
+                    ></span>
                 </ui-select-match>
-                <ui-select-choices repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id">
+                <ui-select-choices
+                    repeat="elu in (elus | nomPrenomFilter: $select.search) track by elu.id"
+                >
                     <span
-                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"></span>
+                        ng-bind-html="elu.prenom + ' ' + elu.nom + ' (' + elu.groupePolitique + ')' | highlight: $select.search"
+                    ></span>
                 </ui-select-choices>
             </ui-select>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_dateDebut">Date de début</label>
-                <input type="text" bs-datepicker class="form-control" name="dateDebut" id="field_dateDebut"
-                       ng-model="pouvoir.dateDebut"
-                       autocomplete="off"/>
+                <label class="control-label" for="field_dateDebut"
+                    >Date de début</label
+                >
+                <input
+                    type="text"
+                    bs-datepicker
+                    class="form-control"
+                    name="dateDebut"
+                    id="field_dateDebut"
+                    ng-model="pouvoir.dateDebut"
+                    autocomplete="off"
+                />
             </div>
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_heureDebut">Heure de début</label>
-                <input type="time" class="form-control" name="heureDebut" id="field_heureDebut"
-                       ng-model="pouvoirTemp.heureDebutAsTime"
+                <label class="control-label" for="field_heureDebut"
+                    >Heure de début</label
+                >
+                <input
+                    type="time"
+                    class="form-control"
+                    name="heureDebut"
+                    id="field_heureDebut"
+                    ng-model="pouvoirTemp.heureDebutAsTime"
                 />
             </div>
         </div>
-        <a ng-click="debutIsNow()">Fixer l'heure actuelle en heure de début</a><br/><br/>
+        <a ng-click="debutIsNow()">Fixer l'heure actuelle en heure de début</a
+        ><br /><br />
         <div class="row">
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_dateFin">Date de fin</label>
-                <input type="text" bs-datepicker class="form-control" name="dateFin" id="field_dateFin"
-                       ng-model="pouvoir.dateFin"
-                       autocomplete="off"/>
+                <label class="control-label" for="field_dateFin"
+                    >Date de fin</label
+                >
+                <input
+                    type="text"
+                    bs-datepicker
+                    class="form-control"
+                    name="dateFin"
+                    id="field_dateFin"
+                    ng-model="pouvoir.dateFin"
+                    autocomplete="off"
+                />
             </div>
             <div class="form-group col-md-6">
-                <label class="control-label" for="field_heureFin">Heure de fin</label>
-                <input type="time" class="form-control" name="heureFin" id="field_heureFin"
-                       ng-model="pouvoirTemp.heureFinAsTime"
+                <label class="control-label" for="field_heureFin"
+                    >Heure de fin</label
+                >
+                <input
+                    type="time"
+                    class="form-control"
+                    name="heureFin"
+                    id="field_heureFin"
+                    ng-model="pouvoirTemp.heureFinAsTime"
                 />
             </div>
         </div>
-        <a ng-click="finIsNow()">Fixer l'heure actuelle en heure de fin</a><br/><br/>
-<!--        <div class="row">-->
-<!--            <div class="form-group col-md-6">-->
-<!--                <label class="control-label">Séance</label>-->
-<!--                <input class="form-control" disabled-->
-<!--                       value="{{pouvoir.seance.type | typeSeance}} {{pouvoir.seance.intitule}} du {{pouvoir.seance.date | date:'mediumDate'}}">-->
-<!--                <i>Il n'est pas possible de changer de séance.</i>-->
-<!--            </div>-->
-<!--        </div>-->
+        <a ng-click="finIsNow()">Fixer l'heure actuelle en heure de fin</a
+        ><br /><br />
+        <!--        <div class="row">-->
+        <!--            <div class="form-group col-md-6">-->
+        <!--                <label class="control-label">Séance</label>-->
+        <!--                <input class="form-control" disabled-->
+        <!--                       value="{{pouvoir.seance.type | typeSeance}} {{pouvoir.seance.intitule}} du {{pouvoir.seance.date | date:'mediumDate'}}">-->
+        <!--                <i>Il n'est pas possible de changer de séance.</i>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
-    <div class="super-error-message"
-         ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id">
-        Attention, l'élu mandant et l'élu mandataire déclarés sont la même personne !
+    <div
+        class="super-error-message"
+        ng-if="pouvoir.eluCedeur && pouvoir.eluCedeur.id == pouvoir.eluBeneficiaire.id"
+    >
+        Attention, l'élu mandant et l'élu mandataire déclarés sont la même
+        personne !
     </div>
     <div
         ng-if="pouvoirsDejaExistant.length > 0 && pouvoir.dateFin == null && pouvoirsDejaExistant[0].id != pouvoir.id"
-        class="pouvoir-conflict-error">
-        <div class="super-error-message">
-            Attention !
-        </div>
+        class="pouvoir-conflict-error"
+    >
+        <div class="super-error-message">Attention !</div>
         <div ng-if="pouvoirsDejaExistant.length >= 1" style="margin: 10px">
             <ul ng-repeat="p in pouvoirsDejaExistant">
-                <li>{{p.eluCedeur.prenom}} {{p.eluCedeur.nom}}
-                    cède à
+                <li>
+                    {{p.eluCedeur.prenom}} {{p.eluCedeur.nom}} cède à
                     {{p.eluBeneficiaire.prenom}} {{p.eluBeneficiaire.nom}}
-                    depuis le
-                    {{p.dateDebut | date:'mediumDate'}} - {{p.heureDebut}}
+                    depuis le {{p.dateDebut | date:'mediumDate'}} -
+                    {{p.heureDebut}}
                 </li>
             </ul>
-            <input id="autoclose" type="checkbox" ng-model="$parent.$parent.autoclosePrecedentPouvoir">
-            <label for="autoclose">
-                Clore ces délégations.
-            </label>
-            <br/><b>Attention la date et heure de début doivent être précisées !</b>
+            <input
+                id="autoclose"
+                type="checkbox"
+                ng-model="$parent.$parent.autoclosePrecedentPouvoir"
+            />
+            <label for="autoclose"> Clore ces délégations. </label>
+            <br /><b
+                >Attention la date et heure de début doivent être précisées !</b
+            >
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler</span
+            >
         </button>
         <button type="submit" ng-disabled="isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span
+                >Enregistrer</span
+            >
         </button>
     </div>
 </form>

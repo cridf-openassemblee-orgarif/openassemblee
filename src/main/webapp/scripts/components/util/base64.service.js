@@ -1,17 +1,24 @@
 /*jshint bitwise: false*/
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .service('Base64', function () {
-        var keyStr = 'ABCDEFGHIJKLMNOP' +
-            'QRSTUVWXYZabcdef' +
-            'ghijklmnopqrstuv' +
-            'wxyz0123456789+/' +
-            '=';
+angular
+    .module("openassembleeApp")
+    .service("Base64", function () {
+        var keyStr =
+            "ABCDEFGHIJKLMNOP" +
+            "QRSTUVWXYZabcdef" +
+            "ghijklmnopqrstuv" +
+            "wxyz0123456789+/" +
+            "=";
         this.encode = function (input) {
-            var output = '',
-                chr1, chr2, chr3 = '',
-                enc1, enc2, enc3, enc4 = '',
+            var output = "",
+                chr1,
+                chr2,
+                chr3 = "",
+                enc1,
+                enc2,
+                enc3,
+                enc4 = "",
                 i = 0;
 
             while (i < input.length) {
@@ -30,26 +37,32 @@ angular.module('openassembleeApp')
                     enc4 = 64;
                 }
 
-                output = output +
+                output =
+                    output +
                     keyStr.charAt(enc1) +
                     keyStr.charAt(enc2) +
                     keyStr.charAt(enc3) +
                     keyStr.charAt(enc4);
-                chr1 = chr2 = chr3 = '';
-                enc1 = enc2 = enc3 = enc4 = '';
+                chr1 = chr2 = chr3 = "";
+                enc1 = enc2 = enc3 = enc4 = "";
             }
 
             return output;
         };
 
         this.decode = function (input) {
-            var output = '',
-                chr1, chr2, chr3 = '',
-                enc1, enc2, enc3, enc4 = '',
+            var output = "",
+                chr1,
+                chr2,
+                chr3 = "",
+                enc1,
+                enc2,
+                enc3,
+                enc4 = "",
                 i = 0;
 
             // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
             while (i < input.length) {
                 enc1 = keyStr.indexOf(input.charAt(i++));
@@ -70,14 +83,13 @@ angular.module('openassembleeApp')
                     output = output + String.fromCharCode(chr3);
                 }
 
-                chr1 = chr2 = chr3 = '';
-                enc1 = enc2 = enc3 = enc4 = '';
+                chr1 = chr2 = chr3 = "";
+                enc1 = enc2 = enc3 = enc4 = "";
             }
         };
     })
-    .factory('StorageService', function ($window) {
+    .factory("StorageService", function ($window) {
         return {
-
             get: function (key) {
                 return JSON.parse($window.localStorage.getItem(key));
             },
@@ -90,9 +102,8 @@ angular.module('openassembleeApp')
                 $window.localStorage.removeItem(key);
             },
 
-            clearAll : function () {
+            clearAll: function () {
                 $window.localStorage.clear();
-            }
+            },
         };
     });
-

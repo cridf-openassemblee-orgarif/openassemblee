@@ -1,18 +1,22 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp').controller('NumeroFaxDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'NumeroFax', 'Elu',
-        function ($scope, $stateParams, $modalInstance, entity, NumeroFax, Elu) {
-
+angular.module("openassembleeApp").controller("NumeroFaxDialogController", [
+    "$scope",
+    "$stateParams",
+    "$modalInstance",
+    "entity",
+    "NumeroFax",
+    "Elu",
+    function ($scope, $stateParams, $modalInstance, entity, NumeroFax, Elu) {
         $scope.numeroFax = entity;
-        $scope.load = function(id) {
-            NumeroFax.get({id : id}, function(result) {
+        $scope.load = function (id) {
+            NumeroFax.get({ id: id }, function (result) {
                 $scope.numeroFax = result;
             });
         };
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('openassembleeApp:numeroFaxUpdate', result);
+            $scope.$emit("openassembleeApp:numeroFaxUpdate", result);
             $modalInstance.close(result);
             $scope.isSaving = false;
         };
@@ -24,13 +28,24 @@ angular.module('openassembleeApp').controller('NumeroFaxDialogController',
         $scope.save = function () {
             $scope.isSaving = true;
             if ($scope.numeroFax.id != null) {
-                Elu.updateNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
+                Elu.updateNumeroFax(
+                    { id: $stateParams.id },
+                    $scope.numeroFax,
+                    onSaveSuccess,
+                    onSaveError
+                );
             } else {
-                Elu.saveNumeroFax({id: $stateParams.id}, $scope.numeroFax, onSaveSuccess, onSaveError);
+                Elu.saveNumeroFax(
+                    { id: $stateParams.id },
+                    $scope.numeroFax,
+                    onSaveSuccess,
+                    onSaveError
+                );
             }
         };
 
-        $scope.clear = function() {
-            $modalInstance.dismiss('cancel');
+        $scope.clear = function () {
+            $modalInstance.dismiss("cancel");
         };
-}]);
+    },
+]);

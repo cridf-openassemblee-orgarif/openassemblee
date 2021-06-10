@@ -1,29 +1,29 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .provider('AlertService', function () {
-        this.toast = false;
+angular.module("openassembleeApp").provider("AlertService", function () {
+    this.toast = false;
 
-        this.$get = ['$timeout', '$sce', function($timeout, $sce) {
-
+    this.$get = [
+        "$timeout",
+        "$sce",
+        function ($timeout, $sce) {
             var exports = {
-                factory: factory,
-                isToast: isToast,
-                add: addAlert,
-                closeAlert: closeAlert,
-                closeAlertByIndex: closeAlertByIndex,
-                clear: clear,
-                get: get,
-                success: success,
-                error: error,
-                info: info,
-                warning : warning
-            },
-
-            toast = this.toast,
-            alertId = 0, // unique id for each alert. Starts from 0.
-            alerts = [],
-            timeout = 5000; // default timeout
+                    factory: factory,
+                    isToast: isToast,
+                    add: addAlert,
+                    closeAlert: closeAlert,
+                    closeAlertByIndex: closeAlertByIndex,
+                    clear: clear,
+                    get: get,
+                    success: success,
+                    error: error,
+                    info: info,
+                    warning: warning,
+                },
+                toast = this.toast,
+                alertId = 0, // unique id for each alert. Starts from 0.
+                alerts = [],
+                timeout = 5000; // default timeout
 
             function isToast() {
                 return toast;
@@ -44,7 +44,7 @@ angular.module('openassembleeApp')
                     params: params,
                     timeout: timeout,
                     toast: toast,
-                    position: position
+                    position: position,
                 });
             }
 
@@ -55,7 +55,7 @@ angular.module('openassembleeApp')
                     params: params,
                     timeout: timeout,
                     toast: toast,
-                    position: position
+                    position: position,
                 });
             }
 
@@ -66,7 +66,7 @@ angular.module('openassembleeApp')
                     params: params,
                     timeout: timeout,
                     toast: toast,
-                    position: position
+                    position: position,
                 });
             }
 
@@ -77,7 +77,7 @@ angular.module('openassembleeApp')
                     params: params,
                     timeout: timeout,
                     toast: toast,
-                    position: position
+                    position: position,
                 });
             }
 
@@ -88,13 +88,15 @@ angular.module('openassembleeApp')
                     id: alertOptions.alertId,
                     timeout: alertOptions.timeout,
                     toast: alertOptions.toast,
-                    position: alertOptions.position ? alertOptions.position : 'top right',
+                    position: alertOptions.position
+                        ? alertOptions.position
+                        : "top right",
                     scoped: alertOptions.scoped,
                     close: function (alerts) {
                         return exports.closeAlert(this.id, alerts);
-                    }
-                }
-                if(!alert.scoped) {
+                    },
+                };
+                if (!alert.scoped) {
                     alerts.push(alert);
                 }
                 return alert;
@@ -114,7 +116,14 @@ angular.module('openassembleeApp')
 
             function closeAlert(id, extAlerts) {
                 var thisAlerts = extAlerts ? extAlerts : alerts;
-                return this.closeAlertByIndex(thisAlerts.map(function(e) { return e.id; }).indexOf(id), thisAlerts);
+                return this.closeAlertByIndex(
+                    thisAlerts
+                        .map(function (e) {
+                            return e.id;
+                        })
+                        .indexOf(id),
+                    thisAlerts
+                );
             }
 
             function closeAlertByIndex(index, thisAlerts) {
@@ -122,10 +131,10 @@ angular.module('openassembleeApp')
             }
 
             return exports;
-        }];
+        },
+    ];
 
-        this.showAsToast = function(isToast) {
-            this.toast = isToast;
-        };
-
-    });
+    this.showAsToast = function (isToast) {
+        this.toast = isToast;
+    };
+});

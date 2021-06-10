@@ -1,9 +1,12 @@
-'use strict';
+"use strict";
 
-angular.module('openassembleeApp')
-    .factory('LogsService', function ($resource) {
-        return $resource('api/logs', {}, {
-            'findAll': { method: 'GET', isArray: true},
-            'changeLevel': { method: 'PUT'}
-        });
-    });
+angular.module("openassembleeApp").factory("LogsService", function ($resource) {
+    return $resource(
+        "api/logs",
+        {},
+        {
+            findAll: { method: "GET", isArray: true },
+            changeLevel: { method: "PUT" },
+        }
+    );
+});

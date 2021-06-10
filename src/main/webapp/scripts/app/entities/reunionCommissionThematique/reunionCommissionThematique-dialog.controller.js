@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 var tempHours = function (reunion) {
     var tempHours = {};
-    if (reunion.heureDebut && reunion.heureDebut !== '') {
+    if (reunion.heureDebut && reunion.heureDebut !== "") {
         var heureDebutAsTime = new Date();
         heureDebutAsTime.setHours(+reunion.heureDebut.substr(0, 2));
         heureDebutAsTime.setMinutes(+reunion.heureDebut.substr(3, 5));
@@ -10,7 +10,7 @@ var tempHours = function (reunion) {
         heureDebutAsTime.setMilliseconds(0);
         tempHours.heureDebutAsTime = heureDebutAsTime;
     }
-    if (reunion.heureFin && reunion.heureFin !== '') {
+    if (reunion.heureFin && reunion.heureFin !== "") {
         var heureFinAsTime = new Date();
         heureFinAsTime.setHours(+reunion.heureFin.substr(0, 2));
         heureFinAsTime.setMinutes(+reunion.heureFin.substr(3, 5));
@@ -21,10 +21,23 @@ var tempHours = function (reunion) {
     return tempHours;
 };
 
-angular.module('openassembleeApp').controller('ReunionCommissionThematiqueDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'ReunionCommissionThematique', 'CommissionThematique',
-        function ($scope, $stateParams, $modalInstance, entity, ReunionCommissionThematique, CommissionThematique) {
-
+angular
+    .module("openassembleeApp")
+    .controller("ReunionCommissionThematiqueDialogController", [
+        "$scope",
+        "$stateParams",
+        "$modalInstance",
+        "entity",
+        "ReunionCommissionThematique",
+        "CommissionThematique",
+        function (
+            $scope,
+            $stateParams,
+            $modalInstance,
+            entity,
+            ReunionCommissionThematique,
+            CommissionThematique
+        ) {
             $scope.commissions = CommissionThematique.query();
 
             var initScope = function (entity) {
@@ -42,13 +55,16 @@ angular.module('openassembleeApp').controller('ReunionCommissionThematiqueDialog
 
             $scope.reunion = entity;
             $scope.load = function (id) {
-                ReunionCommissionThematique.get({id: id}, function (result) {
+                ReunionCommissionThematique.get({ id: id }, function (result) {
                     initScope(result);
                 });
             };
 
             var onSaveSuccess = function (result) {
-                $scope.$emit('openassembleeApp:reunionCommissionThematiqueUpdate', result);
+                $scope.$emit(
+                    "openassembleeApp:reunionCommissionThematiqueUpdate",
+                    result
+                );
                 $modalInstance.close(result);
                 $scope.isSaving = false;
             };
@@ -61,24 +77,47 @@ angular.module('openassembleeApp').controller('ReunionCommissionThematiqueDialog
                 $scope.isSaving = true;
                 var heureDebut = $scope.reunionTemp.heureDebutAsTime;
                 if (heureDebut) {
-                    var heureDebutHours = heureDebut.getHours() >= 10 ? heureDebut.getHours() : '0' + heureDebut.getHours();
-                    var heureDebutMinutes = heureDebut.getMinutes() >= 10 ? heureDebut.getMinutes() : '0' + heureDebut.getMinutes();
-                    $scope.reunion.heureDebut = heureDebutHours + ':' + heureDebutMinutes;
+                    var heureDebutHours =
+                        heureDebut.getHours() >= 10
+                            ? heureDebut.getHours()
+                            : "0" + heureDebut.getHours();
+                    var heureDebutMinutes =
+                        heureDebut.getMinutes() >= 10
+                            ? heureDebut.getMinutes()
+                            : "0" + heureDebut.getMinutes();
+                    $scope.reunion.heureDebut =
+                        heureDebutHours + ":" + heureDebutMinutes;
                 }
                 var heureFin = $scope.reunionTemp.heureFinAsTime;
                 if (heureFin) {
-                    var heureFinHours = heureFin.getHours() >= 10 ? heureFin.getHours() : '0' + heureFin.getHours();
-                    var heureFinMinutes = heureFin.getMinutes() >= 10 ? heureFin.getMinutes() : '0' + heureFin.getMinutes();
-                    $scope.reunion.heureFin = heureFinHours + ':' + heureFinMinutes;
+                    var heureFinHours =
+                        heureFin.getHours() >= 10
+                            ? heureFin.getHours()
+                            : "0" + heureFin.getHours();
+                    var heureFinMinutes =
+                        heureFin.getMinutes() >= 10
+                            ? heureFin.getMinutes()
+                            : "0" + heureFin.getMinutes();
+                    $scope.reunion.heureFin =
+                        heureFinHours + ":" + heureFinMinutes;
                 }
                 if ($scope.reunion.id !== null) {
-                    ReunionCommissionThematique.update($scope.reunion, onSaveSuccess, onSaveError);
+                    ReunionCommissionThematique.update(
+                        $scope.reunion,
+                        onSaveSuccess,
+                        onSaveError
+                    );
                 } else {
-                    ReunionCommissionThematique.save($scope.reunion, onSaveSuccess, onSaveError);
+                    ReunionCommissionThematique.save(
+                        $scope.reunion,
+                        onSaveSuccess,
+                        onSaveError
+                    );
                 }
             };
 
             $scope.clear = function () {
-                $modalInstance.dismiss('cancel');
+                $modalInstance.dismiss("cancel");
             };
-        }]);
+        },
+    ]);

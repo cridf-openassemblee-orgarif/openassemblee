@@ -1,18 +1,41 @@
-<form name="deleteForm" ng-submit="confirmDelete(adresseMail, adresseMail.id, adresseMail.adresseMailId)">
+<form
+    name="deleteForm"
+    ng-submit="confirmDelete(adresseMail, adresseMail.id, adresseMail.adresseMailId)"
+>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="clear()">&times;</button>
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+            ng-click="clear()"
+        >
+            &times;
+        </button>
         <h4 class="modal-title">Confirmer la suppression</h4>
     </div>
     <div class="modal-body">
         <p>Êtes-vous sûr de vouloir supprimer cette adresse mail ?</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler la suppression</span>
+        <button
+            type="button"
+            class="btn btn-default"
+            data-dismiss="modal"
+            ng-click="clear()"
+        >
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+                >Annuler la suppression</span
+            >
         </button>
-        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
-            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>Supprimer</span>
+        <button
+            type="submit"
+            ng-disabled="deleteForm.$invalid"
+            class="btn btn-danger"
+        >
+            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span
+                >Supprimer</span
+            >
         </button>
     </div>
 </form>

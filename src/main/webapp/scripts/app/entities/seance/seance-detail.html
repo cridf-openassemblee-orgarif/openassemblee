@@ -1,13 +1,24 @@
 <section>
     <div class="container">
         <h1>Séance {{dto.seance.intitule}}</h1>
-        <h2>{{dto.seance.type | typeSeance}} du {{dto.seance.date | date:'mediumDate'}}</h2>
-        <br/>
+        <h2>
+            {{dto.seance.type | typeSeance}} du {{dto.seance.date |
+            date:'mediumDate'}}
+        </h2>
+        <br />
         <div class="table-responsive info-box table-info-box">
             <ul class="nav nav-tabs">
-                <li class="active"><a showtab="" href="#pouvoirs-container">Pouvoirs</a></li>
-                <li><a showtab="" href="#signatures-container">Signatures</a></li>
-                <li><a showtab="" href="#registre-container">Registre de présence</a></li>
+                <li class="active">
+                    <a showtab="" href="#pouvoirs-container">Pouvoirs</a>
+                </li>
+                <li>
+                    <a showtab="" href="#signatures-container">Signatures</a>
+                </li>
+                <li>
+                    <a showtab="" href="#registre-container"
+                        >Registre de présence</a
+                    >
+                </li>
                 <li><a showtab="" href="#plan">Plan d'hémicycle</a></li>
             </ul>
             <div class="tab-content">
@@ -21,7 +32,9 @@
                                     ui-sref="seance.detail.nouveauPouvoir"
                                     has-authority="ROLE_ADMIN"
                                 >
-                                    <span class="glyphicon glyphicon-flash"></span>
+                                    <span
+                                        class="glyphicon glyphicon-flash"
+                                    ></span>
                                     <span>Créer un pouvoir</span>
                                 </button>
                             </div>
@@ -31,19 +44,34 @@
                         <h3>Liste des pouvoirs de la séance</h3>
                         <div class="row buttons">
                             <div class="col-lg-12 align-right">
-                                <button class="btn btn-primary" ui-sref="seance.detail.nouveauPouvoir">
-                                    <span class="glyphicon glyphicon-flash"></span>
+                                <button
+                                    class="btn btn-primary"
+                                    ui-sref="seance.detail.nouveauPouvoir"
+                                >
+                                    <span
+                                        class="glyphicon glyphicon-flash"
+                                    ></span>
                                     <span>Créer un pouvoir</span>
                                 </button>
                             </div>
                         </div>
                         <div class="row buttons">
                             <div class="col-lg-12 align-right">
-                                <button class="btn btn-sm btn-primary" ui-sref="seance.detail.fermerTousPouvoirs">
-                                    <span class="glyphicon glyphicon-flash"></span>
-                                    <span>Fermer tous les pouvoirs ouverts</span>
+                                <button
+                                    class="btn btn-sm btn-primary"
+                                    ui-sref="seance.detail.fermerTousPouvoirs"
+                                >
+                                    <span
+                                        class="glyphicon glyphicon-flash"
+                                    ></span>
+                                    <span
+                                        >Fermer tous les pouvoirs ouverts</span
+                                    >
                                 </button>
-                                <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-pouvoirs">
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    href="api/seances/{{dto.seance.id}}/export-pouvoirs"
+                                >
                                     <span class="fa fa-table"></span>
                                     <span>Export Excel</span>
                                 </a>
@@ -51,7 +79,11 @@
                         </div>
                         <form class="form-horizontal">
                             <div class="form-group col-md-6">
-                                <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                <label
+                                    class="control-label col-md-4"
+                                    for="field_type"
+                                    >Filtrer :</label
+                                >
                                 <div class="col-md-8">
                                     <select
                                         class="form-control"
@@ -59,14 +91,24 @@
                                         ng-model="pouvoirsOptions.filter"
                                         id="field_type"
                                     >
-                                        <option value="tous">Tous (pas de filtre)</option>
-                                        <option value="actifs">Actifs maintenant</option>
-                                        <option value="nonActifs">Non actifs</option>
+                                        <option value="tous">
+                                            Tous (pas de filtre)
+                                        </option>
+                                        <option value="actifs">
+                                            Actifs maintenant
+                                        </option>
+                                        <option value="nonActifs">
+                                            Non actifs
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                <label
+                                    class="control-label col-md-4"
+                                    for="field_type"
+                                    >Groupe politique :</label
+                                >
                                 <div class="col-md-8">
                                     <select
                                         class="form-control"
@@ -74,7 +116,9 @@
                                         ng-model="pouvoirsOptions.groupePolitique"
                                         id="field_type"
                                     >
-                                        <option value="tous">Tous (pas de filtre)</option>
+                                        <option value="tous">
+                                            Tous (pas de filtre)
+                                        </option>
                                         <option
                                             ng-repeat="gp in filteredGroupePolitiques track by gp.id"
                                             value="{{gp.id}}"
@@ -101,36 +145,56 @@
                                         ng-repeat="pvDto in (dto.pouvoirs | pouvoirsFilter: pouvoirsOptions) track by pvDto.pouvoir.id"
                                     >
                                         <td>
-                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})">
-                                                {{pvDto.pouvoir.eluCedeur.prenom + ' ' +
+                                            <a
+                                                ui-sref="elu.detail({id:pvDto.pouvoir.eluCedeur.id})"
+                                            >
+                                                {{pvDto.pouvoir.eluCedeur.prenom
+                                                + ' ' +
                                                 pvDto.pouvoir.eluCedeur.nom}}
-                                                <span ng-if="pvDto.eluCedeur.groupePolitique">
-                                                    {{' (' + pvDto.eluCedeur.groupePolitique.nomCourt + ')'}}
+                                                <span
+                                                    ng-if="pvDto.eluCedeur.groupePolitique"
+                                                >
+                                                    {{' (' +
+                                                    pvDto.eluCedeur.groupePolitique.nomCourt
+                                                    + ')'}}
                                                 </span>
-                                                <span ng-if="pvDto.eluCedeur.groupePolitique == null">
+                                                <span
+                                                    ng-if="pvDto.eluCedeur.groupePolitique == null"
+                                                >
                                                     (sans groupe)
                                                 </span>
                                             </a>
                                         </td>
 
                                         <td>
-                                            <a ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})">
-                                                {{pvDto.pouvoir.eluBeneficiaire.prenom + ' ' +
+                                            <a
+                                                ui-sref="elu.detail({id:pvDto.pouvoir.eluBeneficiaire.id})"
+                                            >
+                                                {{pvDto.pouvoir.eluBeneficiaire.prenom
+                                                + ' ' +
                                                 pvDto.pouvoir.eluBeneficiaire.nom}}
-                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique">
-                                                    {{' (' + pvDto.eluBeneficiaire.groupePolitique.nomCourt + ')'}}
+                                                <span
+                                                    ng-if="pvDto.eluBeneficiaire.groupePolitique"
+                                                >
+                                                    {{' (' +
+                                                    pvDto.eluBeneficiaire.groupePolitique.nomCourt
+                                                    + ')'}}
                                                 </span>
-                                                <span ng-if="pvDto.eluBeneficiaire.groupePolitique == null">
+                                                <span
+                                                    ng-if="pvDto.eluBeneficiaire.groupePolitique == null"
+                                                >
                                                     (sans groupe)
                                                 </span>
                                             </a>
                                         </td>
                                         <td>
-                                            {{pvDto.pouvoir.dateDebut | date:'mediumDate'}} -
+                                            {{pvDto.pouvoir.dateDebut |
+                                            date:'mediumDate'}} -
                                             {{pvDto.pouvoir.heureDebut}}
                                         </td>
                                         <td>
-                                            {{pvDto.pouvoir.dateFin | date:'mediumDate'}} -
+                                            {{pvDto.pouvoir.dateFin |
+                                            date:'mediumDate'}} -
                                             {{pvDto.pouvoir.heureFin}}
                                         </td>
                                         <td>
@@ -139,7 +203,13 @@
                                                 ui-sref="seance.detail.pouvoirEdit({pouvoirId:pvDto.pouvoir.id})"
                                                 class="btn btn-primary btn-sm"
                                             >
-                                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span>
+                                                <span
+                                                    class="
+                                                        glyphicon
+                                                        glyphicon-pencil
+                                                    "
+                                                ></span
+                                                >&nbsp;<span>
                                                     Éditer / fermer</span
                                                 >
                                             </button>
@@ -148,9 +218,13 @@
                                                 ui-sref="seance.detail.pouvoirDelete({pouvoirId:pvDto.pouvoir.id})"
                                                 class="btn btn-danger btn-sm"
                                             >
-                                                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span>
-                                                    Supprimer</span
-                                                >
+                                                <span
+                                                    class="
+                                                        glyphicon
+                                                        glyphicon-remove-circle
+                                                    "
+                                                ></span
+                                                >&nbsp;<span> Supprimer</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -162,11 +236,18 @@
                 <div id="signatures-container" class="tab-pane fade">
                     <h3>Signatures de la séance</h3>
                     <div class="align-right">
-                        <a class="btn btn-sm btn-primary" href="api/seances/{{dto.seance.id}}/export-signatures">
+                        <a
+                            class="btn btn-sm btn-primary"
+                            href="api/seances/{{dto.seance.id}}/export-signatures"
+                        >
                             <span class="fa fa-table"></span>
                             <span>Export Excel</span>
                         </a>
-                        <div class="dropdown" style="position: relative; float: right;" has-authority="ROLE_ADMIN">
+                        <div
+                            class="dropdown"
+                            style="position: relative; float: right"
+                            has-authority="ROLE_ADMIN"
+                        >
                             <button
                                 id="dLabel"
                                 type="button"
@@ -178,21 +259,39 @@
                                 Feuille d'émargement
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                            <ul
+                                class="dropdown-menu dropdown-menu-right"
+                                aria-labelledby="dLabel"
+                            >
                                 <li>
-                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/1">1 signature</a>
+                                    <a
+                                        href="api/seances/{{dto.seance.id}}/feuille-emargement/1"
+                                        >1 signature</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/2">2 signature</a>
+                                    <a
+                                        href="api/seances/{{dto.seance.id}}/feuille-emargement/2"
+                                        >2 signature</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/3">3 signature</a>
+                                    <a
+                                        href="api/seances/{{dto.seance.id}}/feuille-emargement/3"
+                                        >3 signature</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/4">4 signature</a>
+                                    <a
+                                        href="api/seances/{{dto.seance.id}}/feuille-emargement/4"
+                                        >4 signature</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="api/seances/{{dto.seance.id}}/feuille-emargement/5">5 signature</a>
+                                    <a
+                                        href="api/seances/{{dto.seance.id}}/feuille-emargement/5"
+                                        >5 signature</a
+                                    >
                                 </li>
                             </ul>
                         </div>
@@ -202,16 +301,34 @@
                     <div class="clearfix">
                         <form class="form-horizontal">
                             <div class="form-group col-md-6">
-                                <label class="control-label col-md-4" for="field_type">Filtrer :</label>
+                                <label
+                                    class="control-label col-md-4"
+                                    for="field_type"
+                                    >Filtrer :</label
+                                >
                                 <div class="col-md-8">
-                                    <select class="form-control" name="type" ng-model="signaturesOptions.filter">
-                                        <option value="no-filter">Tous (pas de filtre)</option>
-                                        <option value="filter-missing-signature">Par signature manquante </option>
+                                    <select
+                                        class="form-control"
+                                        name="type"
+                                        ng-model="signaturesOptions.filter"
+                                    >
+                                        <option value="no-filter">
+                                            Tous (pas de filtre)
+                                        </option>
+                                        <option
+                                            value="filter-missing-signature"
+                                        >
+                                            Par signature manquante
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="control-label col-md-4" for="field_type">Groupe politique :</label>
+                                <label
+                                    class="control-label col-md-4"
+                                    for="field_type"
+                                    >Groupe politique :</label
+                                >
                                 <div class="col-md-8">
                                     <select
                                         class="form-control"
@@ -219,7 +336,9 @@
                                         ng-model="signaturesOptions.groupePolitique"
                                         id="field_type"
                                     >
-                                        <option value="no-filter">Tous (pas de filtre)</option>
+                                        <option value="no-filter">
+                                            Tous (pas de filtre)
+                                        </option>
                                         <option
                                             ng-repeat="gp in dto.groupePolitiques track by gp.id"
                                             value="{{gp.nomCourt}}"
@@ -249,13 +368,19 @@
                                     ng-repeat="presenceElu in (dto.seance.presenceElus | signatureFilter: signaturesOptions | orderBy:'elu.nom') track by presenceElu.id"
                                 >
                                     <td class="elu">
-                                        <a ui-sref="elu.detail({id:presenceElu.elu.id})">
-                                            {{presenceElu.elu.prenom}} {{presenceElu.elu.nom}}
+                                        <a
+                                            ui-sref="elu.detail({id:presenceElu.elu.id})"
+                                        >
+                                            {{presenceElu.elu.prenom}}
+                                            {{presenceElu.elu.nom}}
                                             <br />
                                             ({{presenceElu.elu.groupePolitique}})
                                         </a>
                                     </td>
-                                    <td ng-repeat="index in signaturesArray" class="signature-td">
+                                    <td
+                                        ng-repeat="index in signaturesArray"
+                                        class="signature-td"
+                                    >
                                         <signature-seance></signature-seance>
                                     </td>
                                 </tr>
@@ -273,10 +398,22 @@
                     <table class="table table-striped signature-table">
                         <tr ng-repeat="index in signaturesArray">
                             <td>Signature {{index}}</td>
-                            <td>{{signaturesCount.stats[index]['PRESENT']}} présents</td>
-                            <td>{{signaturesCount.stats[index]['ABSENT']}} absents</td>
-                            <td>{{signaturesCount.stats[index]['EXCUSE']}} excusés</td>
-                            <td>{{signaturesCount.stats[index]['missing']}} manquants</td>
+                            <td>
+                                {{signaturesCount.stats[index]['PRESENT']}}
+                                présents
+                            </td>
+                            <td>
+                                {{signaturesCount.stats[index]['ABSENT']}}
+                                absents
+                            </td>
+                            <td>
+                                {{signaturesCount.stats[index]['EXCUSE']}}
+                                excusés
+                            </td>
+                            <td>
+                                {{signaturesCount.stats[index]['missing']}}
+                                manquants
+                            </td>
                         </tr>
                     </table>
 
@@ -285,10 +422,22 @@
                         <table class="table table-striped signature-table">
                             <tr ng-repeat="index in signaturesArray">
                                 <td>Signature {{index}}</td>
-                                <td>{{signaturesCount.stats[gp.nomCourt][index]['PRESENT']}} présents</td>
-                                <td>{{signaturesCount.stats[gp.nomCourt][index]['ABSENT']}} absents</td>
-                                <td>{{signaturesCount.stats[gp.nomCourt][index]['EXCUSE']}} excusés</td>
-                                <td>{{signaturesCount.stats[gp.nomCourt][index]['missing']}} manquants</td>
+                                <td>
+                                    {{signaturesCount.stats[gp.nomCourt][index]['PRESENT']}}
+                                    présents
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats[gp.nomCourt][index]['ABSENT']}}
+                                    absents
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats[gp.nomCourt][index]['EXCUSE']}}
+                                    excusés
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats[gp.nomCourt][index]['missing']}}
+                                    manquants
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -297,10 +446,22 @@
                         <table class="table table-striped signature-table">
                             <tr ng-repeat="index in signaturesArray">
                                 <td>Signature {{index}}</td>
-                                <td>{{signaturesCount.stats['sans_groupe'][index]['PRESENT']}} présents</td>
-                                <td>{{signaturesCount.stats['sans_groupe'][index]['ABSENT']}} absents</td>
-                                <td>{{signaturesCount.stats['sans_groupe'][index]['EXCUSE']}} excusés</td>
-                                <td>{{signaturesCount.stats['sans_groupe'][index]['missing']}} manquants</td>
+                                <td>
+                                    {{signaturesCount.stats['sans_groupe'][index]['PRESENT']}}
+                                    présents
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats['sans_groupe'][index]['ABSENT']}}
+                                    absents
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats['sans_groupe'][index]['EXCUSE']}}
+                                    excusés
+                                </td>
+                                <td>
+                                    {{signaturesCount.stats['sans_groupe'][index]['missing']}}
+                                    manquants
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -308,23 +469,34 @@
                 <div id="plan" class="tab-pane fade">
                     <h3>Plan d'hémicycle</h3>
                     <div ng-if="dto.hemicyclePlan">
-                        <button type="submit"
-                                ui-sref="seance.hemicycle({hemicyclePlanId: dto.hemicyclePlan.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Éditer</span>
+                        <button
+                            type="submit"
+                            ui-sref="seance.hemicycle({hemicyclePlanId: dto.hemicyclePlan.id})"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <span class="glyphicon glyphicon-pencil"></span
+                            >&nbsp;<span> Éditer</span>
                         </button>
                         <div ng-if="dto.hemicyclePlan.archives.length !== 0">
-                            <br/>
+                            <br />
                             <h2>Archives</h2>
                             <div
                                 ng-repeat="archive in dto.hemicyclePlan.archives track by archive.id"
                             >
                                 Archive du {{archive.date | date:'short'}}
-                                <br/>
-                                <button ng-click="printArchive(archive.svgPlan)">Imprimer</button>
-                                <button ui-sref="seance.hemicycleArchive({archiveId: archive.id})">Visualiser</button>
-                                <br/>
-                                <br/>
+                                <br />
+                                <button
+                                    ng-click="printArchive(archive.svgPlan)"
+                                >
+                                    Imprimer
+                                </button>
+                                <button
+                                    ui-sref="seance.hemicycleArchive({archiveId: archive.id})"
+                                >
+                                    Visualiser
+                                </button>
+                                <br />
+                                <br />
                             </div>
                         </div>
                     </div>
