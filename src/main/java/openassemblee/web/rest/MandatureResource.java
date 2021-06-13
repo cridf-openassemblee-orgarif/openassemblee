@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.Mandature;
 import openassemblee.repository.MandatureRepository;
 import openassemblee.repository.search.MandatureSearchRepository;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -37,6 +39,9 @@ public class MandatureResource {
 
     @Inject
     private MandatureSearchRepository mandatureSearchRepository;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /mandatures -> Create a new mandature.
@@ -130,5 +135,33 @@ public class MandatureResource {
         return StreamSupport
             .stream(mandatureSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/mandatures/set-current/{id}",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    public ResponseEntity<Void> setCurrent(@PathVariable Long id) {
+        Mandature oldMandature = mandatureRepository.findOneByCurrent(true);
+        // for first time, if the app is re-used
+        if (oldMandature != null) {
+            oldMandature.setCurrent(false);
+            mandatureRepository.save(oldMandature);
+        }
+        Mandature newMandature = mandatureRepository.getOne(id);
+        newMandature.setCurrent(true);
+        mandatureRepository.save(newMandature);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/mandatures/set-current-for-session/{id}",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    public ResponseEntity<Void> setCurrentForSession(@PathVariable Long id) {
+        sessionMandatureService.setMandature(mandatureRepository.findOne(id));
+        return ResponseEntity.ok().build();
     }
 }

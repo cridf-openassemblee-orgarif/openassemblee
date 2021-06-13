@@ -5,10 +5,7 @@ import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.Image;
 import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.search.GroupePolitiqueSearchRepository;
-import openassemblee.service.AuditTrailService;
-import openassemblee.service.ExcelExportService;
-import openassemblee.service.GroupePolitiqueService;
-import openassemblee.service.ImageService;
+import openassemblee.service.*;
 import openassemblee.service.dto.GroupePolitiqueDTO;
 import openassemblee.service.dto.GroupePolitiqueListDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -46,6 +43,9 @@ public class GroupePolitiqueResource {
 
     @Inject
     private GroupePolitiqueRepository groupePolitiqueRepository;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     @Inject
     private GroupePolitiqueSearchRepository groupePolitiqueSearchRepository;
@@ -142,7 +142,7 @@ public class GroupePolitiqueResource {
     @Timed
     public List<GroupePolitique> getAllGroupePolitiques() {
         log.debug("REST request to get all GroupePolitiques");
-        return groupePolitiqueRepository.findAll();
+        return groupePolitiqueRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

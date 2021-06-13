@@ -8,6 +8,7 @@ import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.util.EluNomComparator;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,10 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static openassemblee.service.EluService.getCurrentMandat;
+
 @Service
 public class PdfExportService {
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     public class Rotate extends PdfPageEventHelper {
 
@@ -223,7 +229,9 @@ public class PdfExportService {
 //        document.add(p("Groupe politique : " + elu.getAppartenancesGroupePolitique().get(0).getGroupePolitique().getNom()));
         String gpLabel = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() + "(" + dto.getGroupePolitique().getNomCourt() + ")" : "Non inscrit";
         document.add(p("Groupe politique : " + gpLabel));
-        document.add(p("Circonscription : " + elu.getDepartement()));
+        Mandat mandat = getCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        String departement = mandat != null ? mandat.getDepartement() : "";
+        document.add(p("Circonscription : " + departement));
 
         document.add(p("Adresses :"));
         document.add(adressePostales(elu.getAdressesPostales()));
@@ -291,7 +299,9 @@ public class PdfExportService {
 //        document.add(p("Groupe politique : " + elu.getAppartenancesGroupePolitique().get(0).getGroupePolitique().getNom()));
         String gpLabel = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() + "(" + dto.getGroupePolitique().getNomCourt() + ")" : "Non inscrit";
         document.add(p("Groupe politique : " + gpLabel));
-        document.add(p("Circonscription : " + elu.getDepartement()));
+        Mandat mandat = getCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        String departement = mandat != null ? mandat.getDepartement() : "";
+        document.add(p("Circonscription : " + departement));
 
         document.add(p("Adresses :"));
         document.add(adressePostales(elu.getAdressesPostales()));

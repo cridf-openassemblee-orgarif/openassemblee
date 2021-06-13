@@ -18,15 +18,16 @@
                     ></delete-button>
                 </div>
                 {{a.collectiviteOuOrganisme}}
-                <br />
-                <span class="lg"
-                    ><span class="grey">Fonction :</span> {{a.fonction}}</span
-                >
+                <div class="lg">
+                    <span class="grey">Fonction : </span> {{a.fonction}}
+                </div>
                 <div class="lg">
                     <!--<span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}<span class="grey">,-->
                     <!--nomination le</span> {{a.dateNomination}}-->
-                    <span class="grey">Du</span> {{a.dateDebut |
-                    date:'mediumDate'}}
+                    <span class="grey"
+                        ><span class="grey">Du</span> {{a.dateDebut |
+                        date:'mediumDate'}}
+                    </span>
                 </div>
             </div>
             <div class="unit-bloc" ng-if="!eluAAutreMandats">

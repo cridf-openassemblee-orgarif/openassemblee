@@ -63,6 +63,9 @@ public class TestDataInjector {
     private FonctionExecutiveRepository fonctionExecutiveRepository;
 
     @Autowired
+    private MandatureRepository mandatureRepository;
+
+    @Autowired
     private ShortUidService shortUidService;
 
     private Random random;
@@ -70,6 +73,8 @@ public class TestDataInjector {
     public void injectTestData() {
         if (eluRepository.count() == 0) {
             random = new Random();
+            Mandature mandature = initMandature();
+            mandatureRepository.save(mandature);
             List<GroupePolitique> gps = initGroupesPolitiques();
             groupePolitiqueRepository.save(gps);
             List<Elu> elus = initElus(gps);
@@ -128,6 +133,15 @@ public class TestDataInjector {
             "gauche, Ensemble et République et Socialisme", "front-gauche.png"));
         gps.add(initGroupePolitique("RCDE", "Radical Citoyen Démocrate Ecologiste et apparentés", "ude.png"));
         return gps;
+    }
+
+    private Mandature initMandature() {
+        Mandature mandature = new Mandature();
+        mandature.setAnneeDebut(2015);
+        mandature.setAnneeFin(2021);
+        mandature.setDateDebut(LocalDate.of(2015, 12, 18));
+        mandature.setCurrent(true);
+        return mandatureRepository.save(mandature);
     }
 
     private GroupePolitique initGroupePolitique(String nomCourt, String nom, String image) {
@@ -272,7 +286,7 @@ public class TestDataInjector {
 
     private Elu initElu(Civilite civilite, String nom, String prenom) {
         Elu elu = new Elu();
-        ShortUid uid  = shortUidService.createShortUid();
+        ShortUid uid = shortUidService.createShortUid();
         elu.setUid(uid.getUid());
         elu.setShortUid(uid.getShortUid());
         elu.setCivilite(civilite);

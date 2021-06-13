@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.AutreMandat;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.AutreMandatRepository;
 import openassemblee.repository.search.AutreMandatSearchRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class AutreMandatResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /autreMandats -> Create a new autreMandat.
@@ -90,7 +95,7 @@ public class AutreMandatResource {
     @Timed
     public List<AutreMandat> getAllAutreMandats() {
         log.debug("REST request to get all AutreMandats");
-        return autreMandatRepository.findAll();
+        return autreMandatRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

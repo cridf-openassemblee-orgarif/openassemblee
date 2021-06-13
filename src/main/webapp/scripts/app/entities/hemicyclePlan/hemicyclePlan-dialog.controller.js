@@ -2,6 +2,7 @@
 
 angular.module("openassembleeApp").controller("HemicyclePlanDialogController", [
     "$scope",
+    "$rootScope",
     "$stateParams",
     "$modalInstance",
     "entity",
@@ -11,6 +12,7 @@ angular.module("openassembleeApp").controller("HemicyclePlanDialogController", [
     "$http",
     function (
         $scope,
+        $rootScope,
         $stateParams,
         $modalInstance,
         entity,
@@ -74,6 +76,7 @@ angular.module("openassembleeApp").controller("HemicyclePlanDialogController", [
                 var hemicyclePlanCreationDTO = {
                     label: $scope.hemicyclePlan.label,
                     configurationId: $scope.hemicyclePlan.configuration.id,
+                    mandature: { id: $rootScope.currentMandature.id },
                 };
                 if ($scope.properties.fromAlphabeticOrder) {
                     hemicyclePlanCreationDTO.fromAlphabeticOrder = true;
@@ -88,6 +91,10 @@ angular.module("openassembleeApp").controller("HemicyclePlanDialogController", [
                     hemicyclePlanCreationDTO,
                     onSaveSuccess,
                     onSaveError
+                );
+            } else {
+                throw Error(
+                    "Ne devrait pas arriver, save avec id se fait depuis app React."
                 );
             }
         };

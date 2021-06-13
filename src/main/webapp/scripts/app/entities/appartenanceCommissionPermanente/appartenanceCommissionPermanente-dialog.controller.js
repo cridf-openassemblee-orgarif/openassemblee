@@ -4,6 +4,7 @@ angular
     .module("openassembleeApp")
     .controller("AppartenanceCommissionPermanenteDialogController", [
         "$scope",
+        "$rootScope",
         "$stateParams",
         "$modalInstance",
         "entity",
@@ -11,6 +12,7 @@ angular
         "Elu",
         function (
             $scope,
+            $rootScope,
             $stateParams,
             $modalInstance,
             entity,
@@ -46,6 +48,9 @@ angular
                 $scope.isSaving = true;
                 $scope.appartenanceCommissionPermanente.elu = {
                     id: $stateParams.id,
+                };
+                $scope.appartenanceCommissionPermanente.mandature = {
+                    id: $rootScope.currentMandature.id,
                 };
                 if ($scope.appartenanceCommissionPermanente.id != null) {
                     AppartenanceCommissionPermanente.update(

@@ -1,11 +1,13 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.Mandature;
 import openassemblee.domain.ReunionCao;
 import openassemblee.repository.ReunionCaoRepository;
 import openassemblee.repository.search.ReunionCaoSearchRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.ReunionCaoService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -48,6 +50,9 @@ public class ReunionCaoResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /reunionCaos -> Create a new reunionCao.
@@ -97,7 +102,7 @@ public class ReunionCaoResource {
     @Timed
     public ResponseEntity<List<ReunionCao>> getAllReunionCaos(Pageable pageable)
         throws URISyntaxException {
-        Page<ReunionCao> page = reunionCaoRepository.findAll(pageable);
+        Page<ReunionCao> page = reunionCaoRepository.findByMandature(sessionMandatureService.getMandature(), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reunionCaos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

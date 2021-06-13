@@ -1,0 +1,107 @@
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>Ajouter des élus</h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container">
+            <div
+                ng-style="candidatCorrespondanceList.length !== 0 && {'display':'none'}"
+            >
+                <h2>Import des élus en CSV</h2>
+                <textarea style="width: 80%" rows="10" ng-model="csvData" />
+                <br />
+                <button ng-click="submitCsv()">Soumettre</button>
+            </div>
+            <div
+                style="background: white"
+                ng-if="candidatCorrespondanceList.length"
+            >
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Civilité</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Date de naissance</th>
+                            <th>Liste électorale</th>
+                            <th>Liste électorale court</th>
+                            <th>Département</th>
+                            <th>Code département</th>
+                            <th>Élu correspondant</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cc in candidatCorrespondanceList">
+                            <td
+                                ng-style="cc.errors.indexOf('civilite') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.civilite}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('nom') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.nom}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('prenom') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.prenom}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('dateNaissance') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.dateNaissance}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('listeElectorale') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.listeElectorale}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('listeElectoraleCourt') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.listeElectoraleCourt}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('departement') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.departement}}
+                            </td>
+                            <td
+                                ng-style="cc.errors.indexOf('codeDepartement') !== -1 && {'background-color': '#d9534f'}"
+                            >
+                                {{cc.candidatDTO.codeDepartement}}
+                            </td>
+                            <td style="border-left: 1px solid grey">
+                                <span ng-if="cc.elu">
+                                    <i class="fa fa-check"></i>
+                                    {{cc.elu.nom}} {{cc.elu.prenom}}
+                                </span>
+                            </td>
+                            <td>
+                                <span
+                                    ng-click="deleteCorrespondance(cc)"
+                                    ng-if="cc.elu"
+                                    >✕</span
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div
+                    style="background: #d9534f; color: white"
+                    ng-if="props.hasErrors"
+                >
+                    Résoudre les erreurs avant de soumettre
+                </div>
+                <button ng-click="submitCandidats()" ng-if="!props.hasErrors">
+                    Ajouter les élus
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

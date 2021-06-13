@@ -11,11 +11,11 @@ angular
             $scope.dtos.$promise.then(function (dtos) {
                 // simpler de faire le chunks ici à cause de la promesse, et fait qu'on recup directement le array
                 $scope.elus = dtos.filter(function (dto) {
-                    return !dto.elu.dateDemission;
+                    return dto.currentMandat;
                 });
                 $scope.nombreElus = $scope.elus.length;
                 $scope.anciens = dtos.filter(function (dto) {
-                    return dto.elu.dateDemission;
+                    return !dto.currentMandat;
                 });
             });
         });

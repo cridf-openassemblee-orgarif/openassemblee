@@ -29,6 +29,7 @@ angular.module("openassembleeApp").controller("MandatureDialogController", [
             if ($scope.mandature.id != null) {
                 Mandature.update($scope.mandature, onSaveSuccess, onSaveError);
             } else {
+                $scope.mandature.current = false;
                 Mandature.save($scope.mandature, onSaveSuccess, onSaveError);
             }
         };

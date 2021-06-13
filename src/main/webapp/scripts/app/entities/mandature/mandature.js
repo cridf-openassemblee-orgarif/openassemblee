@@ -121,9 +121,9 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                 },
             ],
         })
-        .state("mandature.delete", {
+        .state("mandature.makeCurrent", {
             parent: "mandature",
-            url: "/{id}/delete",
+            url: "/{id}/make-current",
             data: {
                 authorities: ["ROLE_USER"],
             },
@@ -135,8 +135,8 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                     $modal
                         .open({
                             templateUrl:
-                                "scripts/app/entities/mandature/mandature-delete-dialog.html",
-                            controller: "MandatureDeleteController",
+                                "scripts/app/entities/mandature/mandature-make-current-dialog.html",
+                            controller: "MandatureMakeCurrentController",
                             size: "md",
                             resolve: {
                                 entity: [

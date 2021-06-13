@@ -7,7 +7,7 @@ import openassemblee.publicdata.ConseillerDto;
 import openassemblee.publicdata.EnsembleDto;
 import openassemblee.publicdata.MembreDto;
 import openassemblee.repository.*;
-import org.elasticsearch.common.base.Strings;
+import openassemblee.service.SessionMandatureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoField.*;
 import static openassemblee.domain.enumeration.NiveauConfidentialite.PUBLIABLE;
 import static openassemblee.domain.enumeration.TypeIdentiteInternet.*;
+import static openassemblee.service.EluService.getCurrentMandat;
+import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v1")
 public class PublicDataWebservice {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public static DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder()
+        .appendValue(DAY_OF_MONTH, 2)
+        .appendLiteral('/')
+        .appendValue(MONTH_OF_YEAR, 2)
+        .appendLiteral('/')
+        .appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+        .toFormatter();
 
     private static final String NON_RENSEIGNE = "- non renseigné -";
     private static final String MANDATURE = "18";
@@ -66,54 +80,43 @@ public class PublicDataWebservice {
     @Autowired
     private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
 
+    @Inject
+    private SessionMandatureService sessionMandatureService;
+
     @RequestMapping(value = "/websitedata", method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public Map<String, Object> websitedata() {
         // TODO attention pour tous les trucs où on compte, à bien utiliser les trucs filtrés !
         // une solution pour implem simple des demissionnaire est d'utiliser un boolean
         // ou un systeme ou tu dois préciser la data, WS envoie tjs avec la data d'ajd
+        Mandature mandature = sessionMandatureService.getMandature();
         List<Elu> elus = eluRepository.findAll()
             .stream()
-            .filter(e -> Strings.isNullOrEmpty(e.getMotifDemission()) && e.getDateDemission() == null)
+            .filter(e -> isCurrentMandat(e.getMandats(), mandature))
             .collect(Collectors.toList());
-        List<GroupePolitique> groupesPolitiques = groupePolitiqueRepository.findAll();
-        List<Organisme> organismes = organismeRepository.findAll();
-        List<CommissionThematique> commissionsThematiques = commissionThematiqueRepository.findAll();
-
-        Map<String, Organisme> organismeMapRNE = organismes.stream()
-            .filter(o -> o.getCodeRNE() != null)
-            .map(Organisme.UniqueRneOrganisme::new)
-//            .filter(o -> !o.getNom().equals("Greta des métiers de l'hôtellerie - lycée jean drouant"))
-//            .filter(o -> !o.getNom().equals("Cfa quincaillerie-vente de produits pour l'habitat (vth)"))
-            .distinct()
-            .map(o -> o.organisme)
-            .collect(Collectors.toMap(Organisme::getCodeRNE, Function.identity()));
-        Map<String, Organisme> organismeMapNom = organismes.stream()
-            .filter(o -> o.getCodeRNE() == null)
-            .filter(o -> o.getNom() != null)
-            .map(Organisme.UniqueNomOrganisme::new)
-            .distinct()
-            .map(o -> o.organisme)
-            .collect(Collectors.toMap(Organisme::getNom, Function.identity()));
+        List<GroupePolitique> groupesPolitiques = groupePolitiqueRepository.findByMandature(mandature);
+        List<CommissionThematique> commissionsThematiques = commissionThematiqueRepository.findByMandature(mandature);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("conseillers", getConseillers(elus, organismeMapNom, organismeMapRNE));
+        result.put("conseillers", getConseillers(elus));
 
         List<EnsembleDto> ensembles = new ArrayList<>();
         ensembles.addAll(getCommissionPermanente());
         ensembles.addAll(getEnsemblesCommissionsThematiques(commissionsThematiques));
         ensembles.addAll(getEnsemblesGroupesPolitiques(groupesPolitiques));
-        ensembles.addAll(getEnsemblesOrganismes(organismes));
         result.put("ensembles", ensembles);
 
-        result.put("membres", getMembres(elus, organismes, organismeMapNom, organismeMapRNE));
+        result.put("membres", getMembres(elus));
         return result;
     }
 
-    private List<ConseillerDto> getConseillers(List<Elu> elus, Map<String, Organisme> organismeMapNom,
-                                               Map<String, Organisme> organismeMapRNE) {
+    private List<ConseillerDto> getConseillers(List<Elu> elus) {
         return elus.stream()
             .map(e -> {
+                Mandat mandat = getCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
+                if(mandat == null) {
+                    return null;
+                }
                 ConseillerDto d = new ConseillerDto();
                 d.setUidConseiller(e.exportUid());
                 d.setMandature(MANDATURE);
@@ -147,8 +150,8 @@ public class PublicDataWebservice {
                         d.setGroupePolitique(gp.getNom());
                     });
                 }
-                d.setListeCourt(e.getListeCourt());
-                d.setListeElectorale(e.getListeElectorale());
+                d.setListeCourt(mandat.getListeElectorale().getNomCourt());
+                d.setListeElectorale(mandat.getListeElectorale().getNom());
                 d.setNbEnfants(EMPTY_STRING);
                 d.setNomJeuneFille(EMPTY_STRING);
                 d.setSituationFamiliale(EMPTY_STRING);
@@ -156,8 +159,8 @@ public class PublicDataWebservice {
                 d.setFax(getPublishable(e.getNumerosFax()).map(NumeroFax::getNumero).orElse(SPACE));
                 d.setMail(getPublishable(e.getAdressesMail()).map(AdresseMail::getMail).orElse(SPACE));
                 d.setValid('1');
-                d.setDepElection(e.getDepartement());
-                d.setCodeDepElection(e.getCodeDepartement());
+                d.setDepElection(mandat.getDepartement());
+                d.setCodeDepElection(mandat.getCodeDepartement());
                 d.setPrenom(e.getPrenom());
                 if (e.getCivilite() != null) {
                     d.setCivilite(e.getCivilite() == Civilite.MONSIEUR ? "M." : "Mme");
@@ -185,21 +188,7 @@ public class PublicDataWebservice {
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
                     .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().exportUid()));
                 d.setCommissions(IS_TEST_IMPORT ? EMPTY_STRING : commissionsStringBuilder.toString());
-                StringBuilder organismesStringBuilder = new StringBuilder();
-                e.getAppartenancesOrganismes()
-                    .forEach(a -> {
-                        Organisme o = organismeMapNom.get(a.getOrganisme());
-                        if (o == null) {
-                            o = organismeMapRNE.get(a.getCodeRNE());
-                        }
-                        if (o == null) {
-                            // TODO faire un log pour identifier plus facilement le souci !
-//                            logger.error
-                            throw new RuntimeException("Organisme should have been found");
-                        }
-                        organismesStringBuilder.append("|").append(o.exportUid());
-                    });
-                d.setDesignations(IS_TEST_IMPORT ? EMPTY_STRING : organismesStringBuilder.toString());
+                d.setDesignations(EMPTY_STRING);
 
                 d.setDistinctions(SPACE);
                 if (e.getDistinctionHonorifiques().size() > 0 && !IS_TEST_IMPORT) {
@@ -212,9 +201,9 @@ public class PublicDataWebservice {
                 if (e.getAutreMandats().size() > 0 && !IS_TEST_IMPORT) {
                     d.setAutresMandats("|" + String.join("|", e.getAutreMandats()
                         .stream()
-                        .map(mandat -> stringOrEmpty(mandat.getFonction()) + "$"
-                            + stringOrEmpty(mandat.getCollectiviteOuOrganisme()) + "$"
-                            + stringOrEmpty(mandat.getDateDebutString()) + "$")
+                        .map(m -> stringOrEmpty(m.getFonction()) + "$"
+                            + stringOrEmpty(m.getCollectiviteOuOrganisme()) + "$"
+                            + stringOrEmpty(m.getDateDebutString()) + "$")
                         .collect(Collectors.toSet())));
                 }
 
@@ -230,7 +219,9 @@ public class PublicDataWebservice {
                 d.setAutre(getUrl(e, Autre));
 
                 return d;
-            }).collect(Collectors.toList());
+            })
+            .filter(c -> c != null)
+            .collect(Collectors.toList());
     }
 
     private List<EnsembleDto> getCommissionPermanente() {
@@ -379,68 +370,6 @@ public class PublicDataWebservice {
         }).collect(Collectors.toList());
     }
 
-    private List<EnsembleDto> getEnsemblesOrganismes(List<Organisme> organismes) {
-        return organismes.stream().map(o -> {
-            EnsembleDto e = new EnsembleDto();
-            e.setUidEnsemble(o.exportUid());
-            e.setMandature(MANDATURE);
-            e.setLibCourt(stringOrSpace(o.getSigle()));
-            e.setDateCreation(formatDate(o.getDateDebut()));
-            e.setType("organisme");
-            e.setTypeCommission(stringOrSpace(null));
-            e.setNbMembre(0L);
-            if (!Strings.isNullOrEmpty(o.getCodeRNE())) {
-                List<AppartenanceOrganisme> aos = appartenanceOrganismeRepository.findAllByCodeRNE(o.getCodeRNE())
-                    .stream()
-                    .filter(ao -> Strings.isNullOrEmpty(ao.getMotifFin()) && ao.getDateFin() == null)
-                    .collect(Collectors.toList());
-                e.setNbMembre(e.getNbMembre() + (long) aos.size());
-            } else {
-                if (!Strings.isNullOrEmpty(o.getNom())) {
-                    List<AppartenanceOrganisme> aos = appartenanceOrganismeRepository.findAllByOrganisme(o.getNom())
-                        .stream()
-                        .filter(ao -> Strings.isNullOrEmpty(ao.getMotifFin()) && ao.getDateFin() == null)
-                        .collect(Collectors.toList());
-                    e.setNbMembre(e.getNbMembre() + (long) aos.size());
-                }
-            }
-            // TODO
-            e.setNbMembre(0L);
-            e.setNbTitulaire(0L);
-            e.setNbSuppleant(0L);
-            e.setValid('1');
-            e.setLibLong(o.getNom());
-            e.setSt(0F);
-            e.setDateFin(formatDate(o.getDateFin()));
-            e.setDescription(stringOrSpace(o.getDescription()));
-            e.setCodeRne(stringOrSpace(o.getCodeRNE()));
-            e.setMotifFin(stringOrSpace(o.getMotifFin()));
-            e.setSecteur(stringOrSpace(o.getSecteur()));
-            e.setTelephone(stringOrSpace(o.getTelephone()));
-            e.setFax(stringOrSpace(o.getFax()));
-            e.setPhonetique(o.getPhonetique());
-            e.setDepartement(stringOrSpace(o.getDepartement()));
-            e.setMail(stringOrSpace(null));
-            e.setPhonetique(stringOrSpace(o.getPhonetique()));
-            e.setAdresse(stringOrSpace(null));
-            e.setCodePostal(stringOrSpace(null));
-            e.setVille(stringOrSpace(null));
-            if (o.getAdressePostale() != null) {
-                e.setAdresse(stringOrSpace(o.getAdressePostale().getVoie()));
-                e.setCodePostal(stringOrSpace(o.getAdressePostale().getCodePostal()));
-                e.setVille(stringOrSpace(o.getAdressePostale().getVille()));
-            }
-            // TODO PDE Solveig ? suppression
-            // non cohérence
-            e.setStatus(stringOrSpace(o.getStatus()));
-            // TODO remove ?
-//            if(e.getUidEnsemble().equals("ORG2156")) {
-//                e.setStatus("O");
-//            }
-            return e;
-        }).collect(Collectors.toList());
-    }
-
     private List<EnsembleDto> getEnsemblesCommissionsThematiques(List<CommissionThematique> cts) {
         return cts.stream().map(ct -> {
             EnsembleDto e = new EnsembleDto();
@@ -487,8 +416,7 @@ public class PublicDataWebservice {
         }).collect(Collectors.toList());
     }
 
-    private List<MembreDto> getMembres(List<Elu> elus, List<Organisme> organismes,
-                                       Map<String, Organisme> organismeMapNom, Map<String, Organisme> organismeMapRNE) {
+    private List<MembreDto> getMembres(List<Elu> elus) {
         List<MembreDto> m1 = elus.stream().flatMap(e -> e.getAppartenancesCommissionPermanente().stream()
             .filter(a -> a.getDateFin() == null)
             .map(acp -> {
@@ -671,38 +599,6 @@ public class PublicDataWebservice {
 //        List<String> doublons = Arrays.asList("0750708M", "0751451V", "0754471C", "0754476H", "0754679D", "0754718W",
 //            "0754811X", "0754815B", "0754816C", "0754850P", "0771654E", "0772241T", "0772447S", "0772468P", "0782058N",
 //            "0782059P", "0783430E", "0922451P", "0932217E", "0932305A", "0951848T", "0951963T");
-        List<MembreDto> m8 = elus.stream().flatMap(e -> e.getAppartenancesOrganismes().stream()
-            .filter(a -> a.getDateFin() == null)
-            .map(ao -> {
-                MembreDto m = new MembreDto();
-                m.setUidMembre(ao.exportUid());
-                if (ao.getCodeRNE() != null) {
-                    m.setUidEnsemble(organismeMapRNE.get(ao.getCodeRNE()).exportUid());
-                } else {
-                    Organisme o = organismeMapNom.get(ao.getOrganisme());
-                    if (o != null) {
-                        m.setUidEnsemble(o.exportUid());
-                    } else {
-                        logger.info("Unknown organisme " + ao.getOrganisme());
-                    }
-                }
-                m.setUidConseiller(e.exportUid());
-
-                m.setMandature(MANDATURE);
-                m.setType("Organisme");
-                m.setDateDebut(formatDate(ao.getDateDebut()));
-                m.setDateFin(formatDate(ao.getDateFin()));
-                m.setNumeroNomination(stringOrSpace(ao.getReference()));
-                m.setStatus(stringOrSpace(ao.getStatut()));
-                m.setNomination(stringOrSpace(ao.getType()));
-                m.setSt(0f);
-                m.setFonction(stringOrSpace(ao.getFonction()));
-                m.setBureau(bureau(ao.getFonction()));
-                m.setMotifFin(stringOrSpace(ao.getMotifFin()));
-                m.setDateNomination(formatDate(ao.getDateNomination()));
-                m.setDescription(stringOrSpace(null));
-                return m;
-            })).collect(Collectors.toList());
 
         m1.addAll(m2);
         m1.addAll(m3);
@@ -710,7 +606,6 @@ public class PublicDataWebservice {
         m1.addAll(m5);
         m1.addAll(m6);
         m1.addAll(m7);
-        m1.addAll(m8);
         return m1;
     }
 
@@ -732,7 +627,7 @@ public class PublicDataWebservice {
 
     private String formatDate(LocalDate date) {
         if (date != null) {
-            return date.format(InjectDataWebservice.DATE_FORMATTER);
+            return date.format(DATE_FORMATTER);
         } else {
             return SPACE;
         }

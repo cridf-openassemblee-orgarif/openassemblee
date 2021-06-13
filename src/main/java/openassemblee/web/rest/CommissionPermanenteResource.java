@@ -49,6 +49,7 @@ public class CommissionPermanenteResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ExecutifDTO> getExecutif() {
+        // FIXMENOW remove false ??
         return new ResponseEntity<>(commissionPermanenteService.getExecutif(false), HttpStatus.OK);
     }
 
@@ -108,7 +109,7 @@ public class CommissionPermanenteResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<CommissionPermanenteDTO> getCommissionPermanente() {
-        return new ResponseEntity<>(commissionPermanenteService.getCommissionPermanente(false), HttpStatus.OK);
+        return new ResponseEntity<>(commissionPermanenteService.getCommissionPermanente(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/commission-permanente/export",

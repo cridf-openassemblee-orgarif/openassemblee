@@ -44,6 +44,8 @@ public class SeanceService {
     private HemicyclePlanRepository hemicyclePlanRepository;
     @Inject
     private HemicycleArchiveRepository hemicycleArchiveRepository;
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     @Transactional(readOnly = true)
     public Seance get(Long id) {
@@ -76,7 +78,8 @@ public class SeanceService {
                 return new PouvoirListDTO(p, eluCedeur, eluBeneficiaire);
             }).collect(Collectors.toList());
 
-        List<GroupePolitique> groupePolitiques = groupePolitiqueRepository.findAll();
+        List<GroupePolitique> groupePolitiques = groupePolitiqueRepository
+            .findByMandature(sessionMandatureService.getMandature());
         HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(seance);
         if(hp != null) {
             Hibernate.initialize(hp.getArchives());

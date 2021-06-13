@@ -52,7 +52,7 @@ public class PdfExportServiceTest {
         e.setDateNaissance(LocalDate.of(1976, 3, 11));
         e.setLieuNaissance("Inconnu");
         e.setProfession("Employée (secteur privé)");
-        e.setCodeDepartement("Seine-Saint-Denis");
+//        e.setCodeDepartement("Seine-Saint-Denis");
 //        e.setAppartenancesGroupePolitique();
         e.setAdressesPostales(Arrays.asList(
             new AdressePostale(NatureProPerso.PERSO, "5 rue Amelot", "75011", "Paris",
@@ -73,8 +73,8 @@ public class PdfExportServiceTest {
         e1.setDateNaissance(LocalDate.of(1974, 4, 17));
         e1.setLieuNaissance("Basse-Terre");
         e1.setProfession("Avocate");
-        e1.setCodeDepartement("Hauts-de-Seine");
-//        e.setAppartenancesGroupePolitique();
+//        e1.setCodeDepartement("Hauts-de-Seine");
+//        e. setAppartenancesGroupePolitique();
         e1.setAdressesPostales(Arrays.asList(
             new AdressePostale(NatureProPerso.PERSO, "10 rue Boulle", "75011", "Paris",
                 NiveauConfidentialite.PUBLIABLE, true, true))
@@ -88,6 +88,6 @@ public class PdfExportServiceTest {
         GroupePolitique gp = new GroupePolitique();
         gp.setNom("Groupe Alternative écologiste et sociale");
         gp.setNomCourt("AES");
-        return elus.stream().map(elu -> new EluListDTO(elu, gp, "VP", true, false)).collect(Collectors.toList());
+        return elus.stream().map(elu -> new EluListDTO(elu, gp, "VP", true, true, false)).collect(Collectors.toList());
     }
 }

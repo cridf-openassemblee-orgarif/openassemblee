@@ -37,6 +37,10 @@ public class CommissionThematique implements Serializable {
     @Column(name = "import_uid")
     private String importUid;
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -87,6 +91,14 @@ public class CommissionThematique implements Serializable {
 
     public void setImportUid(String importUid) {
         this.importUid = importUid;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

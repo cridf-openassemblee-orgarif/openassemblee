@@ -47,6 +47,10 @@ public class Seance implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     // [doc] est juste utilisé au moment de la création de la seance
     // @Transient provoque la necessité du @JsonSerialize
     // => https://stackoverflow.com/questions/46683141/json-transient-field-not-seralizing
@@ -108,6 +112,14 @@ public class Seance implements Serializable {
 
     public void setPlanId(Long planId) {
         this.planId = planId;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

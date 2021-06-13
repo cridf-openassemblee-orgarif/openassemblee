@@ -12,40 +12,65 @@
                 </div>
                 <div class="info-box">
                     <div class="info-box-content-elu">
-                        <span class="info-box-info-elu">
-                            <div>
-                                <span class="lg"
-                                    >{{dto.elu.civilite | neOuNee}} le</span
-                                >
-                                {{dto.elu.dateNaissance | date:'mediumDate'}}
-                                <span
-                                    class="lg"
-                                    ng-if="dto.elu.lieuNaissance && dto.elu.lieuNaissance !== ''"
-                                    >à</span
-                                >
-                                {{dto.elu.lieuNaissance}}
-                            </div>
-                            <div ng-if="dto.elu.nomJeuneFille">
-                                <span class="lg">Nom de jeune fille</span>
-                                {{dto.elu.nomJeuneFille}}
-                            </div>
-                            <div>
-                                <span class="lg">Profession :</span>
-                                {{dto.elu.profession}}
-                            </div>
-                            <div>
-                                <span class="lg">Département :</span>
-                                {{dto.elu.departement}}
+                        <div class="info-box-info-elu">
+                            <div class="info-bloc">
+                                <div>
+                                    <span class="lg"
+                                        >{{dto.elu.civilite | neOuNee}} le </span
+                                    >{{dto.elu.dateNaissance |
+                                    date:'mediumDate'}}
+                                    <span
+                                        class="lg"
+                                        ng-if="dto.elu.lieuNaissance && dto.elu.lieuNaissance !== ''"
+                                        >à</span
+                                    >
+                                    {{dto.elu.lieuNaissance}}
+                                </div>
+                                <div ng-if="dto.elu.nomJeuneFille">
+                                    <span class="lg"
+                                        >Nom de jeune fille :
+                                    </span>
+                                    {{dto.elu.nomJeuneFille}}
+                                </div>
+                                <div ng-if="dto.elu.profession">
+                                    <span class="lg">Profession : </span>
+                                    {{dto.elu.profession}}
+                                </div>
                             </div>
                             <div
-                                ng-if="dto.elu.dateDemission || dto.elu.motifDemission"
+                                ng-repeat="m in dto.elu.mandats"
+                                ng-if="m.dateDemission == null"
                             >
-                                <span class="lg">Élu non actif, cause :</span>
-                                {{dto.elu.motifDemission}}
-                                <span class="lg">depuis le</span>
-                                {{dto.elu.dateDemission | date:'mediumDate'}}
+                                <div class="action-bloc info-bloc">
+                                    <div
+                                        class="edition-buttons-bloc"
+                                        has-authority="ROLE_ADMIN"
+                                    >
+                                        <edit-button
+                                            ui-sref="elu.detail.editMandat({mandatId: m.id})"
+                                        ></edit-button>
+                                        <delete-button
+                                            ui-sref="elu.detail.supprimerMandat({mandatId: m.id})"
+                                        ></delete-button>
+                                    </div>
+                                    <div>
+                                        <span class="lg">Élu depuis le </span
+                                        >{{m.dateDebut | date:'mediumDate'}}
+                                    </div>
+                                    <div>
+                                        <span class="lg">Département : </span>
+                                        {{m.departement}}
+                                        ({{m.codeDepartement}})
+                                    </div>
+                                    <div>
+                                        <span class="lg"
+                                            >Liste électorale :
+                                        </span>
+                                        {{m.listeElectorale.nom}}
+                                        ({{m.listeElectorale.nomCourt}})
+                                    </div>
+                                </div>
                             </div>
-                            <br />
                             <div
                                 ng-repeat="f in dto.elu.fonctionsCommissionPermanente"
                                 ng-if="f.dateFin == null"
@@ -62,9 +87,9 @@
                                             ui-sref="elu.detail.supprimerFonctionCommissionPermanente({fonctionId: f.id})"
                                         ></delete-button>
                                     </div>
-                                    <span class="lg">Fonction :</span>
+                                    <span class="lg">Fonction : </span>
                                     {{f.fonction}}
-                                    <span class="lg">depuis le</span>
+                                    <span class="lg">depuis le </span>
                                     {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
@@ -84,9 +109,11 @@
                                             ui-sref="elu.detail.supprimerFonctionExecutive({fonctionId: f.id})"
                                         ></delete-button>
                                     </div>
-                                    <span class="lg">Fonction exécutive :</span>
+                                    <span class="lg"
+                                        >Fonction exécutive :
+                                    </span>
                                     {{f.fonction}}
-                                    <span class="lg">depuis le</span>
+                                    <span class="lg">depuis le </span>
                                     {{f.dateDebut | date:'mediumDate'}}
                                 </div>
                             </div>
@@ -106,73 +133,80 @@
                                             ui-sref="elu.detail.supprimerDistinctionHonorifique({distinctionHonorifiqueId: d.id})"
                                         ></delete-button>
                                     </div>
-                                    <span class="lg">Titre :</span> {{d.titre}}
+                                    <span class="lg">Titre : </span> {{d.titre}}
                                     <br />
-                                    <span class="lg">Date :</span> {{d.date |
+                                    <span class="lg">Date : </span> {{d.date |
                                     date:'mediumDate'}}
                                 </div>
                             </div>
-                        </span>
-                        <div
-                            class="btn-group elu-action"
-                            has-authority="ROLE_ADMIN"
-                        >
-                            <button
-                                type="button"
-                                class="btn btn-default dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
+                            <div
+                                class="btn-group elu-action"
+                                has-authority="ROLE_ADMIN"
                             >
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu pull-right">
-                                <li>
-                                    <a
-                                        href="#"
-                                        ui-sref="elu.edit({id:dto.elu.id})"
-                                    >
-                                        <span class="fa fa-pencil"></span>
-                                        Éditer
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        ui-sref="elu.detail.nouvelleFonctionCommissionPermanente"
-                                    >
-                                        Ajouter une fonction (délégué etc.)
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        ui-sref="elu.detail.nouvelleFonctionExecutive"
-                                    >
-                                        Ajouter une fonction exécutive
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        ui-sref="elu.detail.ajoutDistinctionHonorifique"
-                                    >
-                                        Ajouter une distinction honorifique
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        ng-href="api/elus/{{dto.elu.id}}/export"
-                                    >
-                                        <span class="fa fa-table"></span>
-                                        <span>Export Excel</span>
-                                    </a>
-                                </li>
-                            </ul>
+                                <button
+                                    type="button"
+                                    class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ui-sref="elu.edit({id:dto.elu.id})"
+                                        >
+                                            <span class="fa fa-pencil"></span>
+                                            Éditer élu
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ui-sref="elu.detail.nouvelleFonctionCommissionPermanente"
+                                        >
+                                            Ajouter une fonction (délégué etc.)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ui-sref="elu.detail.nouvelleFonctionExecutive"
+                                        >
+                                            Ajouter une fonction exécutive
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ui-sref="elu.detail.ajoutDistinctionHonorifique"
+                                        >
+                                            Ajouter une distinction honorifique
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ui-sref="elu.detail.ajouterMandat"
+                                        >
+                                            Ajouter un mandat
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="#"
+                                            ng-href="api/elus/{{dto.elu.id}}/export"
+                                        >
+                                            <span class="fa fa-table"></span>
+                                            <span>Export Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <groupes-politiques></groupes-politiques>
             </div>
 
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -204,11 +238,11 @@
             <div class="col-md-12 row">
                 <commission-permanente></commission-permanente>
 
-                <commissions-thematiques></commissions-thematiques>
+                <groupes-politiques></groupes-politiques>
             </div>
 
             <div class="col-md-12 row">
-                <organismes></organismes>
+                <commissions-thematiques></commissions-thematiques>
 
                 <autres-mandats></autres-mandats>
             </div>
@@ -220,13 +254,13 @@
             </div>
 
             <div class="col-md-12 row">
-                <numeros-fax></numeros-fax>
-
                 <adresses-mail></adresses-mail>
+
+                <identites-internet></identites-internet>
             </div>
 
             <div class="col-md-12 row">
-                <identites-internet></identites-internet>
+                <numeros-fax></numeros-fax>
             </div>
 
             <div class="col-md-12">

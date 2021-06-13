@@ -2,6 +2,7 @@
 
 angular.module("openassembleeApp").controller("AutreMandatDialogController", [
     "$scope",
+    "$rootScope",
     "$stateParams",
     "$modalInstance",
     "title",
@@ -10,6 +11,7 @@ angular.module("openassembleeApp").controller("AutreMandatDialogController", [
     "Elu",
     function (
         $scope,
+        $rootScope,
         $stateParams,
         $modalInstance,
         title,
@@ -33,6 +35,9 @@ angular.module("openassembleeApp").controller("AutreMandatDialogController", [
         $scope.save = function () {
             $scope.isSaving = true;
             $scope.autreMandat.elu = { id: $stateParams.id };
+            $scope.autreMandat.mandature = {
+                id: $rootScope.currentMandature.id,
+            };
             if ($scope.autreMandat.id != null) {
                 AutreMandat.update(
                     $scope.autreMandat,

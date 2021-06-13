@@ -1,83 +1,85 @@
-<div class="box box-elu box-solid">
-    <div class="box-header with-border">
-        <h3 class="box-title">
-            <i class="fa fa-bookmark"></i> Groupe politique
-        </h3>
-    </div>
-    <div class="box-body">
-        <div
-            class="unit-bloc info-bloc"
-            ng-repeat="a in dto.elu.appartenancesGroupePolitique"
-            ng-if="a.dateFin == null"
-        >
-            <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                <edit-button
-                    ui-sref="elu.detail.editAppartenanceGroupePolitique({appartenanceId: a.id})"
-                ></edit-button>
-                <delete-button
-                    ui-sref="elu.detail.supprimerAppartenanceGroupePolitique({appartenanceId: a.id})"
-                ></delete-button>
-            </div>
-            {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
-            <span class="grey"
-                >({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span
-            >
-            <br />
-            <span class="lg"
-                ><span class="grey">Depuis le</span> {{a.dateDebut |
-                date:'mediumDate'}}</span
-            >
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="box box-elu box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <i class="fa fa-bookmark"></i> Groupe politique
+            </h3>
         </div>
-        <div
-            class="unit-bloc info-bloc"
-            ng-repeat="f in dto.elu.fonctionsGroupePolitique"
-            ng-if="f.dateFin == null"
-        >
-            <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
-                <edit-button
-                    ui-sref="elu.detail.editFonctionGroupePolitique({fonctionId: f.id})"
-                ></edit-button>
-                <delete-button
-                    ui-sref="elu.detail.supprimerFonctionGroupePolitique({fonctionId: f.id})"
-                ></delete-button>
-            </div>
-            <span class="grey">Fonction :</span> {{f.fonction}}
-            <span class="grey">dans le groupe</span>
-            {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
-            <br />
-            <span class="lg"
-                ><span class="grey">Depuis le</span> {{f.dateDebut |
-                date:'mediumDate'}}</span
+        <div class="box-body">
+            <div
+                class="unit-bloc info-bloc"
+                ng-repeat="a in dto.elu.appartenancesGroupePolitique"
+                ng-if="a.dateFin == null"
             >
-        </div>
-        <div class="unit-bloc" ng-if="!eluAGroupePolitiqueOuFonction">
-            Aucun groupe politique
-        </div>
-    </div>
-    <div class="btn-group elu-action">
-        <button
-            type="button"
-            class="btn btn-default dropdown-toggle"
-            data-toggle="dropdown"
-            aria-expanded="false"
-            has-authority="ROLE_ADMIN"
-        >
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu pull-right">
-            <li>
-                <a href="#" ui-sref="elu.detail.ajouterGroupePolitique">
-                    Ajouter à un groupe politique
-                </a>
-            </li>
-            <li>
-                <a
-                    href="#"
-                    ui-sref="elu.detail.nouvelleFonctionGroupePolitique({groupePolitiqueId: groupePolitiqueId})"
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                    <edit-button
+                        ui-sref="elu.detail.editAppartenanceGroupePolitique({appartenanceId: a.id})"
+                    ></edit-button>
+                    <delete-button
+                        ui-sref="elu.detail.supprimerAppartenanceGroupePolitique({appartenanceId: a.id})"
+                    ></delete-button>
+                </div>
+                {{dto.groupesPolitiques[a.groupePolitique.id].nom}}
+                <span class="grey"
+                    >({{dto.groupesPolitiques[a.groupePolitique.id].nomCourt}})</span
                 >
-                    Ajouter une fonction à un groupe politique
-                </a>
-            </li>
-        </ul>
+                <br />
+                <span class="lg"
+                    ><span class="grey">Depuis le</span> {{a.dateDebut |
+                    date:'mediumDate'}}</span
+                >
+            </div>
+            <div
+                class="unit-bloc info-bloc"
+                ng-repeat="f in dto.elu.fonctionsGroupePolitique"
+                ng-if="f.dateFin == null"
+            >
+                <div class="edition-buttons-bloc" has-authority="ROLE_ADMIN">
+                    <edit-button
+                        ui-sref="elu.detail.editFonctionGroupePolitique({fonctionId: f.id})"
+                    ></edit-button>
+                    <delete-button
+                        ui-sref="elu.detail.supprimerFonctionGroupePolitique({fonctionId: f.id})"
+                    ></delete-button>
+                </div>
+                <span class="grey">Fonction : </span> {{f.fonction}}
+                <span class="grey">dans le groupe</span>
+                {{dto.groupesPolitiques[f.groupePolitique.id].nomCourt}}
+                <br />
+                <span class="lg"
+                    ><span class="grey">Depuis le</span> {{f.dateDebut |
+                    date:'mediumDate'}}</span
+                >
+            </div>
+            <div class="unit-bloc" ng-if="!eluAGroupePolitiqueOuFonction">
+                Aucun groupe politique
+            </div>
+        </div>
+        <div class="btn-group elu-action">
+            <button
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+                has-authority="ROLE_ADMIN"
+            >
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <a href="#" ui-sref="elu.detail.ajouterGroupePolitique">
+                        Ajouter à un groupe politique
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="#"
+                        ui-sref="elu.detail.nouvelleFonctionGroupePolitique({groupePolitiqueId: groupePolitiqueId})"
+                    >
+                        Ajouter une fonction à un groupe politique
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

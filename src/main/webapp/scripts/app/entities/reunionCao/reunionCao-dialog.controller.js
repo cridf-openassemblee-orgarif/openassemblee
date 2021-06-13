@@ -23,12 +23,21 @@ var tempHours = function (reunion) {
 
 angular.module("openassembleeApp").controller("ReunionCaoDialogController", [
     "$scope",
+    "$rootScope",
     "$stateParams",
     "$modalInstance",
     "entity",
     "ReunionCao",
     "Elu",
-    function ($scope, $stateParams, $modalInstance, entity, ReunionCao, Elu) {
+    function (
+        $scope,
+        $rootScope,
+        $stateParams,
+        $modalInstance,
+        entity,
+        ReunionCao,
+        Elu
+    ) {
         $scope.temp = {
             selectedElus: [],
         };
@@ -103,6 +112,7 @@ angular.module("openassembleeApp").controller("ReunionCaoDialogController", [
                         : "0" + heureFin.getMinutes();
                 $scope.reunion.heureFin = heureFinHours + ":" + heureFinMinutes;
             }
+            $scope.reunion.mandature = { id: $rootScope.currentMandature.id };
             $scope.reunion.presenceElus = $scope.temp.selectedElus.map(
                 function (e, i) {
                     return {

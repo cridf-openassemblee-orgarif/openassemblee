@@ -2,8 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.Mandat;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.MandatRepository;
 import openassemblee.repository.search.MandatSearchRepository;
+import openassemblee.service.MandatService;
+import openassemblee.service.dto.MandatEditionDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +41,9 @@ public class MandatResource {
     @Inject
     private MandatSearchRepository mandatSearchRepository;
 
+    @Inject
+    private MandatService mandatService;
+
     /**
      * POST  /mandats -> Create a new mandat.
      */
@@ -45,13 +51,12 @@ public class MandatResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Mandat> createMandat(@RequestBody Mandat mandat) throws URISyntaxException {
-        log.debug("REST request to save Mandat : {}", mandat);
-        if (mandat.getId() != null) {
+    public ResponseEntity<Mandat> createMandat(@RequestBody MandatEditionDTO dto) throws URISyntaxException {
+        log.debug("REST request to save Mandat : {}", dto);
+        if (dto.getMandat().getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new mandat cannot already have an ID").body(null);
         }
-        Mandat result = mandatRepository.save(mandat);
-        mandatSearchRepository.save(result);
+        Mandat result = mandatService.save(dto);
         return ResponseEntity.created(new URI("/api/mandats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("mandat", result.getId().toString()))
             .body(result);
@@ -64,15 +69,14 @@ public class MandatResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Mandat> updateMandat(@RequestBody Mandat mandat) throws URISyntaxException {
-        log.debug("REST request to update Mandat : {}", mandat);
-        if (mandat.getId() == null) {
-            return createMandat(mandat);
+    public ResponseEntity<Mandat> updateMandat(@RequestBody MandatEditionDTO dto) throws URISyntaxException {
+        log.debug("REST request to update Mandat : {}", dto);
+        if (dto.getMandat().getId() == null) {
+           throw new IllegalArgumentException(dto.getMandat().getId().toString());
         }
-        Mandat result = mandatRepository.save(mandat);
-        mandatSearchRepository.save(mandat);
+        Mandat result = mandatService.save(dto);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("mandat", mandat.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("mandat", result.getId().toString()))
             .body(result);
     }
 

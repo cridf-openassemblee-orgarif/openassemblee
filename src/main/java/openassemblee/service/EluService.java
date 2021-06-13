@@ -7,7 +7,10 @@ import openassemblee.repository.search.*;
 import openassemblee.service.dto.EluDTO;
 import openassemblee.service.dto.EluListDTO;
 import openassemblee.service.util.EluNomComparator;
+import org.elasticsearch.common.base.Strings;
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class EluService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EluService.class);
 
     @Inject
     private EluRepository eluRepository;
@@ -80,10 +85,14 @@ public class EluService {
     @Inject
     private CommissionPermanenteService commissionPermanenteService;
 
+    @Inject
+    private SessionMandatureService sessionMandatureService;
+
     @Transactional(readOnly = true)
     public List<Elu> getActifsAssemblee() {
-        // FIXME pour le moment tous les élus sont actifs, wtf...
-        return eluRepository.findAll();
+        return eluRepository.findAll().stream().filter(
+            e -> isCurrentMandat(e.getMandats(), sessionMandatureService.getMandature())
+        ).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +101,8 @@ public class EluService {
             .filter(e -> {
                 // FIXME demo condition suffisante ? Les executifs ?
                 for (AppartenanceCommissionPermanente a : e.getAppartenancesCommissionPermanente()) {
-                    if (a.getDateFin() == null) {
+                    if (a.getDateFin() == null
+                        && a.getMandature().getId().equals(sessionMandatureService.getMandature().getId())) {
                         return true;
                     }
                 }
@@ -104,8 +114,18 @@ public class EluService {
     @Transactional(readOnly = true)
     public List<EluListDTO> getAll(Boolean loadAdresses, Boolean filterAdresses, Boolean removeDemissionaires) {
         List<Elu> elus = eluRepository.findAll();
+        Mandature currentMandature = sessionMandatureService.getMandature();
         return elus.stream().map(e -> eluToEluListDTO(e, loadAdresses, filterAdresses))
-            .filter(e -> !removeDemissionaires || e.getElu().getDateDemission() == null)
+            // les deux filter sont nécessaires :
+            // 1) enlève les élus d'autres mandatures
+            .filter(e -> {
+                List<Mandat> mandats = e.getElu().getMandats().stream()
+                    .filter(m -> m.getMandature().getId().equals(currentMandature.getId()))
+                    .collect(Collectors.toList());
+                return !mandats.isEmpty();
+            })
+            // 2) enlève les démissionnaires si besoin
+            .filter(e -> !removeDemissionaires || isCurrentMandat(e.getElu().getMandats(), currentMandature))
             .sorted(EluNomComparator.comparing(EluListDTO::getElu))
             .collect(Collectors.toList());
     }
@@ -118,24 +138,28 @@ public class EluService {
     public EluListDTO eluToEluListDTO(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
         Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
+            .filter(a -> a.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .filter(Objects::nonNull)
             .findFirst();
         String fonctionExec = elu.getFonctionsExecutives().stream()
             .filter(FonctionExecutive::isFonctionCourante)
+            .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
             .findFirst()
             .map(f -> FonctionCommissionPermanente.getShortFonction(f.getFonction()))
             .orElse(null);
         String fonctionCP = elu.getFonctionsCommissionPermanente().stream()
             .filter(FonctionCommissionPermanente::isFonctionCourante)
+            .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
             .findFirst()
             .map(f -> FonctionCommissionPermanente.getShortFonction(f.getFonction()))
             .orElse(null);
         String shortFonction = fonctionExec != null ? fonctionExec : fonctionCP != null ? fonctionCP : null;
+        Boolean isCurrentMandat = isCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
         if (groupePolitique.isPresent()) {
-            return new EluListDTO(elu, groupePolitique.get(), shortFonction, loadAdresses, filterAdresses);
+            return new EluListDTO(elu, groupePolitique.get(), shortFonction, isCurrentMandat, loadAdresses, filterAdresses);
         } else {
-            return new EluListDTO(elu, shortFonction, loadAdresses, filterAdresses);
+            return new EluListDTO(elu, shortFonction, isCurrentMandat, loadAdresses, filterAdresses);
         }
     }
 
@@ -145,104 +169,64 @@ public class EluService {
         if (elu == null) {
             return null;
         }
+        Mandature mandature = sessionMandatureService.getMandature();
         Hibernate.initialize(elu.getAdressesPostales());
         Hibernate.initialize(elu.getNumerosTelephones());
         Hibernate.initialize(elu.getNumerosFax());
         Hibernate.initialize(elu.getAdressesMail());
         Hibernate.initialize(elu.getIdentitesInternet());
-        Hibernate.initialize(elu.getAppartenancesCommissionPermanente());
-        Hibernate.initialize(elu.getFonctionsCommissionPermanente());
-        Hibernate.initialize(elu.getFonctionsExecutives());
-        Hibernate.initialize(elu.getAppartenancesGroupePolitique());
-        Hibernate.initialize(elu.getFonctionsGroupePolitique());
-        Hibernate.initialize(elu.getAppartenancesCommissionsThematiques());
-        Hibernate.initialize(elu.getFonctionsCommissionsThematiques());
         Hibernate.initialize(elu.getAppartenancesOrganismes());
-        Hibernate.initialize(elu.getAutreMandats());
         Hibernate.initialize(elu.getDistinctionHonorifiques());
-        Map<Long, GroupePolitique> groupesPolitiques = new HashMap<>();
-        groupesPolitiques.putAll(elu.getAppartenancesGroupePolitique().stream()
-            .map(a -> a.getGroupePolitique())
-            // anti-NPE mais ne devrait pas arriver
-            .filter(o -> o != null)
+        filterEluMandat(elu, mandature);
+        List<GroupePolitique> groupesPolitiques = elu.getAppartenancesGroupePolitique().stream()
+            .map(i -> i.getGroupePolitique()).collect(Collectors.toList());
+        groupesPolitiques.addAll(elu.getFonctionsGroupePolitique().stream()
+            .map(i -> i.getGroupePolitique()).collect(Collectors.toList()));
+        Map<Long, GroupePolitique> groupesPolitiquesMap = groupesPolitiques.stream()
             .distinct()
-            .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
-        groupesPolitiques.putAll(elu.getFonctionsGroupePolitique().stream()
-            .map(a -> a.getGroupePolitique())
-            // anti-NPE mais ne devrait pas arriver
-            .filter(o -> o != null)
+            .collect(Collectors.toMap(GroupePolitique::getId, Function.identity()));
+        List<CommissionThematique> commissionThematiques = elu.getAppartenancesCommissionsThematiques().stream()
+            .map(i -> i.getCommissionThematique()).collect(Collectors.toList());
+        commissionThematiques.addAll(elu.getFonctionsCommissionsThematiques().stream()
+            .map(i -> i.getCommissionThematique()).collect(Collectors.toList()));
+        Map<Long, CommissionThematique> commissionThematiquesMap = commissionThematiques.stream()
             .distinct()
-            .collect(Collectors.toMap(GroupePolitique::getId, Function.identity())));
-        Map<Long, CommissionThematique> commissionsThematiques = new HashMap<>();
-        commissionsThematiques.putAll(elu.getAppartenancesCommissionsThematiques().stream()
-            .map(a -> a.getCommissionThematique())
-            // anti-NPE mais ne devrait pas arriver
-            .filter(o -> o != null)
-            .distinct()
-            .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
-        commissionsThematiques.putAll(elu.getFonctionsCommissionsThematiques().stream()
-            .map(a -> a.getCommissionThematique())
-            // anti-NPE mais ne devrait pas arriver
-            .filter(o -> o != null)
-            .distinct()
-            .collect(Collectors.toMap(CommissionThematique::getId, Function.identity())));
-        Map<String, Organisme> organismes = elu.getAppartenancesOrganismes().stream()
-            .map(a -> a.getCodeRNE())
-            .filter(r -> r != null && !r.equals(""))
-            .distinct()
-            // anti-NPE
-            .map(rne -> new Object[]{rne, organismeRepository.findFirstByCodeRNE(rne)})
-            .filter(o -> o[1] != null)
-            .collect(Collectors.toMap(o -> (String) o[0], o -> (Organisme) o[1]));
-        return new EluDTO(elu, groupesPolitiques, commissionsThematiques, organismes, true, filterAdresses);
+            .collect(Collectors.toMap(CommissionThematique::getId, Function.identity()));
+        return new EluDTO(elu, groupesPolitiquesMap, commissionThematiquesMap, true, filterAdresses);
+    }
+
+    void filterEluMandat(Elu elu, Mandature mandature) {
+        Long mandatureId = mandature.getId();
+        elu.setMandats(elu.getMandats().stream()
+            .filter(m -> m.getMandature().getId().equals(mandatureId)).collect(Collectors.toSet()));
+
+        elu.setAppartenancesCommissionPermanente(elu.getAppartenancesCommissionPermanente().stream()
+            .filter(a -> a.getMandature().getId().equals(mandatureId)).collect(Collectors.toList()));
+        elu.setAppartenancesCommissionsThematiques(elu.getAppartenancesCommissionsThematiques().stream()
+            .filter(a -> a.getCommissionThematique().getMandature().getId().equals(mandatureId)).collect(Collectors.toSet()));
+        elu.setAppartenancesGroupePolitique(elu.getAppartenancesGroupePolitique().stream()
+            .filter(a -> a.getGroupePolitique().getMandature().getId().equals(mandatureId))
+            .collect(Collectors.toList()));
+
+        elu.setFonctionsCommissionPermanente(elu.getFonctionsCommissionPermanente().stream()
+            .filter(f -> f.getMandature().getId().equals(mandatureId)).collect(Collectors.toList()));
+        elu.setFonctionsExecutives(elu.getFonctionsExecutives().stream()
+            .filter(f -> f.getMandature().getId().equals(mandatureId)).collect(Collectors.toList()));
+        elu.setFonctionsGroupePolitique(elu.getFonctionsGroupePolitique().stream()
+            .filter(f -> f.getGroupePolitique().getMandature().getId().equals(mandatureId))
+            .collect(Collectors.toList()));
+        elu.setFonctionsCommissionsThematiques(elu.getFonctionsCommissionsThematiques().stream()
+            .filter(f -> f.getCommissionThematique().getMandature().getId().equals(mandatureId)).collect(Collectors.toSet()));
+
+        elu.setAutreMandats(elu.getAutreMandats().stream()
+            .filter(m -> m.getMandature().getId().equals(mandatureId))
+            .collect(Collectors.toSet()));
     }
 
     @Transactional
     public Elu saveElu(Elu elu) {
         Elu result = eluRepository.save(elu);
         eluSearchRepository.save(elu);
-        if (elu.getDateDemission() != null) {
-            elu.getAppartenancesCommissionPermanente().forEach(a -> {
-                a.setDateFin(elu.getDateDemission());
-                a.setMotifFin(elu.getMotifDemission());
-                appartenanceCommissionPermanenteRepository.save(a);
-            });
-            elu.getAppartenancesOrganismes().forEach(a -> {
-                a.setDateFin(elu.getDateDemission());
-                a.setMotifFin(elu.getMotifDemission());
-                appartenanceOrganismeRepository.save(a);
-            });
-            elu.getAppartenancesCommissionsThematiques().forEach(a -> {
-                a.setDateFin(elu.getDateDemission());
-                a.setMotifFin(elu.getMotifDemission());
-                appartenanceCommissionThematiqueRepository.save(a);
-            });
-            elu.getAppartenancesGroupePolitique().forEach(a -> {
-                a.setDateFin(elu.getDateDemission());
-                a.setMotifFin(elu.getMotifDemission());
-                appartenanceGroupePolitiqueRepository.save(a);
-            });
-            elu.getFonctionsCommissionPermanente().forEach(fct -> {
-                fct.setDateFin(elu.getDateDemission());
-                fct.setMotifFin(elu.getMotifDemission());
-                fonctionCommissionPermanenteRepository.save(fct);
-            });
-            elu.getFonctionsExecutives().forEach(fct -> {
-                fct.setDateFin(elu.getDateDemission());
-                fct.setMotifFin(elu.getMotifDemission());
-                fonctionExecutiveRepository.save(fct);
-            });
-            elu.getFonctionsGroupePolitique().forEach(fct -> {
-                fct.setDateFin(elu.getDateDemission());
-                fct.setMotifFin(elu.getMotifDemission());
-                fonctionGroupePolitiqueRepository.save(fct);
-            });
-            elu.getFonctionsCommissionsThematiques().forEach(fct -> {
-                fct.setDateFin(elu.getDateDemission());
-                fct.setMotifFin(elu.getMotifDemission());
-                fonctionCommissionThematiqueRepository.save(fct);
-            });
-        }
         return result;
     }
 
@@ -428,15 +412,44 @@ public class EluService {
             .filter(n -> n.getNiveauConfidentialite() == NiveauConfidentialite.INTERNE || n.getNiveauConfidentialite() == NiveauConfidentialite.CONFIDENTIEL)
             .map(n -> n.getNumero() + "(" + n.getNiveauConfidentialite().name() + (n.getNatureProPerso() != null ? "," + n.getNatureProPerso().name() : "") + ")")
             .reduce("", (n1, n2) -> n1 + (n1.equals("") ? "" : ", ") + n2);
+        Mandat mandat = getCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
+        String departement = mandat != null ? mandat.getDepartement() : "";
         if (!demissionaire) {
             return Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique,
-                e.getProfession(), e.getLieuNaissance(), dateNaissance, e.getDepartement(), adressePostales, emails,
+                e.getProfession(), e.getLieuNaissance(), dateNaissance, departement, adressePostales, emails,
                 numerosPublics, numerosInternesOuConfidentiels);
         } else {
-            String dateDemission = e.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE);
+            String dateDemission = mandat != null && mandat.getDateDemission() != null ?
+                mandat.getDateDemission().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+            String motifDemission = mandat != null ? mandat.getMotifDemission() : "";
             return Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique, dateDemission,
-                e.getMotifDemission(), e.getProfession(), e.getLieuNaissance(), dateNaissance, e.getDepartement(),
+                motifDemission, e.getProfession(), e.getLieuNaissance(), dateNaissance, departement,
                 adressePostales, emails, numerosPublics, numerosInternesOuConfidentiels);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public static boolean isCurrentMandat(Set<Mandat> mandats, Mandature currentMandature) {
+        return !getCurrentMandats(mandats, currentMandature).isEmpty();
+    }
+
+    @Transactional(readOnly = true)
+    private static List<Mandat> getCurrentMandats(Set<Mandat> mandats, Mandature currentMandature) {
+        // plus tard : || a.getDateFin().isAfter(LocalDate.now()) ?
+        return mandats.stream()
+            .filter(m -> m.getMandature().getId().equals(currentMandature.getId()))
+            .filter(m -> Strings.isNullOrEmpty(m.getMotifDemission()) && m.getDateDemission() == null)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public static Mandat getCurrentMandat(Set<Mandat> mandats, Mandature currentMandature) {
+        List<Mandat> result = getCurrentMandats(mandats, currentMandature);
+        if (result.size() > 1) {
+            Long eluId = result.stream().findFirst().get().getElu().getId();
+            logger.warn("Plusieurs mandats sur l'élu " + eluId);
+            return null;
+        }
+        return result.stream().findFirst().orElse(null);
     }
 }

@@ -29,11 +29,6 @@
             <span>Commissions thématiques</span></a
         >
     </li>
-    <li ui-sref-active="active" ng-switch-when="true">
-        <a ui-sref="organisme">
-            <i class="fa fa-building"></i> <span>Organismes</span></a
-        >
-    </li>
     <li class="header" ng-switch-when="true" has-authority="ROLE_ADMIN">
         Gestion des séances
     </li>
@@ -94,6 +89,15 @@
             <i class="fa fa-warning"></i> <span>Incohérences</span></a
         >
     </li>
+    <li
+        ui-sref-active="active"
+        ng-switch-when="true"
+        has-authority="ROLE_ADMIN"
+    >
+        <a ui-sref="mandature">
+            <i class="fa fa-eject"></i> <span>Mandatures</span></a
+        >
+    </li>
     <li class="header">Compte</li>
     <li ui-sref-active="active" ng-switch-when="false">
         <a ui-sref="login"
@@ -120,16 +124,6 @@
                 data-target=".navbar-collapse.in"
                 ><span class="glyphicon glyphicon-asterisk"></span> &#xA0;<span
                     >mandature</span
-                ></a
-            >
-        </li>
-        <li ui-sref-active="active">
-            <a
-                ui-sref="listeElectorale"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.in"
-                ><span class="glyphicon glyphicon-asterisk"></span> &#xA0;<span
-                    >listeElectorale</span
                 ></a
             >
         </li>

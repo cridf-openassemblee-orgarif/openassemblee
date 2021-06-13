@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.ListeElectorale;
 import openassemblee.repository.ListeElectoraleRepository;
 import openassemblee.repository.search.ListeElectoraleSearchRepository;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ public class ListeElectoraleResource {
 
     @Inject
     private ListeElectoraleSearchRepository listeElectoraleSearchRepository;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /listeElectorales -> Create a new listeElectorale.
@@ -85,7 +89,7 @@ public class ListeElectoraleResource {
     @Timed
     public List<ListeElectorale> getAllListeElectorales() {
         log.debug("REST request to get all ListeElectorales");
-        return listeElectoraleRepository.findAll();
+        return listeElectoraleRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

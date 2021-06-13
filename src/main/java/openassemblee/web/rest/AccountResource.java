@@ -10,15 +10,18 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import openassemblee.domain.Mandature;
 import openassemblee.domain.PersistentToken;
 import openassemblee.domain.User;
 import openassemblee.repository.PersistentTokenRepository;
 import openassemblee.repository.UserRepository;
 import openassemblee.security.SecurityUtils;
 import openassemblee.service.MailService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.service.UserService;
 import openassemblee.web.rest.dto.KeyAndPasswordDTO;
 import openassemblee.web.rest.dto.UserDTO;
+import openassemblee.web.rest.dto.UserWithMandatureDTO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +50,9 @@ public class AccountResource {
 
     @Inject
     private MailService mailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /register -> register the user.
@@ -129,7 +135,9 @@ public class AccountResource {
             .map(new Function<User, ResponseEntity>() {
                 @Override
                 public ResponseEntity apply(User user) {
-                    return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+                    return new ResponseEntity<>(new UserWithMandatureDTO(user,
+                        sessionMandatureService.getMandature(),
+                        sessionMandatureService.hasForcedMandature()), HttpStatus.OK);
                 }
             })
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -197,16 +205,16 @@ public class AccountResource {
 
     /**
      * DELETE  /account/sessions?series={series} -> invalidate an existing session.
-     *
+     * <p>
      * - You can only delete your own sessions, not any other user's session
      * - If you delete one of your existing sessions, and that you are currently logged in on that session, you will
-     *   still be able to use that session, until you quit your browser: it does not work in real time (there is
-     *   no API for that), it only removes the "remember me" cookie
+     * still be able to use that session, until you quit your browser: it does not work in real time (there is
+     * no API for that), it only removes the "remember me" cookie
      * - This is also true if you invalidate your current session: you will still be able to use it until you close
-     *   your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
-     *   anymore.
-     *   There is an API to invalidate the current session, but there is no API to check which session uses which
-     *   cookie.
+     * your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
+     * anymore.
+     * There is an API to invalidate the current session, but there is no API to check which session uses which
+     * cookie.
      */
     @RequestMapping(value = "/account/sessions/{series}",
         method = RequestMethod.DELETE)

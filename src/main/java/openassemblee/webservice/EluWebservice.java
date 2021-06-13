@@ -1,7 +1,9 @@
 package openassemblee.webservice;
 
+import openassemblee.domain.Mandat;
 import openassemblee.domain.enumeration.Civilite;
 import openassemblee.service.EluService;
+import openassemblee.service.SessionMandatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,12 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static openassemblee.service.EluService.getCurrentMandat;
+
 @RestController
 @RequestMapping("/api/publicdata/v2")
 public class EluWebservice {
 
     @Autowired
     protected EluService eluService;
+
+    @Autowired
+    private SessionMandatureService sessionMandatureService;
 
     enum PublicCivilite {M, MME}
 
@@ -61,6 +68,7 @@ public class EluWebservice {
                     "sans groupe";
                 String groupePolitiqueCourt = it.getGroupePolitique() != null ? it.getGroupePolitique().getNomCourt() :
                     "-";
+                Mandat mandat = getCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature());
                 return new PublicElu(
                     it.getElu().getShortUid().toString(),
                     it.getElu().getUid(),
@@ -71,7 +79,7 @@ public class EluWebservice {
                     groupePolitiqueCourt,
                     "/images/" + it.getElu().getImage(),
                     // FIXME ?
-                    it.getElu().getDateDemission() == null);
+                    mandat != null && mandat.getDateDemission() == null);
             })
             .collect(Collectors.toList());
         return new Data(elus);

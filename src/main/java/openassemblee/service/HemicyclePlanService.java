@@ -49,6 +49,7 @@ public class HemicyclePlanService {
     public HemicyclePlan save(HemicyclePlanCreationDTO dto) {
         HemicyclePlan hd = new HemicyclePlan();
         hd.setLabel(dto.getLabel());
+        hd.setMandature(dto.getMandature());
         HemicycleConfiguration hc = hemicycleConfigurationRepository.findOne(dto.getConfigurationId());
         hd.setConfiguration(hc);
         ZonedDateTime now = Instant.now().atZone(parisZoneId);

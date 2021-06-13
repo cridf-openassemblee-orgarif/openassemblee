@@ -4,7 +4,16 @@ angular
     .module("openassembleeApp")
     .controller(
         "MandatureController",
-        function ($scope, $state, $modal, Mandature, MandatureSearch) {
+        function (
+            $scope,
+            $rootScope,
+            $state,
+            $modal,
+            Mandature,
+            MandatureSearch,
+            $http,
+            Principal
+        ) {
             $scope.mandatures = [];
             $scope.loadAll = function () {
                 Mandature.query(function (result) {
@@ -40,6 +49,16 @@ angular
                     current: null,
                     id: null,
                 };
+            };
+
+            $scope.setMandatureForSession = function (mandature) {
+                $http
+                    .post(
+                        "api/mandatures/set-current-for-session/" + mandature.id
+                    )
+                    .success(function () {
+                        Principal.identity(true);
+                    });
             };
         }
     );

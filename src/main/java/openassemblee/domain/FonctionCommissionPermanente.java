@@ -50,6 +50,10 @@ public class FonctionCommissionPermanente implements Serializable {
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -110,6 +114,14 @@ public class FonctionCommissionPermanente implements Serializable {
         this.elu = elu;
     }
 
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -123,7 +135,7 @@ public class FonctionCommissionPermanente implements Serializable {
     }
 
     public static String getShortFonction(String fonction) {
-        String cleanFonction = StringUtils.stripAccents(fonction != null ? fonction.toLowerCase() : "");
+        String cleanFonction = StringUtils.stripAccents(fonction != null ? fonction.toLowerCase() : "").trim();
         if (cleanFonction.contains("vice") && cleanFonction.contains("president")) {
             return "VP";
         }
@@ -142,7 +154,7 @@ public class FonctionCommissionPermanente implements Serializable {
         if(cleanFonction.trim().equals("")) {
             return null;
         }
-        logger.error("Unknown short fonction " + fonction);
+        logger.warn("Unknown short fonction " + fonction);
         return null;
     }
 

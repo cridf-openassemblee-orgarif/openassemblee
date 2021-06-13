@@ -41,6 +41,10 @@ public class AppartenanceCommissionPermanente implements Serializable {
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -91,6 +95,14 @@ public class AppartenanceCommissionPermanente implements Serializable {
 
     public void setElu(Elu elu) {
         this.elu = elu;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

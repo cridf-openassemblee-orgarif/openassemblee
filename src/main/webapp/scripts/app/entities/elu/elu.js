@@ -52,8 +52,6 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                                             profession: null,
                                             dateNaissance: null,
                                             lieuNaissance: null,
-                                            motifDemission: null,
-                                            dateDemission: null,
                                             id: null,
                                         },
                                     };
@@ -1873,6 +1871,117 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                                             eluId: $stateParams.id,
                                             identiteInternetId:
                                                 $stateParams.identiteInternetId,
+                                        };
+                                    },
+                                ],
+                            },
+                        })
+                        .result.then(
+                            function (result) {
+                                $state.go("^", null, { reload: true });
+                            },
+                            function () {
+                                $state.go("^");
+                            }
+                        );
+                },
+            ],
+        })
+        .state("elu.detail.ajouterMandat", {
+            parent: "elu.detail",
+            url: "/ajouter-mandat",
+            data: {
+                authorities: ["ROLE_USER"],
+            },
+            onEnter: [
+                "$stateParams",
+                "$state",
+                "$modal",
+                function ($stateParams, $state, $modal) {
+                    $modal
+                        .open({
+                            templateUrl:
+                                "scripts/app/entities/mandat/mandat-dialog.html",
+                            controller: "MandatDialogController",
+                            size: "lg",
+                            resolve: {
+                                entity: function () {
+                                    return {};
+                                },
+                            },
+                        })
+                        .result.then(
+                            function (result) {
+                                $state.go("^", null, { reload: true });
+                            },
+                            function () {
+                                $state.go("^");
+                            }
+                        );
+                },
+            ],
+        })
+        .state("elu.detail.editMandat", {
+            parent: "elu.detail",
+            url: "/edit-mandat/{mandatId}",
+            data: {
+                authorities: ["ROLE_USER"],
+            },
+            onEnter: [
+                "$stateParams",
+                "$state",
+                "$modal",
+                function ($stateParams, $state, $modal) {
+                    $modal
+                        .open({
+                            templateUrl:
+                                "scripts/app/entities/mandat/mandat-dialog.html",
+                            controller: "MandatDialogController",
+                            size: "lg",
+                            resolve: {
+                                entity: [
+                                    "Mandat",
+                                    function (Mandat) {
+                                        return Mandat.get({
+                                            id: $stateParams.mandatId,
+                                        });
+                                    },
+                                ],
+                            },
+                        })
+                        .result.then(
+                            function (result) {
+                                $state.go("^", null, { reload: true });
+                            },
+                            function () {
+                                $state.go("^");
+                            }
+                        );
+                },
+            ],
+        })
+        .state("elu.detail.supprimerMandat", {
+            parent: "elu.detail",
+            url: "/mandat/{mandatId}/delete",
+            data: {
+                authorities: ["ROLE_USER"],
+            },
+            onEnter: [
+                "$stateParams",
+                "$state",
+                "$modal",
+                function ($stateParams, $state, $modal) {
+                    $modal
+                        .open({
+                            templateUrl:
+                                "scripts/app/entities/mandat/mandat-delete-dialog.html",
+                            controller: "MandatDeleteController",
+                            size: "md",
+                            resolve: {
+                                entity: [
+                                    function () {
+                                        return {
+                                            id: $stateParams.mandatId,
                                         };
                                     },
                                 ],

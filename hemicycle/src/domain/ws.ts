@@ -1,4 +1,10 @@
-import { EluId, GroupePolitiqueId, LocalDate, PlanId } from './nominal';
+import {
+    EluId,
+    GroupePolitiqueId,
+    LocalDate,
+    MandatId,
+    PlanId,
+} from './nominal';
 import { Civilite, Elu, GroupePolitique } from './elu';
 import { Association } from './hemicycle';
 import { HemicycleConfigurationRendu } from './assemblee';
@@ -12,16 +18,11 @@ export interface EluFromWs {
     profession: string;
     dateNaissance: LocalDate;
     lieuNaissance: string;
-    codeDepartement: string;
-    departement: string;
     image: number;
-    motifDemission: string;
-    dateDemission: LocalDate;
     importUid: string;
-    listeElectorale: string;
-    listeCourt: string;
     uid: string;
     shortUid: number;
+    mandats: MandatFromWs[];
 }
 
 export interface GroupePolitiqueFromWs {
@@ -41,6 +42,18 @@ export interface GroupePolitiqueFromWs {
     couleur: string;
     uid: string;
     shortUid: number;
+}
+
+export interface MandatFromWs {
+    id: MandatId;
+    dateDebut: LocalDate;
+    codeDepartement: string;
+    departement: string;
+    dateDemission: LocalDate;
+    motifDemission: string;
+    elu: Elu;
+    // mandature: Mandature;
+    // listeElectorale: ListeElectorale;
 }
 
 export interface EluListDTO {

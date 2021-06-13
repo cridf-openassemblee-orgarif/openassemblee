@@ -2,6 +2,7 @@
 
 angular.module("openassembleeApp").controller("MandatDialogController", [
     "$scope",
+    "$rootScope",
     "$stateParams",
     "$modalInstance",
     "entity",
@@ -11,6 +12,7 @@ angular.module("openassembleeApp").controller("MandatDialogController", [
     "ListeElectorale",
     function (
         $scope,
+        $rootScope,
         $stateParams,
         $modalInstance,
         entity,
@@ -20,6 +22,9 @@ angular.module("openassembleeApp").controller("MandatDialogController", [
         ListeElectorale
     ) {
         $scope.mandat = entity;
+        $scope.dto = {
+            demissionDiffusion: false,
+        };
         $scope.elus = Elu.query();
         $scope.mandatures = Mandature.query();
         $scope.listeelectorales = ListeElectorale.query();
@@ -41,10 +46,20 @@ angular.module("openassembleeApp").controller("MandatDialogController", [
 
         $scope.save = function () {
             $scope.isSaving = true;
+            $scope.mandat.elu = {
+                id: $stateParams.id,
+            };
+            $scope.mandat.mandature = {
+                id: $rootScope.currentMandature.id,
+            };
+            var dto = {
+                mandat: $scope.mandat,
+                demissionDiffusion: $scope.dto.demissionDiffusion,
+            };
             if ($scope.mandat.id != null) {
-                Mandat.update($scope.mandat, onSaveSuccess, onSaveError);
+                Mandat.update(dto, onSaveSuccess, onSaveError);
             } else {
-                Mandat.save($scope.mandat, onSaveSuccess, onSaveError);
+                Mandat.save(dto, onSaveSuccess, onSaveError);
             }
         };
 

@@ -1,20 +1,13 @@
 package openassemblee.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import openassemblee.domain.jackson.JacksonEluIdSerializer;
-import openassemblee.web.rest.dto.HemicycleAssociationDTO;
-import openassemblee.web.rest.dto.HemicycleEluDTO;
-import openassemblee.web.rest.dto.HemicycleGroupePolitiqueDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.ZonedDateTime;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**

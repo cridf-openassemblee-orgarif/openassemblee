@@ -23,6 +23,7 @@ export const instanciateNominalNumber = <T extends NominalNumber<any>>(
 export type ArchiveId = NominalNumber<'ArchiveId'>;
 export type EluId = NominalNumber<'EluId'>;
 export type GroupePolitiqueId = NominalNumber<'GroupePolitiqueId'>;
+export type MandatId = NominalNumber<'MandatId'>;
 export type PlanId = NominalNumber<'PlanId'>;
 
 export type ChairNumber = NominalNumber<'ChairNumber'>;

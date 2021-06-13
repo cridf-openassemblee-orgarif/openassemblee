@@ -4,6 +4,7 @@ angular
     .module("openassembleeApp")
     .controller("FonctionExecutiveDialogController", [
         "$scope",
+        "$rootScope",
         "$stateParams",
         "$modalInstance",
         "entity",
@@ -11,6 +12,7 @@ angular
         "Elu",
         function (
             $scope,
+            $rootScope,
             $stateParams,
             $modalInstance,
             entity,
@@ -42,6 +44,9 @@ angular
             $scope.save = function () {
                 $scope.isSaving = true;
                 $scope.fonctionExecutive.elu = { id: $stateParams.id };
+                $scope.fonctionExecutive.mandature = {
+                    id: $rootScope.currentMandature.id,
+                };
                 if ($scope.fonctionExecutive.id != null) {
                     FonctionExecutive.update(
                         $scope.fonctionExecutive,

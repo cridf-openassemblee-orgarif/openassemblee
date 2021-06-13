@@ -1,0 +1,16 @@
+<a
+    href="#/"
+    class="logo"
+    ng-style="{'background': forcedMandature ? '#ad3a23' : '#367fa9'}"
+>
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini" ng-if="!forcedMandature"><b>S</b></span>
+    <span class="logo-mini" ng-if="forcedMandature"
+        ><b>{{currentMandature.annee}}</b></span
+    >
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg" ng-if="!forcedMandature"><b>SIGER</b></span>
+    <span class="logo-lg" ng-if="forcedMandature"
+        ><b>Mandature {{currentMandature.annee}}</b></span
+    >
+</a>

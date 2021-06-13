@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.AppartenanceCommissionPermanente;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.AppartenanceCommissionPermanenteRepository;
 import openassemblee.repository.search.AppartenanceCommissionPermanenteSearchRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class AppartenanceCommissionPermanenteResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /appartenanceCommissionPermanentes -> Create a new appartenanceCommissionPermanente.
@@ -88,7 +93,7 @@ public class AppartenanceCommissionPermanenteResource {
     @Timed
     public List<AppartenanceCommissionPermanente> getAllAppartenanceCommissionPermanentes() {
         log.debug("REST request to get all AppartenanceCommissionPermanentes");
-        return appartenanceCommissionPermanenteRepository.findAll();
+        return appartenanceCommissionPermanenteRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

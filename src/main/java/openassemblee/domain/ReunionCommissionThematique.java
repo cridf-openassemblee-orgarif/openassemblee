@@ -50,6 +50,12 @@ public class ReunionCommissionThematique implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
+    // [doc] plus simple pour requeter de persister la mandature ici aussi
+    // meme si la même que celle de la CT...
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -104,6 +110,14 @@ public class ReunionCommissionThematique implements Serializable {
 
     public void setPresenceElus(Set<PresenceElu> presenceElus) {
         this.presenceElus = presenceElus;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

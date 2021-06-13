@@ -62,6 +62,9 @@ public class SeanceResource {
     @Inject
     private PdfExportService pdfExportService;
 
+    @Inject
+    private SessionMandatureService sessionMandatureService;
+
     /**
      * POST  /seances -> Create a new seance.
      */
@@ -109,7 +112,7 @@ public class SeanceResource {
     @Timed
     public ResponseEntity<List<Seance>> getAllSeances(Pageable pageable)
         throws URISyntaxException {
-        Page<Seance> page = seanceRepository.findAll(pageable);
+        Page<Seance> page = seanceRepository.findByMandature(sessionMandatureService.getMandature(), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/seances");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

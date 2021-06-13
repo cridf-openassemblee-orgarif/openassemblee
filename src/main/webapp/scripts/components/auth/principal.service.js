@@ -2,7 +2,7 @@
 
 angular
     .module("openassembleeApp")
-    .factory("Principal", function Principal($q, Account) {
+    .factory("Principal", function Principal($q, Account, $rootScope) {
         var _identity,
             _authenticated = false;
 
@@ -68,6 +68,12 @@ angular
                         _identity = account.data;
                         _authenticated = true;
                         deferred.resolve(_identity);
+                        $rootScope.currentMandature = account.data
+                            ? account.data.currentMandature
+                            : null;
+                        $rootScope.forcedMandature = account.data
+                            ? account.data.forcedMandature
+                            : null;
                     })
                     .catch(function () {
                         _identity = null;

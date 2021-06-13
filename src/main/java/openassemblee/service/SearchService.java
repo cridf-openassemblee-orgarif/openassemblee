@@ -59,10 +59,8 @@ public class SearchService {
         logger.debug("Reset search index");
         resetRepository(eluRepository, eluSearchRepository);
         resetRepository(groupePolitiqueRepository, groupePolitiqueSearchRepository);
-        resetRepository(organismeRepository, organismeSearchRepository);
         resetRepository(commissionThematiqueRepository, commissionThematiqueSearchRepository);
         resetRepository(fonctionExecutiveRepository, fonctionExecutiveSearchRepository);
-        resetRepository(auditTrailRepository, auditTrailSearchRepository);
     }
 
     private <T> void resetRepository(JpaRepository<T, Long> jpaRepository,
@@ -74,6 +72,8 @@ public class SearchService {
     }
 
     public List<SearchResultDTO> search(String searchToken) {
+        // non ! je n'ai pas trouvé comment ajouter un filter pour les accents au moment de l'indexation...
+        // QueryStringQueryBuilder qb = new QueryStringQueryBuilder(StringUtils.stripAccents(searchToken) + "*");
         QueryStringQueryBuilder qb = new QueryStringQueryBuilder(searchToken + "*");
         List<SearchResultDTO> results = new ArrayList<>();
         results.addAll(StreamSupport
@@ -96,12 +96,6 @@ public class SearchService {
                         .map(f -> eluRepository.getOne(f.getElu().getId()))
                         .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
                         .collect(Collectors.toList()));
-                    if (results.size() < 20) {
-                        results.addAll(StreamSupport
-                            .stream(organismeSearchRepository.search(qb).spliterator(), false)
-                            .map(o -> new SearchResultDTO(ORGANISME, o.getId(), o.getNom(), null))
-                            .collect(Collectors.toList()));
-                    }
                 }
             }
         }

@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class CommissionThematiqueResource {
 
     @Inject
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
+
     @Inject
     private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
 
@@ -69,6 +71,9 @@ public class CommissionThematiqueResource {
 
     @Inject
     private EluService eluService;
+
+    @Autowired
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /commissionThematiques -> Create a new commissionThematique.
@@ -121,7 +126,7 @@ public class CommissionThematiqueResource {
     @Timed
     public List<CommissionThematique> getAllCommissionThematiques() {
         log.debug("REST request to get all CommissionThematiques");
-        return commissionThematiqueRepository.findAll();
+        return commissionThematiqueRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**
@@ -133,7 +138,7 @@ public class CommissionThematiqueResource {
     @Timed
     public List<CommissionThematiqueListDTO> getAllCommissionThematiquesDtos() {
         log.debug("REST request to get all CommissionThematiques dtos");
-        return commissionThematiqueService.getAll();
+        return commissionThematiqueService.getAllDtos();
     }
 
     @RequestMapping(value = "/commissionThematiques/export",
@@ -145,7 +150,7 @@ public class CommissionThematiqueResource {
         log.debug("REST request to get all GroupePolitiques");
 
         byte[] export = excelExportService.exportToExcel(commissionThematiqueService
-            .getExportEntries(!SecurityUtil.isAdmin(auth), true));
+            .getExportEntries(!SecurityUtil.isAdmin(auth)));
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         String filename = "siger-export-commissions-thematiques";
@@ -166,7 +171,7 @@ public class CommissionThematiqueResource {
     @Secured("ROLE_USER")
     public void getAllCommissionThematiquesExportPdf(HttpServletResponse response) throws DocumentException {
         log.debug("REST request to get all GroupePolitiques");
-        List<CommissionThematique> cts = commissionThematiqueRepository.findAll();
+        List<CommissionThematique> cts = commissionThematiqueService.getAll();
         List<AppartenanceCommissionThematique> as = appartenanceCommissionThematiqueRepository.findAll();
         List<FonctionCommissionThematique> fs = fonctionCommissionThematiqueRepository.findAll();
         Map<Long, List<EluEnFonctionDTO>> appartenancesByCt = cts.stream()

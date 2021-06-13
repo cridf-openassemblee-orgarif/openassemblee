@@ -34,7 +34,7 @@ const convertElu = (dto: EluListDTO): Elu => ({
     prenom: dto.elu.prenom,
     groupePolitiqueId: dto.groupePolitique ? dto.groupePolitique.id : undefined,
     shortFonction: dto.shortFonction,
-    actif: !dto.elu.dateDemission,
+    actif: dto.elu.mandats.filter((m) => !m.dateDemission).length > 0,
 });
 
 const convertGroupePolitique = (

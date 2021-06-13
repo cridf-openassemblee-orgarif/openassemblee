@@ -25,6 +25,7 @@ angular
     .module("openassembleeApp")
     .controller("ReunionCommissionThematiqueDialogController", [
         "$scope",
+        "$rootScope",
         "$stateParams",
         "$modalInstance",
         "entity",
@@ -32,6 +33,7 @@ angular
         "CommissionThematique",
         function (
             $scope,
+            $rootScope,
             $stateParams,
             $modalInstance,
             entity,
@@ -101,6 +103,9 @@ angular
                     $scope.reunion.heureFin =
                         heureFinHours + ":" + heureFinMinutes;
                 }
+                $scope.reunion.mandature = {
+                    id: $rootScope.currentMandature.id,
+                };
                 if ($scope.reunion.id !== null) {
                     ReunionCommissionThematique.update(
                         $scope.reunion,

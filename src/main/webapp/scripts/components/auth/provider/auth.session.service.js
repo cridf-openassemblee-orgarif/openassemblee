@@ -4,7 +4,7 @@ angular
     .module("openassembleeApp")
     .factory(
         "AuthServerProvider",
-        function loginService($http, localStorageService, $window) {
+        function loginService($http, localStorageService, $window, $rootScope) {
             return {
                 login: function (credentials) {
                     var data =
@@ -32,6 +32,7 @@ angular
                         localStorageService.clearAll();
                         // to get a new csrf token call the api
                         $http.get("api/account");
+                        $rootScope.forcedMandature = null;
                         return response;
                     });
                 },

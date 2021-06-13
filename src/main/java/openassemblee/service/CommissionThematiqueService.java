@@ -3,6 +3,7 @@ package openassemblee.service;
 import openassemblee.domain.AppartenanceCommissionThematique;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.FonctionCommissionThematique;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.AdressePostaleRepository;
 import openassemblee.repository.AppartenanceCommissionThematiqueRepository;
 import openassemblee.repository.CommissionThematiqueRepository;
@@ -11,6 +12,7 @@ import openassemblee.repository.search.AdressePostaleSearchRepository;
 import openassemblee.repository.search.CommissionThematiqueSearchRepository;
 import openassemblee.service.dto.*;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,10 +43,18 @@ public class CommissionThematiqueService {
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
     @Inject
     private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
+    @Autowired
+    private SessionMandatureService sessionMandatureService;
 
     @Transactional(readOnly = true)
-    public List<CommissionThematiqueListDTO> getAll() {
-        List<CommissionThematique> list = commissionThematiqueRepository.findAll();
+    public List<CommissionThematique> getAll() {
+        return commissionThematiqueRepository.findByMandature(sessionMandatureService.getMandature());
+    }
+
+    @Transactional(readOnly = true)
+    public List<CommissionThematiqueListDTO> getAllDtos() {
+        List<CommissionThematique> list = commissionThematiqueRepository
+            .findByMandature(sessionMandatureService.getMandature());
         return list.stream().map(gp -> {
             List<AppartenanceCommissionThematique> acts =
                 appartenanceCommissionThematiqueRepository.findAllByCommissionThematique(gp);
@@ -69,7 +79,7 @@ public class CommissionThematiqueService {
             .findAllByCommissionThematique(ct).stream()
             .map(a -> new FonctionCommissionThematiqueDTO(a, a.getElu()))
             .collect(Collectors.toList());
-        if(loadGroupePolitiques) {
+        if (loadGroupePolitiques) {
             actDtos.forEach(a -> {
                 Hibernate.initialize(a.getElu().getAppartenancesGroupePolitique());
             });
@@ -93,9 +103,10 @@ public class CommissionThematiqueService {
     }
 
     @Transactional(readOnly = true)
-    public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses, Boolean removeDemissionaires) {
+    public ExcelExportService.Entry[] getExportEntries(Boolean filterAdresses) {
         List<ExcelExportService.Entry> entries = new ArrayList<>();
-        List<CommissionThematique> cts = commissionThematiqueRepository.findAll();
+        List<CommissionThematique> cts = commissionThematiqueRepository
+            .findByMandature(sessionMandatureService.getMandature());
         List<List<String>> lines = new ArrayList<>();
         for (CommissionThematique ct : cts) {
             List<AppartenanceCommissionThematique> acts =

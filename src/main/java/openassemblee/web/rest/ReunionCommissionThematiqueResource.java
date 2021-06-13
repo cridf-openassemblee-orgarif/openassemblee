@@ -1,17 +1,20 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.Mandature;
 import openassemblee.domain.ReunionCommissionThematique;
 import openassemblee.repository.ReunionCommissionThematiqueRepository;
 import openassemblee.repository.search.ReunionCommissionThematiqueSearchRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.ReunionCommissionThematiqueService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import openassemblee.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,6 +51,9 @@ public class ReunionCommissionThematiqueResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /reunionCommissionThematiques -> Create a new reunionCommissionThematique.
@@ -97,7 +103,8 @@ public class ReunionCommissionThematiqueResource {
     @Timed
     public ResponseEntity<List<ReunionCommissionThematique>> getAllReunionCommissionThematiques(Pageable pageable)
         throws URISyntaxException {
-        Page<ReunionCommissionThematique> page = reunionCommissionThematiqueRepository.findAll(pageable);
+        Page<ReunionCommissionThematique> page = reunionCommissionThematiqueRepository
+            .findByMandature(sessionMandatureService.getMandature(), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reunionCommissionThematiques");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.FonctionExecutive;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.FonctionExecutiveRepository;
 import openassemblee.repository.search.FonctionExecutiveSearchRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class FonctionExecutiveResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /fonctionExecutives -> Create a new fonctionExecutive.
@@ -88,7 +93,7 @@ public class FonctionExecutiveResource {
     @Timed
     public List<FonctionExecutive> getAllFonctionExecutives() {
         log.debug("REST request to get all FonctionExecutives");
-        return fonctionExecutiveRepository.findAll();
+        return fonctionExecutiveRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

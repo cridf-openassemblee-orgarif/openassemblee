@@ -17,14 +17,15 @@
                 >
                 <span ng-if="a.codeRNE">
                     (<span class="lg"
-                        ><span class="grey">Code RNE :</span>
+                        ><span class="grey">Code RNE : </span>
                         {{a.codeRNE}}</span
                     >)
                 </span>
                 <div class="lg">
                     <!--<span class="grey">Depuis le</span> {{a.dateDebut | date:'mediumDate'}}<span class="grey">,-->
                     <!--nomination le</span> {{a.dateNomination}}-->
-                    <span class="grey">Nomination le</span> {{a.dateNomination}}
+                    <span class="grey">Nomination le </span>
+                    {{a.dateNomination}}
                 </div>
             </div>
             <div class="unit-bloc" ng-if="!eluAOrganismes">Aucun organisme</div>

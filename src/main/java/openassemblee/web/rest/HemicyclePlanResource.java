@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.HemicyclePlan;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.HemicyclePlanService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.dto.HemicyclePlanAssociationsDTO;
 import openassemblee.web.rest.dto.HemicyclePlanCreationDTO;
 import openassemblee.web.rest.dto.HemicyclePlanUpdateDTO;
@@ -43,6 +45,9 @@ public class HemicyclePlanResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /hemicyclePlans -> Create a new hemicyclePlan.
@@ -99,7 +104,7 @@ public class HemicyclePlanResource {
     @Timed
     public List<HemicyclePlan> getAllHemicyclePlans() {
         log.debug("REST request to get all HemicyclePlans");
-        return hemicyclePlanRepository.findAll();
+        return hemicyclePlanRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     @RequestMapping(value = "/hemicyclePlans-projets",
@@ -107,7 +112,7 @@ public class HemicyclePlanResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<HemicyclePlan> getAllHemicyclePlansProjets() {
-        return hemicyclePlanRepository.findAll()
+        return hemicyclePlanRepository.findByMandature(sessionMandatureService.getMandature())
             .stream()
             .filter(p -> p.getSeance() == null)
             .collect(Collectors.toList());

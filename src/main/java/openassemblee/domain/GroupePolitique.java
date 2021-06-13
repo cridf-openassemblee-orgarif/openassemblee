@@ -72,6 +72,10 @@ public class GroupePolitique implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private List<FonctionGroupePolitique> fonctionsGroupePolitique = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -202,6 +206,14 @@ public class GroupePolitique implements Serializable {
 
     public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

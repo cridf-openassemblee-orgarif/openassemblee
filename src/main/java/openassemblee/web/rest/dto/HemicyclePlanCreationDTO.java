@@ -1,5 +1,7 @@
 package openassemblee.web.rest.dto;
 
+import openassemblee.domain.Mandature;
+
 import java.io.Serializable;
 
 public class HemicyclePlanCreationDTO implements Serializable {
@@ -9,6 +11,7 @@ public class HemicyclePlanCreationDTO implements Serializable {
     private boolean fromAlphabeticOrder;
     private Long fromSeanceId;
     private Long fromProjetId;
+    private Mandature mandature;
 
     public String getLabel() {
         return label;
@@ -48,5 +51,13 @@ public class HemicyclePlanCreationDTO implements Serializable {
 
     public void setFromProjetId(Long fromProjetId) {
         this.fromProjetId = fromProjetId;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 }

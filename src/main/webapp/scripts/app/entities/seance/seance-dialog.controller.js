@@ -2,6 +2,7 @@
 
 angular.module("openassembleeApp").controller("SeanceDialogController", [
     "$scope",
+    "$rootScope",
     "$stateParams",
     "$modalInstance",
     "entity",
@@ -10,6 +11,7 @@ angular.module("openassembleeApp").controller("SeanceDialogController", [
     "HemicyclePlan",
     function (
         $scope,
+        $rootScope,
         $stateParams,
         $modalInstance,
         entity,
@@ -55,6 +57,7 @@ angular.module("openassembleeApp").controller("SeanceDialogController", [
 
         $scope.save = function () {
             $scope.isSaving = true;
+            $scope.seance.mandature = { id: $rootScope.currentMandature.id };
             if ($scope.seance.id != null) {
                 Seance.update($scope.seance, onSaveSuccess, onSaveError);
             } else {

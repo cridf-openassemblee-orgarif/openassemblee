@@ -42,12 +42,6 @@ angular
                 "scripts/app/components/commissions-thematiques-component.html",
         };
     })
-    .directive("organismes", function () {
-        return {
-            restrict: "E",
-            templateUrl: "scripts/app/components/organismes-component.html",
-        };
-    })
     .directive("autresMandats", function () {
         return {
             restrict: "E",
@@ -168,6 +162,12 @@ angular
                 },
             ],
             templateUrl: "scripts/app/components/signature-seance.html",
+        };
+    })
+    .directive("headerTitle", function () {
+        return {
+            restrict: "E",
+            templateUrl: "scripts/app/components/header-title.html",
         };
     })
     // thanks to https://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html

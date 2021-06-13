@@ -100,7 +100,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf()
             .ignoringAntMatchers("/remote/**")
             .ignoringAntMatchers("/api/publicdata/**")
-            .ignoringAntMatchers("/api/inject/**")
             .ignoringAntMatchers("/healthcheck")
             .ignoringAntMatchers("/websocket/**")
             .and()
@@ -139,8 +138,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset_password/finish").permitAll()
             .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/publicdata/**").permitAll()
-            .antMatchers("/api/inject/**").permitAll()
 
             // pour "publication"
             .antMatchers("/api/elus/**").permitAll()

@@ -2,9 +2,11 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.FonctionCommissionPermanente;
+import openassemblee.domain.Mandature;
 import openassemblee.repository.FonctionCommissionPermanenteRepository;
 import openassemblee.repository.search.FonctionCommissionPermanenteSearchRepository;
 import openassemblee.service.AuditTrailService;
+import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class FonctionCommissionPermanenteResource {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
 
     /**
      * POST  /fonctionCommissionPermanentes -> Create a new fonctionCommissionPermanente.
@@ -88,7 +93,7 @@ public class FonctionCommissionPermanenteResource {
     @Timed
     public List<FonctionCommissionPermanente> getAllFonctionCommissionPermanentes() {
         log.debug("REST request to get all FonctionCommissionPermanentes");
-        return fonctionCommissionPermanenteRepository.findAll();
+        return fonctionCommissionPermanenteRepository.findByMandature(sessionMandatureService.getMandature());
     }
 
     /**

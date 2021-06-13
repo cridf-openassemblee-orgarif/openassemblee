@@ -1,9 +1,6 @@
 package openassemblee.service;
 
-import openassemblee.domain.AppartenanceCommissionPermanente;
-import openassemblee.domain.Elu;
-import openassemblee.domain.FonctionCommissionPermanente;
-import openassemblee.domain.FonctionExecutive;
+import openassemblee.domain.*;
 import openassemblee.repository.AppartenanceCommissionPermanenteRepository;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.FonctionCommissionPermanenteRepository;
@@ -33,19 +30,21 @@ public class CommissionPermanenteService {
     private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
     @Autowired
     private FonctionExecutiveRepository fonctionExecutiveRepository;
-
+    @Autowired
+    private SessionMandatureService sessionMandatureService;
     @Autowired
     private EluService eluService;
 
     @Transactional(readOnly = true)
     public ExecutifDTO getExecutif(Boolean removeDemissionaires) {
-        List<FonctionExecutive> fe = fonctionExecutiveRepository.findAll().stream()
+        Mandature mandature = sessionMandatureService.getMandature();
+        List<FonctionExecutive> fe = fonctionExecutiveRepository.findByMandature(mandature).stream()
             .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
             .filter(f -> !removeDemissionaires || f.getDateFin() == null)
             .sorted(this::sortFonctionExecutives)
             .collect(Collectors.toList());
         Set<Elu> elusFeIds = fe.stream().map(FonctionExecutive::getElu).collect(Collectors.toSet());
-        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findAll().stream()
+        List<FonctionCommissionPermanente> fcp = fonctionCommissionPermanenteRepository.findByMandature(mandature).stream()
             .filter(CommissionPermanenteService::isFonctionCourante)
             .filter(f -> !elusFeIds.contains(f.getElu()))
             .filter(f -> !removeDemissionaires || f.getDateFin() == null)
@@ -60,10 +59,10 @@ public class CommissionPermanenteService {
     }
 
     @Transactional(readOnly = true)
-    public CommissionPermanenteDTO getCommissionPermanente(Boolean removeDemissionaires) {
-        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isAppartenanceCourante)
-            .filter(a -> !removeDemissionaires || a.getDateFin() == null)
+    public CommissionPermanenteDTO getCommissionPermanente() {
+        List<AppartenanceCommissionPermanente> acp = appartenanceCommissionPermanenteRepository
+            .findByMandature(sessionMandatureService.getMandature()).stream()
+            .filter(this::isAppartenanceCourante)
             .sorted(EluNomComparator.comparing(AppartenanceCommissionPermanente::getElu))
             .collect(Collectors.toList());
         Set<Long> elusIds = new HashSet<>();
@@ -75,7 +74,7 @@ public class CommissionPermanenteService {
 
     @Transactional(readOnly = true)
     public List<EluEnFonctionDTO> getFonctionExecutivesCommissionPermanenteDtos(Boolean filterAdresses) {
-        return fonctionExecutiveRepository.findAll().stream()
+        return fonctionExecutiveRepository.findByMandature(sessionMandatureService.getMandature()).stream()
             .filter(CommissionPermanenteService::isFonctionExecutiveCourante)
             .sorted(this::sortFonctionExecutives)
             .map(f -> {
@@ -86,8 +85,9 @@ public class CommissionPermanenteService {
 
     @Transactional(readOnly = true)
     public List<EluEnFonctionDTO> getAppartenancesCommissionPermanenteDtos(Boolean filterAdresses, Boolean removeDemissionaires) {
-        return appartenanceCommissionPermanenteRepository.findAll().stream()
-            .filter(CommissionPermanenteService::isAppartenanceCourante)
+        return appartenanceCommissionPermanenteRepository.findByMandature(sessionMandatureService.getMandature())
+            .stream()
+            .filter(this::isAppartenanceCourante)
             .filter(a -> !removeDemissionaires || a.getDateFin() == null)
             .sorted(EluNomComparator.comparing(AppartenanceCommissionPermanente::getElu))
             .map(a -> {
@@ -181,7 +181,8 @@ public class CommissionPermanenteService {
 
         List<AppartenanceCommissionPermanente> acps = elus.stream()
             .flatMap(e -> e.getAppartenancesCommissionPermanente().stream())
-            .filter(a -> a.getDateFin() == null)
+            .filter(a -> a.getDateFin() == null
+                && a.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
             .collect(Collectors.toList());
         ExcelExportService.Entry[] entries = new ExcelExportService.Entry[]{
             new ExcelExportService.Entry("Membres", getAppartenancesLines(acps)),
@@ -189,7 +190,7 @@ public class CommissionPermanenteService {
         return entries;
     }
 
-    public static boolean isAppartenanceCourante(AppartenanceCommissionPermanente a) {
+    public boolean isAppartenanceCourante(AppartenanceCommissionPermanente a) {
         // plus tard : || a.getDateFin().isAfter(LocalDate.now())
         return a.getDateFin() == null;
     }

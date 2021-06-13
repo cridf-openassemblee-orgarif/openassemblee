@@ -4,12 +4,14 @@ angular
     .module("openassembleeApp")
     .controller("GroupePolitiqueDialogController", [
         "$scope",
+        "$rootScope",
         "$stateParams",
         "$modalInstance",
         "entity",
         "GroupePolitique",
         function (
             $scope,
+            $rootScope,
             $stateParams,
             $modalInstance,
             entity,
@@ -34,6 +36,9 @@ angular
 
             $scope.save = function () {
                 $scope.isSaving = true;
+                $scope.groupePolitique.mandature = {
+                    id: $rootScope.currentMandature.id,
+                };
                 if ($scope.groupePolitique.id != null) {
                     GroupePolitique.update(
                         $scope.groupePolitique,

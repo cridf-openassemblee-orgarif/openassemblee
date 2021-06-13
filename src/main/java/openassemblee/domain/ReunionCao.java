@@ -43,6 +43,10 @@ public class ReunionCao implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -89,6 +93,14 @@ public class ReunionCao implements Serializable {
 
     public void setPresenceElus(Set<PresenceElu> presenceElus) {
         this.presenceElus = presenceElus;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

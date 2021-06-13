@@ -62,6 +62,10 @@ public class HemicyclePlan implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<HemicycleArchive> archives = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "mandature_id")
+    private Mandature mandature;
+
     public Long getId() {
         return id;
     }
@@ -124,6 +128,14 @@ public class HemicyclePlan implements Serializable {
 
     public void setArchives(Set<HemicycleArchive> archives) {
         this.archives = archives;
+    }
+
+    public Mandature getMandature() {
+        return mandature;
+    }
+
+    public void setMandature(Mandature mandature) {
+        this.mandature = mandature;
     }
 
     @Override

@@ -9,23 +9,25 @@
         >
             &times;
         </button>
-        <h4 class="modal-title" id="myMandatLabel">Create or edit a Mandat</h4>
+        <h4 class="modal-title" id="myMandatLabel">Mandat</h4>
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
+        <!--        <div class="form-group">-->
+        <!--            <label for="id">ID</label>-->
+        <!--            <input-->
+        <!--                type="text"-->
+        <!--                class="form-control"-->
+        <!--                id="id"-->
+        <!--                name="id"-->
+        <!--                ng-model="mandat.id"-->
+        <!--                readonly-->
+        <!--            />-->
+        <!--        </div>-->
         <div class="form-group">
-            <label for="id">ID</label>
-            <input
-                type="text"
-                class="form-control"
-                id="id"
-                name="id"
-                ng-model="mandat.id"
-                readonly
-            />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_dateDebut">DateDebut</label>
+            <label class="control-label" for="field_dateDebut"
+                >Date de début</label
+            >
             <input
                 type="date"
                 class="form-control"
@@ -36,7 +38,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_codeDepartement"
-                >CodeDepartement</label
+                >Code département</label
             >
             <input
                 type="text"
@@ -48,7 +50,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_departement"
-                >Departement</label
+                >Département</label
             >
             <input
                 type="text"
@@ -60,7 +62,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_dateDemission"
-                >DateDemission</label
+                >Date de démission</label
             >
             <input
                 type="date"
@@ -72,7 +74,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_motifDemission"
-                >MotifDemission</label
+                >Motif de démission</label
             >
             <input
                 type="text"
@@ -82,42 +84,61 @@
                 ng-model="mandat.motifDemission"
             />
         </div>
-
+        <!--        <div class="form-group">-->
+        <!--            <label for="field_elu">elu</label>-->
+        <!--            <select-->
+        <!--                class="form-control"-->
+        <!--                id="field_elu"-->
+        <!--                name="elu"-->
+        <!--                ng-model="mandat.elu"-->
+        <!--                ng-options="elu as elu.id for elu in elus track by elu.id"-->
+        <!--            >-->
+        <!--                <option value=""></option>-->
+        <!--            </select>-->
+        <!--        </div>-->
+        <!--        <div class="form-group">-->
+        <!--            <label for="field_mandature">mandature</label>-->
+        <!--            <select-->
+        <!--                class="form-control"-->
+        <!--                id="field_mandature"-->
+        <!--                name="mandature"-->
+        <!--                ng-model="mandat.mandature"-->
+        <!--                ng-options="mandature as mandature.id for mandature in mandatures track by mandature.id"-->
+        <!--            >-->
+        <!--                <option value=""></option>-->
+        <!--            </select>-->
+        <!--        </div>-->
         <div class="form-group">
-            <label for="field_elu">elu</label>
-            <select
-                class="form-control"
-                id="field_elu"
-                name="elu"
-                ng-model="mandat.elu"
-                ng-options="elu as elu.id for elu in elus track by elu.id"
-            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="field_mandature">mandature</label>
-            <select
-                class="form-control"
-                id="field_mandature"
-                name="mandature"
-                ng-model="mandat.mandature"
-                ng-options="mandature as mandature.id for mandature in mandatures track by mandature.id"
-            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="field_listeElectorale">listeElectorale</label>
+            <label for="field_listeElectorale">Liste électorale</label>
             <select
                 class="form-control"
                 id="field_listeElectorale"
                 name="listeElectorale"
                 ng-model="mandat.listeElectorale"
-                ng-options="listeElectorale as listeElectorale.id for listeElectorale in listeelectorales track by listeElectorale.id"
+                ng-options="listeElectorale as listeElectorale.nom for listeElectorale in listeelectorales track by listeElectorale.id"
             >
                 <option value=""></option>
             </select>
+        </div>
+        <div
+            class="form-group"
+            ng-if="mandat.dateDemission || mandat.motifDemission"
+        >
+            <input
+                type="checkbox"
+                name="demissionDiffusion"
+                id="field_demissionDiffusion"
+                ng-model="dto.demissionDiffusion"
+            />
+            <label class="control-label" for="field_demissionDiffusion"
+                >Appliquer la démission aux autres fonctions :</label
+            >
+            <ul>
+                <li>appartenance et fonction à la commission permanente</li>
+                <li>fonction exécutive</li>
+                <li>appartenance et fonction au groupe politique</li>
+                <li>appartenances et fonctions aux commissions thématiques</li>
+            </ul>
         </div>
     </div>
     <div class="modal-footer">
@@ -128,7 +149,7 @@
             ng-click="clear()"
         >
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
-                >Cancel</span
+                >Annuler</span
             >
         </button>
         <button
@@ -137,7 +158,7 @@
             class="btn btn-primary"
         >
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span
-                >Save</span
+                >Enregistrer</span
             >
         </button>
     </div>
