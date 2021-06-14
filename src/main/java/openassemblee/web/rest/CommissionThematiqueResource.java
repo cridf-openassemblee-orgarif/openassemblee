@@ -190,6 +190,8 @@ public class CommissionThematiqueResource {
         Map<Long, List<EluEnFonctionDTO>> fonctionByCt = cts.stream()
             .map(ct -> {
                 List<EluEnFonctionDTO> dtos = fs.stream()
+                    // should not happen but happens
+                    .filter(f -> f.getCommissionThematique() != null)
                     .filter(f -> f.getCommissionThematique().getId().equals(ct.getId()))
                     .filter(f -> f.getDateFin() == null)
                     .map(f -> {
