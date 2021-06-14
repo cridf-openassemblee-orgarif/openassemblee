@@ -1,5 +1,6 @@
 package openassemblee.service;
 
+import openassemblee.domain.Mandature;
 import openassemblee.repository.*;
 import openassemblee.repository.search.*;
 import openassemblee.web.rest.dto.SearchResultDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static openassemblee.service.EluService.isCurrentMandat;
 import static openassemblee.web.rest.dto.SearchResultDTO.ResultType.*;
 
 @Service
@@ -51,9 +53,7 @@ public class SearchService {
     protected FonctionExecutiveSearchRepository fonctionExecutiveSearchRepository;
 
     @Inject
-    protected AuditTrailRepository auditTrailRepository;
-    @Inject
-    protected AuditTrailSearchRepository auditTrailSearchRepository;
+    protected SessionMandatureService sessionMandatureService;
 
     public void resetIndex() {
         logger.debug("Reset search index");
@@ -71,29 +71,36 @@ public class SearchService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<SearchResultDTO> search(String searchToken) {
         // non ! je n'ai pas trouvé comment ajouter un filter pour les accents au moment de l'indexation...
         // QueryStringQueryBuilder qb = new QueryStringQueryBuilder(StringUtils.stripAccents(searchToken) + "*");
+        Mandature mandature = sessionMandatureService.getMandature();
         QueryStringQueryBuilder qb = new QueryStringQueryBuilder(searchToken + "*");
         List<SearchResultDTO> results = new ArrayList<>();
         results.addAll(StreamSupport
             .stream(eluSearchRepository.search(qb).spliterator(), false)
+            // eluRepository.getOne car elu retourné par searchRepo ne branche pas les mandats
+            .filter(e -> isCurrentMandat(eluRepository.getOne(e.getId()).getMandats(), mandature))
             .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
             .collect(Collectors.toList()));
         if (results.size() < 20) {
             results.addAll(StreamSupport
                 .stream(groupePolitiqueSearchRepository.search(qb).spliterator(), false)
+                .filter(gp -> gp.getMandature().getId().equals(mandature.getId()))
                 .map(e -> new SearchResultDTO(GROUPE_POLITIQUE, e.getId(), e.getNom(), e.getImage()))
                 .collect(Collectors.toList()));
             if (results.size() < 20) {
                 results.addAll(StreamSupport
                     .stream(commissionThematiqueSearchRepository.search(qb).spliterator(), false)
+                    .filter(ct -> ct.getMandature().getId().equals(mandature.getId()))
                     .map(e -> new SearchResultDTO(COMMISSION_THEMATIQUE, e.getId(), e.getNom(), null))
                     .collect(Collectors.toList()));
                 if (results.size() < 20) {
                     results.addAll(StreamSupport
                         .stream(fonctionExecutiveSearchRepository.search(qb).spliterator(), false)
                         .map(f -> eluRepository.getOne(f.getElu().getId()))
+                        .filter(e -> isCurrentMandat(e.getMandats(), mandature))
                         .map(e -> new SearchResultDTO(ELU, e.getId(), e.civiliteComplete(), e.getImage()))
                         .collect(Collectors.toList()));
                 }
