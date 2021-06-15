@@ -1,7 +1,7 @@
 "use strict";
 
 var csvHeader =
-    "civilité;nom;prénom;date de naissance;liste électorale;liste électorale court;département;code département\n";
+    "civilité;nom;prénom;date de naissance;liste candidats;liste candidats court;département;code département\n";
 
 angular
     .module("openassembleeApp")
