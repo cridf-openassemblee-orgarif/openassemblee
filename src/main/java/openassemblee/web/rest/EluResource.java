@@ -4,6 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import com.itextpdf.text.DocumentException;
 import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
+import openassemblee.repository.MandatRepository;
+import openassemblee.repository.MandatureRepository;
 import openassemblee.repository.search.EluSearchRepository;
 import openassemblee.service.*;
 import openassemblee.service.dto.EluDTO;
@@ -68,6 +70,12 @@ public class EluResource {
     @Inject
     private ShortUidService shortUidService;
 
+    @Inject
+    private MandatRepository mandatRepository;
+
+    @Inject
+    private SessionMandatureService sessionMandatureService;
+
     /**
      * POST  /elus -> Create a new elu.
      */
@@ -85,6 +93,10 @@ public class EluResource {
         elu.setUid(uid.getUid());
         elu.setShortUid(uid.getShortUid());
         Elu result = eluRepository.save(elu);
+        Mandat mandat = new Mandat();
+        mandat.setMandature(sessionMandatureService.getMandature());
+        mandat.setElu(result);
+        mandatRepository.save(mandat);
         eluSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/elus/" + elu.getId()))
