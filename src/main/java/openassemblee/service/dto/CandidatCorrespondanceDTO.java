@@ -8,16 +8,16 @@ public class CandidatCorrespondanceDTO {
 
     private CandidatDTO candidatDTO;
     private Elu elu;
-    private Boolean tropDeCorrespondance;
+    private Boolean tropDeCorrespondances;
     private List<String> errors;
 
     public CandidatCorrespondanceDTO() {
     }
 
-    public CandidatCorrespondanceDTO(CandidatDTO candidatDTO, Elu elu, Boolean tropDeCorrespondance, List<String> errors) {
+    public CandidatCorrespondanceDTO(CandidatDTO candidatDTO, Elu elu, Boolean tropDeCorrespondances, List<String> errors) {
         this.candidatDTO = candidatDTO;
         this.elu = elu;
-        this.tropDeCorrespondance = tropDeCorrespondance;
+        this.tropDeCorrespondances = tropDeCorrespondances;
         this.errors = errors;
     }
 
@@ -29,8 +29,8 @@ public class CandidatCorrespondanceDTO {
         return elu;
     }
 
-    public Boolean getTropDeCorrespondance() {
-        return tropDeCorrespondance;
+    public Boolean getTropDeCorrespondances() {
+        return tropDeCorrespondances;
     }
 
     public List<String> getErrors() {
