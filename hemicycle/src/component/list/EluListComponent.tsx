@@ -157,7 +157,9 @@ export default class EluListComponent extends React.Component<Props, State> {
                                 associationByEluId={
                                     this.props.associationByEluId
                                 }
-                                displayAssociations={this.state.displayAssociations}
+                                displayAssociations={
+                                    this.state.displayAssociations
+                                }
                                 selectedEluId={this.props.selectedEluId}
                                 updateSelectedEluId={
                                     this.props.updateSelectedEluId
@@ -185,7 +187,9 @@ export default class EluListComponent extends React.Component<Props, State> {
                                 associationByEluId={
                                     this.props.associationByEluId
                                 }
-                                displayAssociations={this.state.displayAssociations}
+                                displayAssociations={
+                                    this.state.displayAssociations
+                                }
                                 selectedEluId={this.props.selectedEluId}
                                 updateSelectedEluId={
                                     this.props.updateSelectedEluId
@@ -205,7 +209,9 @@ export default class EluListComponent extends React.Component<Props, State> {
                         removeAssociation={this.props.removeAssociation}
                         deleteMode={this.props.deleteMode}
                         displayAssociations={this.state.displayAssociations}
-                        displayDemissionnaires={this.state.displayDemissionnaires}
+                        displayDemissionnaires={
+                            this.state.displayDemissionnaires
+                        }
                     />
                 )}
             </div>
