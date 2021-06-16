@@ -92,16 +92,6 @@ public class RemoteApiResource {
     @Autowired
     private HemicyclePlanRepository hemicyclePlanRepository;
 
-//    @PostConstruct
-//    public void init() {
-//        System.out.println("--------");
-//        eluRepository.findAll().stream().map(e -> e.getListeCourt() + " <=> " + e.getListeElectorale()).distinct()
-//            .sorted()
-//            .collect(Collectors.toList())
-//            .forEach(l -> System.out.println(l));
-//        System.out.println("--------");
-//    }
-
     private boolean migrationOk = false;
 
     @RequestMapping(value = "/migrate-mandature", method = RequestMethod.GET)
@@ -114,13 +104,6 @@ public class RemoteApiResource {
         }
 
         migrationOk = true;
-
-//        insert into mandature (id, annee, date_debut, current) values (1, 2015, '2015-04-15', true);
-//        update appartenance_commission_permanente set mandature_id = 1;
-//        update commission_thematique set mandature_id = 1;
-//        update fonction_executive set mandature_id = 1;
-//        update fonction_commission_permanente set mandature_id = 1;
-//        update groupe_politique set mandature_id = 1;
 
         Mandature mandatureDraft = new Mandature();
         mandatureDraft.setAnneeDebut(2015);

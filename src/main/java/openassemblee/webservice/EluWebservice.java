@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static openassemblee.service.EluService.getOnlyCurrentMandat;
+import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v2")
@@ -68,7 +69,6 @@ public class EluWebservice {
                     "sans groupe";
                 String groupePolitiqueCourt = it.getGroupePolitique() != null ? it.getGroupePolitique().getNomCourt() :
                     "-";
-                Mandat mandat = getOnlyCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature());
                 return new PublicElu(
                     it.getElu().getShortUid().toString(),
                     it.getElu().getUid(),
@@ -78,8 +78,7 @@ public class EluWebservice {
                     groupePolitique,
                     groupePolitiqueCourt,
                     "/images/" + it.getElu().getImage(),
-                    // FIXME ?
-                    mandat != null && mandat.getDateDemission() == null);
+                    isCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature()));
             })
             .collect(Collectors.toList());
         return new Data(elus);
