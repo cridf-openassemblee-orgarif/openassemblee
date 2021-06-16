@@ -6,11 +6,14 @@
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini" ng-if="!forcedMandature"><b>S</b></span>
     <span class="logo-mini" ng-if="forcedMandature"
-        ><b>{{currentMandature.annee}}</b></span
+        ><b>{{currentMandature.anneeDebut}}</b></span
     >
     <!-- logo for regular state and mobile devices -->
     <span class="logo-lg" ng-if="!forcedMandature"><b>SIGER</b></span>
-    <span class="logo-lg" ng-if="forcedMandature"
-        ><b>Mandature {{currentMandature.anneeDebut}}</b></span
+    <span class="logo-lg" ng-if="forcedMandature" style="font-size: 18px"
+        ><b
+            >Mandature
+            {{currentMandature.anneeDebut}}-{{currentMandature.anneeFin}}</b
+        ></span
     >
 </a>
