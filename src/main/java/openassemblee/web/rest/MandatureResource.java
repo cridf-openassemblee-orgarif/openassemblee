@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,7 @@ public class MandatureResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Mandature> createMandature(@RequestBody Mandature mandature) throws URISyntaxException {
         log.debug("REST request to save Mandature : {}", mandature);
         if (mandature.getId() != null) {
@@ -74,6 +76,7 @@ public class MandatureResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Mandature> updateMandature(@RequestBody Mandature mandature) throws URISyntaxException {
         log.debug("REST request to update Mandature : {}", mandature);
         if (mandature.getId() == null) {
@@ -122,6 +125,7 @@ public class MandatureResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> deleteMandature(@PathVariable Long id) {
         log.debug("REST request to delete Mandature : {}", id);
         mandatureRepository.delete(id);
@@ -149,6 +153,7 @@ public class MandatureResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> setCurrent(@PathVariable Long id) {
         Mandature oldMandature = mandatureRepository.findOneByCurrent(true);
         // for first time, if the app is re-used
@@ -168,6 +173,7 @@ public class MandatureResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> setCurrentForSession(@PathVariable Long id) {
         sessionMandatureService.setMandature(mandatureRepository.findOne(id));
         return ResponseEntity.ok().build();

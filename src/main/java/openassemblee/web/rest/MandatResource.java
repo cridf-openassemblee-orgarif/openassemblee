@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public class MandatResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Mandat> createMandat(@RequestBody MandatEditionDTO dto) throws URISyntaxException {
         log.debug("REST request to save Mandat : {}", dto);
         if (dto.getMandat().getId() != null) {
@@ -73,6 +75,7 @@ public class MandatResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Mandat> updateMandat(@RequestBody MandatEditionDTO dto) throws URISyntaxException {
         log.debug("REST request to update Mandat : {}", dto);
         if (dto.getMandat().getId() == null) {
@@ -120,6 +123,7 @@ public class MandatResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteMandat(@PathVariable Long id) {
         log.debug("REST request to delete Mandat : {}", id);
         mandatRepository.delete(id);

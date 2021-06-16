@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ public class AjouterElusMandatureResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> create(
         @PathVariable Long id,
         @Valid @RequestBody List<CandidatCorrespondanceDTO> candidats) throws URISyntaxException {

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -48,6 +49,7 @@ public class ListeElectoraleResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<ListeElectorale> createListeElectorale(@RequestBody ListeElectorale listeElectorale) throws URISyntaxException {
         log.debug("REST request to save ListeElectorale : {}", listeElectorale);
         if (listeElectorale.getId() != null) {
@@ -67,6 +69,7 @@ public class ListeElectoraleResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<ListeElectorale> updateListeElectorale(@RequestBody ListeElectorale listeElectorale) throws URISyntaxException {
         log.debug("REST request to update ListeElectorale : {}", listeElectorale);
         if (listeElectorale.getId() == null) {
@@ -114,6 +117,7 @@ public class ListeElectoraleResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteListeElectorale(@PathVariable Long id) {
         log.debug("REST request to delete ListeElectorale : {}", id);
         listeElectoraleRepository.delete(id);
