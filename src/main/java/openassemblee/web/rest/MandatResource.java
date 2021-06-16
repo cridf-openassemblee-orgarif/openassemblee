@@ -1,9 +1,11 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.FonctionCommissionPermanente;
 import openassemblee.domain.Mandat;
 import openassemblee.repository.MandatRepository;
 import openassemblee.repository.search.MandatSearchRepository;
+import openassemblee.service.AuditTrailService;
 import openassemblee.service.MandatService;
 import openassemblee.service.dto.MandatEditionDTO;
 import openassemblee.web.rest.util.HeaderUtil;
@@ -42,6 +44,9 @@ public class MandatResource {
     @Inject
     private MandatService mandatService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /mandats -> Create a new mandat.
      */
@@ -55,6 +60,7 @@ public class MandatResource {
             return ResponseEntity.badRequest().header("Failure", "A new mandat cannot already have an ID").body(null);
         }
         Mandat result = mandatService.save(dto);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/mandats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("mandat", result.getId().toString()))
             .body(result);
@@ -73,6 +79,7 @@ public class MandatResource {
             throw new IllegalArgumentException(dto.getMandat().getId().toString());
         }
         Mandat result = mandatService.save(dto);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("mandat", result.getId().toString()))
             .body(result);
@@ -117,6 +124,7 @@ public class MandatResource {
         log.debug("REST request to delete Mandat : {}", id);
         mandatRepository.delete(id);
         mandatSearchRepository.delete(id);
+        auditTrailService.logDeletion(Mandat.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("mandat", id.toString())).build();
     }
 

@@ -1,9 +1,11 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.FonctionCommissionPermanente;
 import openassemblee.domain.Mandature;
 import openassemblee.repository.MandatureRepository;
 import openassemblee.repository.search.MandatureSearchRepository;
+import openassemblee.service.AuditTrailService;
 import openassemblee.service.SessionMandatureService;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class MandatureResource {
     @Inject
     private SessionMandatureService sessionMandatureService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     /**
      * POST  /mandatures -> Create a new mandature.
      */
@@ -56,6 +61,7 @@ public class MandatureResource {
         }
         Mandature result = mandatureRepository.save(mandature);
         mandatureSearchRepository.save(result);
+        auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/mandatures/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("mandature", result.getId().toString()))
             .body(result);
@@ -75,6 +81,7 @@ public class MandatureResource {
         }
         Mandature result = mandatureRepository.save(mandature);
         mandatureSearchRepository.save(mandature);
+        auditTrailService.logUpdate(result, result.getId());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("mandature", mandature.getId().toString()))
             .body(result);
@@ -119,6 +126,7 @@ public class MandatureResource {
         log.debug("REST request to delete Mandature : {}", id);
         mandatureRepository.delete(id);
         mandatureSearchRepository.delete(id);
+        auditTrailService.logDeletion(Mandature.class, id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("mandature", id.toString())).build();
     }
 
@@ -151,6 +159,7 @@ public class MandatureResource {
         Mandature newMandature = mandatureRepository.getOne(id);
         newMandature.setCurrent(true);
         mandatureRepository.save(newMandature);
+        auditTrailService.logUpdate(newMandature, newMandature.getId());
         return ResponseEntity.ok().build();
     }
 

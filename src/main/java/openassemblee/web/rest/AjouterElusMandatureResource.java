@@ -1,7 +1,9 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import openassemblee.domain.Mandature;
 import openassemblee.service.AjouterElusMandatureService;
+import openassemblee.service.AuditTrailService;
 import openassemblee.service.dto.CandidatCorrespondanceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ public class AjouterElusMandatureResource {
     @Inject
     private AjouterElusMandatureService ajouterElusMandatureService;
 
+    @Inject
+    private AuditTrailService auditTrailService;
+
     @RequestMapping(value = "/ajouter-elus-mandature/prepareImport",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,6 +44,7 @@ public class AjouterElusMandatureResource {
     public ResponseEntity<Void> create(
         @PathVariable Long id,
         @Valid @RequestBody List<CandidatCorrespondanceDTO> candidats) throws URISyntaxException {
+        auditTrailService.logUpdate(candidats.toArray(), id);
         ajouterElusMandatureService.ajouterElus(id, candidats);
         return ResponseEntity.ok().build();
     }

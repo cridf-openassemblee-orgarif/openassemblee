@@ -97,6 +97,7 @@ public class EluResource {
         mandat.setElu(result);
         mandatRepository.save(mandat);
         eluSearchRepository.save(result);
+        // no log for mandat...
         auditTrailService.logCreation(result, result.getId());
         return ResponseEntity.created(new URI("/api/elus/" + elu.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("elu", elu.getId().toString()))
