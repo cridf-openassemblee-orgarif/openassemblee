@@ -125,5 +125,38 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                         );
                 },
             ],
+        })
+        .state("user-management.edit-password", {
+            parent: "user-management",
+            url: "/{id}/edit-password",
+            data: {
+                authorities: ["ROLE_ADMIN"],
+            },
+            onEnter: [
+                "$stateParams",
+                "$state",
+                "$modal",
+                function ($stateParams, $state, $modal) {
+                    $modal
+                        .open({
+                            templateUrl:
+                                "scripts/app/admin/user-management/user-management-edit-password.html",
+                            controller: "UserManagementEditPasswordController",
+                            size: "lg",
+                            resolve: {
+                            },
+                        })
+                        .result.then(
+                        function (result) {
+                            $state.go("user-management", null, {
+                                reload: true,
+                            });
+                        },
+                        function () {
+                            $state.go("^");
+                        }
+                    );
+                },
+            ],
         });
 });

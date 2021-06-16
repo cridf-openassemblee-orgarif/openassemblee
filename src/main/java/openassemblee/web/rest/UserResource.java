@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +76,9 @@ public class UserResource {
 
     @Inject
     private UserSearchRepository userSearchRepository;
+
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
     /**
      * POST  /users -> Create a new user.
@@ -136,6 +140,20 @@ public class UserResource {
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             });
+    }
+
+    @RequestMapping(value = "/users/{id}/change-password",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Secured("ROLE_ADMIN")
+    @Transactional
+    public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                               @RequestBody String newPassword) throws URISyntaxException {
+        User user = userRepository.getOne(id);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return ResponseEntity.ok().build();
     }
 
     /**

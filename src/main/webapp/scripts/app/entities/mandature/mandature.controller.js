@@ -19,7 +19,6 @@ angular
             $scope.loadAll = function () {
                 Mandature.query(function (result) {
                     $scope.mandatures = result;
-                    console.log(result);
                     $scope.mandatureCouranteForAll = result.filter(function (
                         m
                     ) {
