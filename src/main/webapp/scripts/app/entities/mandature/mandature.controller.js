@@ -15,9 +15,16 @@ angular
             Principal
         ) {
             $scope.mandatures = [];
+            $scope.mandatureCouranteForAll = {};
             $scope.loadAll = function () {
                 Mandature.query(function (result) {
                     $scope.mandatures = result;
+                    console.log(result);
+                    $scope.mandatureCouranteForAll = result.filter(function (
+                        m
+                    ) {
+                        return m.current;
+                    })[0];
                 });
             };
             $scope.loadAll();

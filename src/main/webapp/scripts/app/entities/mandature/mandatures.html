@@ -13,6 +13,17 @@
         </div>
     </div>
     <div class="container">
+        <div style="font-weight: bold">
+            La mandature courante pour l'ensemble des utilisateurs est la
+            mandature
+            {{mandatureCouranteForAll.anneeDebut}}-{{mandatureCouranteForAll.anneeFin}}.
+        </div>
+        <div ng-if="forcedMandature" style="color: #d9534f; font-weight: bold">
+            Vous visualisez et éditez actuellement la mandature
+            {{currentMandature.anneeDebut}}-{{currentMandature.anneeFin}} qui
+            n'est pas la mandature courante.
+        </div>
+        <br />
         <div class="table-responsive info-box table-info-box">
             <table class="table table-striped">
                 <thead>
@@ -71,11 +82,11 @@
                                 ></span>
                                 <span
                                     ng-if="mandature.id != currentMandature.id"
-                                    >Voir cette mandature</span
+                                    >Voir et éditer cette mandature</span
                                 >
                                 <span
                                     ng-if="mandature.id == currentMandature.id"
-                                    >Mandature visualisée</span
+                                    >Mandature vue et en édition</span
                                 >
                             </button>
                             <button
