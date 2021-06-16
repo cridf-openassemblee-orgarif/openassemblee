@@ -12,18 +12,6 @@ import java.util.List;
  */
 public interface HemicyclePlanRepository extends JpaRepository<HemicyclePlan,Long> {
 
-    @Deprecated
-    @Override
-    List<HemicyclePlan> findAll();
-
-    @Deprecated
-    @Override
-    List<HemicyclePlan> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<HemicyclePlan> findAll(Iterable<Long> var1);
-
     List<HemicyclePlan> findByMandature(Mandature mandature);
 
     HemicyclePlan findOneBySeance(Seance seance);

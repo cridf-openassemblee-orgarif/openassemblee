@@ -14,18 +14,6 @@ import java.util.List;
  */
 public interface GroupePolitiqueRepository extends JpaRepository<GroupePolitique, Long> {
 
-    @Deprecated
-    @Override
-    List<GroupePolitique> findAll();
-
-    @Deprecated
-    @Override
-    List<GroupePolitique> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<GroupePolitique> findAll(Iterable<Long> var1);
-
     List<GroupePolitique> findByMandature(Mandature mandature);
 
 }

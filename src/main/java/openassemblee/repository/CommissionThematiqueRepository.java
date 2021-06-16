@@ -15,18 +15,6 @@ import java.util.List;
  */
 public interface CommissionThematiqueRepository extends JpaRepository<CommissionThematique,Long> {
 
-    @Deprecated
-    @Override
-    List<CommissionThematique> findAll();
-
-    @Deprecated
-    @Override
-    List<CommissionThematique> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<CommissionThematique> findAll(Iterable<Long> var1);
-
     List<CommissionThematique> findByMandature(Mandature mandature);
 
 }

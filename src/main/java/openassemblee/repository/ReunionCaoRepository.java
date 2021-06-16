@@ -16,18 +16,6 @@ import java.util.List;
  */
 public interface ReunionCaoRepository extends JpaRepository<ReunionCao,Long> {
 
-    @Deprecated
-    @Override
-    List<ReunionCao> findAll();
-
-    @Deprecated
-    @Override
-    List<ReunionCao> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<ReunionCao> findAll(Iterable<Long> var1);
-
     Page<ReunionCao> findByMandature(Mandature mandature, Pageable var1);
 
 }

@@ -16,18 +16,6 @@ import java.util.List;
  */
 public interface AppartenanceCommissionPermanenteRepository extends JpaRepository<AppartenanceCommissionPermanente,Long> {
 
-    @Deprecated
-    @Override
-    List<AppartenanceCommissionPermanente> findAll();
-
-    @Deprecated
-    @Override
-    List<AppartenanceCommissionPermanente> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<AppartenanceCommissionPermanente> findAll(Iterable<Long> var1);
-
     List<AppartenanceCommissionPermanente> findByMandature(Mandature mandature);
 
 }

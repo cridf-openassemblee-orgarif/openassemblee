@@ -14,18 +14,6 @@ import java.util.List;
  */
 public interface FonctionExecutiveRepository extends JpaRepository<FonctionExecutive,Long> {
 
-    @Deprecated
-    @Override
-    List<FonctionExecutive> findAll();
-
-    @Deprecated
-    @Override
-    List<FonctionExecutive> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<FonctionExecutive> findAll(Iterable<Long> var1);
-
     List<FonctionExecutive> findByMandature(Mandature mandature);
 
 }

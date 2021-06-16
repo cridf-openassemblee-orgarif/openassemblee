@@ -17,18 +17,6 @@ import java.util.List;
  */
 public interface SeanceRepository extends JpaRepository<Seance,Long> {
 
-    @Deprecated
-    @Override
-    List<Seance> findAll();
-
-    @Deprecated
-    @Override
-    List<Seance> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<Seance> findAll(Iterable<Long> var1);
-
     Page<Seance> findByMandature(Mandature mandature, Pageable var1);
 
 }

@@ -14,18 +14,6 @@ import java.util.List;
  */
 public interface AutreMandatRepository extends JpaRepository<AutreMandat,Long> {
 
-    @Deprecated
-    @Override
-    List<AutreMandat> findAll();
-
-    @Deprecated
-    @Override
-    List<AutreMandat> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<AutreMandat> findAll(Iterable<Long> var1);
-
     List<AutreMandat> findByMandature(Mandature mandature);
 
 }

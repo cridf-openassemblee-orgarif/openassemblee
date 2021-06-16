@@ -51,7 +51,7 @@ public class ReunionCommissionThematique implements Serializable {
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
     // [doc] plus simple pour requeter de persister la mandature ici aussi
-    // meme si la même que celle de la CT...
+    // meme si c'est la même que celle de la CT...
     @ManyToOne
     @JoinColumn(name = "mandature_id")
     private Mandature mandature;

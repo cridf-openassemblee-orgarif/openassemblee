@@ -17,18 +17,6 @@ import java.util.List;
  */
 public interface ReunionCommissionThematiqueRepository extends JpaRepository<ReunionCommissionThematique,Long> {
 
-    @Deprecated
-    @Override
-    List<ReunionCommissionThematique> findAll();
-
-    @Deprecated
-    @Override
-    List<ReunionCommissionThematique> findAll(Sort var1);
-
-    @Deprecated
-    @Override
-    List<ReunionCommissionThematique> findAll(Iterable<Long> var1);
-
     Page<ReunionCommissionThematique> findByMandature(Mandature mandature, Pageable var1);
 
 }
