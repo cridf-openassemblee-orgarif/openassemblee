@@ -2,14 +2,14 @@ package openassemblee.config.data;
 
 public class TestDataLists {
 
-    public static String[] VILLES = new String[] {
+    public static String[] VILLES = new String[]{
         "Paris", "Grenoble", "Toulouse", "Nantes", "Brest", "Nancy", "Lille", "Aix-en-Provence", "Thonon-les-bains",
-        "Marcq-en-Baroeul", "Marseille", "Lyon" };
+        "Marcq-en-Baroeul", "Marseille", "Lyon"};
 
-    public static String[] PHOTOS = new String[] { "ANDROUET_Mathilde-BD.jpg", "BARJOU_Dominique-BD.jpg",
-        "REDA_Robin-BD.jpg" };
+    public static String[] PHOTOS = new String[]{"ANDROUET_Mathilde-BD.jpg", "BARJOU_Dominique-BD.jpg",
+        "REDA_Robin-BD.jpg"};
 
-    public static String[] PROFESSIONS = new String[] { "Abbé", "Accessoiriste", "Accompagnateur de voyage",
+    public static String[] PROFESSIONS = new String[]{"Abbé", "Accessoiriste", "Accompagnateur de voyage",
         "Accordeur",
         "Accordeur réparateur d'instruments", "Accoucheur", "Accouveur", "Acheteur", "Acheteur Informatique et " +
         "Télécom", "Acheteur d'espaces publicitaires", "Acousticien", "Acteur", "Actuaire", "Acupuncteur", "Adjoint " +
@@ -248,6 +248,6 @@ public class TestDataLists {
         "Tôlier carrossier", "Urbaniste", "VRP", "Valet de chambre", "Veilleur stratégique", "Vendeur", "Vendeur " +
         "magasinier", "Verrier", "Videur", "Vigneron", "Visiteur médical", "Viticulteur", "Vitrailliste", "Vitrier",
         "Voiturier", "Vétérinaire", "Web designer", "Web planneur", "Webmarketeur", "Webmaster", "Webplanner",
-        "Zoologiste" };
+        "Zoologiste"};
 
 }

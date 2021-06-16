@@ -52,7 +52,7 @@ public class HemicycleArchiveService {
 
     public HemicycleArchiveDataWithConfigurationDTO get(Long id) {
         HemicycleArchive ha = hemicycleArchiveRepository.findOne(id);
-        HemicycleArchiveDataDTO data ;
+        HemicycleArchiveDataDTO data;
         try {
             data = objectMapper.readValue(ha.getJsonArchive(), HemicycleArchiveDataDTO.class);
         } catch (IOException e) {

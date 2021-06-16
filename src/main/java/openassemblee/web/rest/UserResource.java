@@ -91,8 +91,8 @@ public class UserResource {
         }
         User result = userRepository.save(user);
         return ResponseEntity.created(new URI("/api/users/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("user", result.getId().toString()))
-                .body(result);
+            .headers(HeaderUtil.createEntityCreationAlert("user", result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -179,7 +179,7 @@ public class UserResource {
                     return new ResponseEntity<>(managedUserDTO, HttpStatus.OK);
                 }
             })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**

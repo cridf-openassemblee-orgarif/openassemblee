@@ -27,7 +27,8 @@ public class HemicyclePlan implements Serializable {
         public List<HemicycleAssociationDTO> associations;
 
         // for serialization
-        public JsonPlan() {}
+        public JsonPlan() {
+        }
 
         public JsonPlan(List<HemicycleAssociationDTO> associations) {
             this.associations = associations;

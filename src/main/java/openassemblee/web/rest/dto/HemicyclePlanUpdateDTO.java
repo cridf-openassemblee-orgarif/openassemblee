@@ -6,7 +6,7 @@ import java.util.List;
 public class HemicyclePlanUpdateDTO implements Serializable {
 
     private Long id;
-    private List<HemicycleAssociationDTO> associations ;
+    private List<HemicycleAssociationDTO> associations;
 
     public HemicyclePlanUpdateDTO() {
     }

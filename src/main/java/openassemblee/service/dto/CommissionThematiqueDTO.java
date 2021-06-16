@@ -11,8 +11,8 @@ public class CommissionThematiqueDTO {
     private List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs;
 
     public CommissionThematiqueDTO(CommissionThematique commissionThematique,
-        List<AppartenanceCommissionThematiqueDTO> appartenanceCommissionThematiqueDTOs,
-        List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs) {
+                                   List<AppartenanceCommissionThematiqueDTO> appartenanceCommissionThematiqueDTOs,
+                                   List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs) {
         this.commissionThematique = commissionThematique;
         this.appartenanceCommissionThematiqueDTOs = appartenanceCommissionThematiqueDTOs;
         this.fonctionCommissionThematiqueDTOs = fonctionCommissionThematiqueDTOs;

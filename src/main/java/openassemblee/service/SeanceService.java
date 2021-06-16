@@ -81,7 +81,7 @@ public class SeanceService {
         List<GroupePolitique> groupePolitiques = groupePolitiqueRepository
             .findByMandature(sessionMandatureService.getMandature());
         HemicyclePlan hp = hemicyclePlanRepository.findOneBySeance(seance);
-        if(hp != null) {
+        if (hp != null) {
             Hibernate.initialize(hp.getArchives());
         }
         return new SeanceDTO(seance, pouvoirs, groupePolitiques, hp);

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the AutreMandat entity.
  */
-public interface AutreMandatRepository extends JpaRepository<AutreMandat,Long> {
+public interface AutreMandatRepository extends JpaRepository<AutreMandat, Long> {
 
     List<AutreMandat> findByMandature(Mandature mandature);
 

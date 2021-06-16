@@ -114,7 +114,7 @@ public class PublicDataWebservice {
         return elus.stream()
             .map(e -> {
                 Mandat mandat = getOnlyCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
-                if(mandat == null) {
+                if (mandat == null) {
                     return null;
                 }
                 ConseillerDto d = new ConseillerDto();

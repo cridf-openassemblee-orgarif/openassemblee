@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the AppartenanceCommissionPermanente entity.
  */
-public interface AppartenanceCommissionPermanenteRepository extends JpaRepository<AppartenanceCommissionPermanente,Long> {
+public interface AppartenanceCommissionPermanenteRepository extends JpaRepository<AppartenanceCommissionPermanente, Long> {
 
     List<AppartenanceCommissionPermanente> findByMandature(Mandature mandature);
 

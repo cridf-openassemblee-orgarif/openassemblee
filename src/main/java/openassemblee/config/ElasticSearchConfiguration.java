@@ -13,7 +13,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import java.io.IOException;
 
 @Configuration
-@AutoConfigureAfter(value = { JacksonConfiguration.class })
+@AutoConfigureAfter(value = {JacksonConfiguration.class})
 public class ElasticSearchConfiguration {
 
     @Bean

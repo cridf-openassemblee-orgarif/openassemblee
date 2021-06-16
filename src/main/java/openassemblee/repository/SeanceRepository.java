@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA repository for the Seance entity.
  */
-public interface SeanceRepository extends JpaRepository<Seance,Long> {
+public interface SeanceRepository extends JpaRepository<Seance, Long> {
 
     Page<Seance> findByMandature(Mandature mandature, Pageable var1);
 

@@ -12,7 +12,7 @@ public class JacksonCommissionThematiqueIdSerializer extends JsonSerializer<Comm
 
     @Override
     public void serialize(CommissionThematique commissionThematique, JsonGenerator jsonGenerator,
-        SerializerProvider serializerProvider) throws IOException {
+                          SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", commissionThematique.getId());
         jsonGenerator.writeEndObject();

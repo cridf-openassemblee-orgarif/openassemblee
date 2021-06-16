@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the ListeElectorale entity.
  */
-public interface ListeElectoraleRepository extends JpaRepository<ListeElectorale,Long> {
+public interface ListeElectoraleRepository extends JpaRepository<ListeElectorale, Long> {
 
     List<ListeElectorale> findByMandature(Mandature mandature);
 

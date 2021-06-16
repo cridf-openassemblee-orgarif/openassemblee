@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * Properties specific to JHipster.
  *
  * <p>
- *     Properties are configured in the application.yml file.
+ * Properties are configured in the application.yml file.
  * </p>
  */
 @ConfigurationProperties(prefix = "jhipster", ignoreUnknownFields = false)

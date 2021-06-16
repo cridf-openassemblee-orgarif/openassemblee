@@ -133,7 +133,7 @@ public class HemicyclePlanResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/" + hemicyclePlansAssociationsUrl +"/{id}",
+    @RequestMapping(value = "/" + hemicyclePlansAssociationsUrl + "/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the AppartenanceGroupePolitique entity.
  */
-public interface AppartenanceGroupePolitiqueRepository extends JpaRepository<AppartenanceGroupePolitique,Long> {
+public interface AppartenanceGroupePolitiqueRepository extends JpaRepository<AppartenanceGroupePolitique, Long> {
 
     List<AppartenanceGroupePolitique> findAllByGroupePolitique(GroupePolitique groupePolitique);
 

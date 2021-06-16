@@ -86,7 +86,6 @@ public class DatabaseConfiguration {
 //    public Server h2TCPServer() throws SQLException {
 //        return Server.createTcpServer("-tcp", "-tcpAllowOthers");
 //    }
-
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource, DataSourceProperties dataSourceProperties,
                                      LiquibaseProperties liquibaseProperties) {

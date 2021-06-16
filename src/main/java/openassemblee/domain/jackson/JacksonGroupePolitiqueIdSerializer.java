@@ -13,7 +13,7 @@ public class JacksonGroupePolitiqueIdSerializer extends JsonSerializer<GroupePol
 
     @Override
     public void serialize(GroupePolitique groupePolitique, JsonGenerator jsonGenerator,
-        SerializerProvider serializerProvider) throws IOException {
+                          SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", groupePolitique.getId());
         jsonGenerator.writeEndObject();

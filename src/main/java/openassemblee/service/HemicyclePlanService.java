@@ -103,7 +103,7 @@ public class HemicyclePlanService {
         HemicyclePlan hp = hemicyclePlanRepository.findOne(id);
         HemicyclePlan.JsonPlan jsonPlan;
         try {
-             jsonPlan = objectMapper.readValue(hp.getJsonPlan(), HemicyclePlan.JsonPlan.class);
+            jsonPlan = objectMapper.readValue(hp.getJsonPlan(), HemicyclePlan.JsonPlan.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

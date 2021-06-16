@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the FonctionCommissionThematique entity.
  */
-public interface FonctionCommissionThematiqueRepository extends JpaRepository<FonctionCommissionThematique,Long> {
+public interface FonctionCommissionThematiqueRepository extends JpaRepository<FonctionCommissionThematique, Long> {
 
     List<FonctionCommissionThematique> findAllByCommissionThematique(CommissionThematique commissionThematique);
 

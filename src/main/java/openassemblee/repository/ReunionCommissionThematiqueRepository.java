@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA repository for the ReunionCommissionThematique entity.
  */
-public interface ReunionCommissionThematiqueRepository extends JpaRepository<ReunionCommissionThematique,Long> {
+public interface ReunionCommissionThematiqueRepository extends JpaRepository<ReunionCommissionThematique, Long> {
 
     Page<ReunionCommissionThematique> findByMandature(Mandature mandature, Pageable var1);
 

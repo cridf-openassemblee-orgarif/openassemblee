@@ -24,8 +24,8 @@ public class JacksonConfiguration {
 
         return new Jackson2ObjectMapperBuilder()
             .defaultViewInclusion(true)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .findModulesViaServiceLoader(true)
-                .modulesToInstall(module);
+            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .findModulesViaServiceLoader(true)
+            .modulesToInstall(module);
     }
 }

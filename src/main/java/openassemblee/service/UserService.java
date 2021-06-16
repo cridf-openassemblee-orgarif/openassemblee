@@ -67,26 +67,26 @@ public class UserService {
     }
 
     public Optional<User> completePasswordReset(final String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetKey(key)
-           .filter(new Predicate<User>() {
-               @Override
-               public boolean test(User user) {
-                   ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                   return user.getResetDate().isAfter(oneDayAgo);
-               }
-           })
-           .map(new Function<User, User>() {
-               @Override
-               public User apply(User user) {
-                   user.setPassword(passwordEncoder.encode(newPassword));
-                   user.setResetKey(null);
-                   user.setResetDate(null);
-                   userRepository.save(user);
-                   return user;
-               }
-           });
+        return userRepository.findOneByResetKey(key)
+            .filter(new Predicate<User>() {
+                @Override
+                public boolean test(User user) {
+                    ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
+                    return user.getResetDate().isAfter(oneDayAgo);
+                }
+            })
+            .map(new Function<User, User>() {
+                @Override
+                public User apply(User user) {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                    user.setResetKey(null);
+                    user.setResetDate(null);
+                    userRepository.save(user);
+                    return user;
+                }
+            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -109,7 +109,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-        String langKey) {
+                                      String langKey) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne("ROLE_USER");
@@ -135,7 +135,7 @@ public class UserService {
     }
 
     public void updateUserInformation(final String firstName, final String lastName, final String email,
-        final String langKey) {
+                                      final String langKey) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
         if (user.isPresent()) {
             User u = user.get();

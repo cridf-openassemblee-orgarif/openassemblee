@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the Pouvoir entity.
  */
-public interface PouvoirRepository extends JpaRepository<Pouvoir,Long> {
+public interface PouvoirRepository extends JpaRepository<Pouvoir, Long> {
 
     List<Pouvoir> findAllBySeance(Seance seance);
 

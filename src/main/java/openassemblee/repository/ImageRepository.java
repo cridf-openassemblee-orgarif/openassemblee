@@ -48,7 +48,7 @@ public class ImageRepository {
 
     public Image getImage(Long id) throws SQLException, IOException {
         try {
-            return jdbcTemplate.queryForObject(READ_IMAGE, new Long[] { id }, (rs, rowNum) -> {
+            return jdbcTemplate.queryForObject(READ_IMAGE, new Long[]{id}, (rs, rowNum) -> {
                 String contentType = rs.getString("content_type");
                 Blob blob = rs.getBlob("data");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();

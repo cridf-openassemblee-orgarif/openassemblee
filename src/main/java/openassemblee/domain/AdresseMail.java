@@ -40,7 +40,8 @@ public class AdresseMail implements Publishable, Serializable {
     @Column(name = "publication_annuaire")
     private Boolean publicationAnnuaire;
 
-    public AdresseMail() {}
+    public AdresseMail() {
+    }
 
     public AdresseMail(NatureProPerso natureProPerso, String mail, NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
         this.natureProPerso = natureProPerso;

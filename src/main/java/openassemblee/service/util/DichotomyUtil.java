@@ -22,7 +22,7 @@ public class DichotomyUtil {
 
         double result = calculator.calculate(value);
         if (Math.abs(result) <= expectedPrecision) {
-            if(debug) {
+            if (debug) {
                 System.out.println(iteration + " iterations");
             }
             return value;

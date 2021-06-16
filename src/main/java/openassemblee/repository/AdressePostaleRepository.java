@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA repository for the AdressePostale entity.
  */
-public interface AdressePostaleRepository extends JpaRepository<AdressePostale,Long> {
+public interface AdressePostaleRepository extends JpaRepository<AdressePostale, Long> {
 
 }

@@ -50,7 +50,7 @@ public class AdressePostale implements Publishable, Serializable {
     }
 
     public AdressePostale(NatureProPerso natureProPerso, String voie, String codePostal, String ville,
-        NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
+                          NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
         this.natureProPerso = natureProPerso;
         this.voie = voie;
         this.codePostal = codePostal;

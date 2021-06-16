@@ -70,7 +70,7 @@ public class MandatResource {
     public ResponseEntity<Mandat> updateMandat(@RequestBody MandatEditionDTO dto) throws URISyntaxException {
         log.debug("REST request to update Mandat : {}", dto);
         if (dto.getMandat().getId() == null) {
-           throw new IllegalArgumentException(dto.getMandat().getId().toString());
+            throw new IllegalArgumentException(dto.getMandat().getId().toString());
         }
         Mandat result = mandatService.save(dto);
         return ResponseEntity.ok()
