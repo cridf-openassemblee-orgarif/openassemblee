@@ -1,7 +1,5 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.HemicyclePlan;
-
 import java.io.Serializable;
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package openassemblee.repository;
 
-import openassemblee.domain.*;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.*;
+import openassemblee.domain.HemicyclePlan;
+import openassemblee.domain.Mandature;
+import openassemblee.domain.Seance;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 

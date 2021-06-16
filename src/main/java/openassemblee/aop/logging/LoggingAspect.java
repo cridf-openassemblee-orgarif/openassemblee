@@ -1,7 +1,6 @@
 package openassemblee.aop.logging;
 
 import openassemblee.config.Constants;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

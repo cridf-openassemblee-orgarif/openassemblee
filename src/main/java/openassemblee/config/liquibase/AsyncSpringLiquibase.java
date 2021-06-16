@@ -1,9 +1,9 @@
 package openassemblee.config.liquibase;
 
-import openassemblee.config.Constants;
-import openassemblee.service.SearchService;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
+import openassemblee.config.Constants;
+import openassemblee.service.SearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

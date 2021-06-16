@@ -3,8 +3,6 @@ package openassemblee.service.dto;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.Elu;
 import openassemblee.domain.GroupePolitique;
-import openassemblee.domain.Organisme;
-import openassemblee.service.EluService;
 import openassemblee.service.util.ConfidentialiteUtil;
 
 import java.util.Map;

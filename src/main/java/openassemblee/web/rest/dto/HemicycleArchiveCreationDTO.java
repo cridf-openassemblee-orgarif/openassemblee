@@ -1,11 +1,6 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.Elu;
-import openassemblee.domain.GroupePolitique;
-import openassemblee.domain.HemicyclePlan;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class HemicycleArchiveCreationDTO implements Serializable {
 

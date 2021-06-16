@@ -1,13 +1,14 @@
 package openassemblee.web.rest.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.constraints.*;
-
+import openassemblee.domain.Authority;
 import openassemblee.domain.User;
 import org.hibernate.validator.constraints.Email;
 
-import openassemblee.domain.Authority;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A DTO representing a user, with his authorities.

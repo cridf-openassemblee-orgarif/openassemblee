@@ -2,7 +2,6 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.AppartenanceCommissionPermanente;
-import openassemblee.domain.Mandature;
 import openassemblee.repository.AppartenanceCommissionPermanenteRepository;
 import openassemblee.repository.search.AppartenanceCommissionPermanenteSearchRepository;
 import openassemblee.service.AuditTrailService;

@@ -2,7 +2,6 @@ package openassemblee.repository;
 
 import openassemblee.config.audit.AuditEventConverter;
 import openassemblee.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.context.annotation.Bean;

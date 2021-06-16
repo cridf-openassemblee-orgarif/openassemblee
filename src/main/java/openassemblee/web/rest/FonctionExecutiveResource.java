@@ -2,7 +2,6 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.FonctionExecutive;
-import openassemblee.domain.Mandature;
 import openassemblee.repository.FonctionExecutiveRepository;
 import openassemblee.repository.search.FonctionExecutiveSearchRepository;
 import openassemblee.service.AuditTrailService;

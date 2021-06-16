@@ -2,7 +2,10 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
-import openassemblee.domain.*;
+import openassemblee.domain.ListeElectorale;
+import openassemblee.domain.Mandat;
+import openassemblee.domain.Mandature;
+import openassemblee.domain.ShortUid;
 import openassemblee.repository.*;
 import openassemblee.service.SearchService;
 import openassemblee.service.ShortUidService;
@@ -16,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController

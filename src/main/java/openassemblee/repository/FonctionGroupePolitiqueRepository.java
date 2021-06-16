@@ -1,11 +1,10 @@
 package openassemblee.repository;
 
-import java.util.List;
-
 import openassemblee.domain.FonctionGroupePolitique;
+import openassemblee.domain.GroupePolitique;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import openassemblee.domain.GroupePolitique;
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the FonctionGroupePolitique entity.

@@ -1,7 +1,6 @@
 package openassemblee.service.dto;
 
 import openassemblee.domain.GroupePolitique;
-import openassemblee.domain.HemicycleArchive;
 import openassemblee.domain.HemicyclePlan;
 import openassemblee.domain.Seance;
 

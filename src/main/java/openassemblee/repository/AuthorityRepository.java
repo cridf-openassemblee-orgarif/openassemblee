@@ -1,7 +1,6 @@
 package openassemblee.repository;
 
 import openassemblee.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

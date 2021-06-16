@@ -1,8 +1,8 @@
 package openassemblee.service.dto;
 
-import java.util.List;
-
 import openassemblee.domain.GroupePolitique;
+
+import java.util.List;
 
 public class GroupePolitiqueDTO {
 

@@ -1,6 +1,8 @@
 package openassemblee.service;
 
-import openassemblee.domain.*;
+import openassemblee.domain.AppartenanceGroupePolitique;
+import openassemblee.domain.FonctionGroupePolitique;
+import openassemblee.domain.GroupePolitique;
 import openassemblee.repository.AdressePostaleRepository;
 import openassemblee.repository.AppartenanceGroupePolitiqueRepository;
 import openassemblee.repository.FonctionGroupePolitiqueRepository;
@@ -12,14 +14,12 @@ import openassemblee.service.dto.AppartenanceGroupePolitiqueDTO;
 import openassemblee.service.dto.FonctionGroupePolitiqueDTO;
 import openassemblee.service.dto.GroupePolitiqueDTO;
 import openassemblee.service.dto.GroupePolitiqueListDTO;
-import org.elasticsearch.common.base.Strings;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

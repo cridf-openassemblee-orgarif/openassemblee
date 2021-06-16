@@ -1,7 +1,6 @@
 package openassemblee.web.rest.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class HemicycleArchiveDataWithConfigurationDTO implements Serializable {
 

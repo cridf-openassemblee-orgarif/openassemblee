@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import openassemblee.domain.HemicycleArchive;
 import openassemblee.domain.HemicyclePlan;
 import openassemblee.repository.HemicycleArchiveRepository;
-import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.web.rest.dto.*;
-import org.hibernate.dialect.HANAColumnStoreDialect;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

@@ -1,6 +1,5 @@
 package openassemblee.webservice;
 
-import openassemblee.domain.Mandat;
 import openassemblee.domain.enumeration.Civilite;
 import openassemblee.service.EluService;
 import openassemblee.service.SessionMandatureService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static openassemblee.service.EluService.getOnlyCurrentMandat;
 import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController

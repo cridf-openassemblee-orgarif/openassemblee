@@ -1,7 +1,6 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import openassemblee.domain.Mandature;
 import openassemblee.domain.ReunionCommissionThematique;
 import openassemblee.repository.ReunionCommissionThematiqueRepository;
 import openassemblee.repository.search.ReunionCommissionThematiqueSearchRepository;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

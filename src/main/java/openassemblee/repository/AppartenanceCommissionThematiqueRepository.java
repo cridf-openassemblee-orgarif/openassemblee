@@ -1,11 +1,10 @@
 package openassemblee.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import openassemblee.domain.AppartenanceCommissionThematique;
 import openassemblee.domain.CommissionThematique;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the AppartenanceCommissionThematique entity.

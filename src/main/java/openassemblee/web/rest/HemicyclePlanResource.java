@@ -2,7 +2,6 @@ package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.HemicyclePlan;
-import openassemblee.domain.Mandature;
 import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.HemicyclePlanService;

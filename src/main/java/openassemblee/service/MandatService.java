@@ -2,7 +2,6 @@ package openassemblee.service;
 
 import openassemblee.domain.Elu;
 import openassemblee.domain.Mandat;
-import openassemblee.domain.Mandature;
 import openassemblee.repository.*;
 import openassemblee.service.dto.MandatEditionDTO;
 import org.elasticsearch.common.base.Strings;
@@ -15,8 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class MandatService {

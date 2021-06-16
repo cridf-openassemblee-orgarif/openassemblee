@@ -1,8 +1,7 @@
 package openassemblee.repository;
 
 import openassemblee.domain.PresenceElu;
-
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the PresenceElu entity.

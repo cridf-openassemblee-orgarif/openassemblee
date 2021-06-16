@@ -1,12 +1,7 @@
 package openassemblee.repository;
 
-import openassemblee.domain.AppartenanceGroupePolitique;
-import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.Mandature;
-
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the Mandature entity.

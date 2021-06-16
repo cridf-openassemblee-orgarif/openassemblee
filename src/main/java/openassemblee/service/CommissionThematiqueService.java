@@ -3,7 +3,6 @@ package openassemblee.service;
 import openassemblee.domain.AppartenanceCommissionThematique;
 import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.FonctionCommissionThematique;
-import openassemblee.domain.Mandature;
 import openassemblee.repository.AdressePostaleRepository;
 import openassemblee.repository.AppartenanceCommissionThematiqueRepository;
 import openassemblee.repository.CommissionThematiqueRepository;

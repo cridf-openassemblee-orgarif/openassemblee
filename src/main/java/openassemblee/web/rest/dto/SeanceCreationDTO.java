@@ -1,6 +1,5 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.Mandature;
 import openassemblee.domain.Seance;
 
 import java.io.Serializable;

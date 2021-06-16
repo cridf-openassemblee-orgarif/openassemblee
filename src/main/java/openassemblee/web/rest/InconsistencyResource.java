@@ -3,7 +3,6 @@ package openassemblee.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.service.inconsistency.InconsistencyService;
 import openassemblee.web.rest.dto.InconsistenciesDTO;
-import openassemblee.web.rest.dto.InconsistencyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,7 +1,6 @@
 package openassemblee.web.rest.dto;
 
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
 public class ChairRendu {
 

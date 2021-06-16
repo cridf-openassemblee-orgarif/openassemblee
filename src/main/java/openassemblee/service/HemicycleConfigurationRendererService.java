@@ -1,10 +1,10 @@
 package openassemblee.service;
 
 import openassemblee.web.rest.dto.ChairRendu;
-import openassemblee.web.rest.dto.HemicycleConfigurationRendu;
 import openassemblee.web.rest.dto.HemicycleConfigurationDefinition;
 import openassemblee.web.rest.dto.HemicycleConfigurationDefinition.RowDefinition;
 import openassemblee.web.rest.dto.HemicycleConfigurationDefinition.RowOrientation;
+import openassemblee.web.rest.dto.HemicycleConfigurationRendu;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

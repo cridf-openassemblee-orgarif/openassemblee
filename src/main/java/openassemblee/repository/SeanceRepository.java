@@ -1,16 +1,10 @@
 package openassemblee.repository;
 
-import openassemblee.domain.CommissionThematique;
 import openassemblee.domain.Mandature;
-import openassemblee.domain.ReunionCao;
 import openassemblee.domain.Seance;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the Seance entity.

@@ -1,5 +1,6 @@
 package openassemblee.domain;
 
+import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -7,8 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import openassemblee.domain.enumeration.TypeIdentiteInternet;
 
 /**
  * A IdentiteInternet.

@@ -1,9 +1,8 @@
 package openassemblee.security;
 
-import java.util.*;
-import javax.inject.Inject;
-
+import openassemblee.domain.Authority;
 import openassemblee.domain.User;
+import openassemblee.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,8 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import openassemblee.domain.Authority;
-import openassemblee.repository.UserRepository;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Authenticate a user from the database.

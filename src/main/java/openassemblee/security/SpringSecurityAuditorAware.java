@@ -1,7 +1,6 @@
 package openassemblee.security;
 
 import openassemblee.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

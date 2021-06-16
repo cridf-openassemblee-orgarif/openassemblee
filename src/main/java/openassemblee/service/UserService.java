@@ -1,18 +1,13 @@
 package openassemblee.service;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import javax.inject.Inject;
-
 import openassemblee.domain.Authority;
 import openassemblee.domain.PersistentToken;
 import openassemblee.domain.User;
 import openassemblee.repository.AuthorityRepository;
 import openassemblee.repository.PersistentTokenRepository;
 import openassemblee.repository.UserRepository;
+import openassemblee.repository.search.UserSearchRepository;
+import openassemblee.security.SecurityUtils;
 import openassemblee.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import openassemblee.domain.*;
-import openassemblee.repository.*;
-import openassemblee.repository.search.UserSearchRepository;
-import openassemblee.security.SecurityUtils;
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Service class for managing users.

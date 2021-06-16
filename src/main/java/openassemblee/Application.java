@@ -2,7 +2,6 @@ package openassemblee;
 
 import openassemblee.config.Constants;
 import openassemblee.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

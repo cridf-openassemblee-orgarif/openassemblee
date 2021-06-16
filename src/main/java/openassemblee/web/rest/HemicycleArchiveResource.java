@@ -3,20 +3,15 @@ package openassemblee.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.domain.HemicycleArchive;
 import openassemblee.domain.HemicyclePlan;
-import openassemblee.domain.Seance;
 import openassemblee.repository.HemicycleArchiveRepository;
 import openassemblee.repository.search.HemicycleArchiveSearchRepository;
 import openassemblee.service.AuditTrailService;
 import openassemblee.service.HemicycleArchiveService;
-import openassemblee.service.HemicyclePlanService;
 import openassemblee.web.rest.dto.HemicycleArchiveCreationDTO;
-import openassemblee.web.rest.dto.HemicycleArchiveDataDTO;
 import openassemblee.web.rest.dto.HemicycleArchiveDataWithConfigurationDTO;
-import openassemblee.web.rest.dto.HemicyclePlanAssociationsDTO;
 import openassemblee.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing HemicycleArchive.

@@ -1,16 +1,8 @@
 package openassemblee.security;
 
-import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import openassemblee.domain.PersistentToken;
 import openassemblee.domain.User;
+import openassemblee.repository.PersistentTokenRepository;
 import openassemblee.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +12,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.codec.Base64;
-import org.springframework.security.web.authentication.rememberme.*;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.CookieTheftException;
+import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import openassemblee.repository.PersistentTokenRepository;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.

@@ -1,7 +1,6 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import openassemblee.domain.Mandature;
 import openassemblee.domain.ReunionCao;
 import openassemblee.repository.ReunionCaoRepository;
 import openassemblee.repository.search.ReunionCaoSearchRepository;

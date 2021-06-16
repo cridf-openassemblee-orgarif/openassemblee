@@ -5,7 +5,6 @@ import com.itextpdf.text.DocumentException;
 import openassemblee.domain.*;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.MandatRepository;
-import openassemblee.repository.MandatureRepository;
 import openassemblee.repository.search.EluSearchRepository;
 import openassemblee.service.*;
 import openassemblee.service.dto.EluDTO;

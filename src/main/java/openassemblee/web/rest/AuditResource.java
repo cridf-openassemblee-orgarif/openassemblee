@@ -1,16 +1,17 @@
 package openassemblee.web.rest;
 
+import openassemblee.service.AuditEventService;
+import org.springframework.boot.actuate.audit.AuditEvent;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
-import javax.inject.Inject;
-
-import org.springframework.boot.actuate.audit.AuditEvent;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-
-import openassemblee.service.AuditEventService;
 
 /**
  * REST controller for getting the audit events.
