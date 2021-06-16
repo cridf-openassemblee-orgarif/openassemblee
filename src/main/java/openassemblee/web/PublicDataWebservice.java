@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static java.time.temporal.ChronoField.*;
 import static openassemblee.domain.enumeration.NiveauConfidentialite.PUBLIABLE;
 import static openassemblee.domain.enumeration.TypeIdentiteInternet.*;
-import static openassemblee.service.EluService.getCurrentMandat;
+import static openassemblee.service.EluService.getOnlyCurrentMandat;
 import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController
@@ -113,7 +113,7 @@ public class PublicDataWebservice {
     private List<ConseillerDto> getConseillers(List<Elu> elus) {
         return elus.stream()
             .map(e -> {
-                Mandat mandat = getCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
+                Mandat mandat = getOnlyCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
                 if(mandat == null) {
                     return null;
                 }

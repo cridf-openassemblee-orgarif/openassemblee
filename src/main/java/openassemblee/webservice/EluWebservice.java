@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static openassemblee.service.EluService.getCurrentMandat;
+import static openassemblee.service.EluService.getOnlyCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v2")
@@ -68,7 +68,7 @@ public class EluWebservice {
                     "sans groupe";
                 String groupePolitiqueCourt = it.getGroupePolitique() != null ? it.getGroupePolitique().getNomCourt() :
                     "-";
-                Mandat mandat = getCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature());
+                Mandat mandat = getOnlyCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature());
                 return new PublicElu(
                     it.getElu().getShortUid().toString(),
                     it.getElu().getUid(),

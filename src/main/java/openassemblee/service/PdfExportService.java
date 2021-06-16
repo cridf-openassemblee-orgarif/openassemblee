@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static openassemblee.service.EluService.getCurrentMandat;
+import static openassemblee.service.EluService.getOnlyCurrentMandat;
 
 @Service
 public class PdfExportService {
@@ -229,7 +229,7 @@ public class PdfExportService {
 //        document.add(p("Groupe politique : " + elu.getAppartenancesGroupePolitique().get(0).getGroupePolitique().getNom()));
         String gpLabel = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() + "(" + dto.getGroupePolitique().getNomCourt() + ")" : "Non inscrit";
         document.add(p("Groupe politique : " + gpLabel));
-        Mandat mandat = getCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        Mandat mandat = getOnlyCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
         String departement = mandat != null ? mandat.getDepartement() : "";
         document.add(p("Circonscription : " + departement));
 
@@ -299,7 +299,7 @@ public class PdfExportService {
 //        document.add(p("Groupe politique : " + elu.getAppartenancesGroupePolitique().get(0).getGroupePolitique().getNom()));
         String gpLabel = dto.getGroupePolitique() != null ? dto.getGroupePolitique().getNom() + "(" + dto.getGroupePolitique().getNomCourt() + ")" : "Non inscrit";
         document.add(p("Groupe politique : " + gpLabel));
-        Mandat mandat = getCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        Mandat mandat = getOnlyCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
         String departement = mandat != null ? mandat.getDepartement() : "";
         document.add(p("Circonscription : " + departement));
 

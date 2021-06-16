@@ -412,7 +412,7 @@ public class EluService {
             .filter(n -> n.getNiveauConfidentialite() == NiveauConfidentialite.INTERNE || n.getNiveauConfidentialite() == NiveauConfidentialite.CONFIDENTIEL)
             .map(n -> n.getNumero() + "(" + n.getNiveauConfidentialite().name() + (n.getNatureProPerso() != null ? "," + n.getNatureProPerso().name() : "") + ")")
             .reduce("", (n1, n2) -> n1 + (n1.equals("") ? "" : ", ") + n2);
-        Mandat mandat = getCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
+        Mandat mandat = getOnlyCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
         String departement = mandat != null ? mandat.getDepartement() : "";
         if (!demissionaire) {
             return Arrays.asList(civilite, e.getPrenom(), e.getNom(), groupePolitique,
@@ -442,8 +442,9 @@ public class EluService {
             .collect(Collectors.toList());
     }
 
+    // pas idéal comme api, mais uniquement utilisé par les exports/api au moment de l'écriture
     @Transactional(readOnly = true)
-    public static Mandat getCurrentMandat(Set<Mandat> mandats, Mandature currentMandature) {
+    public static Mandat getOnlyCurrentMandat(Set<Mandat> mandats, Mandature currentMandature) {
         List<Mandat> result = getCurrentMandats(mandats, currentMandature);
         if (result.size() > 1) {
             Long eluId = result.stream().findFirst().get().getElu().getId();
