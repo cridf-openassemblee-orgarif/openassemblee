@@ -138,6 +138,7 @@ public class EluService {
     public EluListDTO eluToEluListDTO(Elu elu, Boolean loadAdresses, Boolean filterAdresses) {
         Optional<GroupePolitique> groupePolitique = elu.getAppartenancesGroupePolitique().stream()
             .filter(GroupePolitiqueService::isAppartenanceCourante)
+            .filter(a -> a.getGroupePolitique() != null)
             .filter(a -> a.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
             .map(AppartenanceGroupePolitique::getGroupePolitique)
             .filter(Objects::nonNull)
@@ -203,8 +204,10 @@ public class EluService {
         elu.setAppartenancesCommissionPermanente(elu.getAppartenancesCommissionPermanente().stream()
             .filter(a -> a.getMandature().getId().equals(mandatureId)).collect(Collectors.toList()));
         elu.setAppartenancesCommissionsThematiques(elu.getAppartenancesCommissionsThematiques().stream()
+            .filter(a -> a.getCommissionThematique() != null)
             .filter(a -> a.getCommissionThematique().getMandature().getId().equals(mandatureId)).collect(Collectors.toSet()));
         elu.setAppartenancesGroupePolitique(elu.getAppartenancesGroupePolitique().stream()
+            .filter(a -> a.getGroupePolitique() != null)
             .filter(a -> a.getGroupePolitique().getMandature().getId().equals(mandatureId))
             .collect(Collectors.toList()));
 
@@ -213,9 +216,11 @@ public class EluService {
         elu.setFonctionsExecutives(elu.getFonctionsExecutives().stream()
             .filter(f -> f.getMandature().getId().equals(mandatureId)).collect(Collectors.toList()));
         elu.setFonctionsGroupePolitique(elu.getFonctionsGroupePolitique().stream()
+            .filter(f -> f.getGroupePolitique() != null)
             .filter(f -> f.getGroupePolitique().getMandature().getId().equals(mandatureId))
             .collect(Collectors.toList()));
         elu.setFonctionsCommissionsThematiques(elu.getFonctionsCommissionsThematiques().stream()
+            .filter(f -> f.getCommissionThematique() != null)
             .filter(f -> f.getCommissionThematique().getMandature().getId().equals(mandatureId)).collect(Collectors.toSet()));
 
         elu.setAutreMandats(elu.getAutreMandats().stream()

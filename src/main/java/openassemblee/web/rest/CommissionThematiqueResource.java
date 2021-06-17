@@ -177,6 +177,7 @@ public class CommissionThematiqueResource {
         Map<Long, List<EluEnFonctionDTO>> appartenancesByCt = cts.stream()
             .map(ct -> {
                 List<EluEnFonctionDTO> dtos = as.stream()
+                    .filter(a -> a.getCommissionThematique() != null)
                     .filter(a -> a.getCommissionThematique().getId().equals(ct.getId()))
                     .filter(a -> a.getDateFin() == null)
                     .map(a -> {
