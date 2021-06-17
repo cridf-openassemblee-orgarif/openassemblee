@@ -936,9 +936,10 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                             resolve: {
                                 entity: function () {
                                     return {
-                                        groupePolitique: {
+                                        // if $stateParams.groupePolitiqueId est null, on plante le back
+                                        groupePolitique: $stateParams.groupePolitiqueId ? {
                                             id: $stateParams.groupePolitiqueId,
-                                        },
+                                        } : null,
                                         fonction: null,
                                         dateDebut: null,
                                         dateFin: null,
