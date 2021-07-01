@@ -45,7 +45,6 @@ export default class DelayedChangeInput extends React.Component<Props, State> {
     };
 
     public render() {
-        // FIXMENOW cette technique plutôt que delete (voir wiv aussi)
         const { onValueChange, ...inputProps } = this.props;
         return (
             <input

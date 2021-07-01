@@ -2,14 +2,14 @@ import { NominalNumber, NominalString } from './domain/nominal';
 import { Elu } from './domain/elu';
 
 let uniqueIdIndex = 0;
-export const domUid = () => 'WivaldyUid_' + uniqueIdIndex++;
+export const domUid = () => 'HemicycleUid_' + uniqueIdIndex++;
 
 export const eluToString = (elu: Elu | null) =>
     elu ? elu.prenom + ' ' + elu.nom : '';
 
 export function assertUnreachable(x: never): never {
     throw new Error(
-        'Wivaldy (theoretically) unreachable code with value : "' +
+        'Hemicycle (theoretically) unreachable code with value : "' +
             JSON.stringify(x) +
             '"'
     );
