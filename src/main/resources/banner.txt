@@ -1,1 +1,1 @@
-${AnsiColor.BRIGHT_BLUE}                ~~~~~~~~    SIGER 1.2   ~~~~~~~~${AnsiColor.DEFAULT}
+${AnsiColor.BRIGHT_BLUE}                ~~~~~~~~    SIGER 1.2.1   ~~~~~~~~${AnsiColor.DEFAULT}
