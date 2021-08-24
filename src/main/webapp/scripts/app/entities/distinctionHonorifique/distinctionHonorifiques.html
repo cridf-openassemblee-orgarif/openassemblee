@@ -54,7 +54,8 @@
                         >
                     </td>
                     <td>{{distinctionHonorifique.titre}}</td>
-                    <td>{{distinctionHonorifique.date | date:'mediumDate'}}</td>
+                    <!-- do NOT format this date -->
+                    <td>{{distinctionHonorifique.date}}</td>
                     <td>
                         <a
                             ui-sref="elu.detail({id:distinctionHonorifique.elu.id})"
