@@ -17,7 +17,9 @@ angular
                 if ($stateParams.id != null) {
                     $http
                         .put(
-                            "/api/users/" + $stateParams.id + "/change-password",
+                            "/api/users/" +
+                                $stateParams.id +
+                                "/change-password",
                             $scope.userPassword.password
                         )
                         .then(function () {

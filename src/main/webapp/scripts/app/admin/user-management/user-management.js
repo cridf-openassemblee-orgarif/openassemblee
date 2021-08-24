@@ -143,19 +143,18 @@ angular.module("openassembleeApp").config(function ($stateProvider) {
                                 "scripts/app/admin/user-management/user-management-edit-password.html",
                             controller: "UserManagementEditPasswordController",
                             size: "lg",
-                            resolve: {
-                            },
+                            resolve: {},
                         })
                         .result.then(
-                        function (result) {
-                            $state.go("user-management", null, {
-                                reload: true,
-                            });
-                        },
-                        function () {
-                            $state.go("^");
-                        }
-                    );
+                            function (result) {
+                                $state.go("user-management", null, {
+                                    reload: true,
+                                });
+                            },
+                            function () {
+                                $state.go("^");
+                            }
+                        );
                 },
             ],
         });

@@ -31,10 +31,7 @@
             ng-if="elus.length"
         >
             <div class="col-md-12 col-sm-12 col-xs-12" ng-repeat="c in chunks">
-                <div
-                    class="col-md-4 col-sm-6 col-xs-12"
-                    ng-repeat="dto in c"
-                >
+                <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="dto in c">
                     <div
                         class="info-box entity-component"
                         ui-sref="elu.detail({id:dto.elu.id})"
