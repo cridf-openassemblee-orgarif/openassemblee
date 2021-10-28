@@ -28,7 +28,7 @@ spring:
         name:
         username: ${MYSQL_ADDON_USER}
         password: ${MYSQL_ADDON_PASSWORD}
-        maxActive: 2
+        maxActive: 5
     jpa:
         database-platform: org.hibernate.dialect.MySQLInnoDBDialect
         database: MYSQL
