@@ -125,9 +125,11 @@ public class PublicDataWebserviceResource {
                 d.setDateNaissance(formatDate(e.getDateNaissance()));
                 Optional<AppartenanceGroupePolitique> agp = e.getAppartenancesGroupePolitique().stream()
                     .filter(a -> a.getDateFin() == null)
+                    .filter(f -> f.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                     .findFirst();
                 Optional<FonctionGroupePolitique> fgp = e.getFonctionsGroupePolitique().stream()
                     .filter(a -> a.getDateFin() == null)
+                    .filter(f -> f.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                     .findFirst();
                 // first set to empty
                 d.setGroupeCourt(SPACE);
@@ -168,17 +170,20 @@ public class PublicDataWebserviceResource {
                 e.getAppartenancesCommissionPermanente()
                     .stream()
                     .filter(a -> a.getDateFin() == null)
+                    .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                     .forEach(a -> commissionsStringBuilder.append("|").append(COMMISSION_PERMANENTE));
 //                e.getFonctionsExecutives()
 //                    .forEach(a -> commissionsStringBuilder.append("|").append(EXECUTIF));
                 e.getFonctionsCommissionPermanente()
                     .stream()
                     .filter(a -> a.getDateFin() == null)
+                    .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                     .forEach(a -> commissionsStringBuilder.append("|").append(DELEGUES_SPECIAUX));
                 e.getAppartenancesCommissionsThematiques()
                     .stream()
                     .filter(a -> a.getDateFin() == null)
                     .filter(a -> a.getCommissionThematique() != null)
+                    .filter(f -> f.getCommissionThematique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
 //                    .sorted(Comparator.comparing(AppartenanceCommissionThematique::getImportUid))
                     .forEach(a -> commissionsStringBuilder.append("|").append(a.getCommissionThematique().exportUid()));
                 d.setCommissions(IS_TEST_IMPORT ? EMPTY_STRING : commissionsStringBuilder.toString());
@@ -195,6 +200,7 @@ public class PublicDataWebserviceResource {
                 if (e.getAutreMandats().size() > 0 && !IS_TEST_IMPORT) {
                     d.setAutresMandats("|" + String.join("|", e.getAutreMandats()
                         .stream()
+                        .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                         .map(m -> stringOrEmpty(m.getFonction()) + "$"
                             + stringOrEmpty(m.getCollectiviteOuOrganisme()) + "$"
                             + stringOrEmpty(m.getDateDebutString()) + "$")
@@ -203,6 +209,7 @@ public class PublicDataWebserviceResource {
 
                 Optional<FonctionExecutive> fe = e.getFonctionsExecutives().stream()
                     .filter(f -> f.getDateFin() == null)
+                    .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
                     .findFirst();
                 d.setFonctionExecutif(stringOrSpace(fe.map(fonctionExecutive -> fonctionExecutive.getFonction()).orElse(null)));
                 d.setPhonetique(null);
@@ -224,7 +231,7 @@ public class PublicDataWebserviceResource {
         cp.setMandature(MANDATURE);
         cp.setUidEnsemble(COMMISSION_PERMANENTE);
         cp.setLibCourt("CP");
-        cp.setDateCreation("18/12/2015");
+        cp.setDateCreation(formatDate(sessionMandatureService.getMandature().getDateDebut()));
         cp.setType("commission");
         cp.setTypeCommission("Permanente");
         // TODO
@@ -256,7 +263,7 @@ public class PublicDataWebserviceResource {
         exec.setMandature(MANDATURE);
         exec.setUidEnsemble(EXECUTIF);
         exec.setLibCourt("VP");
-        exec.setDateCreation("18/12/2015");
+        exec.setDateCreation(formatDate(sessionMandatureService.getMandature().getDateDebut()));
         exec.setType("commission");
         exec.setTypeCommission("Exécutif");
         // TODO
@@ -288,7 +295,7 @@ public class PublicDataWebserviceResource {
         deleg.setMandature(MANDATURE);
         deleg.setUidEnsemble(DELEGUES_SPECIAUX);
         deleg.setLibCourt("Délégués spéciaux");
-        deleg.setDateCreation("22/12/2015");
+        deleg.setDateCreation(formatDate(sessionMandatureService.getMandature().getDateDebut()));
         deleg.setType("commission");
         deleg.setTypeCommission("Délégués spéciaux");
         // TODO TODO
