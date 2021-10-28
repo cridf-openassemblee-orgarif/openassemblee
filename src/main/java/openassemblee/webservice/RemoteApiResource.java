@@ -1,10 +1,7 @@
-package openassemblee.web.rest;
+package openassemblee.webservice;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.config.data.TestDataInjector;
-import openassemblee.domain.ListeElectorale;
-import openassemblee.domain.Mandat;
-import openassemblee.domain.Mandature;
 import openassemblee.domain.ShortUid;
 import openassemblee.repository.*;
 import openassemblee.service.SearchService;
@@ -13,17 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 
 @RestController
@@ -52,45 +43,6 @@ public class RemoteApiResource {
 
     @Autowired
     private ShortUidService shortUidService;
-
-    @Autowired
-    private MandatRepository mandatRepository;
-
-    @Autowired
-    private MandatureRepository mandatureRepository;
-
-    @Autowired
-    private CommissionThematiqueRepository commissionThematiqueRepository;
-
-    @Autowired
-    private AppartenanceCommissionPermanenteRepository appartenanceCommissionPermanenteRepository;
-
-    @Autowired
-    private FonctionExecutiveRepository fonctionExecutiveRepository;
-
-    @Autowired
-    private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
-
-    @Autowired
-    private GroupePolitiqueRepository groupePolitiqueRepository;
-
-    @Autowired
-    private ListeElectoraleRepository listeElectoraleRepository;
-
-    @Autowired
-    private SeanceRepository seanceRepository;
-
-    @Autowired
-    private ReunionCaoRepository reunionCaoRepository;
-
-    @Autowired
-    private ReunionCommissionThematiqueRepository reunionCommissionThematiqueRepository;
-
-    @Autowired
-    private AutreMandatRepository autreMandatRepository;
-
-    @Autowired
-    private HemicyclePlanRepository hemicyclePlanRepository;
 
     private boolean migrationOk = false;
 

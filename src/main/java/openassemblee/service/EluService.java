@@ -90,8 +90,8 @@ public class EluService {
 
     @Transactional(readOnly = true)
     public List<Elu> getActifsAssemblee() {
-        return eluRepository.findAll().stream().filter(
-            e -> isCurrentMandat(e.getMandats(), sessionMandatureService.getMandature())
+        return eluRepository.findAll().stream()
+            .filter(e -> isCurrentMandat(e.getMandats(), sessionMandatureService.getMandature())
         ).collect(Collectors.toList());
     }
 

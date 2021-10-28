@@ -1,4 +1,4 @@
-package openassemblee.web.rest;
+package openassemblee.web;
 
 import com.codahale.metrics.annotation.Timed;
 import openassemblee.service.inconsistency.InconsistencyService;

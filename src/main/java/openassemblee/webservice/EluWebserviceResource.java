@@ -15,7 +15,7 @@ import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v2")
-public class EluWebservice {
+public class EluWebserviceResource {
 
     @Autowired
     protected EluService eluService;

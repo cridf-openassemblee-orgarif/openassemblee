@@ -1,4 +1,4 @@
-package openassemblee.web;
+package openassemblee.webservice;
 
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
@@ -32,7 +32,7 @@ import static openassemblee.service.EluService.isCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v1")
-public class PublicDataWebservice {
+public class PublicDataWebserviceResource {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -66,16 +66,10 @@ public class PublicDataWebservice {
     private GroupePolitiqueRepository groupePolitiqueRepository;
 
     @Autowired
-    private OrganismeRepository organismeRepository;
-
-    @Autowired
     private CommissionThematiqueRepository commissionThematiqueRepository;
 
     @Autowired
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
-
-    @Autowired
-    private AppartenanceOrganismeRepository appartenanceOrganismeRepository;
 
     @Autowired
     private FonctionCommissionThematiqueRepository fonctionCommissionThematiqueRepository;
