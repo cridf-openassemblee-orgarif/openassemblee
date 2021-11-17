@@ -95,8 +95,12 @@ public class SeanceService {
         }
         List<Pouvoir> pouvoirs = pouvoirRepository.findAllBySeance(seance);
         pouvoirs.forEach(p -> {
-            Hibernate.initialize(p.getEluCedeur().getAppartenancesGroupePolitique());
-            Hibernate.initialize(p.getEluBeneficiaire().getAppartenancesGroupePolitique());
+            if (p.getEluCedeur() != null) {
+                Hibernate.initialize(p.getEluCedeur().getAppartenancesGroupePolitique());
+            }
+            if (p.getEluBeneficiaire() != null) {
+                Hibernate.initialize(p.getEluBeneficiaire().getAppartenancesGroupePolitique());
+            }
         });
         return pouvoirs;
     }

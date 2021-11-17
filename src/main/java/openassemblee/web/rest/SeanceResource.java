@@ -155,17 +155,18 @@ public class SeanceResource {
             "Heure de fin"
         ));
         for (Pouvoir pv : pouvoirs) {
-            Optional<GroupePolitique> groupePolitiqueCedeur = pv.getEluCedeur().getAppartenancesGroupePolitique()
-                .stream()
-                .filter(GroupePolitiqueService::isAppartenanceCourante)
-                .map(AppartenanceGroupePolitique::getGroupePolitique)
-                .findFirst();
-            Optional<GroupePolitique> groupePolitiqueBeneficiaire = pv.getEluBeneficiaire()
-                .getAppartenancesGroupePolitique()
-                .stream()
-                .filter(GroupePolitiqueService::isAppartenanceCourante)
-                .map(AppartenanceGroupePolitique::getGroupePolitique)
-                .findFirst();
+            Optional<GroupePolitique> groupePolitiqueCedeur = Optional.ofNullable(pv.getEluCedeur())
+                .flatMap(elu -> elu.getAppartenancesGroupePolitique()
+                    .stream()
+                    .filter(GroupePolitiqueService::isAppartenanceCourante)
+                    .map(AppartenanceGroupePolitique::getGroupePolitique)
+                    .findFirst());
+            Optional<GroupePolitique> groupePolitiqueBeneficiaire = Optional.ofNullable(pv.getEluBeneficiaire())
+                .flatMap(elu -> elu.getAppartenancesGroupePolitique()
+                    .stream()
+                    .filter(GroupePolitiqueService::isAppartenanceCourante)
+                    .map(AppartenanceGroupePolitique::getGroupePolitique)
+                    .findFirst());
             String dateDebut = pv.getDateDebut() != null ?
                 pv.getDateDebut().format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
             String dateFin = pv.getDateFin() != null ?
