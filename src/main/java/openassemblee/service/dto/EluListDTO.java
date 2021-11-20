@@ -9,26 +9,26 @@ public class EluListDTO {
     private Elu elu;
     private GroupePolitique groupePolitique;
     private String shortFonction;
-    private Boolean currentMandat;
+    private Boolean actifInCurrentMandat;
 
-    public EluListDTO(Elu elu, String shortFonction, Boolean currentMandat, Boolean loadAdresses, Boolean filterAdresses) {
+    public EluListDTO(Elu elu, String shortFonction, Boolean actifInCurrentMandat, Boolean loadAdresses, Boolean filterAdresses) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.shortFonction = shortFonction;
-        this.currentMandat = currentMandat;
+        this.actifInCurrentMandat = actifInCurrentMandat;
     }
 
     public EluListDTO(Elu elu,
                       GroupePolitique groupePolitique,
                       String shortFonction,
-                      Boolean currentMandat,
+                      Boolean actifInCurrentMandat,
                       Boolean loadAdresses,
                       Boolean filterAdresses) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.groupePolitique = groupePolitique;
         this.shortFonction = shortFonction;
-        this.currentMandat = currentMandat;
+        this.actifInCurrentMandat = actifInCurrentMandat;
     }
 
     public Elu getElu() {
@@ -43,7 +43,7 @@ public class EluListDTO {
         return shortFonction;
     }
 
-    public Boolean getCurrentMandat() {
-        return currentMandat;
+    public Boolean getActifInCurrentMandat() {
+        return actifInCurrentMandat;
     }
 }

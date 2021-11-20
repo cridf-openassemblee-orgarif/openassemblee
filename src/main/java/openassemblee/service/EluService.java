@@ -156,11 +156,12 @@ public class EluService {
             .map(f -> FonctionCommissionPermanente.getShortFonction(f.getFonction()))
             .orElse(null);
         String shortFonction = fonctionExec != null ? fonctionExec : fonctionCP != null ? fonctionCP : null;
-        Boolean isCurrentMandat = isCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        Mandat currentMandat = getOnlyCurrentMandat(elu.getMandats(), sessionMandatureService.getMandature());
+        Boolean actifInCurrentMandat = currentMandat != null && currentMandat.getDateDemission() == null;
         if (groupePolitique.isPresent()) {
-            return new EluListDTO(elu, groupePolitique.get(), shortFonction, isCurrentMandat, loadAdresses, filterAdresses);
+            return new EluListDTO(elu, groupePolitique.get(), shortFonction, actifInCurrentMandat, loadAdresses, filterAdresses);
         } else {
-            return new EluListDTO(elu, shortFonction, isCurrentMandat, loadAdresses, filterAdresses);
+            return new EluListDTO(elu, shortFonction, actifInCurrentMandat, loadAdresses, filterAdresses);
         }
     }
 

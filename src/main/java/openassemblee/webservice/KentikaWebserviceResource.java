@@ -1,7 +1,8 @@
 package openassemblee.webservice;
 
 import com.codahale.metrics.annotation.Timed;
-import openassemblee.repository.*;
+import openassemblee.domain.Mandat;
+import openassemblee.repository.EluRepository;
 import openassemblee.service.SessionMandatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static openassemblee.service.EluService.isCurrentMandat;
+import static openassemblee.service.EluService.getOnlyCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v1")
@@ -124,8 +125,10 @@ public class KentikaWebserviceResource {
     @Transactional
     public ResponseEntity<List<ExportElu>> export() {
         List<ExportElu> elus = eluRepository.findAll().stream()
-            .filter(e -> e.getDateDemission() == null)
-            .filter(e -> isCurrentMandat(e.getMandats(), sessionMandatureService.getMandature()))
+            .filter(e -> {
+                Mandat currentMandat = getOnlyCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
+                return currentMandat != null && currentMandat.getDateDemission() == null;
+            })
             .map(e ->
                 new ExportElu(
                     e.getId(),

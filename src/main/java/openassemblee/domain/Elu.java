@@ -56,12 +56,6 @@ public class Elu implements Serializable {
     @Column(name = "image")
     private Long image;
 
-    @Column(name = "motif_demission")
-    private String motifDemission;
-
-    @Column(name = "date_demission")
-    private LocalDate dateDemission;
-
     @Column(name = "import_uid")
     private String importUid;
 
@@ -350,22 +344,6 @@ public class Elu implements Serializable {
 
     public void setImage(Long image) {
         this.image = image;
-    }
-
-    public String getMotifDemission() {
-        return motifDemission;
-    }
-
-    public void setMotifDemission(String motifDemission) {
-        this.motifDemission = motifDemission;
-    }
-
-    public LocalDate getDateDemission() {
-        return dateDemission;
-    }
-
-    public void setDateDemission(LocalDate dateDemission) {
-        this.dateDemission = dateDemission;
     }
 
     public Set<AppartenanceOrganisme> getAppartenancesOrganismes() {
