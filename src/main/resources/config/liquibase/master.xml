@@ -65,5 +65,6 @@
     <include file="classpath:config/liquibase/changelog/20210619185302_added_entity_ListeElectorale.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20210419185302_added_entity_Mandat.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20210420185302_add_mandature.sql" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog-2023/2023-03-18_clean-elu-demission.sql" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
