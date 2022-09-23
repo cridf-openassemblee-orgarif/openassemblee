@@ -22,7 +22,6 @@ export interface EluFromWs {
     importUid: string;
     uid: string;
     shortUid: number;
-    mandats: MandatFromWs[];
 }
 
 export interface GroupePolitiqueFromWs {
@@ -44,22 +43,11 @@ export interface GroupePolitiqueFromWs {
     shortUid: number;
 }
 
-export interface MandatFromWs {
-    id: MandatId;
-    dateDebut: LocalDate;
-    codeDepartement: string;
-    departement: string;
-    dateDemission: LocalDate;
-    motifDemission: string;
-    elu: Elu;
-    // mandature: Mandature;
-    // listeElectorale: ListeElectorale;
-}
-
 export interface EluListDTO {
     elu: EluFromWs;
     groupePolitique?: GroupePolitiqueFromWs;
     shortFonction?: string;
+    actifInCurrentMandat: boolean;
 }
 
 export interface HemicyclePlanUpdateDTO {
