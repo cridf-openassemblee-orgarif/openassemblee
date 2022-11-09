@@ -146,8 +146,10 @@ public class PublicDataWebserviceResource {
                         d.setGroupePolitique(gp.getNom());
                     });
                 }
-                d.setListeCourt(mandat.getListeElectorale().getNomCourt());
-                d.setListeElectorale(mandat.getListeElectorale().getNom());
+                if (mandat.getListeElectorale() != null) {
+                    d.setListeCourt(mandat.getListeElectorale().getNomCourt());
+                    d.setListeElectorale(mandat.getListeElectorale().getNom());
+                }
                 d.setNbEnfants(EMPTY_STRING);
                 d.setNomJeuneFille(EMPTY_STRING);
                 d.setSituationFamiliale(EMPTY_STRING);
