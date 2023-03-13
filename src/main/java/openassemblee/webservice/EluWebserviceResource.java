@@ -3,12 +3,14 @@ package openassemblee.webservice;
 import openassemblee.domain.enumeration.Civilite;
 import openassemblee.service.EluService;
 import openassemblee.service.SessionMandatureService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 import static openassemblee.service.EluService.isCurrentMandat;
@@ -69,13 +71,13 @@ public class EluWebserviceResource {
                     "-";
                 return new PublicElu(
                     it.getElu().getShortUid().toString(),
-                    it.getElu().getUid(),
+                    it.getElu().getUid().replace("-", ""),
                     it.getElu().getCivilite() == Civilite.MONSIEUR ? PublicCivilite.M : PublicCivilite.MME,
                     it.getElu().getNom(),
                     it.getElu().getPrenom(),
                     groupePolitique,
                     groupePolitiqueCourt,
-                    "/images/" + it.getElu().getImage(),
+                    it.getElu().getImage() != null ? "/images/" + it.getElu().getImage() : null,
                     isCurrentMandat(it.getElu().getMandats(), sessionMandatureService.getMandature()));
             })
             .collect(Collectors.toList());
