@@ -1,6 +1,7 @@
 package openassemblee.webservice;
 
 import com.codahale.metrics.annotation.Timed;
+import java.util.stream.Stream;
 import openassemblee.config.data.TestDataInjector;
 import openassemblee.domain.ShortUid;
 import openassemblee.repository.*;
@@ -14,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/remote")
@@ -75,7 +74,8 @@ public class RemoteApiResource {
 
     @RequestMapping(value = "/set-uids", method = RequestMethod.GET)
     public ResponseEntity<String> setUids() {
-        Stream<ShortUid> uuids = eluRepository.findAll()
+        Stream<ShortUid> uuids = eluRepository
+            .findAll()
             .stream()
             .filter(e -> e.getUid() == null)
             .map(e -> {

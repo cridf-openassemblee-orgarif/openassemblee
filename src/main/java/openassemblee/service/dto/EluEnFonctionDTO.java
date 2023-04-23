@@ -9,7 +9,11 @@ public class EluEnFonctionDTO {
     private GroupePolitique groupePolitique;
     private String fonctionLabel;
 
-    public EluEnFonctionDTO(Elu elu, GroupePolitique groupePolitique, String fonctionLabel) {
+    public EluEnFonctionDTO(
+        Elu elu,
+        GroupePolitique groupePolitique,
+        String fonctionLabel
+    ) {
         this.elu = elu;
         this.groupePolitique = groupePolitique;
         this.fonctionLabel = fonctionLabel;

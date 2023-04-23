@@ -1,6 +1,13 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.validation.Valid;
 import openassemblee.domain.HemicyclePlan;
 import openassemblee.repository.HemicyclePlanRepository;
 import openassemblee.service.AuditTrailService;
@@ -17,14 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 /**
  * REST controller for managing HemicyclePlan.
  */
@@ -32,9 +31,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class HemicyclePlanResource {
 
-    private final Logger log = LoggerFactory.getLogger(HemicyclePlanResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        HemicyclePlanResource.class
+    );
 
-    public static final String hemicyclePlansAssociationsUrl = "hemicyclePlans-associations";
+    public static final String hemicyclePlansAssociationsUrl =
+        "hemicyclePlans-associations";
 
     @Inject
     private HemicyclePlanRepository hemicyclePlanRepository;
@@ -51,27 +53,41 @@ public class HemicyclePlanResource {
     /**
      * POST  /hemicyclePlans -> Create a new hemicyclePlan.
      */
-    @RequestMapping(value = "/hemicyclePlans",
+    @RequestMapping(
+        value = "/hemicyclePlans",
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicyclePlan> createHemicyclePlan(@Valid @RequestBody HemicyclePlanCreationDTO hemicyclePlan) throws URISyntaxException {
+    public ResponseEntity<HemicyclePlan> createHemicyclePlan(
+        @Valid @RequestBody HemicyclePlanCreationDTO hemicyclePlan
+    ) throws URISyntaxException {
         log.debug("REST request to save HemicyclePlan : {}", hemicyclePlan);
         HemicyclePlan result = hemicyclePlanService.save(hemicyclePlan);
         auditTrailService.logCreation(result, result.getId(), hemicyclePlan);
-        return ResponseEntity.created(new URI("/api/hemicyclePlans/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("hemicyclePlan", result.getId().toString()))
+        return ResponseEntity
+            .created(new URI("/api/hemicyclePlans/" + result.getId()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    "hemicyclePlan",
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * PUT  /hemicyclePlans -> Updates an existing hemicyclePlan.
      */
-    @RequestMapping(value = "/hemicyclePlans",
+    @RequestMapping(
+        value = "/hemicyclePlans",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicyclePlan> updateHemicyclePlan(@Valid @RequestBody HemicyclePlan hemicyclePlan) throws URISyntaxException {
+    public ResponseEntity<HemicyclePlan> updateHemicyclePlan(
+        @Valid @RequestBody HemicyclePlan hemicyclePlan
+    ) throws URISyntaxException {
         log.debug("REST request to update HemicyclePlan : {}", hemicyclePlan);
         // FIXME audit
         if (hemicyclePlan.getId() == null) {
@@ -79,16 +95,26 @@ public class HemicyclePlanResource {
         }
         HemicyclePlan result = hemicyclePlanRepository.save(hemicyclePlan);
         auditTrailService.logUpdate(hemicyclePlan, result.getId());
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("hemicyclePlan", hemicyclePlan.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    "hemicyclePlan",
+                    hemicyclePlan.getId().toString()
+                )
+            )
             .body(result);
     }
 
-    @RequestMapping(value = "/" + hemicyclePlansAssociationsUrl,
+    @RequestMapping(
+        value = "/" + hemicyclePlansAssociationsUrl,
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Void> updateHemicycleAssociations(@Valid @RequestBody HemicyclePlanUpdateDTO dto) {
+    public ResponseEntity<Void> updateHemicycleAssociations(
+        @Valid @RequestBody HemicyclePlanUpdateDTO dto
+    ) {
         hemicyclePlanService.update(dto);
         auditTrailService.logUpdate(dto, dto.getId());
         return ResponseEntity.ok().build();
@@ -97,21 +123,28 @@ public class HemicyclePlanResource {
     /**
      * GET  /hemicyclePlans -> get all the hemicyclePlans.
      */
-    @RequestMapping(value = "/hemicyclePlans",
+    @RequestMapping(
+        value = "/hemicyclePlans",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<HemicyclePlan> getAllHemicyclePlans() {
         log.debug("REST request to get all HemicyclePlans");
-        return hemicyclePlanRepository.findByMandature(sessionMandatureService.getMandature());
+        return hemicyclePlanRepository.findByMandature(
+            sessionMandatureService.getMandature()
+        );
     }
 
-    @RequestMapping(value = "/hemicyclePlans-projets",
+    @RequestMapping(
+        value = "/hemicyclePlans-projets",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<HemicyclePlan> getAllHemicyclePlansProjets() {
-        return hemicyclePlanRepository.findByMandature(sessionMandatureService.getMandature())
+        return hemicyclePlanRepository
+            .findByMandature(sessionMandatureService.getMandature())
             .stream()
             .filter(p -> p.getSeance() == null)
             .collect(Collectors.toList());
@@ -120,24 +153,33 @@ public class HemicyclePlanResource {
     /**
      * GET  /hemicyclePlans/:id -> get the "id" hemicyclePlan.
      */
-    @RequestMapping(value = "/hemicyclePlans/{id}",
+    @RequestMapping(
+        value = "/hemicyclePlans/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicyclePlan> getHemicyclePlan(@PathVariable Long id) {
+    public ResponseEntity<HemicyclePlan> getHemicyclePlan(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get HemicyclePlan : {}", id);
-        return Optional.ofNullable(hemicyclePlanRepository.findOne(id))
-            .map(hemicyclePlan -> new ResponseEntity<>(
-                hemicyclePlan,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(hemicyclePlanRepository.findOne(id))
+            .map(hemicyclePlan ->
+                new ResponseEntity<>(hemicyclePlan, HttpStatus.OK)
+            )
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/" + hemicyclePlansAssociationsUrl + "/{id}",
+    @RequestMapping(
+        value = "/" + hemicyclePlansAssociationsUrl + "/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicyclePlanAssociationsDTO> getHemicyclePlanAssociations(@PathVariable Long id) {
+    public ResponseEntity<HemicyclePlanAssociationsDTO> getHemicyclePlanAssociations(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get HemicyclePlan : {}", id);
         HemicyclePlanAssociationsDTO dto = hemicyclePlanService.get(id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -146,15 +188,24 @@ public class HemicyclePlanResource {
     /**
      * DELETE  /hemicyclePlans/:id -> delete the "id" hemicyclePlan.
      */
-    @RequestMapping(value = "/hemicyclePlans/{id}",
+    @RequestMapping(
+        value = "/hemicyclePlans/{id}",
         method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Void> deleteHemicyclePlan(@PathVariable Long id) {
         log.debug("REST request to delete HemicyclePlan : {}", id);
         hemicyclePlanRepository.delete(id);
         auditTrailService.logDeletion(HemicyclePlan.class, id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("hemicyclePlan", id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert(
+                    "hemicyclePlan",
+                    id.toString()
+                )
+            )
+            .build();
     }
-
 }

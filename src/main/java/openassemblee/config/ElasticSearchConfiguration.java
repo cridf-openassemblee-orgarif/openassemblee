@@ -2,6 +2,7 @@ package openassemblee.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.elasticsearch.client.Client;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
@@ -10,15 +11,21 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.EntityMapper;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import java.io.IOException;
-
 @Configuration
-@AutoConfigureAfter(value = {JacksonConfiguration.class})
+@AutoConfigureAfter(value = { JacksonConfiguration.class })
 public class ElasticSearchConfiguration {
 
     @Bean
-    public ElasticsearchTemplate elasticsearchTemplate(Client client, Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
-        return new ElasticsearchTemplate(client, new CustomEntityMapper(jackson2ObjectMapperBuilder.createXmlMapper(false).build()));
+    public ElasticsearchTemplate elasticsearchTemplate(
+        Client client,
+        Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder
+    ) {
+        return new ElasticsearchTemplate(
+            client,
+            new CustomEntityMapper(
+                jackson2ObjectMapperBuilder.createXmlMapper(false).build()
+            )
+        );
     }
 
     public class CustomEntityMapper implements EntityMapper {
@@ -27,8 +34,14 @@ public class ElasticSearchConfiguration {
 
         public CustomEntityMapper(ObjectMapper objectMapper) {
             this.objectMapper = objectMapper;
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            objectMapper.configure(
+                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+                false
+            );
+            objectMapper.configure(
+                DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+                true
+            );
         }
 
         @Override
@@ -37,7 +50,8 @@ public class ElasticSearchConfiguration {
         }
 
         @Override
-        public <T> T mapToObject(String source, Class<T> clazz) throws IOException {
+        public <T> T mapToObject(String source, Class<T> clazz)
+            throws IOException {
             return objectMapper.readValue(source, clazz);
         }
     }

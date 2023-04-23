@@ -1,8 +1,7 @@
 package openassemblee.service.dto;
 
-import openassemblee.domain.CommissionThematique;
-
 import java.util.List;
+import openassemblee.domain.CommissionThematique;
 
 public class CommissionThematiqueDTO {
 
@@ -10,12 +9,16 @@ public class CommissionThematiqueDTO {
     private List<AppartenanceCommissionThematiqueDTO> appartenanceCommissionThematiqueDTOs;
     private List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs;
 
-    public CommissionThematiqueDTO(CommissionThematique commissionThematique,
-                                   List<AppartenanceCommissionThematiqueDTO> appartenanceCommissionThematiqueDTOs,
-                                   List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs) {
+    public CommissionThematiqueDTO(
+        CommissionThematique commissionThematique,
+        List<AppartenanceCommissionThematiqueDTO> appartenanceCommissionThematiqueDTOs,
+        List<FonctionCommissionThematiqueDTO> fonctionCommissionThematiqueDTOs
+    ) {
         this.commissionThematique = commissionThematique;
-        this.appartenanceCommissionThematiqueDTOs = appartenanceCommissionThematiqueDTOs;
-        this.fonctionCommissionThematiqueDTOs = fonctionCommissionThematiqueDTOs;
+        this.appartenanceCommissionThematiqueDTOs =
+            appartenanceCommissionThematiqueDTOs;
+        this.fonctionCommissionThematiqueDTOs =
+            fonctionCommissionThematiqueDTOs;
     }
 
     public CommissionThematique getCommissionThematique() {

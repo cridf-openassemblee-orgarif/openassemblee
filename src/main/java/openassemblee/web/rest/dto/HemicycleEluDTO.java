@@ -3,6 +3,7 @@ package openassemblee.web.rest.dto;
 import openassemblee.domain.enumeration.Civilite;
 
 public class HemicycleEluDTO {
+
     private Long id;
     private Civilite civilite;
     private String nom;

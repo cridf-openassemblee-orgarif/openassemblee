@@ -1,5 +1,7 @@
 package openassemblee.web;
 
+import java.sql.SQLException;
+import java.util.UUID;
 import openassemblee.domain.Elu;
 import openassemblee.repository.EluRepository;
 import org.slf4j.Logger;
@@ -9,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.sql.SQLException;
-import java.util.UUID;
 
 @Controller
 public class EluExternalUrlResource {
@@ -34,10 +33,16 @@ public class EluExternalUrlResource {
     }
 
     private UUID deserializeUUID(String stringUuid) {
-        return UUID.fromString(stringUuid.substring(0, 8) +
-            "-" + stringUuid.substring(8, 12) +
-            "-" + stringUuid.substring(12, 16) +
-            "-" + stringUuid.substring(16, 20) +
-            "-" + stringUuid.substring(20));
+        return UUID.fromString(
+            stringUuid.substring(0, 8) +
+            "-" +
+            stringUuid.substring(8, 12) +
+            "-" +
+            stringUuid.substring(12, 16) +
+            "-" +
+            stringUuid.substring(16, 20) +
+            "-" +
+            stringUuid.substring(20)
+        );
     }
 }

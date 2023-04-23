@@ -7,7 +7,10 @@ public class HemicyclePlanAssociationsDTO {
     private List<HemicycleAssociationDTO> associations;
     private HemicycleConfigurationRendu configurationRendu;
 
-    public HemicyclePlanAssociationsDTO(List<HemicycleAssociationDTO> associations, HemicycleConfigurationRendu configurationRendu) {
+    public HemicyclePlanAssociationsDTO(
+        List<HemicycleAssociationDTO> associations,
+        HemicycleConfigurationRendu configurationRendu
+    ) {
         this.associations = associations;
         this.configurationRendu = configurationRendu;
     }
@@ -24,7 +27,9 @@ public class HemicyclePlanAssociationsDTO {
         return configurationRendu;
     }
 
-    public void setConfigurationRendu(HemicycleConfigurationRendu configurationRendu) {
+    public void setConfigurationRendu(
+        HemicycleConfigurationRendu configurationRendu
+    ) {
         this.configurationRendu = configurationRendu;
     }
 }

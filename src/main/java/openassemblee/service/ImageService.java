@@ -1,5 +1,7 @@
 package openassemblee.service;
 
+import java.sql.SQLException;
+import javax.inject.Inject;
 import openassemblee.domain.Elu;
 import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.Image;
@@ -8,9 +10,6 @@ import openassemblee.repository.GroupePolitiqueRepository;
 import openassemblee.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
-import java.sql.SQLException;
 
 @Service
 public class ImageService {
@@ -28,10 +27,15 @@ public class ImageService {
     private AuditTrailService auditTrailService;
 
     @Transactional
-    public void saveImagePourGroupePolitique(Long groupePolitiqueId, Image image) throws SQLException {
+    public void saveImagePourGroupePolitique(
+        Long groupePolitiqueId,
+        Image image
+    ) throws SQLException {
         Long imageId = imageRepository.saveImage(image);
         // TODO un truc plus clean...
-        GroupePolitique groupePolitique = groupePolitiqueRepository.findOne(groupePolitiqueId);
+        GroupePolitique groupePolitique = groupePolitiqueRepository.findOne(
+            groupePolitiqueId
+        );
         groupePolitique.setImage(imageId);
         groupePolitiqueRepository.save(groupePolitique);
         auditTrailService.logUpdate(groupePolitique, groupePolitique.getId());
@@ -46,5 +50,4 @@ public class ImageService {
         eluRepository.save(elu);
         auditTrailService.logUpdate(elu, elu.getId());
     }
-
 }

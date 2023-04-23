@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.AuditTrailAction;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 /**
  * A AuditTrail.
@@ -54,8 +53,7 @@ public class AuditTrail implements Serializable {
     @Column(name = "reason")
     private String reason;
 
-    public AuditTrail() {
-    }
+    public AuditTrail() {}
 
     public AuditTrail(AuditTrailAction action, String details, String reason) {
         this.action = action;
@@ -170,17 +168,38 @@ public class AuditTrail implements Serializable {
 
     @Override
     public String toString() {
-        return "AuditTrail{" +
-            "id=" + id +
-            ", entity='" + entity + "'" +
-            ", entityId='" + entityId + "'" +
-            ", parentEntity='" + parentEntity + "'" +
-            ", parentEntityId='" + parentEntityId + "'" +
-            ", action='" + action + "'" +
-            ", user='" + user + "'" +
-            ", date='" + date + "'" +
-            ", details='" + details + "'" +
-            ", reason='" + reason + "'" +
-            '}';
+        return (
+            "AuditTrail{" +
+            "id=" +
+            id +
+            ", entity='" +
+            entity +
+            "'" +
+            ", entityId='" +
+            entityId +
+            "'" +
+            ", parentEntity='" +
+            parentEntity +
+            "'" +
+            ", parentEntityId='" +
+            parentEntityId +
+            "'" +
+            ", action='" +
+            action +
+            "'" +
+            ", user='" +
+            user +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            ", details='" +
+            details +
+            "'" +
+            ", reason='" +
+            reason +
+            "'" +
+            '}'
+        );
     }
 }

@@ -7,10 +7,12 @@ public class HemicycleArchiveDataWithConfigurationDTO implements Serializable {
     private HemicycleArchiveDataDTO data;
     private HemicycleConfigurationRendu rendu;
 
-    public HemicycleArchiveDataWithConfigurationDTO() {
-    }
+    public HemicycleArchiveDataWithConfigurationDTO() {}
 
-    public HemicycleArchiveDataWithConfigurationDTO(HemicycleArchiveDataDTO data, HemicycleConfigurationRendu rendu) {
+    public HemicycleArchiveDataWithConfigurationDTO(
+        HemicycleArchiveDataDTO data,
+        HemicycleConfigurationRendu rendu
+    ) {
         this.data = data;
         this.rendu = rendu;
     }

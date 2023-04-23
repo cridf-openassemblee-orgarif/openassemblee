@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A DistinctionHonorifique.
@@ -34,8 +33,7 @@ public class DistinctionHonorifique implements Serializable {
     @JsonSerialize(using = JacksonEluIdSerializer.class)
     private Elu elu;
 
-    public DistinctionHonorifique() {
-    }
+    public DistinctionHonorifique() {}
 
     public DistinctionHonorifique(String titre, String date, Elu elu) {
         this.titre = titre;
@@ -83,7 +81,8 @@ public class DistinctionHonorifique implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DistinctionHonorifique distinctionHonorifique = (DistinctionHonorifique) o;
+        DistinctionHonorifique distinctionHonorifique =
+            (DistinctionHonorifique) o;
         return Objects.equals(id, distinctionHonorifique.id);
     }
 
@@ -94,10 +93,17 @@ public class DistinctionHonorifique implements Serializable {
 
     @Override
     public String toString() {
-        return "DistinctionHonorifique{" +
-            "id=" + id +
-            ", titre='" + titre + "'" +
-            ", date='" + date + "'" +
-            '}';
+        return (
+            "DistinctionHonorifique{" +
+            "id=" +
+            id +
+            ", titre='" +
+            titre +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            '}'
+        );
     }
 }

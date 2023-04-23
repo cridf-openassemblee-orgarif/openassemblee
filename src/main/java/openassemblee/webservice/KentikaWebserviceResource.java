@@ -1,6 +1,11 @@
 package openassemblee.webservice;
 
+import static openassemblee.service.EluService.getOnlyCurrentMandat;
+
 import com.codahale.metrics.annotation.Timed;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import openassemblee.domain.Mandat;
 import openassemblee.repository.EluRepository;
 import openassemblee.service.SessionMandatureService;
@@ -9,12 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static openassemblee.service.EluService.getOnlyCurrentMandat;
 
 @RestController
 @RequestMapping("/api/publicdata/v1")
@@ -27,6 +26,7 @@ public class KentikaWebserviceResource {
     private SessionMandatureService sessionMandatureService;
 
     class ExportFonctionCP {
+
         public Long id;
         public String fonction;
 
@@ -37,6 +37,7 @@ public class KentikaWebserviceResource {
     }
 
     class ExportFonctionExecutive {
+
         public Long id;
         public String fonction;
 
@@ -47,6 +48,7 @@ public class KentikaWebserviceResource {
     }
 
     class ExportGroupePolitique {
+
         public Long id;
         public String nom;
 
@@ -57,11 +59,16 @@ public class KentikaWebserviceResource {
     }
 
     class ExportFonctionGroupePolitique {
+
         public Long id;
         public String nom;
         public String fonction;
 
-        public ExportFonctionGroupePolitique(Long id, String nom, String fonction) {
+        public ExportFonctionGroupePolitique(
+            Long id,
+            String nom,
+            String fonction
+        ) {
             this.id = id;
             this.nom = nom;
             this.fonction = fonction;
@@ -69,6 +76,7 @@ public class KentikaWebserviceResource {
     }
 
     class ExportCT {
+
         public Long id;
         public String nom;
 
@@ -79,6 +87,7 @@ public class KentikaWebserviceResource {
     }
 
     class ExportFonctionCT {
+
         public Long id;
         public String nom;
         public String fonction;
@@ -91,6 +100,7 @@ public class KentikaWebserviceResource {
     }
 
     class ExportElu {
+
         public Long id;
         public String emailIleDeFrance;
         public String prenom;
@@ -104,7 +114,20 @@ public class KentikaWebserviceResource {
         public List<ExportCT> appartenancesCts;
         public List<ExportFonctionCT> fonctionsCts;
 
-        public ExportElu(Long id, String emailIleDeFrance, String prenom, String nom, String emailDeCorrespondance, Boolean appartenanceCp, List<ExportFonctionCP> fonctionsCp, List<ExportFonctionExecutive> fonctionsExecutive, List<ExportGroupePolitique> appartenancesGroupePolitique, List<ExportFonctionGroupePolitique> fonctionsGroupePolitique, List<ExportCT> appartenancesCts, List<ExportFonctionCT> fonctionsCts) {
+        public ExportElu(
+            Long id,
+            String emailIleDeFrance,
+            String prenom,
+            String nom,
+            String emailDeCorrespondance,
+            Boolean appartenanceCp,
+            List<ExportFonctionCP> fonctionsCp,
+            List<ExportFonctionExecutive> fonctionsExecutive,
+            List<ExportGroupePolitique> appartenancesGroupePolitique,
+            List<ExportFonctionGroupePolitique> fonctionsGroupePolitique,
+            List<ExportCT> appartenancesCts,
+            List<ExportFonctionCT> fonctionsCts
+        ) {
             this.id = id;
             this.emailIleDeFrance = emailIleDeFrance;
             this.prenom = prenom;
@@ -124,65 +147,179 @@ public class KentikaWebserviceResource {
     @Timed
     @Transactional
     public ResponseEntity<List<ExportElu>> export() {
-        List<ExportElu> elus = eluRepository.findAll().stream()
+        List<ExportElu> elus = eluRepository
+            .findAll()
+            .stream()
             .filter(e -> {
-                Mandat currentMandat = getOnlyCurrentMandat(e.getMandats(), sessionMandatureService.getMandature());
-                return currentMandat != null && currentMandat.getDateDemission() == null;
+                Mandat currentMandat = getOnlyCurrentMandat(
+                    e.getMandats(),
+                    sessionMandatureService.getMandature()
+                );
+                return (
+                    currentMandat != null &&
+                    currentMandat.getDateDemission() == null
+                );
             })
             .map(e ->
                 new ExportElu(
                     e.getId(),
-                    e.getAdressesMail().stream()
+                    e
+                        .getAdressesMail()
+                        .stream()
                         .filter(m -> m.getMail().endsWith("@iledefrance.fr"))
-                        .findFirst().map(m -> m.getMail()).orElseGet(() -> ""),
+                        .findFirst()
+                        .map(m -> m.getMail())
+                        .orElseGet(() -> ""),
                     e.getPrenom(),
                     e.getNom(),
-                    e.getAdressesMail().stream()
+                    e
+                        .getAdressesMail()
+                        .stream()
                         .filter(m -> !m.getMail().trim().equals(""))
-                        .findFirst().map(m -> m.getMail()).orElseGet(() -> ""),
-                    e.getAppartenancesCommissionPermanente().stream()
+                        .findFirst()
+                        .map(m -> m.getMail())
+                        .orElseGet(() -> ""),
+                    e
+                        .getAppartenancesCommissionPermanente()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
-                        .collect(Collectors.toList()).size() != 0,
-                    e.getFonctionsCommissionPermanente().stream()
+                        .collect(Collectors.toList())
+                        .size() !=
+                    0,
+                    e
+                        .getFonctionsCommissionPermanente()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
-                        .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(f ->
+                            f
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
                             new ExportFonctionCP(a.getId(), a.getFonction())
-                        ).collect(Collectors.toList()),
-                    e.getFonctionsExecutives().stream()
+                        )
+                        .collect(Collectors.toList()),
+                    e
+                        .getFonctionsExecutives()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
-                        .filter(f -> f.getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(f ->
+                            f
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
-                            new ExportFonctionExecutive(a.getId(), a.getFonction())
-                        ).collect(Collectors.toList()),
-                    e.getAppartenancesGroupePolitique().stream()
+                            new ExportFonctionExecutive(
+                                a.getId(),
+                                a.getFonction()
+                            )
+                        )
+                        .collect(Collectors.toList()),
+                    e
+                        .getAppartenancesGroupePolitique()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
-                        .filter(a -> a.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(a ->
+                            a
+                                .getGroupePolitique()
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
-                            new ExportGroupePolitique(a.getId(), a.getGroupePolitique().getNom())
-                        ).collect(Collectors.toList()),
-                    e.getFonctionsGroupePolitique().stream()
+                            new ExportGroupePolitique(
+                                a.getId(),
+                                a.getGroupePolitique().getNom()
+                            )
+                        )
+                        .collect(Collectors.toList()),
+                    e
+                        .getFonctionsGroupePolitique()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
-                        .filter(f -> f.getGroupePolitique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(f ->
+                            f
+                                .getGroupePolitique()
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
-                            new ExportFonctionGroupePolitique(a.getId(), a.getGroupePolitique().getNom(), a.getFonction())
-                        ).collect(Collectors.toList()),
-                    e.getAppartenancesCommissionsThematiques().stream()
+                            new ExportFonctionGroupePolitique(
+                                a.getId(),
+                                a.getGroupePolitique().getNom(),
+                                a.getFonction()
+                            )
+                        )
+                        .collect(Collectors.toList()),
+                    e
+                        .getAppartenancesCommissionsThematiques()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
                         .filter(a -> a.getCommissionThematique() != null)
-                        .filter(a -> a.getCommissionThematique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(a ->
+                            a
+                                .getCommissionThematique()
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
-                            new ExportCT(a.getId(), a.getCommissionThematique().getNom())
-                        ).collect(Collectors.toList()),
-                    e.getFonctionsCommissionsThematiques().stream()
+                            new ExportCT(
+                                a.getId(),
+                                a.getCommissionThematique().getNom()
+                            )
+                        )
+                        .collect(Collectors.toList()),
+                    e
+                        .getFonctionsCommissionsThematiques()
+                        .stream()
                         .filter(a -> a.getDateFin() == null)
                         .filter(a -> a.getCommissionThematique() != null)
-                        .filter(a -> a.getCommissionThematique().getMandature().getId().equals(sessionMandatureService.getMandature().getId()))
+                        .filter(a ->
+                            a
+                                .getCommissionThematique()
+                                .getMandature()
+                                .getId()
+                                .equals(
+                                    sessionMandatureService
+                                        .getMandature()
+                                        .getId()
+                                )
+                        )
                         .map(a ->
-                            new ExportFonctionCT(a.getId(), a.getCommissionThematique().getNom(), a.getFonction())
-                        ).collect(Collectors.toList())
+                            new ExportFonctionCT(
+                                a.getId(),
+                                a.getCommissionThematique().getNom(),
+                                a.getFonction()
+                            )
+                        )
+                        .collect(Collectors.toList())
                 )
-            ).collect(Collectors.toList());
+            )
+            .collect(Collectors.toList());
         return ResponseEntity.ok(elus);
     }
 }

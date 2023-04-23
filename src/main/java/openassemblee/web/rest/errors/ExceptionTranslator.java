@@ -1,5 +1,6 @@
 package openassemblee.web.rest.errors;
 
+import java.util.List;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -40,7 +39,9 @@ public class ExceptionTranslator {
     @ExceptionHandler(CustomParameterizedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ParameterizedErrorDTO processParameterizedValidationError(CustomParameterizedException ex) {
+    public ParameterizedErrorDTO processParameterizedValidationError(
+        CustomParameterizedException ex
+    ) {
         return ex.getErrorDTO();
     }
 
@@ -55,7 +56,11 @@ public class ExceptionTranslator {
         ErrorDTO dto = new ErrorDTO(ErrorConstants.ERR_VALIDATION);
 
         for (FieldError fieldError : fieldErrors) {
-            dto.add(fieldError.getObjectName(), fieldError.getField(), fieldError.getCode());
+            dto.add(
+                fieldError.getObjectName(),
+                fieldError.getField(),
+                fieldError.getCode()
+            );
         }
 
         return dto;
@@ -64,7 +69,12 @@ public class ExceptionTranslator {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ErrorDTO processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        return new ErrorDTO(ErrorConstants.ERR_METHOD_NOT_SUPPORTED, exception.getMessage());
+    public ErrorDTO processMethodNotSupportedException(
+        HttpRequestMethodNotSupportedException exception
+    ) {
+        return new ErrorDTO(
+            ErrorConstants.ERR_METHOD_NOT_SUPPORTED,
+            exception.getMessage()
+        );
     }
 }

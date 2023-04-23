@@ -1,6 +1,8 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import java.util.Optional;
+import javax.inject.Inject;
 import openassemblee.domain.AdressePostale;
 import openassemblee.repository.AdressePostaleRepository;
 import openassemblee.repository.search.AdressePostaleSearchRepository;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import java.util.Optional;
-
 /**
  * REST controller for managing AdressePostale.
  */
@@ -24,7 +23,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class AdressePostaleResource {
 
-    private final Logger log = LoggerFactory.getLogger(AdressePostaleResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        AdressePostaleResource.class
+    );
 
     @Inject
     private AdressePostaleRepository adressePostaleRepository;
@@ -35,16 +36,21 @@ public class AdressePostaleResource {
     /**
      * GET  /adressePostales/:id -> get the "id" adressePostale.
      */
-    @RequestMapping(value = "/adressePostales/{id}",
+    @RequestMapping(
+        value = "/adressePostales/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<AdressePostale> getAdressePostale(@PathVariable Long id) {
+    public ResponseEntity<AdressePostale> getAdressePostale(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get AdressePostale : {}", id);
-        return Optional.ofNullable(adressePostaleRepository.findOne(id))
-            .map(adressePostale -> new ResponseEntity<>(
-                adressePostale,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(adressePostaleRepository.findOne(id))
+            .map(adressePostale ->
+                new ResponseEntity<>(adressePostale, HttpStatus.OK)
+            )
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

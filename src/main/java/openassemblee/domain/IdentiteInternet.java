@@ -1,13 +1,12 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.TypeIdentiteInternet;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A IdentiteInternet.
@@ -41,7 +40,9 @@ public class IdentiteInternet implements Serializable {
         return typeIdentiteInternet;
     }
 
-    public void setTypeIdentiteInternet(TypeIdentiteInternet typeIdentiteInternet) {
+    public void setTypeIdentiteInternet(
+        TypeIdentiteInternet typeIdentiteInternet
+    ) {
         this.typeIdentiteInternet = typeIdentiteInternet;
     }
 
@@ -72,10 +73,17 @@ public class IdentiteInternet implements Serializable {
 
     @Override
     public String toString() {
-        return "IdentiteInternet{" +
-            "id=" + id +
-            ", typeIdentiteInternet='" + typeIdentiteInternet + "'" +
-            ", url='" + url + "'" +
-            '}';
+        return (
+            "IdentiteInternet{" +
+            "id=" +
+            id +
+            ", typeIdentiteInternet='" +
+            typeIdentiteInternet +
+            "'" +
+            ", url='" +
+            url +
+            "'" +
+            '}'
+        );
     }
 }

@@ -1,13 +1,12 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A CommissionThematique.
@@ -120,12 +119,23 @@ public class CommissionThematique implements Serializable {
 
     @Override
     public String toString() {
-        return "CommissionThematique{" +
-            "id=" + id +
-            ", nom='" + nom + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "CommissionThematique{" +
+            "id=" +
+            id +
+            ", nom='" +
+            nom +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

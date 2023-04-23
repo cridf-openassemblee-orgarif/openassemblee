@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.*;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.Civilite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.*;
 
 /**
  * A Elu.
@@ -72,39 +71,49 @@ public class Elu implements Serializable {
     private Long shortUid;
 
     // TODO mlo pourquoi tests et la pratique ne donne pas le meme resultat
-    @OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany //(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // TODO et sans la joinTable ?
-    @JoinTable(name = "elu_adresses_postales",
+    @JoinTable(
+        name = "elu_adresses_postales",
         joinColumns = @JoinColumn(name = "elu_id"),
-        inverseJoinColumns = @JoinColumn(name = "adresse_postale_id"))
+        inverseJoinColumns = @JoinColumn(name = "adresse_postale_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<AdressePostale> adressesPostales = new ArrayList<>();
 
     @OneToMany
-    @JoinTable(name = "elu_numero_telephone",
+    @JoinTable(
+        name = "elu_numero_telephone",
         joinColumns = @JoinColumn(name = "elu_id"),
-        inverseJoinColumns = @JoinColumn(name = "numero_telephone_id"))
+        inverseJoinColumns = @JoinColumn(name = "numero_telephone_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<NumeroTelephone> numerosTelephones = new ArrayList<>();
 
     @OneToMany
-    @JoinTable(name = "elu_numero_fax",
+    @JoinTable(
+        name = "elu_numero_fax",
         joinColumns = @JoinColumn(name = "elu_id"),
-        inverseJoinColumns = @JoinColumn(name = "numero_fax_id"))
+        inverseJoinColumns = @JoinColumn(name = "numero_fax_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<NumeroFax> numerosFax = new ArrayList<>();
 
     @OneToMany
-    @JoinTable(name = "elu_adresse_mail",
+    @JoinTable(
+        name = "elu_adresse_mail",
         joinColumns = @JoinColumn(name = "elu_id"),
-        inverseJoinColumns = @JoinColumn(name = "adresse_mail_id"))
+        inverseJoinColumns = @JoinColumn(name = "adresse_mail_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<AdresseMail> adressesMail = new ArrayList<>();
 
     @OneToMany
-    @JoinTable(name = "elu_identite_internet",
+    @JoinTable(
+        name = "elu_identite_internet",
         joinColumns = @JoinColumn(name = "elu_id"),
-        inverseJoinColumns = @JoinColumn(name = "identite_internet_id"))
+        inverseJoinColumns = @JoinColumn(name = "identite_internet_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<IdentiteInternet> identitesInternet = new ArrayList<>();
 
@@ -114,31 +123,38 @@ public class Elu implements Serializable {
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<FonctionCommissionPermanente> fonctionsCommissionPermanente = new ArrayList<>();
+    private List<FonctionCommissionPermanente> fonctionsCommissionPermanente =
+        new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente = new ArrayList<>();
+    private List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente =
+        new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
+    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique =
+        new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<FonctionGroupePolitique> fonctionsGroupePolitique = new ArrayList<>();
+    private List<FonctionGroupePolitique> fonctionsGroupePolitique =
+        new ArrayList<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private Set<AppartenanceCommissionThematique> appartenancesCommissionsThematiques = new HashSet<>();
+    private Set<AppartenanceCommissionThematique> appartenancesCommissionsThematiques =
+        new HashSet<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private Set<FonctionCommissionThematique> fonctionsCommissionsThematiques = new HashSet<>();
+    private Set<FonctionCommissionThematique> fonctionsCommissionsThematiques =
+        new HashSet<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private Set<AppartenanceOrganisme> appartenancesOrganismes = new HashSet<>();
+    private Set<AppartenanceOrganisme> appartenancesOrganismes =
+        new HashSet<>();
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
@@ -146,15 +162,15 @@ public class Elu implements Serializable {
 
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private Set<DistinctionHonorifique> distinctionHonorifiques = new HashSet<>();
+    private Set<DistinctionHonorifique> distinctionHonorifiques =
+        new HashSet<>();
 
     // TODO utile ici en fait ?
     @OneToMany(mappedBy = "elu")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<Mandat> mandats = new HashSet<>();
 
-    public Elu() {
-    }
+    public Elu() {}
 
     public Elu(Long id) {
         this.id = id;
@@ -284,7 +300,9 @@ public class Elu implements Serializable {
         return fonctionsExecutives;
     }
 
-    public void setFonctionsExecutives(List<FonctionExecutive> fonctionsExecutives) {
+    public void setFonctionsExecutives(
+        List<FonctionExecutive> fonctionsExecutives
+    ) {
         this.fonctionsExecutives = fonctionsExecutives;
     }
 
@@ -292,7 +310,9 @@ public class Elu implements Serializable {
         return fonctionsCommissionPermanente;
     }
 
-    public void setFonctionsCommissionPermanente(List<FonctionCommissionPermanente> fonctionsCommissionPermanente) {
+    public void setFonctionsCommissionPermanente(
+        List<FonctionCommissionPermanente> fonctionsCommissionPermanente
+    ) {
         this.fonctionsCommissionPermanente = fonctionsCommissionPermanente;
     }
 
@@ -300,16 +320,20 @@ public class Elu implements Serializable {
         return appartenancesCommissionPermanente;
     }
 
-    public void setAppartenancesCommissionPermanente(List<AppartenanceCommissionPermanente>
-                                                         appartenancesCommissionPermanente) {
-        this.appartenancesCommissionPermanente = appartenancesCommissionPermanente;
+    public void setAppartenancesCommissionPermanente(
+        List<AppartenanceCommissionPermanente> appartenancesCommissionPermanente
+    ) {
+        this.appartenancesCommissionPermanente =
+            appartenancesCommissionPermanente;
     }
 
     public List<AppartenanceGroupePolitique> getAppartenancesGroupePolitique() {
         return appartenancesGroupePolitique;
     }
 
-    public void setAppartenancesGroupePolitique(List<AppartenanceGroupePolitique> appartenancesGroupePolitique) {
+    public void setAppartenancesGroupePolitique(
+        List<AppartenanceGroupePolitique> appartenancesGroupePolitique
+    ) {
         this.appartenancesGroupePolitique = appartenancesGroupePolitique;
     }
 
@@ -317,7 +341,9 @@ public class Elu implements Serializable {
         return fonctionsGroupePolitique;
     }
 
-    public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
+    public void setFonctionsGroupePolitique(
+        List<FonctionGroupePolitique> fonctionsGroupePolitique
+    ) {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
     }
 
@@ -325,16 +351,20 @@ public class Elu implements Serializable {
         return appartenancesCommissionsThematiques;
     }
 
-    public void setAppartenancesCommissionsThematiques(Set<AppartenanceCommissionThematique>
-                                                           appartenancesCommissionsThematiques) {
-        this.appartenancesCommissionsThematiques = appartenancesCommissionsThematiques;
+    public void setAppartenancesCommissionsThematiques(
+        Set<AppartenanceCommissionThematique> appartenancesCommissionsThematiques
+    ) {
+        this.appartenancesCommissionsThematiques =
+            appartenancesCommissionsThematiques;
     }
 
     public Set<FonctionCommissionThematique> getFonctionsCommissionsThematiques() {
         return fonctionsCommissionsThematiques;
     }
 
-    public void setFonctionsCommissionsThematiques(Set<FonctionCommissionThematique> fonctionsCommissionsThematiques) {
+    public void setFonctionsCommissionsThematiques(
+        Set<FonctionCommissionThematique> fonctionsCommissionsThematiques
+    ) {
         this.fonctionsCommissionsThematiques = fonctionsCommissionsThematiques;
     }
 
@@ -350,7 +380,9 @@ public class Elu implements Serializable {
         return appartenancesOrganismes;
     }
 
-    public void setAppartenancesOrganismes(Set<AppartenanceOrganisme> appartenancesOrganismes) {
+    public void setAppartenancesOrganismes(
+        Set<AppartenanceOrganisme> appartenancesOrganismes
+    ) {
         this.appartenancesOrganismes = appartenancesOrganismes;
     }
 
@@ -394,7 +426,9 @@ public class Elu implements Serializable {
         return distinctionHonorifiques;
     }
 
-    public void setDistinctionHonorifiques(Set<DistinctionHonorifique> distinctionHonorifiques) {
+    public void setDistinctionHonorifiques(
+        Set<DistinctionHonorifique> distinctionHonorifiques
+    ) {
         this.distinctionHonorifiques = distinctionHonorifiques;
     }
 
@@ -448,13 +482,24 @@ public class Elu implements Serializable {
 
     @Override
     public String toString() {
-        return "Elu{" +
-            "id=" + id +
-            ", civilite='" + civilite + "'" +
-            ", nom='" + nom + "'" +
-            ", prenom='" + prenom + "'" +
-            ", nomJeuneFille='" + nomJeuneFille + "'" +
-            '}';
+        return (
+            "Elu{" +
+            "id=" +
+            id +
+            ", civilite='" +
+            civilite +
+            "'" +
+            ", nom='" +
+            nom +
+            "'" +
+            ", prenom='" +
+            prenom +
+            "'" +
+            ", nomJeuneFille='" +
+            nomJeuneFille +
+            "'" +
+            '}'
+        );
     }
 
     @JsonIgnore

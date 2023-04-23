@@ -8,7 +8,10 @@ public class FonctionCommissionThematiqueDTO {
     private FonctionCommissionThematique fonctionCommissionThematique;
     private Elu elu;
 
-    public FonctionCommissionThematiqueDTO(FonctionCommissionThematique fonctionCommissionThematique, Elu elu) {
+    public FonctionCommissionThematiqueDTO(
+        FonctionCommissionThematique fonctionCommissionThematique,
+        Elu elu
+    ) {
         this.fonctionCommissionThematique = fonctionCommissionThematique;
         this.elu = elu;
     }

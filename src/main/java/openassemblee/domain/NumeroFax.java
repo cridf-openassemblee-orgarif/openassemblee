@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A NumeroFax.
@@ -66,7 +65,9 @@ public class NumeroFax implements Publishable, Serializable {
         return niveauConfidentialite;
     }
 
-    public void setNiveauConfidentialite(NiveauConfidentialite niveauConfidentialite) {
+    public void setNiveauConfidentialite(
+        NiveauConfidentialite niveauConfidentialite
+    ) {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
@@ -98,12 +99,23 @@ public class NumeroFax implements Publishable, Serializable {
 
     @Override
     public String toString() {
-        return "NumeroFax{" +
-            "id=" + id +
-            ", natureProPerso='" + natureProPerso + "'" +
-            ", numero='" + numero + "'" +
-            ", niveauConfidentialite='" + niveauConfidentialite + "'" +
-            ", publicationAnnuaire='" + publicationAnnuaire + "'" +
-            '}';
+        return (
+            "NumeroFax{" +
+            "id=" +
+            id +
+            ", natureProPerso='" +
+            natureProPerso +
+            "'" +
+            ", numero='" +
+            numero +
+            "'" +
+            ", niveauConfidentialite='" +
+            niveauConfidentialite +
+            "'" +
+            ", publicationAnnuaire='" +
+            publicationAnnuaire +
+            "'" +
+            '}'
+        );
     }
 }

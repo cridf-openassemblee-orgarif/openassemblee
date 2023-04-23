@@ -1,9 +1,8 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.enumeration.AuditTrailAction;
-
 import java.io.Serializable;
 import java.util.Objects;
+import openassemblee.domain.enumeration.AuditTrailAction;
 
 /**
  * A DTO for the AuditTrail entity.
@@ -32,10 +31,21 @@ public class AuditTrailDTO implements Serializable {
 
     private String reason;
 
-    public AuditTrailDTO() {
-    }
+    public AuditTrailDTO() {}
 
-    public AuditTrailDTO(Long id, String entity, Long entityId, String parentEntity, Long parentEntityId, AuditTrailAction action, String user, String date, String details, String dto, String reason) {
+    public AuditTrailDTO(
+        Long id,
+        String entity,
+        Long entityId,
+        String parentEntity,
+        Long parentEntityId,
+        AuditTrailAction action,
+        String user,
+        String date,
+        String details,
+        String dto,
+        String reason
+    ) {
         this.id = id;
         this.entity = entity;
         this.entityId = entityId;
@@ -160,13 +170,26 @@ public class AuditTrailDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "AuditTrailDTO{" +
-            "id=" + id +
-            ", action='" + action + "'" +
-            ", user='" + user + "'" +
-            ", date='" + date + "'" +
-            ", details='" + details + "'" +
-            ", reason='" + reason + "'" +
-            '}';
+        return (
+            "AuditTrailDTO{" +
+            "id=" +
+            id +
+            ", action='" +
+            action +
+            "'" +
+            ", user='" +
+            user +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            ", details='" +
+            details +
+            "'" +
+            ", reason='" +
+            reason +
+            "'" +
+            '}'
+        );
     }
 }

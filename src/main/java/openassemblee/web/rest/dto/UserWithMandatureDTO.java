@@ -8,9 +8,11 @@ public class UserWithMandatureDTO extends UserDTO {
     private Mandature currentMandature;
     private Boolean isForcedMandature;
 
-    public UserWithMandatureDTO(User user,
-                                Mandature currentMandature,
-                                Boolean isForcedMandature) {
+    public UserWithMandatureDTO(
+        User user,
+        Mandature currentMandature,
+        Boolean isForcedMandature
+    ) {
         super(user);
         this.currentMandature = currentMandature;
         this.isForcedMandature = isForcedMandature;

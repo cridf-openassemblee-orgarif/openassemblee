@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A HemicycleConfiguration.
@@ -106,7 +105,8 @@ public class HemicycleConfiguration implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        HemicycleConfiguration hemicycleConfiguration = (HemicycleConfiguration) o;
+        HemicycleConfiguration hemicycleConfiguration =
+            (HemicycleConfiguration) o;
         return Objects.equals(id, hemicycleConfiguration.id);
     }
 
@@ -117,14 +117,29 @@ public class HemicycleConfiguration implements Serializable {
 
     @Override
     public String toString() {
-        return "HemicycleConfiguration{" +
-            "id=" + id +
-            ", label='" + label + "'" +
-            ", jsonConfiguration='" + jsonConfiguration + "'" +
-            ", creationDate='" + creationDate + "'" +
-            ", lastModificationDate='" + lastModificationDate + "'" +
-            ", frozen='" + frozen + "'" +
-            ", frozenDate='" + frozenDate + "'" +
-            '}';
+        return (
+            "HemicycleConfiguration{" +
+            "id=" +
+            id +
+            ", label='" +
+            label +
+            "'" +
+            ", jsonConfiguration='" +
+            jsonConfiguration +
+            "'" +
+            ", creationDate='" +
+            creationDate +
+            "'" +
+            ", lastModificationDate='" +
+            lastModificationDate +
+            "'" +
+            ", frozen='" +
+            frozen +
+            "'" +
+            ", frozenDate='" +
+            frozenDate +
+            "'" +
+            '}'
+        );
     }
 }

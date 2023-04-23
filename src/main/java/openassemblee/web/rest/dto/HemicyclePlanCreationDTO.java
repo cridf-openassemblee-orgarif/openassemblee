@@ -1,8 +1,7 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.Mandature;
-
 import java.io.Serializable;
+import openassemblee.domain.Mandature;
 
 public class HemicyclePlanCreationDTO implements Serializable {
 

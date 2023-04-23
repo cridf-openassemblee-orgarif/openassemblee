@@ -7,7 +7,10 @@ public class CommissionThematiqueListDTO {
     private CommissionThematique commissionThematique;
     private int count;
 
-    public CommissionThematiqueListDTO(CommissionThematique commissionThematique, int count) {
+    public CommissionThematiqueListDTO(
+        CommissionThematique commissionThematique,
+        int count
+    ) {
         this.commissionThematique = commissionThematique;
         this.count = count;
     }

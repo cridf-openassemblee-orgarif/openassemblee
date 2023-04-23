@@ -1,8 +1,7 @@
 package openassemblee.service.dto;
 
-import openassemblee.domain.GroupePolitique;
-
 import java.util.List;
+import openassemblee.domain.GroupePolitique;
 
 public class GroupePolitiqueDTO {
 
@@ -10,8 +9,11 @@ public class GroupePolitiqueDTO {
     private List<AppartenanceGroupePolitiqueDTO> appartenanceGroupePolitiqueDTOs;
     private List<FonctionGroupePolitiqueDTO> fonctionGroupePolitiqueDTOs;
 
-    public GroupePolitiqueDTO(GroupePolitique groupePolitique, List<AppartenanceGroupePolitiqueDTO>
-        appartenanceGroupePolitiqueDTOs, List<FonctionGroupePolitiqueDTO> fonctionGroupePolitiqueDTOs) {
+    public GroupePolitiqueDTO(
+        GroupePolitique groupePolitique,
+        List<AppartenanceGroupePolitiqueDTO> appartenanceGroupePolitiqueDTOs,
+        List<FonctionGroupePolitiqueDTO> fonctionGroupePolitiqueDTOs
+    ) {
         this.groupePolitique = groupePolitique;
         this.appartenanceGroupePolitiqueDTOs = appartenanceGroupePolitiqueDTOs;
         this.fonctionGroupePolitiqueDTOs = fonctionGroupePolitiqueDTOs;
@@ -29,4 +31,3 @@ public class GroupePolitiqueDTO {
         return fonctionGroupePolitiqueDTOs;
     }
 }
-

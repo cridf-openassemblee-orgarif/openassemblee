@@ -1,6 +1,15 @@
 package openassemblee.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.inject.Inject;
 import openassemblee.domain.Organisme;
 import openassemblee.repository.OrganismeRepository;
 import openassemblee.repository.search.OrganismeSearchRepository;
@@ -18,16 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Organisme.
@@ -53,31 +52,48 @@ public class OrganismeResource {
     /**
      * POST  /organismes -> Create a new organisme.
      */
-    @RequestMapping(value = "/organismes",
+    @RequestMapping(
+        value = "/organismes",
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Organisme> createOrganisme(@RequestBody Organisme organisme) throws URISyntaxException {
+    public ResponseEntity<Organisme> createOrganisme(
+        @RequestBody Organisme organisme
+    ) throws URISyntaxException {
         log.debug("REST request to save Organisme : {}", organisme);
         if (organisme.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new organisme cannot already have an ID").body(null);
+            return ResponseEntity
+                .badRequest()
+                .header("Failure", "A new organisme cannot already have an ID")
+                .body(null);
         }
         Organisme result = organismeRepository.save(organisme);
         organismeSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
-        return ResponseEntity.created(new URI("/api/organismes/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("organisme", result.getId().toString()))
+        return ResponseEntity
+            .created(new URI("/api/organismes/" + result.getId()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    "organisme",
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * PUT  /organismes -> Updates an existing organisme.
      */
-    @RequestMapping(value = "/organismes",
+    @RequestMapping(
+        value = "/organismes",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Organisme> updateOrganisme(@RequestBody Organisme organisme) throws URISyntaxException {
+    public ResponseEntity<Organisme> updateOrganisme(
+        @RequestBody Organisme organisme
+    ) throws URISyntaxException {
         log.debug("REST request to update Organisme : {}", organisme);
         if (organisme.getId() == null) {
             return createOrganisme(organisme);
@@ -85,82 +101,110 @@ public class OrganismeResource {
         Organisme result = organismeRepository.save(organisme);
         organismeSearchRepository.save(organisme);
         auditTrailService.logUpdate(result, result.getId());
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("organisme", organisme.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    "organisme",
+                    organisme.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * GET  /organismes -> get all the organismes.
      */
-    @RequestMapping(value = "/organismes",
+    @RequestMapping(
+        value = "/organismes",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<List<Organisme>> getAllOrganismes(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<Organisme>> getAllOrganismes(Pageable pageable)
+        throws URISyntaxException {
         Page<Organisme> page = organismeRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/organismes");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            page,
+            "/api/organismes"
+        );
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /organismes/:id -> get the "id" organisme.
      */
-    @RequestMapping(value = "/organismes/{id}",
+    @RequestMapping(
+        value = "/organismes/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Organisme> getOrganisme(@PathVariable Long id) {
         log.debug("REST request to get Organisme : {}", id);
-        return Optional.ofNullable(organismeRepository.findOne(id))
-            .map(organisme -> new ResponseEntity<>(
-                organisme,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(organismeRepository.findOne(id))
+            .map(organisme -> new ResponseEntity<>(organisme, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * GET  /organismes/:id -> get the "id" organisme.
      */
-    @RequestMapping(value = "/organismes/{id}/dto",
+    @RequestMapping(
+        value = "/organismes/{id}/dto",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<OrganismeDTO> getOrganismeDto(@PathVariable Long id) {
         log.debug("REST request to get Organisme : {}", id);
-        return Optional.ofNullable(organismeService.get(id))
-            .map(seance -> new ResponseEntity<>(
-                seance,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(organismeService.get(id))
+            .map(seance -> new ResponseEntity<>(seance, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * DELETE  /organismes/:id -> delete the "id" organisme.
      */
-    @RequestMapping(value = "/organismes/{id}",
+    @RequestMapping(
+        value = "/organismes/{id}",
         method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Void> deleteOrganisme(@PathVariable Long id) {
         log.debug("REST request to delete Organisme : {}", id);
         organismeRepository.delete(id);
         organismeSearchRepository.delete(id);
         auditTrailService.logDeletion(Organisme.class, id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("organisme", id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert("organisme", id.toString())
+            )
+            .build();
     }
 
     /**
      * SEARCH  /_search/organismes/:query -> search for the organisme corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/organismes/{query}",
+    @RequestMapping(
+        value = "/_search/organismes/{query}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<Organisme> searchOrganismes(@PathVariable String query) {
         return StreamSupport
-            .stream(organismeSearchRepository.search(queryStringQuery(query + "*")).spliterator(), false)
+            .stream(
+                organismeSearchRepository
+                    .search(queryStringQuery(query + "*"))
+                    .spliterator(),
+                false
+            )
             .collect(Collectors.toList());
     }
 }

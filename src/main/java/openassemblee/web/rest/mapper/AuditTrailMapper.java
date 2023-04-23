@@ -1,19 +1,20 @@
 package openassemblee.web.rest.mapper;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import openassemblee.domain.AuditTrail;
 import openassemblee.web.rest.dto.AuditTrailDTO;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Component
 public class AuditTrailMapper {
 
-    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private static DateTimeFormatter dateTimeFormatter =
+        DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public AuditTrailDTO entityToDto(AuditTrail at) {
-        return new AuditTrailDTO(at.getId(),
+        return new AuditTrailDTO(
+            at.getId(),
             at.getEntity(),
             at.getEntityId(),
             at.getParentEntity(),
@@ -23,11 +24,16 @@ public class AuditTrailMapper {
             formatDate(at.getDate()),
             at.getDetails(),
             at.getDto(),
-            at.getReason());
+            at.getReason()
+        );
     }
 
     public AuditTrail dtoToEntity(AuditTrailDTO dto) {
-        return new AuditTrail(dto.getAction(), dto.getDetails(), dto.getReason());
+        return new AuditTrail(
+            dto.getAction(),
+            dto.getDetails(),
+            dto.getReason()
+        );
     }
 
     public String formatDate(ZonedDateTime date) {

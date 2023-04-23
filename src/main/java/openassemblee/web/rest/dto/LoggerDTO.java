@@ -15,8 +15,7 @@ public class LoggerDTO {
     }
 
     @JsonCreator
-    public LoggerDTO() {
-    }
+    public LoggerDTO() {}
 
     public String getName() {
         return name;
@@ -36,9 +35,15 @@ public class LoggerDTO {
 
     @Override
     public String toString() {
-        return "LoggerDTO{" +
-            "name='" + name + '\'' +
-            ", level='" + level + '\'' +
-            '}';
+        return (
+            "LoggerDTO{" +
+            "name='" +
+            name +
+            '\'' +
+            ", level='" +
+            level +
+            '\'' +
+            '}'
+        );
     }
 }

@@ -1,5 +1,8 @@
 package openassemblee.config;
 
+import java.util.Arrays;
+import java.util.List;
+import javax.inject.Inject;
 import openassemblee.security.*;
 import openassemblee.web.filter.CsrfCookieGeneratorFilter;
 import openassemblee.web.filter.DevCorsFilter;
@@ -21,10 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
-
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -61,7 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth)
+        throws Exception {
         auth
             .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder());
@@ -69,7 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
+        web
+            .ignoring()
             .antMatchers("/scripts/**/*.{js,html}")
             .antMatchers("/bower_components/**")
             .antMatchers("/i18n/**")
@@ -86,15 +87,39 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
                 .addFilterAfter(new DevCorsFilter(), CsrfFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/" + HemicyclePlanResource.hemicyclePlansAssociationsUrl + "/**").permitAll()
-                .antMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesUrl + "/**").permitAll()
-                .antMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesDataUrl + "/**").permitAll()
-                .antMatchers("/api/elus").permitAll();
+                .antMatchers(
+                    "/api/" +
+                    HemicyclePlanResource.hemicyclePlansAssociationsUrl +
+                    "/**"
+                )
+                .permitAll()
+                .antMatchers(
+                    "/api/" +
+                    HemicycleArchiveResource.hemicycleArchivesUrl +
+                    "/**"
+                )
+                .permitAll()
+                .antMatchers(
+                    "/api/" +
+                    HemicycleArchiveResource.hemicycleArchivesDataUrl +
+                    "/**"
+                )
+                .permitAll()
+                .antMatchers("/api/elus")
+                .permitAll();
             // Pour désactiver le csrf en dev sur l'hémicycle en React (post requests only)
             http
                 .csrf()
-                .ignoringAntMatchers("/api/" + HemicyclePlanResource.hemicyclePlansAssociationsUrl + "/**")
-                .ignoringAntMatchers("/api/" + HemicycleArchiveResource.hemicycleArchivesUrl + "/**");
+                .ignoringAntMatchers(
+                    "/api/" +
+                    HemicyclePlanResource.hemicyclePlansAssociationsUrl +
+                    "/**"
+                )
+                .ignoringAntMatchers(
+                    "/api/" +
+                    HemicycleArchiveResource.hemicycleArchivesUrl +
+                    "/**"
+                );
         }
         http
             .csrf()
@@ -131,43 +156,75 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .disable()
             .and()
             .authorizeRequests()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/account/reset_password/init").permitAll()
-            .antMatchers("/api/account/reset_password/finish").permitAll()
-            .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/publicdata/**").permitAll()
-
+            .antMatchers("/api/register")
+            .permitAll()
+            .antMatchers("/api/activate")
+            .permitAll()
+            .antMatchers("/api/authenticate")
+            .permitAll()
+            .antMatchers("/api/account/reset_password/init")
+            .permitAll()
+            .antMatchers("/api/account/reset_password/finish")
+            .permitAll()
+            .antMatchers("/api/logs/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/audits/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/publicdata/**")
+            .permitAll()
             // pour "publication"
-            .antMatchers("/api/elus/**").permitAll()
-            .antMatchers("/api/search/**").permitAll()
-            .antMatchers("/api/commission-permanente/**").permitAll()
-            .antMatchers("/api/executif/**").permitAll()
-            .antMatchers("/api/groupePolitiques/**").permitAll()
-            .antMatchers("/api/groupePolitiques-dtos").permitAll()
-            .antMatchers("/api/commissionThematiques/**").permitAll()
-            .antMatchers("/api/commissionThematiques-dtos").permitAll()
-
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/liquibase/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/v2/api-docs/**").permitAll()
-            .antMatchers("/configuration/security").permitAll()
-            .antMatchers("/configuration/ui").permitAll()
-            .antMatchers("/protected/**").authenticated();
+            .antMatchers("/api/elus/**")
+            .permitAll()
+            .antMatchers("/api/search/**")
+            .permitAll()
+            .antMatchers("/api/commission-permanente/**")
+            .permitAll()
+            .antMatchers("/api/executif/**")
+            .permitAll()
+            .antMatchers("/api/groupePolitiques/**")
+            .permitAll()
+            .antMatchers("/api/groupePolitiques-dtos")
+            .permitAll()
+            .antMatchers("/api/commissionThematiques/**")
+            .permitAll()
+            .antMatchers("/api/commissionThematiques-dtos")
+            .permitAll()
+            .antMatchers("/api/**")
+            .authenticated()
+            .antMatchers("/metrics/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/health/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/trace/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/dump/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/shutdown/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/beans/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/configprops/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/info/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/autoconfig/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/env/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/trace/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/mappings/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/liquibase/**")
+            .hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/v2/api-docs/**")
+            .permitAll()
+            .antMatchers("/configuration/security")
+            .permitAll()
+            .antMatchers("/configuration/ui")
+            .permitAll()
+            .antMatchers("/protected/**")
+            .authenticated();
     }
 
     @Bean

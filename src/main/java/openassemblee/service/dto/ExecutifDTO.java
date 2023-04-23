@@ -1,11 +1,10 @@
 package openassemblee.service.dto;
 
+import java.util.List;
+import java.util.Map;
 import openassemblee.domain.Elu;
 import openassemblee.domain.FonctionCommissionPermanente;
 import openassemblee.domain.FonctionExecutive;
-
-import java.util.List;
-import java.util.Map;
 
 public class ExecutifDTO {
 
@@ -13,8 +12,11 @@ public class ExecutifDTO {
     private List<FonctionExecutive> fonctionsExecutives;
     private Map<Long, Elu> elus;
 
-    public ExecutifDTO(List<FonctionCommissionPermanente> fonctions, List<FonctionExecutive> fonctionsExecutives,
-                       Map<Long, Elu> elus) {
+    public ExecutifDTO(
+        List<FonctionCommissionPermanente> fonctions,
+        List<FonctionExecutive> fonctionsExecutives,
+        Map<Long, Elu> elus
+    ) {
         this.fonctions = fonctions;
         this.fonctionsExecutives = fonctionsExecutives;
         this.elus = elus;
@@ -32,7 +34,9 @@ public class ExecutifDTO {
         return fonctionsExecutives;
     }
 
-    public void setFonctionsExecutives(List<FonctionExecutive> fonctionsExecutives) {
+    public void setFonctionsExecutives(
+        List<FonctionExecutive> fonctionsExecutives
+    ) {
         this.fonctionsExecutives = fonctionsExecutives;
     }
 

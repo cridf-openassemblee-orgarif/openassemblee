@@ -1,7 +1,7 @@
 package openassemblee.web.rest.dto;
 
-import javax.persistence.Column;
 import java.io.Serializable;
+import javax.persistence.Column;
 
 public class InconsistencyDTO {
 
@@ -17,13 +17,14 @@ public class InconsistencyDTO {
     @Column(name = "parent_entity_id")
     private Long parentEntityId;
 
-    public InconsistencyDTO() {
-    }
+    public InconsistencyDTO() {}
 
-    public <T extends Serializable, P extends Serializable> InconsistencyDTO(Class<T> entityClass,
-                                                                             Long entityId,
-                                                                             Class<P> parentEntityClass,
-                                                                             Long parentEntityId) {
+    public <T extends Serializable, P extends Serializable> InconsistencyDTO(
+        Class<T> entityClass,
+        Long entityId,
+        Class<P> parentEntityClass,
+        Long parentEntityId
+    ) {
         this.entity = entityClass.getSimpleName();
         this.entityId = entityId;
         this.parentEntity = parentEntityClass.getSimpleName();

@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A HemicycleArchive.
@@ -97,11 +96,20 @@ public class HemicycleArchive implements Serializable {
 
     @Override
     public String toString() {
-        return "HemicycleArchive{" +
-            "id=" + id +
-            ", jsonPlan='" + jsonArchive + "'" +
-            ", svgPlan='" + svgPlan + "'" +
-            ", date='" + date + "'" +
-            '}';
+        return (
+            "HemicycleArchive{" +
+            "id=" +
+            id +
+            ", jsonPlan='" +
+            jsonArchive +
+            "'" +
+            ", svgPlan='" +
+            svgPlan +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            '}'
+        );
     }
 }

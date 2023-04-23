@@ -1,13 +1,12 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Mandature.
@@ -93,12 +92,23 @@ public class Mandature implements Serializable {
 
     @Override
     public String toString() {
-        return "Mandature{" +
-            "id=" + id +
-            ", anneeDebut='" + anneeDebut + "'" +
-            ", anneeFin='" + anneeFin + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", current='" + current + "'" +
-            '}';
+        return (
+            "Mandature{" +
+            "id=" +
+            id +
+            ", anneeDebut='" +
+            anneeDebut +
+            "'" +
+            ", anneeFin='" +
+            anneeFin +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", current='" +
+            current +
+            "'" +
+            '}'
+        );
     }
 }

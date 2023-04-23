@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * Spring Data ElasticSearch repository for the AuditTrail entity.
  */
-public interface AuditTrailSearchRepository extends ElasticsearchRepository<AuditTrail, Long> {
-}
+public interface AuditTrailSearchRepository
+    extends ElasticsearchRepository<AuditTrail, Long> {}

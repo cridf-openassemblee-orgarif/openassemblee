@@ -11,19 +11,27 @@ public class EluListDTO {
     private String shortFonction;
     private Boolean actifInCurrentMandat;
 
-    public EluListDTO(Elu elu, String shortFonction, Boolean actifInCurrentMandat, Boolean loadAdresses, Boolean filterAdresses) {
+    public EluListDTO(
+        Elu elu,
+        String shortFonction,
+        Boolean actifInCurrentMandat,
+        Boolean loadAdresses,
+        Boolean filterAdresses
+    ) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.shortFonction = shortFonction;
         this.actifInCurrentMandat = actifInCurrentMandat;
     }
 
-    public EluListDTO(Elu elu,
-                      GroupePolitique groupePolitique,
-                      String shortFonction,
-                      Boolean actifInCurrentMandat,
-                      Boolean loadAdresses,
-                      Boolean filterAdresses) {
+    public EluListDTO(
+        Elu elu,
+        GroupePolitique groupePolitique,
+        String shortFonction,
+        Boolean actifInCurrentMandat,
+        Boolean loadAdresses,
+        Boolean filterAdresses
+    ) {
         this.elu = elu;
         ConfidentialiteUtil.filterElu(elu, loadAdresses, filterAdresses);
         this.groupePolitique = groupePolitique;

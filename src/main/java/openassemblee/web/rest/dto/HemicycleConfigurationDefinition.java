@@ -5,23 +5,33 @@ import java.util.List;
 public class HemicycleConfigurationDefinition {
 
     public enum RowOrientation {
-        LEFT, CENTER, RIGHT
+        LEFT,
+        CENTER,
+        RIGHT,
     }
 
     public static class RowDefinition {
+
         public RowOrientation rowOrientation;
         public int line;
         public double startAngle;
         public int chairsNumber;
 
-        public RowDefinition() {
-        }
+        public RowDefinition() {}
 
-        public RowDefinition(RowOrientation rowOrientation, int line, double startAngle, boolean firstIsCentralChair, int chairsNumber) {
+        public RowDefinition(
+            RowOrientation rowOrientation,
+            int line,
+            double startAngle,
+            boolean firstIsCentralChair,
+            int chairsNumber
+        ) {
             if (rowOrientation == RowOrientation.CENTER && startAngle != 0.0) {
                 throw new IllegalArgumentException();
             }
-            if (rowOrientation != RowOrientation.CENTER && firstIsCentralChair) {
+            if (
+                rowOrientation != RowOrientation.CENTER && firstIsCentralChair
+            ) {
                 throw new IllegalArgumentException();
             }
             this.rowOrientation = rowOrientation;
@@ -42,7 +52,7 @@ public class HemicycleConfigurationDefinition {
     public double ratioHemicycle;
 
     //    private double demieLargeur = largeur / 2;
-//    private double demieProf = prof / 2;
+    //    private double demieProf = prof / 2;
     // revient un peu à une précision graphique en pixel
     // TODO tester d'autres values ;)
     public double expectedPrecision;
@@ -50,12 +60,21 @@ public class HemicycleConfigurationDefinition {
     public int margin;
     public int frontChairs;
 
-    public HemicycleConfigurationDefinition() {
-    }
+    public HemicycleConfigurationDefinition() {}
 
-    public HemicycleConfigurationDefinition(int baseX, int baseY, double largeur, double prof, int lineBase, int lineHeight,
-                                            double ratioHemicycle, double expectedPrecision, List<RowDefinition> rows, int margin,
-                                            int frontChairs) {
+    public HemicycleConfigurationDefinition(
+        int baseX,
+        int baseY,
+        double largeur,
+        double prof,
+        int lineBase,
+        int lineHeight,
+        double ratioHemicycle,
+        double expectedPrecision,
+        List<RowDefinition> rows,
+        int margin,
+        int frontChairs
+    ) {
         this.baseX = baseX;
         this.baseY = baseY;
         this.largeur = largeur;

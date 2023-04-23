@@ -5,16 +5,19 @@ import java.util.List;
 public class InconsistenciesDTO {
 
     public enum InconsistencyCategory {
-        POUVOIR_BENEFICIAIRE_MANQUANT, POUVOIR_CEDEUR_MANQUANT
+        POUVOIR_BENEFICIAIRE_MANQUANT,
+        POUVOIR_CEDEUR_MANQUANT,
     }
 
     private InconsistencyCategory category;
     private List<InconsistencyDTO> inconsistencies;
 
-    public InconsistenciesDTO() {
-    }
+    public InconsistenciesDTO() {}
 
-    public InconsistenciesDTO(InconsistencyCategory category, List<InconsistencyDTO> inconsistencies) {
+    public InconsistenciesDTO(
+        InconsistencyCategory category,
+        List<InconsistencyDTO> inconsistencies
+    ) {
         this.category = category;
         this.inconsistencies = inconsistencies;
     }

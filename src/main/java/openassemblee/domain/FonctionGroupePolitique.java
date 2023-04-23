@@ -1,16 +1,15 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import openassemblee.domain.jackson.JacksonGroupePolitiqueIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A FonctionGroupePolitique.
@@ -126,7 +125,8 @@ public class FonctionGroupePolitique implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        FonctionGroupePolitique fonctionGroupePolitique = (FonctionGroupePolitique) o;
+        FonctionGroupePolitique fonctionGroupePolitique =
+            (FonctionGroupePolitique) o;
         return Objects.equals(id, fonctionGroupePolitique.id);
     }
 
@@ -137,12 +137,23 @@ public class FonctionGroupePolitique implements Serializable {
 
     @Override
     public String toString() {
-        return "FonctionGroupePolitique{" +
-            "id=" + id +
-            ", fonction='" + fonction + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "FonctionGroupePolitique{" +
+            "id=" +
+            id +
+            ", fonction='" +
+            fonction +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A GroupePolitique.
@@ -66,11 +65,13 @@ public class GroupePolitique implements Serializable {
 
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique = new ArrayList<>();
+    private List<AppartenanceGroupePolitique> appartenancesGroupePolitique =
+        new ArrayList<>();
 
     @OneToMany(mappedBy = "groupePolitique")
     @Cache(usage = CacheConcurrencyStrategy.NONE)
-    private List<FonctionGroupePolitique> fonctionsGroupePolitique = new ArrayList<>();
+    private List<FonctionGroupePolitique> fonctionsGroupePolitique =
+        new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "mandature_id")
@@ -196,7 +197,9 @@ public class GroupePolitique implements Serializable {
         return appartenancesGroupePolitique;
     }
 
-    public void setAppartenancesGroupePolitique(List<AppartenanceGroupePolitique> appartenancesGroupePolitique) {
+    public void setAppartenancesGroupePolitique(
+        List<AppartenanceGroupePolitique> appartenancesGroupePolitique
+    ) {
         this.appartenancesGroupePolitique = appartenancesGroupePolitique;
     }
 
@@ -204,7 +207,9 @@ public class GroupePolitique implements Serializable {
         return fonctionsGroupePolitique;
     }
 
-    public void setFonctionsGroupePolitique(List<FonctionGroupePolitique> fonctionsGroupePolitique) {
+    public void setFonctionsGroupePolitique(
+        List<FonctionGroupePolitique> fonctionsGroupePolitique
+    ) {
         this.fonctionsGroupePolitique = fonctionsGroupePolitique;
     }
 
@@ -235,13 +240,26 @@ public class GroupePolitique implements Serializable {
 
     @Override
     public String toString() {
-        return "GroupePolitique{" +
-            "id=" + id +
-            ", nom='" + nom + "'" +
-            ", nomCourt='" + nomCourt + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "GroupePolitique{" +
+            "id=" +
+            id +
+            ", nom='" +
+            nom +
+            "'" +
+            ", nomCourt='" +
+            nomCourt +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

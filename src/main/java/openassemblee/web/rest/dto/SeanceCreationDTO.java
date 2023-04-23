@@ -1,8 +1,7 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.Seance;
-
 import java.io.Serializable;
+import openassemblee.domain.Seance;
 
 public class SeanceCreationDTO implements Serializable {
 
@@ -24,5 +23,4 @@ public class SeanceCreationDTO implements Serializable {
     public void setProjetPlanId(Long projetPlanId) {
         this.projetPlanId = projetPlanId;
     }
-
 }

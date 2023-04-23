@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A AdressePostale.
@@ -46,11 +45,17 @@ public class AdressePostale implements Publishable, Serializable {
     @Column(name = "publication_annuaire")
     private Boolean publicationAnnuaire;
 
-    public AdressePostale() {
-    }
+    public AdressePostale() {}
 
-    public AdressePostale(NatureProPerso natureProPerso, String voie, String codePostal, String ville,
-                          NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
+    public AdressePostale(
+        NatureProPerso natureProPerso,
+        String voie,
+        String codePostal,
+        String ville,
+        NiveauConfidentialite niveauConfidentialite,
+        Boolean adresseDeCorrespondance,
+        Boolean publicationAnnuaire
+    ) {
         this.natureProPerso = natureProPerso;
         this.voie = voie;
         this.codePostal = codePostal;
@@ -111,7 +116,9 @@ public class AdressePostale implements Publishable, Serializable {
         return niveauConfidentialite;
     }
 
-    public void setNiveauConfidentialite(NiveauConfidentialite niveauConfidentialite) {
+    public void setNiveauConfidentialite(
+        NiveauConfidentialite niveauConfidentialite
+    ) {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
@@ -148,9 +155,15 @@ public class AdressePostale implements Publishable, Serializable {
     public String getOneline() {
         String adresse = "";
         adresse += voie != null ? voie : "";
-        adresse += codePostal != null ? (adresse.equals("") ? "" : " ") + codePostal : "";
+        adresse +=
+            codePostal != null
+                ? (adresse.equals("") ? "" : " ") + codePostal
+                : "";
         adresse += " ";
-        adresse += ville != null ? ville : (adresse.equals("") ? "Adresse inconnue" : "Ville inconnue");
+        adresse +=
+            ville != null
+                ? ville
+                : (adresse.equals("") ? "Adresse inconnue" : "Ville inconnue");
         return adresse;
     }
 
@@ -161,15 +174,32 @@ public class AdressePostale implements Publishable, Serializable {
 
     @Override
     public String toString() {
-        return "AdressePostale{" +
-            "id=" + id +
-            ", natureProPerso='" + natureProPerso + "'" +
-            ", voie='" + voie + "'" +
-            ", codePostal='" + codePostal + "'" +
-            ", ville='" + ville + "'" +
-            ", niveauConfidentialite='" + niveauConfidentialite + "'" +
-            ", adresseDeCorrespondance='" + adresseDeCorrespondance + "'" +
-            ", publicationAnnuaire='" + publicationAnnuaire + "'" +
-            '}';
+        return (
+            "AdressePostale{" +
+            "id=" +
+            id +
+            ", natureProPerso='" +
+            natureProPerso +
+            "'" +
+            ", voie='" +
+            voie +
+            "'" +
+            ", codePostal='" +
+            codePostal +
+            "'" +
+            ", ville='" +
+            ville +
+            "'" +
+            ", niveauConfidentialite='" +
+            niveauConfidentialite +
+            "'" +
+            ", adresseDeCorrespondance='" +
+            adresseDeCorrespondance +
+            "'" +
+            ", publicationAnnuaire='" +
+            publicationAnnuaire +
+            "'" +
+            '}'
+        );
     }
 }

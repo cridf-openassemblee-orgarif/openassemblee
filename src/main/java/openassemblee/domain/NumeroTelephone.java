@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.NatureFixeMobile;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A NumeroTelephone.
@@ -42,10 +41,15 @@ public class NumeroTelephone implements Publishable, Serializable {
     @Column(name = "publication_annuaire")
     private Boolean publicationAnnuaire;
 
-    public NumeroTelephone() {
-    }
+    public NumeroTelephone() {}
 
-    public NumeroTelephone(NatureProPerso natureProPerso, NatureFixeMobile natureFixeMobile, String numero, NiveauConfidentialite niveauConfidentialite, Boolean publicationAnnuaire) {
+    public NumeroTelephone(
+        NatureProPerso natureProPerso,
+        NatureFixeMobile natureFixeMobile,
+        String numero,
+        NiveauConfidentialite niveauConfidentialite,
+        Boolean publicationAnnuaire
+    ) {
         this.natureProPerso = natureProPerso;
         this.natureFixeMobile = natureFixeMobile;
         this.numero = numero;
@@ -90,7 +94,9 @@ public class NumeroTelephone implements Publishable, Serializable {
         return niveauConfidentialite;
     }
 
-    public void setNiveauConfidentialite(NiveauConfidentialite niveauConfidentialite) {
+    public void setNiveauConfidentialite(
+        NiveauConfidentialite niveauConfidentialite
+    ) {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
@@ -122,13 +128,26 @@ public class NumeroTelephone implements Publishable, Serializable {
 
     @Override
     public String toString() {
-        return "NumeroTelephone{" +
-            "id=" + id +
-            ", natureProPerso='" + natureProPerso + "'" +
-            ", natureFixeMobile='" + natureFixeMobile + "'" +
-            ", numero='" + numero + "'" +
-            ", niveauConfidentialite='" + niveauConfidentialite + "'" +
-            ", publicationAnnuaire='" + publicationAnnuaire + "'" +
-            '}';
+        return (
+            "NumeroTelephone{" +
+            "id=" +
+            id +
+            ", natureProPerso='" +
+            natureProPerso +
+            "'" +
+            ", natureFixeMobile='" +
+            natureFixeMobile +
+            "'" +
+            ", numero='" +
+            numero +
+            "'" +
+            ", niveauConfidentialite='" +
+            niveauConfidentialite +
+            "'" +
+            ", publicationAnnuaire='" +
+            publicationAnnuaire +
+            "'" +
+            '}'
+        );
     }
 }

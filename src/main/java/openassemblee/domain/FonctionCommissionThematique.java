@@ -1,16 +1,15 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonCommissionThematiqueIdSerializer;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A FonctionCommissionThematique.
@@ -114,7 +113,9 @@ public class FonctionCommissionThematique implements Serializable {
         return commissionThematique;
     }
 
-    public void setCommissionThematique(CommissionThematique commissionThematique) {
+    public void setCommissionThematique(
+        CommissionThematique commissionThematique
+    ) {
         this.commissionThematique = commissionThematique;
     }
 
@@ -126,7 +127,8 @@ public class FonctionCommissionThematique implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        FonctionCommissionThematique fonctionCommissionThematique = (FonctionCommissionThematique) o;
+        FonctionCommissionThematique fonctionCommissionThematique =
+            (FonctionCommissionThematique) o;
         return Objects.equals(id, fonctionCommissionThematique.id);
     }
 
@@ -137,12 +139,23 @@ public class FonctionCommissionThematique implements Serializable {
 
     @Override
     public String toString() {
-        return "FonctionCommissionThematique{" +
-            "id=" + id +
-            ", fonction='" + fonction + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "FonctionCommissionThematique{" +
+            "id=" +
+            id +
+            ", fonction='" +
+            fonction +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

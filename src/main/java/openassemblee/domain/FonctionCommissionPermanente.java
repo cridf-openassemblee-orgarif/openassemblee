@@ -1,6 +1,10 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -8,11 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A FonctionCommissionPermanente.
@@ -23,7 +22,9 @@ import java.util.Objects;
 @Document(indexName = "fonctioncommissionpermanente")
 public class FonctionCommissionPermanente implements Serializable {
 
-    protected static final Log logger = LogFactory.getLog(FonctionCommissionPermanente.class);
+    protected static final Log logger = LogFactory.getLog(
+        FonctionCommissionPermanente.class
+    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -130,16 +131,25 @@ public class FonctionCommissionPermanente implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        FonctionCommissionPermanente fonctionCommissionPermanente = (FonctionCommissionPermanente) o;
+        FonctionCommissionPermanente fonctionCommissionPermanente =
+            (FonctionCommissionPermanente) o;
         return Objects.equals(id, fonctionCommissionPermanente.id);
     }
 
     public static String getShortFonction(String fonction) {
-        String cleanFonction = StringUtils.stripAccents(fonction != null ? fonction.toLowerCase() : "").trim();
-        if (cleanFonction.contains("vice") && cleanFonction.contains("president")) {
+        String cleanFonction = StringUtils
+            .stripAccents(fonction != null ? fonction.toLowerCase() : "")
+            .trim();
+        if (
+            cleanFonction.contains("vice") &&
+            cleanFonction.contains("president")
+        ) {
             return "VP";
         }
-        if (cleanFonction.contains("delegue") && cleanFonction.contains("special")) {
+        if (
+            cleanFonction.contains("delegue") &&
+            cleanFonction.contains("special")
+        ) {
             return "DS";
         }
         if (cleanFonction.contains("presidente")) {
@@ -165,13 +175,24 @@ public class FonctionCommissionPermanente implements Serializable {
 
     @Override
     public String toString() {
-        return "FonctionCommissionPermanente{" +
-            "id=" + id +
-            ", fonction='" + fonction + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "FonctionCommissionPermanente{" +
+            "id=" +
+            id +
+            ", fonction='" +
+            fonction +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 
     public static boolean isFonctionCourante(FonctionCommissionPermanente f) {

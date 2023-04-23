@@ -1,13 +1,12 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Pouvoir.
@@ -129,12 +128,23 @@ public class Pouvoir implements Serializable {
 
     @Override
     public String toString() {
-        return "Pouvoir{" +
-            "id=" + id +
-            ", dateDebut='" + dateDebut + "'" +
-            ", heureDebut='" + heureDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", heureFin='" + heureFin + "'" +
-            '}';
+        return (
+            "Pouvoir{" +
+            "id=" +
+            id +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", heureDebut='" +
+            heureDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", heureFin='" +
+            heureFin +
+            "'" +
+            '}'
+        );
     }
 }

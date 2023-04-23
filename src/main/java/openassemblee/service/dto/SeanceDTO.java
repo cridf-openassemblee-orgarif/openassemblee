@@ -1,10 +1,9 @@
 package openassemblee.service.dto;
 
+import java.util.List;
 import openassemblee.domain.GroupePolitique;
 import openassemblee.domain.HemicyclePlan;
 import openassemblee.domain.Seance;
-
-import java.util.List;
 
 public class SeanceDTO {
 
@@ -13,10 +12,12 @@ public class SeanceDTO {
     private final List<GroupePolitique> groupePolitiques;
     private final HemicyclePlan hemicyclePlan;
 
-    public SeanceDTO(Seance seance,
-                     List<PouvoirListDTO> pouvoirs,
-                     List<GroupePolitique> groupePolitiques,
-                     HemicyclePlan hemicyclePlan) {
+    public SeanceDTO(
+        Seance seance,
+        List<PouvoirListDTO> pouvoirs,
+        List<GroupePolitique> groupePolitiques,
+        HemicyclePlan hemicyclePlan
+    ) {
         this.seance = seance;
         this.pouvoirs = pouvoirs;
         this.groupePolitiques = groupePolitiques;
@@ -38,5 +39,4 @@ public class SeanceDTO {
     public HemicyclePlan getHemicyclePlan() {
         return hemicyclePlan;
     }
-
 }

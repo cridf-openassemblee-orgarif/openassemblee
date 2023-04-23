@@ -1,5 +1,12 @@
 package openassemblee.service;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 import openassemblee.config.Constants;
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
@@ -18,14 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Service
 public class AjouterElusMandatureService {
 
@@ -33,12 +32,16 @@ public class AjouterElusMandatureService {
 
     @Autowired
     private EluRepository eluRepository;
+
     @Autowired
     private MandatureRepository mandatureRepository;
+
     @Autowired
     private MandatRepository mandatRepository;
+
     @Autowired
     private ListeElectoraleRepository listeElectoraleRepository;
+
     @Autowired
     private ShortUidService shortUidService;
 
@@ -51,38 +54,63 @@ public class AjouterElusMandatureService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        List<CandidatDTO> candidats = records.stream().map(this::mapCandidat).collect(Collectors.toList());
+        List<CandidatDTO> candidats = records
+            .stream()
+            .map(this::mapCandidat)
+            .collect(Collectors.toList());
         List<Elu> elus = eluRepository.findAll();
-        List<CandidatCorrespondanceDTO> result = candidats.stream().map(c -> {
-            List<String> errors = listErrors(c);
-            List<Elu> correspondances;
-            if (errors.isEmpty()) {
-                correspondances = elus.stream().filter(e -> {
-                    if (c == null) {
-                        return false;
-                    }
-                    if (isDifferent(e.getNom(), c.getNom())) {
-                        return false;
-                    }
-                    if (isDifferent(e.getPrenom(), c.getPrenom())) {
-                        return false;
-                    }
-                    if (e.getDateNaissance() == null || !e.getDateNaissance().equals(c.getDateNaissance())) {
-                        return false;
-                    }
-                    return true;
-                }).collect(Collectors.toList());
-            } else {
-                correspondances = new ArrayList<>();
-            }
-            if (correspondances.isEmpty()) {
-                return new CandidatCorrespondanceDTO(c, null, false, errors);
-            } else if (correspondances.size() == 1) {
-                return new CandidatCorrespondanceDTO(c, correspondances.get(0), false, errors);
-            } else {
-                return new CandidatCorrespondanceDTO(c, null, true, errors);
-            }
-        }).collect(Collectors.toList());
+        List<CandidatCorrespondanceDTO> result = candidats
+            .stream()
+            .map(c -> {
+                List<String> errors = listErrors(c);
+                List<Elu> correspondances;
+                if (errors.isEmpty()) {
+                    correspondances =
+                        elus
+                            .stream()
+                            .filter(e -> {
+                                if (c == null) {
+                                    return false;
+                                }
+                                if (isDifferent(e.getNom(), c.getNom())) {
+                                    return false;
+                                }
+                                if (isDifferent(e.getPrenom(), c.getPrenom())) {
+                                    return false;
+                                }
+                                if (
+                                    e.getDateNaissance() == null ||
+                                    !e
+                                        .getDateNaissance()
+                                        .equals(c.getDateNaissance())
+                                ) {
+                                    return false;
+                                }
+                                return true;
+                            })
+                            .collect(Collectors.toList());
+                } else {
+                    correspondances = new ArrayList<>();
+                }
+                if (correspondances.isEmpty()) {
+                    return new CandidatCorrespondanceDTO(
+                        c,
+                        null,
+                        false,
+                        errors
+                    );
+                } else if (correspondances.size() == 1) {
+                    return new CandidatCorrespondanceDTO(
+                        c,
+                        correspondances.get(0),
+                        false,
+                        errors
+                    );
+                } else {
+                    return new CandidatCorrespondanceDTO(c, null, true, errors);
+                }
+            })
+            .collect(Collectors.toList());
         return result;
     }
 
@@ -105,13 +133,14 @@ public class AjouterElusMandatureService {
         try {
             String d = recordGet(record, cursor++);
             if (d != null) {
-                dateNaissance = dateParser.parse(d)
-                    .toInstant()
-                    .atZone(Constants.parisZoneId)
-                    .toLocalDate();
+                dateNaissance =
+                    dateParser
+                        .parse(d)
+                        .toInstant()
+                        .atZone(Constants.parisZoneId)
+                        .toLocalDate();
             }
-        } catch (ParseException e) {
-        }
+        } catch (ParseException e) {}
         String listeElectorale = recordGet(record, cursor++);
         String listeElectoraleCourt = recordGet(record, cursor++);
         String departement = recordGet(record, cursor++);
@@ -121,8 +150,16 @@ public class AjouterElusMandatureService {
         } catch (NumberFormatException e) {
             codeDepartement = null;
         }
-        return new CandidatDTO(civilite, prenom, nom, dateNaissance, listeElectorale, listeElectoraleCourt, departement,
-            codeDepartement);
+        return new CandidatDTO(
+            civilite,
+            prenom,
+            nom,
+            dateNaissance,
+            listeElectorale,
+            listeElectoraleCourt,
+            departement,
+            codeDepartement
+        );
     }
 
     private String recordGet(CSVRecord record, Integer index) {
@@ -143,29 +180,45 @@ public class AjouterElusMandatureService {
         if (c.getNom() == null) errors.add("nom");
         if (c.getDateNaissance() == null) errors.add("dateNaissance");
         if (c.getListeElectorale() == null) errors.add("listeElectorale");
-        if (c.getListeElectoraleCourt() == null) errors.add("listeElectoraleCourt");
+        if (c.getListeElectoraleCourt() == null) errors.add(
+            "listeElectoraleCourt"
+        );
         if (c.getDepartement() == null) errors.add("departement");
         if (c.getCodeDepartement() == null) errors.add("codeDepartement");
         return errors;
     }
 
     private Boolean isDifferent(String eluNom, String candidatNom) {
-        return StringUtils.getJaroWinklerDistance(clean(eluNom), clean(candidatNom)) < 0.95;
+        return (
+            StringUtils.getJaroWinklerDistance(
+                clean(eluNom),
+                clean(candidatNom)
+            ) <
+            0.95
+        );
     }
 
     private String clean(String nom) {
         return StringUtils.stripAccents(nom).trim().toLowerCase();
     }
 
-    private SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+    private SimpleDateFormat dateParser = new SimpleDateFormat(
+        "dd/MM/yyyy",
+        Locale.FRENCH
+    );
 
     @Transactional
-    public void ajouterElus(Long mandatureId, List<CandidatCorrespondanceDTO> candidats) {
+    public void ajouterElus(
+        Long mandatureId,
+        List<CandidatCorrespondanceDTO> candidats
+    ) {
         Mandature mandature = mandatureRepository.getOne(mandatureId);
         Map<String, ListeElectorale> listeElectoraleMap = new HashMap<>();
-        listeElectoraleRepository.findByMandature(mandature).forEach(l -> {
-            listeElectoraleMap.put(l.getNomCourt() + "///" + l.getNom(), l);
-        });
+        listeElectoraleRepository
+            .findByMandature(mandature)
+            .forEach(l -> {
+                listeElectoraleMap.put(l.getNomCourt() + "///" + l.getNom(), l);
+            });
         candidats.forEach(c -> {
             // on le rejoue à dessein
             List<String> errors = listErrors(c.getCandidatDTO());
@@ -174,14 +227,24 @@ public class AjouterElusMandatureService {
             }
         });
         candidats.forEach(c -> {
-            String listeElectoralKey = c.getCandidatDTO().getListeElectoraleCourt() + "///" + c.getCandidatDTO().getListeElectorale();
-            ListeElectorale listeElectorale = listeElectoraleMap.get(listeElectoralKey);
+            String listeElectoralKey =
+                c.getCandidatDTO().getListeElectoraleCourt() +
+                "///" +
+                c.getCandidatDTO().getListeElectorale();
+            ListeElectorale listeElectorale = listeElectoraleMap.get(
+                listeElectoralKey
+            );
             if (listeElectorale == null) {
                 ListeElectorale listeElectoraleDraft = new ListeElectorale();
-                listeElectoraleDraft.setNom(c.getCandidatDTO().getListeElectorale());
-                listeElectoraleDraft.setNomCourt(c.getCandidatDTO().getListeElectoraleCourt());
+                listeElectoraleDraft.setNom(
+                    c.getCandidatDTO().getListeElectorale()
+                );
+                listeElectoraleDraft.setNomCourt(
+                    c.getCandidatDTO().getListeElectoraleCourt()
+                );
                 listeElectoraleDraft.setMandature(mandature);
-                listeElectorale = listeElectoraleRepository.save(listeElectoraleDraft);
+                listeElectorale =
+                    listeElectoraleRepository.save(listeElectoraleDraft);
                 listeElectoraleMap.put(listeElectoralKey, listeElectorale);
             }
             Elu elu = c.getElu();
@@ -202,9 +265,10 @@ public class AjouterElusMandatureService {
             mandat.setListeElectorale(listeElectorale);
             mandat.setDateDebut(mandature.getDateDebut());
             mandat.setDepartement(c.getCandidatDTO().getDepartement());
-            mandat.setCodeDepartement(c.getCandidatDTO().getCodeDepartement().toString());
+            mandat.setCodeDepartement(
+                c.getCandidatDTO().getCodeDepartement().toString()
+            );
             mandatRepository.save(mandat);
         });
     }
-
 }

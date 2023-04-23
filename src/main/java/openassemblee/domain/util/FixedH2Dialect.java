@@ -1,8 +1,7 @@
 package openassemblee.domain.util;
 
-import org.hibernate.dialect.H2Dialect;
-
 import java.sql.Types;
+import org.hibernate.dialect.H2Dialect;
 
 public class FixedH2Dialect extends H2Dialect {
 

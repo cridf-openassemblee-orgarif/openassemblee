@@ -1,19 +1,19 @@
 package openassemblee.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-
 @Service
 public class ExcelExportService {
 
     public static class Entry {
+
         private String sheetName;
         private List<List<String>> lines;
 
@@ -58,5 +58,4 @@ public class ExcelExportService {
         }
         return outputStream.toByteArray();
     }
-
 }

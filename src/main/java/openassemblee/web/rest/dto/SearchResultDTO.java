@@ -3,7 +3,10 @@ package openassemblee.web.rest.dto;
 public class SearchResultDTO {
 
     public enum ResultType {
-        ELU, GROUPE_POLITIQUE, COMMISSION_THEMATIQUE, ORGANISME
+        ELU,
+        GROUPE_POLITIQUE,
+        COMMISSION_THEMATIQUE,
+        ORGANISME,
     }
 
     private ResultType resultType;
@@ -11,7 +14,12 @@ public class SearchResultDTO {
     private String display;
     private Long image;
 
-    public SearchResultDTO(ResultType resultType, long id, String display, Long image) {
+    public SearchResultDTO(
+        ResultType resultType,
+        long id,
+        String display,
+        Long image
+    ) {
         this.resultType = resultType;
         this.id = id;
         this.display = display;

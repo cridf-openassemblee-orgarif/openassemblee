@@ -8,9 +8,12 @@ public class AppartenanceCommissionThematiqueDTO {
     private AppartenanceCommissionThematique appartenanceCommissionThematique;
     private Elu elu;
 
-    public AppartenanceCommissionThematiqueDTO(AppartenanceCommissionThematique appartenanceCommissionThematique, Elu
-        elu) {
-        this.appartenanceCommissionThematique = appartenanceCommissionThematique;
+    public AppartenanceCommissionThematiqueDTO(
+        AppartenanceCommissionThematique appartenanceCommissionThematique,
+        Elu elu
+    ) {
+        this.appartenanceCommissionThematique =
+            appartenanceCommissionThematique;
         this.elu = elu;
     }
 

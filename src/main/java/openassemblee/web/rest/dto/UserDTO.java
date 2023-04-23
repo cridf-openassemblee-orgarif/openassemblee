@@ -1,14 +1,13 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.Authority;
-import openassemblee.domain.User;
-import org.hibernate.validator.constraints.Email;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import openassemblee.domain.Authority;
+import openassemblee.domain.User;
+import org.hibernate.validator.constraints.Email;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -44,21 +43,35 @@ public class UserDTO {
 
     private Set<String> authorities;
 
-    public UserDTO() {
-    }
+    public UserDTO() {}
 
     public UserDTO(User user) {
-        this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(), null);
+        this(
+            user.getLogin(),
+            null,
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getActivated(),
+            user.getLangKey(),
+            null
+        );
         authorities = new HashSet<>();
         for (Authority a : user.getAuthorities()) {
             authorities.add(a.getName());
         }
     }
 
-    public UserDTO(String login, String password, String firstName, String lastName,
-                   String email, boolean activated, String langKey, Set<String> authorities) {
-
+    public UserDTO(
+        String login,
+        String password,
+        String firstName,
+        String lastName,
+        String email,
+        boolean activated,
+        String langKey,
+        Set<String> authorities
+    ) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -103,15 +116,31 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
-            "login='" + login + '\'' +
-            ", password='" + password + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", authorities=" + authorities +
-            "}";
+        return (
+            "UserDTO{" +
+            "login='" +
+            login +
+            '\'' +
+            ", password='" +
+            password +
+            '\'' +
+            ", firstName='" +
+            firstName +
+            '\'' +
+            ", lastName='" +
+            lastName +
+            '\'' +
+            ", email='" +
+            email +
+            '\'' +
+            ", activated=" +
+            activated +
+            ", langKey='" +
+            langKey +
+            '\'' +
+            ", authorities=" +
+            authorities +
+            "}"
+        );
     }
 }

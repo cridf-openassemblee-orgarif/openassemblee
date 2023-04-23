@@ -29,5 +29,4 @@ public class FieldErrorDTO implements Serializable {
     public String getMessage() {
         return message;
     }
-
 }

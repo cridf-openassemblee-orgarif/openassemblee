@@ -1,18 +1,17 @@
 package openassemblee.domain;
 
-import openassemblee.web.rest.dto.HemicycleAssociationDTO;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import openassemblee.web.rest.dto.HemicycleAssociationDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A HemicyclePlan.
@@ -24,11 +23,11 @@ import java.util.Set;
 public class HemicyclePlan implements Serializable {
 
     public static class JsonPlan {
+
         public List<HemicycleAssociationDTO> associations;
 
         // for serialization
-        public JsonPlan() {
-        }
+        public JsonPlan() {}
 
         public JsonPlan(List<HemicycleAssociationDTO> associations) {
             this.associations = associations;
@@ -111,7 +110,9 @@ public class HemicyclePlan implements Serializable {
         return configuration;
     }
 
-    public void setConfiguration(HemicycleConfiguration hemicycleConfiguration) {
+    public void setConfiguration(
+        HemicycleConfiguration hemicycleConfiguration
+    ) {
         this.configuration = hemicycleConfiguration;
     }
 
@@ -158,12 +159,23 @@ public class HemicyclePlan implements Serializable {
 
     @Override
     public String toString() {
-        return "HemicyclePlan{" +
-            "id=" + id +
-            ", label='" + label + "'" +
-            ", jsonPlan='" + jsonPlan + "'" +
-            ", creationDate='" + creationDate + "'" +
-            ", lastModificationDate='" + lastModificationDate + "'" +
-            '}';
+        return (
+            "HemicyclePlan{" +
+            "id=" +
+            id +
+            ", label='" +
+            label +
+            "'" +
+            ", jsonPlan='" +
+            jsonPlan +
+            "'" +
+            ", creationDate='" +
+            creationDate +
+            "'" +
+            ", lastModificationDate='" +
+            lastModificationDate +
+            "'" +
+            '}'
+        );
     }
 }

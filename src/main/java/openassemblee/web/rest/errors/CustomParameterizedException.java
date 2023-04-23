@@ -30,5 +30,4 @@ public class CustomParameterizedException extends RuntimeException {
     public ParameterizedErrorDTO getErrorDTO() {
         return new ParameterizedErrorDTO(message, params);
     }
-
 }

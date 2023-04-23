@@ -1,12 +1,12 @@
 package openassemblee.web.rest.dto;
 
 public class HemicycleAssociationDTO {
+
     private Integer chairNumber;
     private Long eluId;
 
     // for serialization
-    public HemicycleAssociationDTO() {
-    }
+    public HemicycleAssociationDTO() {}
 
     public HemicycleAssociationDTO(Integer chairNumber, Long eluId) {
         this.chairNumber = chairNumber;

@@ -1,16 +1,15 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import openassemblee.domain.jackson.JacksonGroupePolitiqueIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A AppartenanceGroupePolitique.
@@ -115,7 +114,8 @@ public class AppartenanceGroupePolitique implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AppartenanceGroupePolitique appartenanceGroupePolitique = (AppartenanceGroupePolitique) o;
+        AppartenanceGroupePolitique appartenanceGroupePolitique =
+            (AppartenanceGroupePolitique) o;
         return Objects.equals(id, appartenanceGroupePolitique.id);
     }
 
@@ -126,11 +126,20 @@ public class AppartenanceGroupePolitique implements Serializable {
 
     @Override
     public String toString() {
-        return "AppartenanceGroupePolitique{" +
-            "id=" + id +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "AppartenanceGroupePolitique{" +
+            "id=" +
+            id +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

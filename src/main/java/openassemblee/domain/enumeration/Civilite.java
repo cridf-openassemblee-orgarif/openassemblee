@@ -4,7 +4,8 @@ package openassemblee.domain.enumeration;
  * The Civilite enumeration.
  */
 public enum Civilite {
-    MONSIEUR("M."), MADAME("Mme.");
+    MONSIEUR("M."),
+    MADAME("Mme.");
 
     private String label;
 

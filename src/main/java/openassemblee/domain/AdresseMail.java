@@ -1,14 +1,13 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A AdresseMail.
@@ -40,10 +39,15 @@ public class AdresseMail implements Publishable, Serializable {
     @Column(name = "publication_annuaire")
     private Boolean publicationAnnuaire;
 
-    public AdresseMail() {
-    }
+    public AdresseMail() {}
 
-    public AdresseMail(NatureProPerso natureProPerso, String mail, NiveauConfidentialite niveauConfidentialite, Boolean adresseDeCorrespondance, Boolean publicationAnnuaire) {
+    public AdresseMail(
+        NatureProPerso natureProPerso,
+        String mail,
+        NiveauConfidentialite niveauConfidentialite,
+        Boolean adresseDeCorrespondance,
+        Boolean publicationAnnuaire
+    ) {
         this.natureProPerso = natureProPerso;
         this.mail = mail;
         this.niveauConfidentialite = niveauConfidentialite;
@@ -80,7 +84,9 @@ public class AdresseMail implements Publishable, Serializable {
         return niveauConfidentialite;
     }
 
-    public void setNiveauConfidentialite(NiveauConfidentialite niveauConfidentialite) {
+    public void setNiveauConfidentialite(
+        NiveauConfidentialite niveauConfidentialite
+    ) {
         this.niveauConfidentialite = niveauConfidentialite;
     }
 
@@ -120,13 +126,26 @@ public class AdresseMail implements Publishable, Serializable {
 
     @Override
     public String toString() {
-        return "AdresseMail{" +
-            "id=" + id +
-            ", natureProPerso='" + natureProPerso + "'" +
-            ", mail='" + mail + "'" +
-            ", niveauConfidentialite='" + niveauConfidentialite + "'" +
-            ", adresseDeCorrespondance='" + adresseDeCorrespondance + "'" +
-            ", publicationAnnuaire='" + publicationAnnuaire + "'" +
-            '}';
+        return (
+            "AdresseMail{" +
+            "id=" +
+            id +
+            ", natureProPerso='" +
+            natureProPerso +
+            "'" +
+            ", mail='" +
+            mail +
+            "'" +
+            ", niveauConfidentialite='" +
+            niveauConfidentialite +
+            "'" +
+            ", adresseDeCorrespondance='" +
+            adresseDeCorrespondance +
+            "'" +
+            ", publicationAnnuaire='" +
+            publicationAnnuaire +
+            "'" +
+            '}'
+        );
     }
 }

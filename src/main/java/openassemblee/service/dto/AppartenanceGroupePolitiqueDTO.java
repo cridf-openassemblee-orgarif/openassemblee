@@ -8,7 +8,10 @@ public class AppartenanceGroupePolitiqueDTO {
     private AppartenanceGroupePolitique appartenanceGroupePolitique;
     private Elu elu;
 
-    public AppartenanceGroupePolitiqueDTO(AppartenanceGroupePolitique appartenanceGroupePolitique, Elu elu) {
+    public AppartenanceGroupePolitiqueDTO(
+        AppartenanceGroupePolitique appartenanceGroupePolitique,
+        Elu elu
+    ) {
         this.appartenanceGroupePolitique = appartenanceGroupePolitique;
         this.elu = elu;
     }
@@ -17,7 +20,9 @@ public class AppartenanceGroupePolitiqueDTO {
         return appartenanceGroupePolitique;
     }
 
-    public void setAppartenanceGroupePolitique(AppartenanceGroupePolitique appartenanceGroupePolitique) {
+    public void setAppartenanceGroupePolitique(
+        AppartenanceGroupePolitique appartenanceGroupePolitique
+    ) {
         this.appartenanceGroupePolitique = appartenanceGroupePolitique;
     }
 

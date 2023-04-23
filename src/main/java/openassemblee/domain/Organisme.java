@@ -1,13 +1,12 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Organisme.
@@ -19,6 +18,7 @@ import java.util.Objects;
 public class Organisme implements Serializable {
 
     public static class UniqueRneOrganisme {
+
         public Organisme organisme;
 
         public UniqueRneOrganisme(Organisme organisme) {
@@ -27,7 +27,9 @@ public class Organisme implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            return organisme.getCodeRNE().equals(((UniqueRneOrganisme) o).organisme.getCodeRNE());
+            return organisme
+                .getCodeRNE()
+                .equals(((UniqueRneOrganisme) o).organisme.getCodeRNE());
         }
 
         @Override
@@ -37,6 +39,7 @@ public class Organisme implements Serializable {
     }
 
     public static class UniqueNomOrganisme {
+
         public Organisme organisme;
 
         public UniqueNomOrganisme(Organisme organisme) {
@@ -45,7 +48,9 @@ public class Organisme implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            return organisme.getNom().equals(((UniqueNomOrganisme) o).organisme.getNom());
+            return organisme
+                .getNom()
+                .equals(((UniqueNomOrganisme) o).organisme.getNom());
         }
 
         @Override
@@ -265,16 +270,35 @@ public class Organisme implements Serializable {
 
     @Override
     public String toString() {
-        return "Organisme{" +
-            "id=" + id +
-            ", nom='" + nom + "'" +
-            ", codeRNE='" + codeRNE + "'" +
-            ", sigle='" + sigle + "'" +
-            ", type='" + type + "'" +
-            ", secteur='" + secteur + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "Organisme{" +
+            "id=" +
+            id +
+            ", nom='" +
+            nom +
+            "'" +
+            ", codeRNE='" +
+            codeRNE +
+            "'" +
+            ", sigle='" +
+            sigle +
+            "'" +
+            ", type='" +
+            type +
+            "'" +
+            ", secteur='" +
+            secteur +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

@@ -1,5 +1,14 @@
 package openassemblee.config.data;
 
+import static openassemblee.config.data.TestDataLists.*;
+import static openassemblee.domain.enumeration.Civilite.MADAME;
+import static openassemblee.domain.enumeration.Civilite.MONSIEUR;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 import liquibase.util.csv.opencsv.CSVReader;
 import openassemblee.domain.*;
 import openassemblee.domain.enumeration.Civilite;
@@ -13,21 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static openassemblee.config.data.TestDataLists.*;
-import static openassemblee.domain.enumeration.Civilite.MADAME;
-import static openassemblee.domain.enumeration.Civilite.MONSIEUR;
-
 @Component
 @Transactional
 public class TestDataInjector {
 
-    private final Logger logger = LoggerFactory.getLogger(TestDataInjector.class);
+    private final Logger logger = LoggerFactory.getLogger(
+        TestDataInjector.class
+    );
 
     @Autowired
     private EluRepository eluRepository;
@@ -79,13 +80,16 @@ public class TestDataInjector {
             groupePolitiqueRepository.save(gps);
             List<Elu> elus = initElus(gps);
             eluRepository.save(elus);
-            List<AppartenanceGroupePolitique> agps = initAppartenanceGroupePolitiques(elus, gps);
+            List<AppartenanceGroupePolitique> agps =
+                initAppartenanceGroupePolitiques(elus, gps);
             appartenanceGroupePolitiqueRepository.save(agps);
             List<CommissionThematique> cts = initCommissionsThematiques();
             commissionThematiqueRepository.save(cts);
-            List<AppartenanceCommissionThematique> acts = initAppartenanceCommissionThematiques(elus, cts);
+            List<AppartenanceCommissionThematique> acts =
+                initAppartenanceCommissionThematiques(elus, cts);
             appartenanceCommissionThematiqueRepository.save(acts);
-            List<AppartenanceCommissionPermanente> acps = initAppartenanceCommissionPermanente(elus);
+            List<AppartenanceCommissionPermanente> acps =
+                initAppartenanceCommissionPermanente(elus);
             appartenanceCommissionPermanenteRepository.save(acps);
             List<FonctionExecutive> fes = initFunctionExecutives(elus);
             fonctionExecutiveRepository.save(fes);
@@ -97,7 +101,12 @@ public class TestDataInjector {
         if (organismeRepository.count() == 0) {
             CSVReader reader = new CSVReader(
                 new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("test-data-images/organismes.csv")), ';');
+                    getClass()
+                        .getClassLoader()
+                        .getResourceAsStream("test-data-images/organismes.csv")
+                ),
+                ';'
+            );
             List<Organisme> organismes = new ArrayList<>();
             try {
                 String[] line = reader.readNext();
@@ -107,7 +116,13 @@ public class TestDataInjector {
                     o.setNom(line[2].trim());
                     o.setSecteur(line[5].trim());
                     o.setType(line[1].trim());
-                    o.setAdressePostale(new AdressePostale(line[6].trim(), line[7].trim(), line[8].trim()));
+                    o.setAdressePostale(
+                        new AdressePostale(
+                            line[6].trim(),
+                            line[7].trim(),
+                            line[8].trim()
+                        )
+                    );
                     organismes.add(o);
                     adressePostaleRepository.save(o.getAdressePostale());
                     line = reader.readNext();
@@ -123,15 +138,51 @@ public class TestDataInjector {
 
     private List<GroupePolitique> initGroupesPolitiques() {
         List<GroupePolitique> gps = new ArrayList<>();
-        gps.add(initGroupePolitique("LR", "Les Républicains", "logo-des-Republicains.jpg"));
-        gps.add(initGroupePolitique("PSR et app", "Socialistes et Républicains et apparentés", "logops.jpg"));
-        gps.add(initGroupePolitique("UDI", "Union des démocrates indépendants", "LogoUDI.png"));
+        gps.add(
+            initGroupePolitique(
+                "LR",
+                "Les Républicains",
+                "logo-des-Republicains.jpg"
+            )
+        );
+        gps.add(
+            initGroupePolitique(
+                "PSR et app",
+                "Socialistes et Républicains et apparentés",
+                "logops.jpg"
+            )
+        );
+        gps.add(
+            initGroupePolitique(
+                "UDI",
+                "Union des démocrates indépendants",
+                "LogoUDI.png"
+            )
+        );
         gps.add(initGroupePolitique("FN", "FN - IDF Bleu Marine", null));
-        gps.add(initGroupePolitique("EELVA", "Europe Ecologie Les Verts et apparentés", "logo_eelv_fondblanc.png"));
+        gps.add(
+            initGroupePolitique(
+                "EELVA",
+                "Europe Ecologie Les Verts et apparentés",
+                "logo_eelv_fondblanc.png"
+            )
+        );
         gps.add(initGroupePolitique("CD", "Centre et démocrates", null));
-        gps.add(initGroupePolitique("FDG", "Front de Gauche, Parti Communiste français, Parti de " +
-            "gauche, Ensemble et République et Socialisme", "front-gauche.png"));
-        gps.add(initGroupePolitique("RCDE", "Radical Citoyen Démocrate Ecologiste et apparentés", "ude.png"));
+        gps.add(
+            initGroupePolitique(
+                "FDG",
+                "Front de Gauche, Parti Communiste français, Parti de " +
+                "gauche, Ensemble et République et Socialisme",
+                "front-gauche.png"
+            )
+        );
+        gps.add(
+            initGroupePolitique(
+                "RCDE",
+                "Radical Citoyen Démocrate Ecologiste et apparentés",
+                "ude.png"
+            )
+        );
         return gps;
     }
 
@@ -144,18 +195,28 @@ public class TestDataInjector {
         return mandatureRepository.save(mandature);
     }
 
-    private GroupePolitique initGroupePolitique(String nomCourt, String nom, String image) {
+    private GroupePolitique initGroupePolitique(
+        String nomCourt,
+        String nom,
+        String image
+    ) {
         GroupePolitique gp = new GroupePolitique();
         gp.setNomCourt(nomCourt);
         gp.setNom(nom);
-        gp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
+        gp.setDateDebut(
+            randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1))
+        );
         if (image != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
-                InputStream imageIS = getClass().getClassLoader().getResourceAsStream("test-data-images/" + image);
+                InputStream imageIS = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("test-data-images/" + image);
                 String contentType = "image/jpeg";
                 Streams.copy(imageIS, baos);
-                Long imageId = imageRepository.saveImage(new Image(contentType, baos.toByteArray()));
+                Long imageId = imageRepository.saveImage(
+                    new Image(contentType, baos.toByteArray())
+                );
                 gp.setImage(imageId);
             } catch (FileNotFoundException e) {
                 logger.error("File not found : '" + image + "'", e);
@@ -174,7 +235,13 @@ public class TestDataInjector {
         elus.add(initElu(MONSIEUR, "ADAMO", "Stéphane"));
         elus.add(initElu(MADAME, "AMELLAL", "Viviane"));
         elus.add(initElu(MONSIEUR, "ANGONIN", "Jean-Pierre"));
-        elus.add(initElu(MONSIEUR, "NOMSUPERLONGPARCEQUECOMMECAONVOITSIONACASSELESECRANSOUSICAVA", "Bob"));
+        elus.add(
+            initElu(
+                MONSIEUR,
+                "NOMSUPERLONGPARCEQUECOMMECAONVOITSIONACASSELESECRANSOUSICAVA",
+                "Bob"
+            )
+        );
         elus.add(initElu(MADAME, "AZOURA", "Marie-France"));
         elus.add(initElu(MADAME, "AZRIA", "Maryse"));
         elus.add(initElu(MADAME, "BACH", "Sylvie"));
@@ -276,11 +343,16 @@ public class TestDataInjector {
         elus.add(initElu(MONSIEUR, "VANNAXAY", "Francis"));
         elus.add(initElu(MADAME, "VIDON", "Marie-Louise"));
         elus.add(initElu(MONSIEUR, "ZOUC", "Fred"));
-        elus.parallelStream()
+        elus
+            .parallelStream()
             .filter(elu -> elu.getCivilite() == MADAME)
             // une femme sur deux
             .filter(elu -> random.nextBoolean())
-            .forEach(elu -> elu.setNomJeuneFille(elus.get(random.nextInt(elus.size())).getNom()));
+            .forEach(elu ->
+                elu.setNomJeuneFille(
+                    elus.get(random.nextInt(elus.size())).getNom()
+                )
+            );
         return elus;
     }
 
@@ -294,12 +366,21 @@ public class TestDataInjector {
         elu.setPrenom(prenom);
         elu.setProfession(PROFESSIONS[random.nextInt(PROFESSIONS.length)]);
         elu.setLieuNaissance(VILLES[random.nextInt(VILLES.length)]);
-        elu.setDateNaissance(randomDate(LocalDate.of(1950, 6, 12), LocalDate.of(1980, 6, 12)));
+        elu.setDateNaissance(
+            randomDate(LocalDate.of(1950, 6, 12), LocalDate.of(1980, 6, 12))
+        );
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String photo = PHOTOS[random.nextInt(PHOTOS.length)];
         try {
-            Streams.copy(getClass().getClassLoader().getResourceAsStream("test-data-images/" + photo), baos);
-            Long imageId = imageRepository.saveImage(new Image("image/jpeg", baos.toByteArray()));
+            Streams.copy(
+                getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("test-data-images/" + photo),
+                baos
+            );
+            Long imageId = imageRepository.saveImage(
+                new Image("image/jpeg", baos.toByteArray())
+            );
             elu.setImage(imageId);
         } catch (SQLException e) {
             logger.error("Error while saving image : " + photo + "'", e);
@@ -309,20 +390,30 @@ public class TestDataInjector {
         return elu;
     }
 
-    private List<AppartenanceGroupePolitique> initAppartenanceGroupePolitiques(List<Elu> elus,
-                                                                               List<GroupePolitique> gps) {
-        return elus.stream().map(elu -> {
-            GroupePolitique gp = gps.get(random.nextInt(gps.size()));
-            AppartenanceGroupePolitique agp = new AppartenanceGroupePolitique();
-            agp.setElu(elu);
-            agp.setGroupePolitique(gp);
-            agp.setDateDebut(randomDate(gp.getDateDebut(), LocalDate.now()));
-            return agp;
-        }).collect(Collectors.toList());
+    private List<AppartenanceGroupePolitique> initAppartenanceGroupePolitiques(
+        List<Elu> elus,
+        List<GroupePolitique> gps
+    ) {
+        return elus
+            .stream()
+            .map(elu -> {
+                GroupePolitique gp = gps.get(random.nextInt(gps.size()));
+                AppartenanceGroupePolitique agp =
+                    new AppartenanceGroupePolitique();
+                agp.setElu(elu);
+                agp.setGroupePolitique(gp);
+                agp.setDateDebut(
+                    randomDate(gp.getDateDebut(), LocalDate.now())
+                );
+                return agp;
+            })
+            .collect(Collectors.toList());
     }
 
-    private List<AppartenanceCommissionThematique> initAppartenanceCommissionThematiques(List<Elu> elus,
-                                                                                         List<CommissionThematique> cts) {
+    private List<AppartenanceCommissionThematique> initAppartenanceCommissionThematiques(
+        List<Elu> elus,
+        List<CommissionThematique> cts
+    ) {
         List<AppartenanceCommissionThematique> acts = new ArrayList<>();
         Set<Elu> alreadySet = new HashSet<>();
         for (int i = 0; i < 20; i++) {
@@ -332,27 +423,35 @@ public class TestDataInjector {
             }
             alreadySet.add(elu);
             CommissionThematique ct = cts.get(random.nextInt(cts.size()));
-            AppartenanceCommissionThematique act = new AppartenanceCommissionThematique();
+            AppartenanceCommissionThematique act =
+                new AppartenanceCommissionThematique();
             act.setCommissionThematique(ct);
             act.setElu(elu);
             act.setDateDebut(randomDate(ct.getDateDebut(), LocalDate.now()));
             acts.add(act);
             if (i < 5) {
-                CommissionThematique secondeCt = cts.get(random.nextInt(cts.size()));
+                CommissionThematique secondeCt = cts.get(
+                    random.nextInt(cts.size())
+                );
                 while (Objects.equals(ct.getId(), secondeCt.getId())) {
                     secondeCt = cts.get(random.nextInt(cts.size()));
                 }
-                AppartenanceCommissionThematique act2 = new AppartenanceCommissionThematique();
+                AppartenanceCommissionThematique act2 =
+                    new AppartenanceCommissionThematique();
                 act2.setCommissionThematique(secondeCt);
                 act2.setElu(elu);
-                act2.setDateDebut(randomDate(secondeCt.getDateDebut(), LocalDate.now()));
+                act2.setDateDebut(
+                    randomDate(secondeCt.getDateDebut(), LocalDate.now())
+                );
                 acts.add(act2);
             }
         }
         return acts;
     }
 
-    private List<AppartenanceCommissionPermanente> initAppartenanceCommissionPermanente(List<Elu> elus) {
+    private List<AppartenanceCommissionPermanente> initAppartenanceCommissionPermanente(
+        List<Elu> elus
+    ) {
         List<AppartenanceCommissionPermanente> acps = new ArrayList<>();
         Set<Elu> alreadySet = new HashSet<>();
         for (int i = 0; i < 20; i++) {
@@ -361,9 +460,12 @@ public class TestDataInjector {
                 elu = elus.get(random.nextInt(elus.size()));
             }
             alreadySet.add(elu);
-            AppartenanceCommissionPermanente acp = new AppartenanceCommissionPermanente();
+            AppartenanceCommissionPermanente acp =
+                new AppartenanceCommissionPermanente();
             acp.setElu(elu);
-            acp.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
+            acp.setDateDebut(
+                randomDate(LocalDate.of(2015, 3, 1), LocalDate.now())
+            );
             acps.add(acp);
         }
         return acps;
@@ -380,7 +482,9 @@ public class TestDataInjector {
             alreadySet.add(elu);
             FonctionExecutive fe = new FonctionExecutive();
             fe.setElu(elu);
-            fe.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.now()));
+            fe.setDateDebut(
+                randomDate(LocalDate.of(2015, 3, 1), LocalDate.now())
+            );
             if (i == 0) {
                 fe.setFonction("Président");
             } else {
@@ -399,16 +503,23 @@ public class TestDataInjector {
         return cts;
     }
 
-    private CommissionThematique initCommissionThematique(String nom, String nomCourt) {
+    private CommissionThematique initCommissionThematique(
+        String nom,
+        String nomCourt
+    ) {
         CommissionThematique ct = new CommissionThematique();
         ct.setNom(nom);
-        ct.setDateDebut(randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1)));
+        ct.setDateDebut(
+            randomDate(LocalDate.of(2015, 3, 1), LocalDate.of(2015, 12, 1))
+        );
         return ct;
     }
 
     private LocalDate randomDate(LocalDate minDay, LocalDate maxDay) {
         long minEpochDay = minDay.toEpochDay();
-        return LocalDate.ofEpochDay(minEpochDay + random.nextInt((int) (maxDay.toEpochDay() - minEpochDay)));
+        return LocalDate.ofEpochDay(
+            minEpochDay +
+            random.nextInt((int) (maxDay.toEpochDay() - minEpochDay))
+        );
     }
-
 }

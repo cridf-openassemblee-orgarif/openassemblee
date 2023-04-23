@@ -7,7 +7,10 @@ public class AppartenanceOrganismeDTO {
     private AppartenanceOrganisme appartenance;
     private EluListDTO eluDto;
 
-    public AppartenanceOrganismeDTO(AppartenanceOrganisme appartenance, EluListDTO eluDto) {
+    public AppartenanceOrganismeDTO(
+        AppartenanceOrganisme appartenance,
+        EluListDTO eluDto
+    ) {
         this.appartenance = appartenance;
         this.eluDto = eluDto;
     }

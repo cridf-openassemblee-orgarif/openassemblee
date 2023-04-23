@@ -1,8 +1,7 @@
 package openassemblee.service.dto;
 
-import openassemblee.domain.Elu;
-
 import java.util.List;
+import openassemblee.domain.Elu;
 
 public class CandidatCorrespondanceDTO {
 
@@ -11,10 +10,14 @@ public class CandidatCorrespondanceDTO {
     private Boolean tropDeCorrespondances;
     private List<String> errors;
 
-    public CandidatCorrespondanceDTO() {
-    }
+    public CandidatCorrespondanceDTO() {}
 
-    public CandidatCorrespondanceDTO(CandidatDTO candidatDTO, Elu elu, Boolean tropDeCorrespondances, List<String> errors) {
+    public CandidatCorrespondanceDTO(
+        CandidatDTO candidatDTO,
+        Elu elu,
+        Boolean tropDeCorrespondances,
+        List<String> errors
+    ) {
         this.candidatDTO = candidatDTO;
         this.elu = elu;
         this.tropDeCorrespondances = tropDeCorrespondances;

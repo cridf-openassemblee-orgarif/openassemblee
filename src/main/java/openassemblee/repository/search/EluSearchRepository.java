@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * Spring Data ElasticSearch repository for the Elu entity.
  */
-public interface EluSearchRepository extends ElasticsearchRepository<Elu, Long> {
-}
+public interface EluSearchRepository
+    extends ElasticsearchRepository<Elu, Long> {}

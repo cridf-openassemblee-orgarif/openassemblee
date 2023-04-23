@@ -1,13 +1,11 @@
 package openassemblee.domain;
 
-
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A ShortUid.
@@ -30,8 +28,7 @@ public class ShortUid implements Serializable {
     @Column(name = "short_uid")
     private Long shortUid;
 
-    public ShortUid() {
-    }
+    public ShortUid() {}
 
     public ShortUid(String uid, Long shortUid) {
         this.uid = uid;
@@ -71,6 +68,7 @@ public class ShortUid implements Serializable {
     public void setShortUid(Long shortUid) {
         this.shortUid = shortUid;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -95,9 +93,14 @@ public class ShortUid implements Serializable {
 
     @Override
     public String toString() {
-        return "ShortUid{" +
-            "uid=" + getUid() +
-            ", shortUid='" + getShortUid() + "'" +
-            "}";
+        return (
+            "ShortUid{" +
+            "uid=" +
+            getUid() +
+            ", shortUid='" +
+            getShortUid() +
+            "'" +
+            "}"
+        );
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * Spring Data ElasticSearch repository for the ListeElectorale entity.
  */
-public interface ListeElectoraleSearchRepository extends ElasticsearchRepository<ListeElectorale, Long> {
-}
+public interface ListeElectoraleSearchRepository
+    extends ElasticsearchRepository<ListeElectorale, Long> {}

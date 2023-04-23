@@ -1,5 +1,6 @@
 package openassemblee.service;
 
+import javax.inject.Inject;
 import openassemblee.domain.PresenceElu;
 import openassemblee.domain.Signature;
 import openassemblee.repository.PresenceEluRepository;
@@ -7,15 +8,15 @@ import openassemblee.repository.SignatureRepository;
 import openassemblee.repository.search.SignatureSearchRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-
 @Service
 public class PresenceEluService {
 
     @Inject
     private PresenceEluRepository presenceEluRepository;
+
     @Inject
     private SignatureRepository signatureRepository;
+
     @Inject
     private SignatureSearchRepository signatureSearchRepository;
 

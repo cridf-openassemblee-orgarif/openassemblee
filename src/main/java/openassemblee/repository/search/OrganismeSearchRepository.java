@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * Spring Data ElasticSearch repository for the Organisme entity.
  */
-public interface OrganismeSearchRepository extends ElasticsearchRepository<Organisme, Long> {
-}
+public interface OrganismeSearchRepository
+    extends ElasticsearchRepository<Organisme, Long> {}

@@ -1,8 +1,7 @@
 package openassemblee.web.rest.dto;
 
-import openassemblee.domain.User;
-
 import java.time.ZonedDateTime;
+import openassemblee.domain.User;
 
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.
@@ -17,8 +16,7 @@ public class ManagedUserDTO extends UserDTO {
 
     private ZonedDateTime lastModifiedDate;
 
-    public ManagedUserDTO() {
-    }
+    public ManagedUserDTO() {}
 
     public ManagedUserDTO(User user) {
         super(user);
@@ -62,11 +60,19 @@ public class ManagedUserDTO extends UserDTO {
 
     @Override
     public String toString() {
-        return "ManagedUserDTO{" +
-            "id=" + id +
-            ", createdDate=" + createdDate +
-            ", lastModifiedBy='" + lastModifiedBy + '\'' +
-            ", lastModifiedDate=" + lastModifiedDate +
-            "} " + super.toString();
+        return (
+            "ManagedUserDTO{" +
+            "id=" +
+            id +
+            ", createdDate=" +
+            createdDate +
+            ", lastModifiedBy='" +
+            lastModifiedBy +
+            '\'' +
+            ", lastModifiedDate=" +
+            lastModifiedDate +
+            "} " +
+            super.toString()
+        );
     }
 }

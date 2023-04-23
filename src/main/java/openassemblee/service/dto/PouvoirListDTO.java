@@ -8,7 +8,11 @@ public class PouvoirListDTO {
     private EluListDTO eluCedeur;
     private EluListDTO eluBeneficiaire;
 
-    public PouvoirListDTO(Pouvoir pouvoir, EluListDTO eluCedeur, EluListDTO eluBeneficiaire) {
+    public PouvoirListDTO(
+        Pouvoir pouvoir,
+        EluListDTO eluCedeur,
+        EluListDTO eluBeneficiaire
+    ) {
         this.pouvoir = pouvoir;
         this.eluCedeur = eluCedeur;
         this.eluBeneficiaire = eluBeneficiaire;

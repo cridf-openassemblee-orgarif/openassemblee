@@ -1,6 +1,15 @@
 package openassemblee.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.inject.Inject;
 import openassemblee.domain.AppartenanceCommissionThematique;
 import openassemblee.repository.AppartenanceCommissionThematiqueRepository;
 import openassemblee.repository.search.AppartenanceCommissionThematiqueSearchRepository;
@@ -13,16 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 /**
  * REST controller for managing AppartenanceCommissionThematique.
  */
@@ -30,7 +29,9 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 @RequestMapping("/api")
 public class AppartenanceCommissionThematiqueResource {
 
-    private final Logger log = LoggerFactory.getLogger(AppartenanceCommissionThematiqueResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        AppartenanceCommissionThematiqueResource.class
+    );
 
     @Inject
     private AppartenanceCommissionThematiqueRepository appartenanceCommissionThematiqueRepository;
@@ -44,49 +45,97 @@ public class AppartenanceCommissionThematiqueResource {
     /**
      * POST  /appartenanceCommissionThematiques -> Create a new appartenanceCommissionThematique.
      */
-    @RequestMapping(value = "/appartenanceCommissionThematiques",
+    @RequestMapping(
+        value = "/appartenanceCommissionThematiques",
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<AppartenanceCommissionThematique> createAppartenanceCommissionThematique(@RequestBody AppartenanceCommissionThematique appartenanceCommissionThematique) throws URISyntaxException {
-        log.debug("REST request to save AppartenanceCommissionThematique : {}", appartenanceCommissionThematique);
+    public ResponseEntity<AppartenanceCommissionThematique> createAppartenanceCommissionThematique(
+        @RequestBody AppartenanceCommissionThematique appartenanceCommissionThematique
+    ) throws URISyntaxException {
+        log.debug(
+            "REST request to save AppartenanceCommissionThematique : {}",
+            appartenanceCommissionThematique
+        );
         if (appartenanceCommissionThematique.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new appartenanceCommissionThematique cannot already have an ID").body(null);
+            return ResponseEntity
+                .badRequest()
+                .header(
+                    "Failure",
+                    "A new appartenanceCommissionThematique cannot already have an ID"
+                )
+                .body(null);
         }
-        AppartenanceCommissionThematique result = appartenanceCommissionThematiqueRepository.save(appartenanceCommissionThematique);
+        AppartenanceCommissionThematique result =
+            appartenanceCommissionThematiqueRepository.save(
+                appartenanceCommissionThematique
+            );
         appartenanceCommissionThematiqueSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
-        return ResponseEntity.created(new URI("/api/appartenanceCommissionThematiques/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("appartenanceCommissionThematique", result.getId().toString()))
+        return ResponseEntity
+            .created(
+                new URI(
+                    "/api/appartenanceCommissionThematiques/" + result.getId()
+                )
+            )
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    "appartenanceCommissionThematique",
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * PUT  /appartenanceCommissionThematiques -> Updates an existing appartenanceCommissionThematique.
      */
-    @RequestMapping(value = "/appartenanceCommissionThematiques",
+    @RequestMapping(
+        value = "/appartenanceCommissionThematiques",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<AppartenanceCommissionThematique> updateAppartenanceCommissionThematique(@RequestBody AppartenanceCommissionThematique appartenanceCommissionThematique) throws URISyntaxException {
-        log.debug("REST request to update AppartenanceCommissionThematique : {}", appartenanceCommissionThematique);
+    public ResponseEntity<AppartenanceCommissionThematique> updateAppartenanceCommissionThematique(
+        @RequestBody AppartenanceCommissionThematique appartenanceCommissionThematique
+    ) throws URISyntaxException {
+        log.debug(
+            "REST request to update AppartenanceCommissionThematique : {}",
+            appartenanceCommissionThematique
+        );
         if (appartenanceCommissionThematique.getId() == null) {
-            return createAppartenanceCommissionThematique(appartenanceCommissionThematique);
+            return createAppartenanceCommissionThematique(
+                appartenanceCommissionThematique
+            );
         }
-        AppartenanceCommissionThematique result = appartenanceCommissionThematiqueRepository.save(appartenanceCommissionThematique);
-        appartenanceCommissionThematiqueSearchRepository.save(appartenanceCommissionThematique);
+        AppartenanceCommissionThematique result =
+            appartenanceCommissionThematiqueRepository.save(
+                appartenanceCommissionThematique
+            );
+        appartenanceCommissionThematiqueSearchRepository.save(
+            appartenanceCommissionThematique
+        );
         auditTrailService.logUpdate(result, result.getId());
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("appartenanceCommissionThematique", appartenanceCommissionThematique.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    "appartenanceCommissionThematique",
+                    appartenanceCommissionThematique.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * GET  /appartenanceCommissionThematiques -> get all the appartenanceCommissionThematiques.
      */
-    @RequestMapping(value = "/appartenanceCommissionThematiques",
+    @RequestMapping(
+        value = "/appartenanceCommissionThematiques",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<AppartenanceCommissionThematique> getAllAppartenanceCommissionThematiques() {
         log.debug("REST request to get all AppartenanceCommissionThematiques");
@@ -96,45 +145,83 @@ public class AppartenanceCommissionThematiqueResource {
     /**
      * GET  /appartenanceCommissionThematiques/:id -> get the "id" appartenanceCommissionThematique.
      */
-    @RequestMapping(value = "/appartenanceCommissionThematiques/{id}",
+    @RequestMapping(
+        value = "/appartenanceCommissionThematiques/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<AppartenanceCommissionThematique> getAppartenanceCommissionThematique(@PathVariable Long id) {
-        log.debug("REST request to get AppartenanceCommissionThematique : {}", id);
-        return Optional.ofNullable(appartenanceCommissionThematiqueRepository.findOne(id))
-            .map(appartenanceCommissionThematique -> new ResponseEntity<>(
-                appartenanceCommissionThematique,
-                HttpStatus.OK))
+    public ResponseEntity<AppartenanceCommissionThematique> getAppartenanceCommissionThematique(
+        @PathVariable Long id
+    ) {
+        log.debug(
+            "REST request to get AppartenanceCommissionThematique : {}",
+            id
+        );
+        return Optional
+            .ofNullable(appartenanceCommissionThematiqueRepository.findOne(id))
+            .map(appartenanceCommissionThematique ->
+                new ResponseEntity<>(
+                    appartenanceCommissionThematique,
+                    HttpStatus.OK
+                )
+            )
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * DELETE  /appartenanceCommissionThematiques/:id -> delete the "id" appartenanceCommissionThematique.
      */
-    @RequestMapping(value = "/appartenanceCommissionThematiques/{id}",
+    @RequestMapping(
+        value = "/appartenanceCommissionThematiques/{id}",
         method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Void> deleteAppartenanceCommissionThematique(@PathVariable Long id) {
-        log.debug("REST request to delete AppartenanceCommissionThematique : {}", id);
+    public ResponseEntity<Void> deleteAppartenanceCommissionThematique(
+        @PathVariable Long id
+    ) {
+        log.debug(
+            "REST request to delete AppartenanceCommissionThematique : {}",
+            id
+        );
         appartenanceCommissionThematiqueRepository.delete(id);
         appartenanceCommissionThematiqueSearchRepository.delete(id);
-        auditTrailService.logDeletion(AppartenanceCommissionThematique.class, id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("appartenanceCommissionThematique", id.toString())).build();
+        auditTrailService.logDeletion(
+            AppartenanceCommissionThematique.class,
+            id
+        );
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert(
+                    "appartenanceCommissionThematique",
+                    id.toString()
+                )
+            )
+            .build();
     }
 
     /**
      * SEARCH  /_search/appartenanceCommissionThematiques/:query -> search for the appartenanceCommissionThematique corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/appartenanceCommissionThematiques/{query}",
+    @RequestMapping(
+        value = "/_search/appartenanceCommissionThematiques/{query}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public List<AppartenanceCommissionThematique> searchAppartenanceCommissionThematiques(@PathVariable String query) {
+    public List<AppartenanceCommissionThematique> searchAppartenanceCommissionThematiques(
+        @PathVariable String query
+    ) {
         return StreamSupport
-            .stream(appartenanceCommissionThematiqueSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(
+                appartenanceCommissionThematiqueSearchRepository
+                    .search(queryStringQuery(query))
+                    .spliterator(),
+                false
+            )
             .collect(Collectors.toList());
     }
 }

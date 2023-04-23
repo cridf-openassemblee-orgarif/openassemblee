@@ -1,6 +1,8 @@
 package openassemblee.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import java.util.Optional;
+import javax.inject.Inject;
 import openassemblee.domain.NumeroTelephone;
 import openassemblee.repository.NumeroTelephoneRepository;
 import openassemblee.repository.search.NumeroTelephoneSearchRepository;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import java.util.Optional;
-
 /**
  * REST controller for managing NumeroTelephone.
  */
@@ -24,7 +23,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class NumeroTelephoneResource {
 
-    private final Logger log = LoggerFactory.getLogger(NumeroTelephoneResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        NumeroTelephoneResource.class
+    );
 
     @Inject
     private NumeroTelephoneRepository numeroTelephoneRepository;
@@ -35,16 +36,21 @@ public class NumeroTelephoneResource {
     /**
      * GET  /numeroTelephones/:id -> get the "id" numeroTelephone.
      */
-    @RequestMapping(value = "/numeroTelephones/{id}",
+    @RequestMapping(
+        value = "/numeroTelephones/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<NumeroTelephone> getNumeroTelephone(@PathVariable Long id) {
+    public ResponseEntity<NumeroTelephone> getNumeroTelephone(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get NumeroTelephone : {}", id);
-        return Optional.ofNullable(numeroTelephoneRepository.findOne(id))
-            .map(numeroTelephone -> new ResponseEntity<>(
-                numeroTelephone,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(numeroTelephoneRepository.findOne(id))
+            .map(numeroTelephone ->
+                new ResponseEntity<>(numeroTelephone, HttpStatus.OK)
+            )
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

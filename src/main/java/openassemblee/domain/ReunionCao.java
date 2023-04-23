@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A ReunionCao.
@@ -37,9 +36,11 @@ public class ReunionCao implements Serializable {
     private String heureFin;
 
     @OneToMany
-    @JoinTable(name = "reunion_cao_presences_elus",
+    @JoinTable(
+        name = "reunion_cao_presences_elus",
         joinColumns = @JoinColumn(name = "reunion_cao_id"),
-        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
@@ -122,12 +123,23 @@ public class ReunionCao implements Serializable {
 
     @Override
     public String toString() {
-        return "ReunionCao{" +
-            "id=" + id +
-            ", libelle='" + libelle + "'" +
-            ", date='" + date + "'" +
-            ", heureDebut='" + heureDebut + "'" +
-            ", heureFin='" + heureFin + "'" +
-            '}';
+        return (
+            "ReunionCao{" +
+            "id=" +
+            id +
+            ", libelle='" +
+            libelle +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            ", heureDebut='" +
+            heureDebut +
+            "'" +
+            ", heureFin='" +
+            heureFin +
+            "'" +
+            '}'
+        );
     }
 }

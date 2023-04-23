@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A AppartenanceCommissionPermanente.
@@ -113,7 +112,8 @@ public class AppartenanceCommissionPermanente implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AppartenanceCommissionPermanente appartenanceCommissionPermanente = (AppartenanceCommissionPermanente) o;
+        AppartenanceCommissionPermanente appartenanceCommissionPermanente =
+            (AppartenanceCommissionPermanente) o;
         return Objects.equals(id, appartenanceCommissionPermanente.id);
     }
 
@@ -124,11 +124,20 @@ public class AppartenanceCommissionPermanente implements Serializable {
 
     @Override
     public String toString() {
-        return "AppartenanceCommissionPermanente{" +
-            "id=" + id +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "AppartenanceCommissionPermanente{" +
+            "id=" +
+            id +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

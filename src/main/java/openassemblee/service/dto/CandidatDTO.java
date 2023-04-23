@@ -1,8 +1,7 @@
 package openassemblee.service.dto;
 
-import openassemblee.domain.enumeration.Civilite;
-
 import java.time.LocalDate;
+import openassemblee.domain.enumeration.Civilite;
 
 public class CandidatDTO {
 
@@ -15,10 +14,18 @@ public class CandidatDTO {
     private String departement;
     private Integer codeDepartement;
 
-    public CandidatDTO() {
-    }
+    public CandidatDTO() {}
 
-    public CandidatDTO(Civilite civilite, String prenom, String nom, LocalDate dateNaissance, String listeElectorale, String listeElectoraleCourt, String departement, Integer codeDepartement) {
+    public CandidatDTO(
+        Civilite civilite,
+        String prenom,
+        String nom,
+        LocalDate dateNaissance,
+        String listeElectorale,
+        String listeElectoraleCourt,
+        String departement,
+        Integer codeDepartement
+    ) {
         this.civilite = civilite;
         this.prenom = prenom;
         this.nom = nom;

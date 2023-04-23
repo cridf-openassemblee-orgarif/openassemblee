@@ -1,5 +1,14 @@
 package openassemblee.service;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import javax.inject.Inject;
 import openassemblee.domain.Authority;
 import openassemblee.domain.PersistentToken;
 import openassemblee.domain.User;
@@ -15,16 +24,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Service class for managing users.
@@ -66,51 +65,71 @@ public class UserService {
         return Optional.empty();
     }
 
-    public Optional<User> completePasswordReset(final String newPassword, String key) {
+    public Optional<User> completePasswordReset(
+        final String newPassword,
+        String key
+    ) {
         log.debug("Reset user password for reset key {}", key);
 
-        return userRepository.findOneByResetKey(key)
-            .filter(new Predicate<User>() {
-                @Override
-                public boolean test(User user) {
-                    ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                    return user.getResetDate().isAfter(oneDayAgo);
+        return userRepository
+            .findOneByResetKey(key)
+            .filter(
+                new Predicate<User>() {
+                    @Override
+                    public boolean test(User user) {
+                        ZonedDateTime oneDayAgo = ZonedDateTime
+                            .now()
+                            .minusHours(24);
+                        return user.getResetDate().isAfter(oneDayAgo);
+                    }
                 }
-            })
-            .map(new Function<User, User>() {
-                @Override
-                public User apply(User user) {
-                    user.setPassword(passwordEncoder.encode(newPassword));
-                    user.setResetKey(null);
-                    user.setResetDate(null);
-                    userRepository.save(user);
-                    return user;
+            )
+            .map(
+                new Function<User, User>() {
+                    @Override
+                    public User apply(User user) {
+                        user.setPassword(passwordEncoder.encode(newPassword));
+                        user.setResetKey(null);
+                        user.setResetDate(null);
+                        userRepository.save(user);
+                        return user;
+                    }
                 }
-            });
+            );
     }
 
     public Optional<User> requestPasswordReset(String mail) {
-        return userRepository.findOneByEmail(mail)
-            .filter(new Predicate<User>() {
-                @Override
-                public boolean test(User user) {
-                    return user.getActivated();
+        return userRepository
+            .findOneByEmail(mail)
+            .filter(
+                new Predicate<User>() {
+                    @Override
+                    public boolean test(User user) {
+                        return user.getActivated();
+                    }
                 }
-            })
-            .map(new Function<User, User>() {
-                @Override
-                public User apply(User user) {
-                    user.setResetKey(RandomUtil.generateResetKey());
-                    user.setResetDate(ZonedDateTime.now());
-                    userRepository.save(user);
-                    return user;
+            )
+            .map(
+                new Function<User, User>() {
+                    @Override
+                    public User apply(User user) {
+                        user.setResetKey(RandomUtil.generateResetKey());
+                        user.setResetDate(ZonedDateTime.now());
+                        userRepository.save(user);
+                        return user;
+                    }
                 }
-            });
+            );
     }
 
-    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-                                      String langKey) {
-
+    public User createUserInformation(
+        String login,
+        String password,
+        String firstName,
+        String lastName,
+        String email,
+        String langKey
+    ) {
         User newUser = new User();
         Authority authority = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<>();
@@ -134,9 +153,15 @@ public class UserService {
         return newUser;
     }
 
-    public void updateUserInformation(final String firstName, final String lastName, final String email,
-                                      final String langKey) {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
+    public void updateUserInformation(
+        final String firstName,
+        final String lastName,
+        final String email,
+        final String langKey
+    ) {
+        Optional<User> user = userRepository.findOneByLogin(
+            SecurityUtils.getCurrentUser().getUsername()
+        );
         if (user.isPresent()) {
             User u = user.get();
             u.setFirstName(firstName);
@@ -150,7 +175,9 @@ public class UserService {
     }
 
     public void changePassword(final String password) {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername());
+        Optional<User> user = userRepository.findOneByLogin(
+            SecurityUtils.getCurrentUser().getUsername()
+        );
         if (user.isPresent()) {
             User u = user.get();
             String encryptedPassword = passwordEncoder.encode(password);
@@ -162,13 +189,17 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneByLogin(login).map(new Function<User, User>() {
-            @Override
-            public User apply(User u) {
-                u.getAuthorities().size();
-                return u;
-            }
-        });
+        return userRepository
+            .findOneByLogin(login)
+            .map(
+                new Function<User, User>() {
+                    @Override
+                    public User apply(User u) {
+                        u.getAuthorities().size();
+                        return u;
+                    }
+                }
+            );
     }
 
     @Transactional(readOnly = true)
@@ -180,7 +211,9 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User user = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
@@ -196,13 +229,13 @@ public class UserService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void removeOldPersistentTokens() {
         LocalDate now = LocalDate.now();
-        List<PersistentToken> tokens = persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1));
+        List<PersistentToken> tokens =
+            persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1));
         for (PersistentToken token : tokens) {
             log.debug("Deleting token {}", token.getSeries());
             User user = token.getUser();
             user.getPersistentTokens().remove(token);
             persistentTokenRepository.delete(token);
-
         }
     }
 
@@ -216,7 +249,10 @@ public class UserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         ZonedDateTime now = ZonedDateTime.now();
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+        List<User> users =
+            userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(
+                now.minusDays(3)
+            );
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

@@ -1,9 +1,8 @@
 package openassemblee.config;
 
+import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.cors.CorsConfiguration;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Properties specific to JHipster.
@@ -26,7 +25,6 @@ public class JHipsterProperties {
     private final Mail mail = new Mail();
 
     private final Security security = new Security();
-
 
     private final Metrics metrics = new Metrics();
 
@@ -63,7 +61,6 @@ public class JHipsterProperties {
     public CorsConfiguration getCors() {
         return cors;
     }
-
 
     public static class Async {
 

@@ -12,11 +12,17 @@ public class HemicycleConfigurationRendu {
     private int minChairNumber;
     private int maxChairNumber;
 
-    public HemicycleConfigurationRendu() {
-    }
+    public HemicycleConfigurationRendu() {}
 
-    public HemicycleConfigurationRendu(List<ChairRendu> chairs, int viewPortX, int viewPortY, int viewPortWidth,
-                                       int viewPortHeight, int minChairNumber, int maxChairNumber) {
+    public HemicycleConfigurationRendu(
+        List<ChairRendu> chairs,
+        int viewPortX,
+        int viewPortY,
+        int viewPortWidth,
+        int viewPortHeight,
+        int minChairNumber,
+        int maxChairNumber
+    ) {
         this.chairs = chairs;
         this.viewPortX = viewPortX;
         this.viewPortY = viewPortY;

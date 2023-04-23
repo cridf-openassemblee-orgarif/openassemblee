@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A AutreMandat.
@@ -51,10 +50,14 @@ public class AutreMandat implements Serializable {
     @JoinColumn(name = "mandature_id")
     private Mandature mandature;
 
-    public AutreMandat() {
-    }
+    public AutreMandat() {}
 
-    public AutreMandat(String collectiviteOuOrganisme, String fonction, String dateDebutString, Elu elu) {
+    public AutreMandat(
+        String collectiviteOuOrganisme,
+        String fonction,
+        String dateDebutString,
+        Elu elu
+    ) {
         this.collectiviteOuOrganisme = collectiviteOuOrganisme;
         this.fonction = fonction;
         this.dateDebutString = dateDebutString;
@@ -152,13 +155,26 @@ public class AutreMandat implements Serializable {
 
     @Override
     public String toString() {
-        return "AutreMandat{" +
-            "id=" + id +
-            ", collectiviteOuOrganisme='" + collectiviteOuOrganisme + "'" +
-            ", fonction='" + fonction + "'" +
-            ", dateDebut='" + dateDebut + "'" +
-            ", dateFin='" + dateFin + "'" +
-            ", motifFin='" + motifFin + "'" +
-            '}';
+        return (
+            "AutreMandat{" +
+            "id=" +
+            id +
+            ", collectiviteOuOrganisme='" +
+            collectiviteOuOrganisme +
+            "'" +
+            ", fonction='" +
+            fonction +
+            "'" +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", dateFin='" +
+            dateFin +
+            "'" +
+            ", motifFin='" +
+            motifFin +
+            "'" +
+            '}'
+        );
     }
 }

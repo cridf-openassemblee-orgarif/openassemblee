@@ -1,6 +1,15 @@
 package openassemblee.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.inject.Inject;
 import openassemblee.domain.HemicycleArchive;
 import openassemblee.domain.HemicyclePlan;
 import openassemblee.repository.HemicycleArchiveRepository;
@@ -17,16 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 /**
  * REST controller for managing HemicycleArchive.
  */
@@ -34,10 +33,13 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 @RequestMapping("/api")
 public class HemicycleArchiveResource {
 
-    private final Logger log = LoggerFactory.getLogger(HemicycleArchiveResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        HemicycleArchiveResource.class
+    );
 
     public static final String hemicycleArchivesUrl = "hemicycleArchives";
-    public static final String hemicycleArchivesDataUrl = "hemicycleArchives-data";
+    public static final String hemicycleArchivesDataUrl =
+        "hemicycleArchives-data";
 
     @Inject
     private HemicycleArchiveRepository hemicycleArchiveRepository;
@@ -54,45 +56,80 @@ public class HemicycleArchiveResource {
     /**
      * POST  /hemicycleArchives -> Create a new hemicycleArchive.
      */
-    @RequestMapping(value = "/" + hemicycleArchivesUrl,
+    @RequestMapping(
+        value = "/" + hemicycleArchivesUrl,
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicycleArchive> createHemicycleArchive(@RequestBody HemicycleArchiveCreationDTO dto) throws URISyntaxException {
+    public ResponseEntity<HemicycleArchive> createHemicycleArchive(
+        @RequestBody HemicycleArchiveCreationDTO dto
+    ) throws URISyntaxException {
         HemicycleArchive result = hemicycleArchiveService.save(dto);
-        dto.setSvgPlan("HemicycleArchiveCreationDTO est simplifié pour l'audit log car trop long.");
+        dto.setSvgPlan(
+            "HemicycleArchiveCreationDTO est simplifié pour l'audit log car trop long."
+        );
         dto.setData(null);
-        auditTrailService.logCreation(result, result.getId(), HemicyclePlan.class, dto.getPlanId(), dto);
-        return ResponseEntity.created(new URI("/api/hemicycleArchives/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("hemicycleArchive", result.getId().toString()))
+        auditTrailService.logCreation(
+            result,
+            result.getId(),
+            HemicyclePlan.class,
+            dto.getPlanId(),
+            dto
+        );
+        return ResponseEntity
+            .created(new URI("/api/hemicycleArchives/" + result.getId()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    "hemicycleArchive",
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * PUT  /hemicycleArchives -> Updates an existing hemicycleArchive.
      */
-    @RequestMapping(value = "/hemicycleArchives",
+    @RequestMapping(
+        value = "/hemicycleArchives",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicycleArchive> updateHemicycleArchive(@RequestBody HemicycleArchive hemicycleArchive) throws URISyntaxException {
-        log.debug("REST request to update HemicycleArchive : {}", hemicycleArchive);
+    public ResponseEntity<HemicycleArchive> updateHemicycleArchive(
+        @RequestBody HemicycleArchive hemicycleArchive
+    ) throws URISyntaxException {
+        log.debug(
+            "REST request to update HemicycleArchive : {}",
+            hemicycleArchive
+        );
         if (hemicycleArchive.getId() == null) {
             throw new IllegalArgumentException();
         }
-        HemicycleArchive result = hemicycleArchiveRepository.save(hemicycleArchive);
+        HemicycleArchive result = hemicycleArchiveRepository.save(
+            hemicycleArchive
+        );
         hemicycleArchiveSearchRepository.save(hemicycleArchive);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("hemicycleArchive", hemicycleArchive.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    "hemicycleArchive",
+                    hemicycleArchive.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * GET  /hemicycleArchives -> get all the hemicycleArchives.
      */
-    @RequestMapping(value = "/hemicycleArchives",
+    @RequestMapping(
+        value = "/hemicycleArchives",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<HemicycleArchive> getAllHemicycleArchives() {
         log.debug("REST request to get all HemicycleArchives");
@@ -102,53 +139,82 @@ public class HemicycleArchiveResource {
     /**
      * GET  /hemicycleArchives/:id -> get the "id" hemicycleArchive.
      */
-    @RequestMapping(value = "/" + hemicycleArchivesUrl + "/{id}",
+    @RequestMapping(
+        value = "/" + hemicycleArchivesUrl + "/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicycleArchive> getHemicycleArchive(@PathVariable Long id) {
+    public ResponseEntity<HemicycleArchive> getHemicycleArchive(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get HemicycleArchive : {}", id);
-        return Optional.ofNullable(hemicycleArchiveRepository.findOne(id))
-            .map(hemicycleArchive -> new ResponseEntity<>(
-                hemicycleArchive,
-                HttpStatus.OK))
+        return Optional
+            .ofNullable(hemicycleArchiveRepository.findOne(id))
+            .map(hemicycleArchive ->
+                new ResponseEntity<>(hemicycleArchive, HttpStatus.OK)
+            )
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/" + hemicycleArchivesDataUrl + "/{id}",
+    @RequestMapping(
+        value = "/" + hemicycleArchivesDataUrl + "/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<HemicycleArchiveDataWithConfigurationDTO> getHemicycleArchiveData(@PathVariable Long id) {
-        HemicycleArchiveDataWithConfigurationDTO dto = hemicycleArchiveService.get(id);
+    public ResponseEntity<HemicycleArchiveDataWithConfigurationDTO> getHemicycleArchiveData(
+        @PathVariable Long id
+    ) {
+        HemicycleArchiveDataWithConfigurationDTO dto =
+            hemicycleArchiveService.get(id);
         return new ResponseEntity(dto, HttpStatus.OK);
     }
 
     /**
      * DELETE  /hemicycleArchives/:id -> delete the "id" hemicycleArchive.
      */
-    @RequestMapping(value = "/hemicycleArchives/{id}",
+    @RequestMapping(
+        value = "/hemicycleArchives/{id}",
         method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Void> deleteHemicycleArchive(@PathVariable Long id) {
         log.debug("REST request to delete HemicycleArchive : {}", id);
         hemicycleArchiveRepository.delete(id);
         hemicycleArchiveSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("hemicycleArchive", id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert(
+                    "hemicycleArchive",
+                    id.toString()
+                )
+            )
+            .build();
     }
 
     /**
      * SEARCH  /_search/hemicycleArchives/:query -> search for the hemicycleArchive corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/hemicycleArchives/{query}",
+    @RequestMapping(
+        value = "/_search/hemicycleArchives/{query}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public List<HemicycleArchive> searchHemicycleArchives(@PathVariable String query) {
+    public List<HemicycleArchive> searchHemicycleArchives(
+        @PathVariable String query
+    ) {
         return StreamSupport
-            .stream(hemicycleArchiveSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(
+                hemicycleArchiveSearchRepository
+                    .search(queryStringQuery(query))
+                    .spliterator(),
+                false
+            )
             .collect(Collectors.toList());
     }
 }

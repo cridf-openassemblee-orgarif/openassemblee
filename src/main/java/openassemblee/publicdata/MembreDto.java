@@ -1,6 +1,7 @@
 package openassemblee.publicdata;
 
 public class MembreDto {
+
     private String uidMembre;
     private String mandature;
     private String uidConseiller;

@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * Spring Data ElasticSearch repository for the AppartenanceGroupePolitique entity.
  */
-public interface AppartenanceGroupePolitiqueSearchRepository extends ElasticsearchRepository<AppartenanceGroupePolitique, Long> {
-}
+public interface AppartenanceGroupePolitiqueSearchRepository
+    extends ElasticsearchRepository<AppartenanceGroupePolitique, Long> {}

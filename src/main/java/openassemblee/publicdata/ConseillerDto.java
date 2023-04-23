@@ -1,6 +1,7 @@
 package openassemblee.publicdata;
 
 public class ConseillerDto {
+
     private String mandature;
     private String nom;
     private String activiteProf;

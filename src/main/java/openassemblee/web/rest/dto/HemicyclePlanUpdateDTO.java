@@ -8,10 +8,12 @@ public class HemicyclePlanUpdateDTO implements Serializable {
     private Long id;
     private List<HemicycleAssociationDTO> associations;
 
-    public HemicyclePlanUpdateDTO() {
-    }
+    public HemicyclePlanUpdateDTO() {}
 
-    public HemicyclePlanUpdateDTO(Long id, List<HemicycleAssociationDTO> associations) {
+    public HemicyclePlanUpdateDTO(
+        Long id,
+        List<HemicycleAssociationDTO> associations
+    ) {
         this.id = id;
         this.associations = associations;
     }

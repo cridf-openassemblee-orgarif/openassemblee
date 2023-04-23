@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 @Service
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(
+    value = WebApplicationContext.SCOPE_SESSION,
+    proxyMode = ScopedProxyMode.TARGET_CLASS
+)
 public class SessionMandatureService {
 
     private Mandature forceMandature;

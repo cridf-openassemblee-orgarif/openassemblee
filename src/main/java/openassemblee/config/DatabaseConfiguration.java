@@ -4,6 +4,9 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import java.util.Arrays;
+import javax.inject.Inject;
+import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import openassemblee.config.liquibase.AsyncSpringLiquibase;
 import org.slf4j.Logger;
@@ -21,10 +24,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.util.Arrays;
-
 @Configuration
 @EnableJpaRepositories("openassemblee.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
@@ -32,7 +31,9 @@ import java.util.Arrays;
 @EnableElasticsearchRepositories("openassemblee.repository.search")
 public class DatabaseConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(
+        DatabaseConfiguration.class
+    );
 
     @Inject
     private Environment env;
@@ -41,36 +42,65 @@ public class DatabaseConfiguration {
     private MetricRegistry metricRegistry;
 
     @Bean(destroyMethod = "close")
-    @ConditionalOnExpression("#{!environment.acceptsProfiles('cloud') && !environment.acceptsProfiles('heroku')}")
-    public DataSource dataSource(DataSourceProperties dataSourceProperties, JHipsterProperties jHipsterProperties) {
+    @ConditionalOnExpression(
+        "#{!environment.acceptsProfiles('cloud') && !environment.acceptsProfiles('heroku')}"
+    )
+    public DataSource dataSource(
+        DataSourceProperties dataSourceProperties,
+        JHipsterProperties jHipsterProperties
+    ) {
         log.debug("Configuring Datasource");
         if (dataSourceProperties.getUrl() == null) {
-            log.error("Your database connection pool configuration is incorrect! The application" +
-                    " cannot start. Please check your Spring profile, current profiles are: {}",
-                Arrays.toString(env.getActiveProfiles()));
+            log.error(
+                "Your database connection pool configuration is incorrect! The application" +
+                " cannot start. Please check your Spring profile, current profiles are: {}",
+                Arrays.toString(env.getActiveProfiles())
+            );
 
-            throw new ApplicationContextException("Database connection pool is not configured correctly");
+            throw new ApplicationContextException(
+                "Database connection pool is not configured correctly"
+            );
         }
         HikariConfig config = new HikariConfig();
-        config.setDataSourceClassName(dataSourceProperties.getDriverClassName());
+        config.setDataSourceClassName(
+            dataSourceProperties.getDriverClassName()
+        );
         config.addDataSourceProperty("url", dataSourceProperties.getUrl());
         if (dataSourceProperties.getUsername() != null) {
-            config.addDataSourceProperty("user", dataSourceProperties.getUsername());
+            config.addDataSourceProperty(
+                "user",
+                dataSourceProperties.getUsername()
+            );
         } else {
             config.addDataSourceProperty("user", ""); // HikariCP doesn't allow null user
         }
         if (dataSourceProperties.getPassword() != null) {
-            config.addDataSourceProperty("password", dataSourceProperties.getPassword());
+            config.addDataSourceProperty(
+                "password",
+                dataSourceProperties.getPassword()
+            );
         } else {
             config.addDataSourceProperty("password", ""); // HikariCP doesn't allow null password
         }
 
         //MySQL optimizations, see https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration
         String driver = dataSourceProperties.getDriverClassName();
-        if (driver.equals("com.mysql.jdbc.jdbc2.optional.MysqlDataSource") || driver.equals("com.mysql.cj.jdbc.MysqlDataSource")) {
-            config.addDataSourceProperty("cachePrepStmts", jHipsterProperties.getDatasource().isCachePrepStmts());
-            config.addDataSourceProperty("prepStmtCacheSize", jHipsterProperties.getDatasource().getPrepStmtCacheSize());
-            config.addDataSourceProperty("prepStmtCacheSqlLimit", jHipsterProperties.getDatasource().getPrepStmtCacheSqlLimit());
+        if (
+            driver.equals("com.mysql.jdbc.jdbc2.optional.MysqlDataSource") ||
+            driver.equals("com.mysql.cj.jdbc.MysqlDataSource")
+        ) {
+            config.addDataSourceProperty(
+                "cachePrepStmts",
+                jHipsterProperties.getDatasource().isCachePrepStmts()
+            );
+            config.addDataSourceProperty(
+                "prepStmtCacheSize",
+                jHipsterProperties.getDatasource().getPrepStmtCacheSize()
+            );
+            config.addDataSourceProperty(
+                "prepStmtCacheSqlLimit",
+                jHipsterProperties.getDatasource().getPrepStmtCacheSqlLimit()
+            );
         }
         if (metricRegistry != null) {
             config.setMetricRegistry(metricRegistry);
@@ -81,15 +111,17 @@ public class DatabaseConfiguration {
     /**
      * Open the TCP port for the H2 database, so it is available remotely.
      */
-//    @Bean(initMethod = "start", destroyMethod = "stop")
-//    @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
-//    public Server h2TCPServer() throws SQLException {
-//        return Server.createTcpServer("-tcp", "-tcpAllowOthers");
-//    }
+    //    @Bean(initMethod = "start", destroyMethod = "stop")
+    //    @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
+    //    public Server h2TCPServer() throws SQLException {
+    //        return Server.createTcpServer("-tcp", "-tcpAllowOthers");
+    //    }
     @Bean
-    public SpringLiquibase liquibase(DataSource dataSource, DataSourceProperties dataSourceProperties,
-                                     LiquibaseProperties liquibaseProperties) {
-
+    public SpringLiquibase liquibase(
+        DataSource dataSource,
+        DataSourceProperties dataSourceProperties,
+        LiquibaseProperties liquibaseProperties
+    ) {
         // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
         SpringLiquibase liquibase = new AsyncSpringLiquibase();
         liquibase.setDataSource(dataSource);

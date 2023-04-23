@@ -1,5 +1,7 @@
 package openassemblee.config;
 
+import java.util.concurrent.Executor;
+import javax.inject.Inject;
 import openassemblee.async.ExceptionHandlingAsyncTaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +14,14 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.inject.Inject;
-import java.util.concurrent.Executor;
-
 @Configuration
 @EnableAsync
 @EnableScheduling
 public class AsyncConfiguration implements AsyncConfigurer {
 
-    private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(
+        AsyncConfiguration.class
+    );
 
     @Inject
     private JHipsterProperties jHipsterProperties;
@@ -30,9 +31,13 @@ public class AsyncConfiguration implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         log.debug("Creating Async Task Executor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(jHipsterProperties.getAsync().getCorePoolSize());
+        executor.setCorePoolSize(
+            jHipsterProperties.getAsync().getCorePoolSize()
+        );
         executor.setMaxPoolSize(jHipsterProperties.getAsync().getMaxPoolSize());
-        executor.setQueueCapacity(jHipsterProperties.getAsync().getQueueCapacity());
+        executor.setQueueCapacity(
+            jHipsterProperties.getAsync().getQueueCapacity()
+        );
         executor.setThreadNamePrefix("openassemblee-Executor-");
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }

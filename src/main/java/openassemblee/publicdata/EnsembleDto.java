@@ -1,6 +1,7 @@
 package openassemblee.publicdata;
 
 public class EnsembleDto {
+
     private String mandature;
     private String uidEnsemble;
     private String libCourt;

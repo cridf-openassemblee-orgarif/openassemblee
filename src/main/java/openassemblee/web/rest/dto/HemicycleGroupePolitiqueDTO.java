@@ -1,6 +1,7 @@
 package openassemblee.web.rest.dto;
 
 public class HemicycleGroupePolitiqueDTO {
+
     private Long id;
     private String nom;
     private String nomCourt;

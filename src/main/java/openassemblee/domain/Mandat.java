@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.jackson.JacksonEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A Mandat.
@@ -143,13 +142,26 @@ public class Mandat implements Serializable {
 
     @Override
     public String toString() {
-        return "Mandat{" +
-            "id=" + id +
-            ", dateDebut='" + dateDebut + "'" +
-            ", codeDepartement='" + codeDepartement + "'" +
-            ", departement='" + departement + "'" +
-            ", dateDemission='" + dateDemission + "'" +
-            ", motifDemission='" + motifDemission + "'" +
-            '}';
+        return (
+            "Mandat{" +
+            "id=" +
+            id +
+            ", dateDebut='" +
+            dateDebut +
+            "'" +
+            ", codeDepartement='" +
+            codeDepartement +
+            "'" +
+            ", departement='" +
+            departement +
+            "'" +
+            ", dateDemission='" +
+            dateDemission +
+            "'" +
+            ", motifDemission='" +
+            motifDemission +
+            "'" +
+            '}'
+        );
     }
 }

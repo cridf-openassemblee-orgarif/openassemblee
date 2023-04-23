@@ -24,6 +24,5 @@ public final class Constants {
     public static final String parisZoneIdAsString = "Europe/Paris";
     public static final ZoneId parisZoneId = ZoneId.of(parisZoneIdAsString);
 
-    private Constants() {
-    }
+    private Constants() {}
 }

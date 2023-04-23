@@ -1,12 +1,11 @@
 package openassemblee.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A ListeElectorale.
@@ -82,10 +81,17 @@ public class ListeElectorale implements Serializable {
 
     @Override
     public String toString() {
-        return "ListeElectorale{" +
-            "id=" + id +
-            ", nom='" + nom + "'" +
-            ", nomCourt='" + nomCourt + "'" +
-            '}';
+        return (
+            "ListeElectorale{" +
+            "id=" +
+            id +
+            ", nom='" +
+            nom +
+            "'" +
+            ", nomCourt='" +
+            nomCourt +
+            "'" +
+            '}'
+        );
     }
 }

@@ -1,17 +1,16 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import openassemblee.domain.enumeration.TypeSeance;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import openassemblee.domain.enumeration.TypeSeance;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A Seance.
@@ -40,9 +39,11 @@ public class Seance implements Serializable {
     private Integer nombreSignatures;
 
     @OneToMany
-    @JoinTable(name = "seance_presences_elus",
+    @JoinTable(
+        name = "seance_presences_elus",
         joinColumns = @JoinColumn(name = "seance_id"),
-        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
@@ -140,12 +141,23 @@ public class Seance implements Serializable {
 
     @Override
     public String toString() {
-        return "Seance{" +
-            "id=" + id +
-            ", intitule='" + intitule + "'" +
-            ", type='" + type + "'" +
-            ", date='" + date + "'" +
-            ", nombreSignatures='" + nombreSignatures + "'" +
-            '}';
+        return (
+            "Seance{" +
+            "id=" +
+            id +
+            ", intitule='" +
+            intitule +
+            "'" +
+            ", type='" +
+            type +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            ", nombreSignatures='" +
+            nombreSignatures +
+            "'" +
+            '}'
+        );
     }
 }

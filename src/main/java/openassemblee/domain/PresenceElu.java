@@ -1,16 +1,15 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import openassemblee.domain.jackson.JacksonEluLightSerializer;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import openassemblee.domain.jackson.JacksonEluLightSerializer;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A PresenceElu.
@@ -77,8 +76,6 @@ public class PresenceElu implements Serializable {
 
     @Override
     public String toString() {
-        return "PresenceElu{" +
-            "id=" + id +
-            '}';
+        return "PresenceElu{" + "id=" + id + '}';
     }
 }

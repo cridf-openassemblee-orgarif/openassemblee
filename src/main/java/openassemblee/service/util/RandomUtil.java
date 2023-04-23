@@ -9,8 +9,7 @@ public final class RandomUtil {
 
     private static final int DEF_COUNT = 20;
 
-    private RandomUtil() {
-    }
+    private RandomUtil() {}
 
     /**
      * Generates a password.

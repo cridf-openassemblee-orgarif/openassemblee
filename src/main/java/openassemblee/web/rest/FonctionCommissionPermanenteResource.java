@@ -1,6 +1,12 @@
 package openassemblee.web.rest;
 
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import javax.inject.Inject;
 import openassemblee.domain.FonctionCommissionPermanente;
 import openassemblee.repository.FonctionCommissionPermanenteRepository;
 import openassemblee.repository.search.FonctionCommissionPermanenteSearchRepository;
@@ -15,13 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 /**
  * REST controller for managing FonctionCommissionPermanente.
  */
@@ -29,7 +28,9 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 @RequestMapping("/api")
 public class FonctionCommissionPermanenteResource {
 
-    private final Logger log = LoggerFactory.getLogger(FonctionCommissionPermanenteResource.class);
+    private final Logger log = LoggerFactory.getLogger(
+        FonctionCommissionPermanenteResource.class
+    );
 
     @Inject
     private FonctionCommissionPermanenteRepository fonctionCommissionPermanenteRepository;
@@ -46,67 +47,123 @@ public class FonctionCommissionPermanenteResource {
     /**
      * POST  /fonctionCommissionPermanentes -> Create a new fonctionCommissionPermanente.
      */
-    @RequestMapping(value = "/fonctionCommissionPermanentes",
+    @RequestMapping(
+        value = "/fonctionCommissionPermanentes",
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<FonctionCommissionPermanente> createFonctionCommissionPermanente(@RequestBody FonctionCommissionPermanente fonctionCommissionPermanente) throws URISyntaxException {
-        log.debug("REST request to save FonctionCommissionPermanente : {}", fonctionCommissionPermanente);
+    public ResponseEntity<FonctionCommissionPermanente> createFonctionCommissionPermanente(
+        @RequestBody FonctionCommissionPermanente fonctionCommissionPermanente
+    ) throws URISyntaxException {
+        log.debug(
+            "REST request to save FonctionCommissionPermanente : {}",
+            fonctionCommissionPermanente
+        );
         if (fonctionCommissionPermanente.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new fonctionCommissionPermanente cannot already have an ID").body(null);
+            return ResponseEntity
+                .badRequest()
+                .header(
+                    "Failure",
+                    "A new fonctionCommissionPermanente cannot already have an ID"
+                )
+                .body(null);
         }
-        FonctionCommissionPermanente result = fonctionCommissionPermanenteRepository.save(fonctionCommissionPermanente);
+        FonctionCommissionPermanente result =
+            fonctionCommissionPermanenteRepository.save(
+                fonctionCommissionPermanente
+            );
         fonctionCommissionPermanenteSearchRepository.save(result);
         auditTrailService.logCreation(result, result.getId());
-        return ResponseEntity.created(new URI("/api/fonctionCommissionPermanentes/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("fonctionCommissionPermanente", result.getId().toString()))
+        return ResponseEntity
+            .created(
+                new URI("/api/fonctionCommissionPermanentes/" + result.getId())
+            )
+            .headers(
+                HeaderUtil.createEntityCreationAlert(
+                    "fonctionCommissionPermanente",
+                    result.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * PUT  /fonctionCommissionPermanentes -> Updates an existing fonctionCommissionPermanente.
      */
-    @RequestMapping(value = "/fonctionCommissionPermanentes",
+    @RequestMapping(
+        value = "/fonctionCommissionPermanentes",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<FonctionCommissionPermanente> updateFonctionCommissionPermanente(@RequestBody FonctionCommissionPermanente fonctionCommissionPermanente) throws URISyntaxException {
-        log.debug("REST request to update FonctionCommissionPermanente : {}", fonctionCommissionPermanente);
+    public ResponseEntity<FonctionCommissionPermanente> updateFonctionCommissionPermanente(
+        @RequestBody FonctionCommissionPermanente fonctionCommissionPermanente
+    ) throws URISyntaxException {
+        log.debug(
+            "REST request to update FonctionCommissionPermanente : {}",
+            fonctionCommissionPermanente
+        );
         if (fonctionCommissionPermanente.getId() == null) {
-            return createFonctionCommissionPermanente(fonctionCommissionPermanente);
+            return createFonctionCommissionPermanente(
+                fonctionCommissionPermanente
+            );
         }
-        FonctionCommissionPermanente result = fonctionCommissionPermanenteRepository.save(fonctionCommissionPermanente);
-        fonctionCommissionPermanenteSearchRepository.save(fonctionCommissionPermanente);
+        FonctionCommissionPermanente result =
+            fonctionCommissionPermanenteRepository.save(
+                fonctionCommissionPermanente
+            );
+        fonctionCommissionPermanenteSearchRepository.save(
+            fonctionCommissionPermanente
+        );
         auditTrailService.logUpdate(result, result.getId());
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("fonctionCommissionPermanente", fonctionCommissionPermanente.getId().toString()))
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    "fonctionCommissionPermanente",
+                    fonctionCommissionPermanente.getId().toString()
+                )
+            )
             .body(result);
     }
 
     /**
      * GET  /fonctionCommissionPermanentes -> get all the fonctionCommissionPermanentes.
      */
-    @RequestMapping(value = "/fonctionCommissionPermanentes",
+    @RequestMapping(
+        value = "/fonctionCommissionPermanentes",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public List<FonctionCommissionPermanente> getAllFonctionCommissionPermanentes() {
         log.debug("REST request to get all FonctionCommissionPermanentes");
-        return fonctionCommissionPermanenteRepository.findByMandature(sessionMandatureService.getMandature());
+        return fonctionCommissionPermanenteRepository.findByMandature(
+            sessionMandatureService.getMandature()
+        );
     }
 
     /**
      * GET  /fonctionCommissionPermanentes/:id -> get the "id" fonctionCommissionPermanente.
      */
-    @RequestMapping(value = "/fonctionCommissionPermanentes/{id}",
+    @RequestMapping(
+        value = "/fonctionCommissionPermanentes/{id}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<FonctionCommissionPermanente> getFonctionCommissionPermanente(@PathVariable Long id) {
+    public ResponseEntity<FonctionCommissionPermanente> getFonctionCommissionPermanente(
+        @PathVariable Long id
+    ) {
         log.debug("REST request to get FonctionCommissionPermanente : {}", id);
-        FonctionCommissionPermanente fonctionCommissionPermanente = fonctionCommissionPermanenteRepository.findOne(id);
+        FonctionCommissionPermanente fonctionCommissionPermanente =
+            fonctionCommissionPermanenteRepository.findOne(id);
         if (fonctionCommissionPermanente != null) {
-            return new ResponseEntity<>(fonctionCommissionPermanente, HttpStatus.OK);
+            return new ResponseEntity<>(
+                fonctionCommissionPermanente,
+                HttpStatus.OK
+            );
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -114,27 +171,50 @@ public class FonctionCommissionPermanenteResource {
     /**
      * DELETE  /fonctionCommissionPermanentes/:id -> delete the "id" fonctionCommissionPermanente.
      */
-    @RequestMapping(value = "/fonctionCommissionPermanentes/{id}",
+    @RequestMapping(
+        value = "/fonctionCommissionPermanentes/{id}",
         method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Void> deleteFonctionCommissionPermanente(@PathVariable Long id) {
-        log.debug("REST request to delete FonctionCommissionPermanente : {}", id);
+    public ResponseEntity<Void> deleteFonctionCommissionPermanente(
+        @PathVariable Long id
+    ) {
+        log.debug(
+            "REST request to delete FonctionCommissionPermanente : {}",
+            id
+        );
         fonctionCommissionPermanenteRepository.delete(id);
         fonctionCommissionPermanenteSearchRepository.delete(id);
         auditTrailService.logDeletion(FonctionCommissionPermanente.class, id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("fonctionCommissionPermanente", id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityDeletionAlert(
+                    "fonctionCommissionPermanente",
+                    id.toString()
+                )
+            )
+            .build();
     }
 
     /**
      * SEARCH  /_search/fonctionCommissionPermanentes/:query -> search for the fonctionCommissionPermanente corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/fonctionCommissionPermanentes/{query}",
+    @RequestMapping(
+        value = "/_search/fonctionCommissionPermanentes/{query}",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public List<FonctionCommissionPermanente> searchFonctionCommissionPermanentes(@PathVariable String query) {
-        return Lists.newArrayList(fonctionCommissionPermanenteSearchRepository.search(queryStringQuery(query)));
+    public List<FonctionCommissionPermanente> searchFonctionCommissionPermanentes(
+        @PathVariable String query
+    ) {
+        return Lists.newArrayList(
+            fonctionCommissionPermanenteSearchRepository.search(
+                queryStringQuery(query)
+            )
+        );
     }
 }

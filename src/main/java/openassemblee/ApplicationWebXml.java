@@ -14,8 +14,11 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
     private final Logger log = LoggerFactory.getLogger(ApplicationWebXml.class);
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.profiles(addDefaultProfile())
+    protected SpringApplicationBuilder configure(
+        SpringApplicationBuilder application
+    ) {
+        return application
+            .profiles(addDefaultProfile())
             .sources(Application.class);
     }
 
@@ -32,7 +35,9 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
             return profile;
         }
 
-        log.warn("No Spring profile configured, running with default configuration");
+        log.warn(
+            "No Spring profile configured, running with default configuration"
+        );
         return Constants.SPRING_PROFILE_DEVELOPMENT;
     }
 }

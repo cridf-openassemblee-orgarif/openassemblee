@@ -1,20 +1,19 @@
 package openassemblee.service;
 
+import static openassemblee.config.Constants.parisZoneId;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import openassemblee.domain.HemicycleConfiguration;
 import openassemblee.repository.HemicycleConfigurationRepository;
 import org.elasticsearch.common.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static openassemblee.config.Constants.parisZoneId;
 
 @Service
 public class HemicycleConfigurationService {
@@ -27,13 +26,26 @@ public class HemicycleConfigurationService {
     private HemicycleConfigurationRepository hemicycleConfigurationRepository;
 
     public List<HemicycleConfiguration> getAllSorted() {
-        List<HemicycleConfiguration> list = hemicycleConfigurationRepository.findAll();
+        List<HemicycleConfiguration> list =
+            hemicycleConfigurationRepository.findAll();
         if (list.isEmpty()) {
-            logger.info("Injection de la première configuration d'hémicycle \"" + firstConfigurationLabel + "\"");
+            logger.info(
+                "Injection de la première configuration d'hémicycle \"" +
+                firstConfigurationLabel +
+                "\""
+            );
             String json;
             try {
-                json = new String(Streams.copyToByteArray(getClass().getClassLoader()
-                    .getResourceAsStream("hemicycle/hemicycle-configuration-2020.json")));
+                json =
+                    new String(
+                        Streams.copyToByteArray(
+                            getClass()
+                                .getClassLoader()
+                                .getResourceAsStream(
+                                    "hemicycle/hemicycle-configuration-2020.json"
+                                )
+                        )
+                    );
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -47,8 +59,11 @@ public class HemicycleConfigurationService {
         }
         return list
             .stream()
-            .sorted(Comparator.comparing(HemicycleConfiguration::getCreationDate).reversed())
+            .sorted(
+                Comparator
+                    .comparing(HemicycleConfiguration::getCreationDate)
+                    .reversed()
+            )
             .collect(Collectors.toList());
     }
-
 }

@@ -12,12 +12,26 @@ public class ChairRendu {
     public double chairBaseX, chairBaseY;
     public double centerX, centerY;
 
-    public ChairRendu(int number,
-                      double baseX1, double baseY1, double baseX2, double baseY2,
-                      double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4,
-                      double centerAngle,
-                      double chairBaseX, double chairBaseY,
-                      double centerX, double centerY) {
+    public ChairRendu(
+        int number,
+        double baseX1,
+        double baseY1,
+        double baseX2,
+        double baseY2,
+        double x1,
+        double y1,
+        double x2,
+        double y2,
+        double x3,
+        double y3,
+        double x4,
+        double y4,
+        double centerAngle,
+        double chairBaseX,
+        double chairBaseY,
+        double centerX,
+        double centerY
+    ) {
         this.number = number;
         this.baseX1 = baseX1;
         this.baseY1 = baseY1;
@@ -59,11 +73,10 @@ public class ChairRendu {
     }
 
     private double[] x() {
-        return new double[]{x1, x2, x3, x4};
+        return new double[] { x1, x2, x3, x4 };
     }
 
     private double[] y() {
-        return new double[]{y1, y2, y3, y4};
+        return new double[] { y1, y2, y3, y4 };
     }
-
 }

@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import openassemblee.domain.enumeration.SignatureStatus;
 import openassemblee.domain.jackson.JacksonPresenceEluIdSerializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Signature.
@@ -35,7 +34,7 @@ public class Signature implements Serializable {
     @JoinColumn(name = "presence_elu_id")
     // FIXME remove ?
     @JsonSerialize(using = JacksonPresenceEluIdSerializer.class)
-//    @JsonProperty(access = WRITE_ONLY)
+    //    @JsonProperty(access = WRITE_ONLY)
     private PresenceElu presenceElu;
 
     public Long getId() {
@@ -89,10 +88,17 @@ public class Signature implements Serializable {
 
     @Override
     public String toString() {
-        return "Signature{" +
-            "id=" + id +
-            ", position='" + position + "'" +
-            ", statut='" + statut + "'" +
-            '}';
+        return (
+            "Signature{" +
+            "id=" +
+            id +
+            ", position='" +
+            position +
+            "'" +
+            ", statut='" +
+            statut +
+            "'" +
+            '}'
+        );
     }
 }

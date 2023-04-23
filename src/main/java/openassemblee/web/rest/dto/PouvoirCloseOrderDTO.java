@@ -10,10 +10,13 @@ public class PouvoirCloseOrderDTO {
 
     private String heureFin;
 
-    public PouvoirCloseOrderDTO() {
-    }
+    public PouvoirCloseOrderDTO() {}
 
-    public PouvoirCloseOrderDTO(Long seanceId, LocalDate dateFin, String heureFin) {
+    public PouvoirCloseOrderDTO(
+        Long seanceId,
+        LocalDate dateFin,
+        String heureFin
+    ) {
         this.seanceId = seanceId;
         this.dateFin = dateFin;
         this.heureFin = heureFin;

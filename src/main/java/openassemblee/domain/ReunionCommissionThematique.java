@@ -1,15 +1,14 @@
 package openassemblee.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * A ReunionCommissionThematique.
@@ -37,16 +36,20 @@ public class ReunionCommissionThematique implements Serializable {
     private String heureFin;
 
     @ManyToMany
-    @JoinTable(name = "reunion_commission_thematiques_commission_thematiques",
+    @JoinTable(
+        name = "reunion_commission_thematiques_commission_thematiques",
         joinColumns = @JoinColumn(name = "reunion_id"),
-        inverseJoinColumns = @JoinColumn(name = "commission_thematique_id"))
+        inverseJoinColumns = @JoinColumn(name = "commission_thematique_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CommissionThematique> commissionsThematiques = new HashSet<>();
 
     @OneToMany
-    @JoinTable(name = "reunion_commission_thematiques_presence_elus",
+    @JoinTable(
+        name = "reunion_commission_thematiques_presence_elus",
         joinColumns = @JoinColumn(name = "reunion_id"),
-        inverseJoinColumns = @JoinColumn(name = "presence_elu_id"))
+        inverseJoinColumns = @JoinColumn(name = "presence_elu_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PresenceElu> presenceElus = new HashSet<>();
 
@@ -100,7 +103,9 @@ public class ReunionCommissionThematique implements Serializable {
         return commissionsThematiques;
     }
 
-    public void setCommissionsThematiques(Set<CommissionThematique> commissionsThematiques) {
+    public void setCommissionsThematiques(
+        Set<CommissionThematique> commissionsThematiques
+    ) {
         this.commissionsThematiques = commissionsThematiques;
     }
 
@@ -128,7 +133,8 @@ public class ReunionCommissionThematique implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ReunionCommissionThematique reunionCommissionThematique = (ReunionCommissionThematique) o;
+        ReunionCommissionThematique reunionCommissionThematique =
+            (ReunionCommissionThematique) o;
         return Objects.equals(id, reunionCommissionThematique.id);
     }
 
@@ -139,12 +145,23 @@ public class ReunionCommissionThematique implements Serializable {
 
     @Override
     public String toString() {
-        return "ReunionCommissionThematique{" +
-            "id=" + id +
-            ", libelle='" + libelle + "'" +
-            ", date='" + date + "'" +
-            ", heureDebut='" + heureDebut + "'" +
-            ", heureFin='" + heureFin + "'" +
-            '}';
+        return (
+            "ReunionCommissionThematique{" +
+            "id=" +
+            id +
+            ", libelle='" +
+            libelle +
+            "'" +
+            ", date='" +
+            date +
+            "'" +
+            ", heureDebut='" +
+            heureDebut +
+            "'" +
+            ", heureFin='" +
+            heureFin +
+            "'" +
+            '}'
+        );
     }
 }

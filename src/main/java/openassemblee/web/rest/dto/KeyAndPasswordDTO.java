@@ -5,8 +5,7 @@ public class KeyAndPasswordDTO {
     private String key;
     private String newPassword;
 
-    public KeyAndPasswordDTO() {
-    }
+    public KeyAndPasswordDTO() {}
 
     public String getKey() {
         return key;

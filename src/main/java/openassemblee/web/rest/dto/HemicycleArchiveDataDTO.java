@@ -9,10 +9,13 @@ public class HemicycleArchiveDataDTO implements Serializable {
     private List<HemicycleEluDTO> elus;
     private List<HemicycleGroupePolitiqueDTO> groupePolitiques;
 
-    public HemicycleArchiveDataDTO() {
-    }
+    public HemicycleArchiveDataDTO() {}
 
-    public HemicycleArchiveDataDTO(List<HemicycleAssociationDTO> associations, List<HemicycleEluDTO> elus, List<HemicycleGroupePolitiqueDTO> groupePolitiques) {
+    public HemicycleArchiveDataDTO(
+        List<HemicycleAssociationDTO> associations,
+        List<HemicycleEluDTO> elus,
+        List<HemicycleGroupePolitiqueDTO> groupePolitiques
+    ) {
         this.associations = associations;
         this.elus = elus;
         this.groupePolitiques = groupePolitiques;
@@ -38,7 +41,9 @@ public class HemicycleArchiveDataDTO implements Serializable {
         return groupePolitiques;
     }
 
-    public void setGroupePolitiques(List<HemicycleGroupePolitiqueDTO> groupePolitiques) {
+    public void setGroupePolitiques(
+        List<HemicycleGroupePolitiqueDTO> groupePolitiques
+    ) {
         this.groupePolitiques = groupePolitiques;
     }
 }
