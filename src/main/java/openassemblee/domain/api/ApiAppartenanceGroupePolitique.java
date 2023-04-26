@@ -6,6 +6,7 @@ import java.util.List;
 public class ApiAppartenanceGroupePolitique {
 
     public Long id;
+    // TODO api faire un sous objet ? + aussi pr fcts, cts...
     public Long groupePolitiqueId;
     // TODO say in API sont des shortcuts (ou pas)
     public String nomGroupePolitique;

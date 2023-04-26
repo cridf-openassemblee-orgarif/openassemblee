@@ -124,6 +124,18 @@ public class EluWebserviceResource {
                         ? it.getMandature().getAnneeFin()
                         : null;
                 apiMandat.dateDebutMandat = it.getDateDebut();
+                apiMandat.listeElectoraleId =
+                    it.getListeElectorale() != null
+                        ? it.getListeElectorale().getId()
+                        : null;
+                apiMandat.nomListeElectorale =
+                    it.getListeElectorale() != null
+                        ? it.getListeElectorale().getNom()
+                        : null;
+                apiMandat.nomCourtListeElectorale =
+                    it.getListeElectorale() != null
+                        ? it.getListeElectorale().getNomCourt()
+                        : null;
                 apiMandat.codeDepartement = it.getCodeDepartement();
                 apiMandat.departement = it.getDepartement();
                 apiMandat.dateDemissionMandat = it.getDateDemission();
