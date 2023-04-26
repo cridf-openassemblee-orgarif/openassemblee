@@ -278,7 +278,14 @@ public class EluWebserviceResource {
                         .getMandature()
                         .getId()
                         .equals(mandatureId);
-                a.actif = nonDemissionnaire && mandatureEnCours;
+                Boolean groupeEnCours =
+                    it.getGroupePolitique() != null &&
+                    (
+                        it.getGroupePolitique().getDateFin() == null ||
+                        it.getGroupePolitique().getDateFin().isAfter(today)
+                    );
+                a.actif =
+                    nonDemissionnaire && mandatureEnCours && groupeEnCours;
                 a.fonctions =
                     elu
                         .getFonctionsGroupePolitique()
@@ -298,6 +305,7 @@ public class EluWebserviceResource {
                             r.actif =
                                 nonDemissionnaire &&
                                 mandatureEnCours &&
+                                groupeEnCours &&
                                 fonctionNonDemissionnaire;
                             return r;
                         })
@@ -343,7 +351,14 @@ public class EluWebserviceResource {
                         .getMandature()
                         .getId()
                         .equals(mandatureId);
-                a.actif = nonDemissionnaire && mandatureEnCours;
+                Boolean commissionEnCours =
+                    it.getCommissionThematique() != null &&
+                    (
+                        it.getCommissionThematique().getDateFin() == null ||
+                        it.getCommissionThematique().getDateFin().isAfter(today)
+                    );
+                a.actif =
+                    nonDemissionnaire && mandatureEnCours && commissionEnCours;
                 a.fonctions =
                     elu
                         .getFonctionsCommissionsThematiques()
@@ -363,6 +378,7 @@ public class EluWebserviceResource {
                             r.actif =
                                 nonDemissionnaire &&
                                 mandatureEnCours &&
+                                commissionEnCours &&
                                 fonctionNonDemissionnaire;
                             return r;
                         })
