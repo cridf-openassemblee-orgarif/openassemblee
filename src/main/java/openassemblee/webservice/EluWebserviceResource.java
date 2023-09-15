@@ -72,7 +72,7 @@ public class EluWebserviceResource {
                 apiElu.nom = elu.getNom();
                 apiElu.prenom = elu.getPrenom();
                 apiElu.nomJeuneFille = elu.getNomJeuneFille();
-                apiElu.profession = elu.getProfession();
+                apiElu.profession = nullIfBlank(elu.getProfession());
                 apiElu.dateNaissance = elu.getDateNaissance();
                 apiElu.lieuNaissance = elu.getLieuNaissance();
                 apiElu.codeDepartement = elu.getCodeDepartement();
@@ -139,7 +139,7 @@ public class EluWebserviceResource {
                 apiMandat.codeDepartement = it.getCodeDepartement();
                 apiMandat.departement = it.getDepartement();
                 apiMandat.dateDemissionMandat = it.getDateDemission();
-                apiMandat.motifDemissionMandat = it.getMotifDemission();
+                apiMandat.motifDemissionMandat = nullIfBlank(it.getMotifDemission());
                 Boolean nonDemissionnaire =
                     it.getDateDemission() == null ||
                     it.getDateDemission().isAfter(today);
@@ -158,7 +158,7 @@ public class EluWebserviceResource {
                             api.id = a.getId();
                             api.dateDebut = a.getDateDebut();
                             api.dateFin = a.getDateFin();
-                            api.motifFin = a.getMotifFin();
+                            api.motifFin = nullIfBlank(a.getMotifFin());
                             Boolean appartenanceNonDemissionnaire =
                                 a.getDateFin() == null ||
                                 a.getDateFin().isAfter(today);
@@ -180,7 +180,7 @@ public class EluWebserviceResource {
                                         af.fonction = f.getFonction();
                                         af.dateDebut = f.getDateDebut();
                                         af.dateFin = f.getDateFin();
-                                        af.motifFin = f.getMotifFin();
+                                        af.motifFin = nullIfBlank(f.getMotifFin());
                                         Boolean fonctionNonDemissionnaire =
                                             f.getDateFin() == null ||
                                             f.getDateFin().isAfter(today);
@@ -208,7 +208,7 @@ public class EluWebserviceResource {
                             api.fonction = f.getFonction();
                             api.dateDebut = f.getDateDebut();
                             api.dateFin = f.getDateFin();
-                            api.motifFin = f.getMotifFin();
+                            api.motifFin = nullIfBlank(f.getMotifFin());
                             Boolean fonctionNonDemissionnaire =
                                 f.getDateFin() == null ||
                                 f.getDateFin().isAfter(today);
@@ -234,7 +234,7 @@ public class EluWebserviceResource {
                             api.dateDebutString = m.getDateDebutString();
                             api.dateDebut = m.getDateDebut();
                             api.dateFin = m.getDateFin();
-                            api.motifFin = m.getMotifFin();
+                            api.motifFin = nullIfBlank(m.getMotifFin());
                             Boolean mandatNonDemissionnaire =
                                 m.getDateFin() == null ||
                                 m.getDateFin().isAfter(today);
@@ -279,7 +279,7 @@ public class EluWebserviceResource {
                         : null;
                 a.dateDebut = it.getDateDebut();
                 a.dateFin = it.getDateFin();
-                a.motifFin = it.getMotifFin();
+                a.motifFin = nullIfBlank(it.getMotifFin());
                 Boolean nonDemissionnaire =
                     it.getDateFin() == null || it.getDateFin().isAfter(today);
                 Boolean mandatureEnCours =
@@ -352,7 +352,7 @@ public class EluWebserviceResource {
                         : null;
                 a.dateDebut = it.getDateDebut();
                 a.dateFin = it.getDateFin();
-                a.motifFin = it.getMotifFin();
+                a.motifFin = nullIfBlank(it.getMotifFin());
                 Boolean nonDemissionnaire =
                     it.getDateFin() == null || it.getDateFin().isAfter(today);
                 Boolean mandatureEnCours =
@@ -482,9 +482,17 @@ public class EluWebserviceResource {
                         new ApiDistinctionHonorifique();
                     a.id = it.getId();
                     a.titre = it.getTitre();
-                    a.date = it.getDate();
+                    a.date = nullIfBlank(it.getDate());
                     return a;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private String nullIfBlank(String value) {
+        if (value != null && value.trim().equals("")) {
+            return null;
+        } else {
+            return value;
+        }
     }
 }
