@@ -286,14 +286,13 @@ public class EluWebserviceResource {
                 a.motifFin = nullIfBlank(it.getMotifFin());
                 Boolean nonDemissionnaire =
                     it.getDateFin() == null || it.getDateFin().isAfter(today);
-                Boolean mandatureEnCours =
+                a.mandatureId =
                     it.getGroupePolitique() != null &&
-                    it.getGroupePolitique().getMandature() != null &&
-                    it
-                        .getGroupePolitique()
-                        .getMandature()
-                        .getId()
-                        .equals(mandatureId);
+                        it.getGroupePolitique().getMandature() != null
+                        ? it.getGroupePolitique().getMandature().getId()
+                        : null;
+                Boolean mandatureEnCours =
+                    a.mandatureId != null && a.mandatureId.equals(mandatureId);
                 Boolean groupeEnCours =
                     it.getGroupePolitique() != null &&
                     (
@@ -372,14 +371,13 @@ public class EluWebserviceResource {
                 a.motifFin = nullIfBlank(it.getMotifFin());
                 Boolean nonDemissionnaire =
                     it.getDateFin() == null || it.getDateFin().isAfter(today);
-                Boolean mandatureEnCours =
+                a.mandatureId =
                     it.getCommissionThematique() != null &&
-                    it.getCommissionThematique().getMandature() != null &&
-                    it
-                        .getCommissionThematique()
-                        .getMandature()
-                        .getId()
-                        .equals(mandatureId);
+                        it.getCommissionThematique().getMandature() != null
+                        ? it.getCommissionThematique().getMandature().getId()
+                        : null;
+                Boolean mandatureEnCours =
+                    a.mandatureId != null && a.mandatureId.equals(mandatureId);
                 Boolean commissionEnCours =
                     it.getCommissionThematique() != null &&
                     (
