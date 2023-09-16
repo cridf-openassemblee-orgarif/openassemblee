@@ -7,7 +7,6 @@ public class ApiMandat {
 
     public Long id;
     public Long mandatureId;
-    // TODO faire ss objet ?
     public Integer anneeDebutMandature;
     public Integer anneeFinMandature;
     public LocalDate dateDebutMandat;
@@ -18,7 +17,6 @@ public class ApiMandat {
     public String departement;
     public LocalDate dateDemissionMandat;
     public String motifDemissionMandat;
-    // TODO faire ss objet ?
     public Boolean actif;
     public List<ApiAppartenanceCommissionPermanente> appartenancesCommissionPermanente;
     public List<ApiFonctionExecutive> fonctionsExecutives;

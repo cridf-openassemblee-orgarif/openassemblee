@@ -3,9 +3,13 @@ package openassemblee.webservice;
 import static openassemblee.config.Constants.parisZoneId;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
-import openassemblee.domain.*;
+import openassemblee.domain.AdresseMail;
+import openassemblee.domain.Elu;
+import openassemblee.domain.Mandat;
+import openassemblee.domain.NumeroFax;
 import openassemblee.domain.api.aggregate.*;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
@@ -17,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,12 +46,22 @@ public class EluWebserviceResource {
     }
 
     @Transactional(readOnly = true)
-    @RequestMapping(value = "/elus", method = RequestMethod.GET)
-    public ElusAggregateData elus(
-        @RequestParam Optional<Boolean> actifsUniquement
-    ) {
+    @RequestMapping(value = "/elus-aggregats", method = RequestMethod.GET)
+    public ElusAggregateData ElusAggregate() {
+        return elus(false);
+    }
+
+    @Transactional(readOnly = true)
+    @RequestMapping(
+        value = "/elus-actifs-aggregats",
+        method = RequestMethod.GET
+    )
+    public ElusAggregateData ElusActifsAggregate() {
+        return elus(true);
+    }
+
+    private ElusAggregateData elus(Boolean actifOnly) {
         LocalDate today = LocalDate.now(parisZoneId);
-        Boolean actifOnly = actifsUniquement.orElse(false);
         Long mandatureId = sessionMandatureService.getMandature().getId();
         List<ApiEluAggregate> elus = eluRepository
             .findAll()

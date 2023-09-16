@@ -7,7 +7,6 @@ public class ApiAppartenanceCommissionThematique {
 
     public Long id;
     public Long commissionThematiqueId;
-    // TODO say in API sont des shortcuts (ou pas)
     public String nomCommissionThematique;
     public LocalDate dateDebut;
     public LocalDate dateFin;
