@@ -93,6 +93,11 @@ public class EluWebserviceResource {
                 return apiElu;
             })
             .filter(it -> !actifOnly || it.actif)
+            .sorted(
+                Comparator.comparing(e -> {
+                    if (e.nom != null) return e.nom; else return "";
+                })
+            )
             .collect(Collectors.toList());
         return new ElusData(elus);
     }
