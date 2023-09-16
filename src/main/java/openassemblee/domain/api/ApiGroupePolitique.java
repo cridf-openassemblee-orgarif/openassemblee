@@ -5,6 +5,8 @@ import java.time.LocalDate;
 public class ApiGroupePolitique {
 
     public Long id;
+    public String uid;
+    //public Long shortUid;
     public String nom;
     public String nomCourt;
     public ApiAdressePostale adressePostale;

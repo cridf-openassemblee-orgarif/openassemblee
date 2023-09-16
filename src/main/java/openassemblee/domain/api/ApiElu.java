@@ -8,6 +8,8 @@ import openassemblee.domain.enumeration.Civilite;
 public class ApiElu {
 
     public Long id;
+    public String uid;
+    //public Long shortUid;
     public Civilite civilite;
     public String nom;
     public String prenom;
@@ -18,8 +20,6 @@ public class ApiElu {
     public String codeDepartement;
     public String departement;
     public Long image;
-    public String uid;
-    public Long shortUid;
     public Boolean actif;
     // mandats
     public List<ApiMandat> mandats;

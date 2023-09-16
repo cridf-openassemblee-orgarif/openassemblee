@@ -68,6 +68,8 @@ public class EluWebserviceResource {
             .map(elu -> {
                 ApiElu apiElu = new ApiElu();
                 apiElu.id = elu.getId();
+                apiElu.uid = elu.getUid();
+                //apiElu.shortUid = elu.getShortUid();
                 apiElu.civilite = elu.getCivilite();
                 apiElu.nom = elu.getNom();
                 apiElu.prenom = elu.getPrenom();
@@ -78,8 +80,6 @@ public class EluWebserviceResource {
                 apiElu.codeDepartement = elu.getCodeDepartement();
                 apiElu.departement = elu.getDepartement();
                 apiElu.image = elu.getImage();
-                apiElu.uid = elu.getUid();
-                apiElu.shortUid = elu.getShortUid();
                 apiElu.mandats = mapMandats(elu, actifOnly, today, mandatureId);
                 apiElu.actif = apiElu.mandats.stream().anyMatch(it -> it.actif);
                 apiElu.appartenancesGroupePolitique =
