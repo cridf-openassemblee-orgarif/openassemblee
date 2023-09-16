@@ -1,6 +1,7 @@
 package openassemblee.domain.api;
 
 import java.time.LocalDate;
+import openassemblee.domain.api.aggregate.ApiAdressePostale;
 
 public class ApiGroupePolitique {
 

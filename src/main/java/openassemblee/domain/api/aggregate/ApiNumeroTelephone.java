@@ -1,4 +1,4 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import openassemblee.domain.enumeration.NatureFixeMobile;
 

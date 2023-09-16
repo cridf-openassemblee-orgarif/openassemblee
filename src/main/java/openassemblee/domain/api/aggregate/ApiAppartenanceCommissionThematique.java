@@ -1,4 +1,4 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,4 +14,5 @@ public class ApiAppartenanceCommissionThematique {
     public String motifFin;
     public Boolean actif;
     public List<ApiFonctionCommissionThematique> fonctions;
+    public Long mandatureId;
 }

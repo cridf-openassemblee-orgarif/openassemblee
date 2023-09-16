@@ -1,11 +1,11 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public class ApiFonctionExecutive {
+public class ApiAppartenanceCommissionPermanente {
 
     public Long id;
-    public String fonction;
     public LocalDate dateDebut;
     public LocalDate dateFin;
     public String motifFin;

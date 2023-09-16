@@ -1,4 +1,4 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import java.time.LocalDate;
 import java.util.List;

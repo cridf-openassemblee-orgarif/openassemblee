@@ -1,8 +1,8 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import java.time.LocalDate;
 
-public class ApiFonctionCommissionThematique {
+public class ApiFonctionExecutive {
 
     public Long id;
     public String fonction;

@@ -1,11 +1,10 @@
-package openassemblee.domain.api;
+package openassemblee.domain.api.aggregate;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import openassemblee.domain.enumeration.Civilite;
 
-public class ApiElu {
+public class ApiEluAggregate {
 
     public Long id;
     public String uid;

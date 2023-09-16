@@ -1,25 +1,18 @@
 package openassemblee.webservice;
 
 import static openassemblee.config.Constants.parisZoneId;
-import static openassemblee.service.EluService.isCurrentMandat;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import openassemblee.domain.*;
-import openassemblee.domain.api.*;
-import openassemblee.domain.enumeration.Civilite;
+import openassemblee.domain.api.aggregate.*;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import openassemblee.repository.EluRepository;
 import openassemblee.repository.GroupePolitiqueRepository;
-import openassemblee.service.EluService;
 import openassemblee.service.SessionMandatureService;
 import openassemblee.service.util.AppartenancesMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,31 +33,28 @@ public class EluWebserviceResource {
     @Autowired
     private SessionMandatureService sessionMandatureService;
 
-    class ElusData {
+    class ElusAggregateData {
 
-        public List<ApiElu> elus;
+        public List<ApiEluAggregate> elus;
 
-        public ElusData(List<ApiElu> elus) {
+        public ElusAggregateData(List<ApiEluAggregate> elus) {
             this.elus = elus;
         }
     }
 
-    class GroupePolitiquesData {
-
-        public List<ApiGroupePolitique> elus;
-    }
-
     @Transactional(readOnly = true)
     @RequestMapping(value = "/elus", method = RequestMethod.GET)
-    public ElusData elus(@RequestParam Optional<Boolean> actifsUniquement) {
+    public ElusAggregateData elus(
+        @RequestParam Optional<Boolean> actifsUniquement
+    ) {
         LocalDate today = LocalDate.now(parisZoneId);
         Boolean actifOnly = actifsUniquement.orElse(false);
         Long mandatureId = sessionMandatureService.getMandature().getId();
-        List<ApiElu> elus = eluRepository
+        List<ApiEluAggregate> elus = eluRepository
             .findAll()
             .stream()
             .map(elu -> {
-                ApiElu apiElu = new ApiElu();
+                ApiEluAggregate apiElu = new ApiEluAggregate();
                 apiElu.id = elu.getId();
                 apiElu.uid = elu.getUid();
                 //apiElu.shortUid = elu.getShortUid();
@@ -99,7 +89,7 @@ public class EluWebserviceResource {
                 })
             )
             .collect(Collectors.toList());
-        return new ElusData(elus);
+        return new ElusAggregateData(elus);
     }
 
     private List<ApiMandat> mapMandats(
@@ -441,7 +431,7 @@ public class EluWebserviceResource {
             .collect(Collectors.toList());
     }
 
-    private void mapCoordonnées(Elu elu, ApiElu apiElu) {
+    private void mapCoordonnées(Elu elu, ApiEluAggregate apiElu) {
         apiElu.adressesPostales =
             elu
                 .getAdressesPostales()
