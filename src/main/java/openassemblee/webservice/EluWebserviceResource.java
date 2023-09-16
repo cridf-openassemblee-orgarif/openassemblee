@@ -4,12 +4,10 @@ import static openassemblee.config.Constants.parisZoneId;
 import static openassemblee.service.EluService.isCurrentMandat;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import openassemblee.domain.*;
 import openassemblee.domain.api.*;
 import openassemblee.domain.enumeration.Civilite;
@@ -105,7 +103,7 @@ public class EluWebserviceResource {
         LocalDate today,
         Long mandatureId
     ) {
-        return elu
+        List<ApiMandat> result = elu
             .getMandats()
             .stream()
             .map(it -> {
@@ -139,7 +137,8 @@ public class EluWebserviceResource {
                 apiMandat.codeDepartement = it.getCodeDepartement();
                 apiMandat.departement = it.getDepartement();
                 apiMandat.dateDemissionMandat = it.getDateDemission();
-                apiMandat.motifDemissionMandat = nullIfBlank(it.getMotifDemission());
+                apiMandat.motifDemissionMandat =
+                    nullIfBlank(it.getMotifDemission());
                 Boolean nonDemissionnaire =
                     it.getDateDemission() == null ||
                     it.getDateDemission().isAfter(today);
@@ -180,7 +179,8 @@ public class EluWebserviceResource {
                                         af.fonction = f.getFonction();
                                         af.dateDebut = f.getDateDebut();
                                         af.dateFin = f.getDateFin();
-                                        af.motifFin = nullIfBlank(f.getMotifFin());
+                                        af.motifFin =
+                                            nullIfBlank(f.getMotifFin());
                                         Boolean fonctionNonDemissionnaire =
                                             f.getDateFin() == null ||
                                             f.getDateFin().isAfter(today);
@@ -250,6 +250,19 @@ public class EluWebserviceResource {
             })
             .filter(it -> !actifOnly || it.actif)
             .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebutMandat == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebutMandat;
+                    }
+                })
+            )
+            .skip(actifOnly ? Math.max(result.size() - 1, 0) : 0)
+            .collect(Collectors.toList());
     }
 
     private List<ApiAppartenanceGroupePolitique> mapGroupePolitiques(
@@ -258,7 +271,7 @@ public class EluWebserviceResource {
         LocalDate today,
         Long mandatureId
     ) {
-        return elu
+        List<ApiAppartenanceGroupePolitique> result = elu
             .getAppartenancesGroupePolitique()
             .stream()
             .map(it -> {
@@ -327,6 +340,19 @@ public class EluWebserviceResource {
             })
             .filter(it -> !actifOnly || it.actif)
             .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebut == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebut;
+                    }
+                })
+            )
+            .skip(actifOnly ? Math.max(result.size() - 1, 0) : 0)
+            .collect(Collectors.toList());
     }
 
     private List<ApiAppartenanceCommissionThematique> mapCommissionThematiques(
@@ -335,7 +361,7 @@ public class EluWebserviceResource {
         LocalDate today,
         Long mandatureId
     ) {
-        return elu
+        List<ApiAppartenanceCommissionThematique> result = elu
             .getAppartenancesCommissionsThematiques()
             .stream()
             .map(it -> {
@@ -399,6 +425,18 @@ public class EluWebserviceResource {
                 return a;
             })
             .filter(it -> !actifOnly || it.actif)
+            .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebut == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebut;
+                    }
+                })
+            )
             .collect(Collectors.toList());
     }
 
