@@ -142,75 +142,32 @@ public class EluWebserviceResource {
                     it.getMandature().getId().equals(mandatureId);
                 apiMandat.actif = nonDemissionnaire && mandatureEnCours;
                 apiMandat.appartenancesCommissionPermanente =
-                    elu
-                        .getAppartenancesCommissionPermanente()
-                        .stream()
-                        .filter(a -> AppartenancesMatcher.match(it, a))
-                        .map(a -> {
-                            ApiAppartenanceCommissionPermanente api =
-                                new ApiAppartenanceCommissionPermanente();
-                            api.id = a.getId();
-                            api.dateDebut = a.getDateDebut();
-                            api.dateFin = a.getDateFin();
-                            api.motifFin = nullIfBlank(a.getMotifFin());
-                            Boolean appartenanceNonDemissionnaire =
-                                a.getDateFin() == null ||
-                                a.getDateFin().isAfter(today);
-                            api.actif =
-                                nonDemissionnaire &&
-                                mandatureEnCours &&
-                                appartenanceNonDemissionnaire;
-                            return api;
-                        })
-                        .filter(f -> !actifOnly || f.actif)
-                        .collect(Collectors.toList());
+                    mapAppartenancesCommissionPermanente(
+                        elu,
+                        it,
+                        actifOnly,
+                        today,
+                        nonDemissionnaire,
+                        mandatureEnCours
+                    );
                 apiMandat.fonctionsExecutives =
-                    elu
-                        .getFonctionsExecutives()
-                        .stream()
-                        .filter(a -> AppartenancesMatcher.match(it, a))
-                        .map(f -> {
-                            ApiFonctionExecutive api =
-                                new ApiFonctionExecutive();
-                            api.id = f.getId();
-                            api.fonction = f.getFonction();
-                            api.dateDebut = f.getDateDebut();
-                            api.dateFin = f.getDateFin();
-                            api.motifFin = nullIfBlank(f.getMotifFin());
-                            Boolean fonctionNonDemissionnaire =
-                                f.getDateFin() == null ||
-                                f.getDateFin().isAfter(today);
-                            api.actif =
-                                nonDemissionnaire &&
-                                mandatureEnCours &&
-                                fonctionNonDemissionnaire;
-                            return api;
-                        })
-                        .filter(f -> !actifOnly || f.actif)
-                        .collect(Collectors.toList());
+                    mapFonctionsExecutives(
+                        elu,
+                        it,
+                        actifOnly,
+                        today,
+                        nonDemissionnaire,
+                        mandatureEnCours
+                    );
                 apiMandat.fonctions =
-                    elu
-                        .getFonctionsCommissionPermanente()
-                        .stream()
-                        .filter(f -> AppartenancesMatcher.match(it, f))
-                        .map(f -> {
-                            ApiFonctionCommissionPermanente af =
-                                new ApiFonctionCommissionPermanente();
-                            af.id = f.getId();
-                            af.fonction = f.getFonction();
-                            af.dateDebut = f.getDateDebut();
-                            af.dateFin = f.getDateFin();
-                            af.motifFin = nullIfBlank(f.getMotifFin());
-                            Boolean fonctionNonDemissionnaire =
-                                f.getDateFin() == null ||
-                                f.getDateFin().isAfter(today);
-                            af.actif =
-                                nonDemissionnaire &&
-                                mandatureEnCours &&
-                                fonctionNonDemissionnaire;
-                            return af;
-                        })
-                        .collect(Collectors.toList());
+                    mapFonctions(
+                        elu,
+                        it,
+                        actifOnly,
+                        today,
+                        nonDemissionnaire,
+                        mandatureEnCours
+                    );
                 apiMandat.autreMandats =
                     elu
                         .getAutreMandats()
@@ -249,6 +206,138 @@ public class EluWebserviceResource {
                         return LocalDate.MIN;
                     } else {
                         return c.dateDebutMandat;
+                    }
+                })
+            )
+            .skip(actifOnly ? Math.max(result.size() - 1, 0) : 0)
+            .collect(Collectors.toList());
+    }
+
+    private List<ApiAppartenanceCommissionPermanente> mapAppartenancesCommissionPermanente(
+        Elu elu,
+        Mandat mandat,
+        Boolean actifOnly,
+        LocalDate today,
+        Boolean nonDemissionnaire,
+        Boolean mandatureEnCours
+    ) {
+        List<ApiAppartenanceCommissionPermanente> result = elu
+            .getAppartenancesCommissionPermanente()
+            .stream()
+            .filter(a -> AppartenancesMatcher.match(mandat, a))
+            .map(a -> {
+                ApiAppartenanceCommissionPermanente api =
+                    new ApiAppartenanceCommissionPermanente();
+                api.id = a.getId();
+                api.dateDebut = a.getDateDebut();
+                api.dateFin = a.getDateFin();
+                api.motifFin = nullIfBlank(a.getMotifFin());
+                Boolean appartenanceNonDemissionnaire =
+                    a.getDateFin() == null || a.getDateFin().isAfter(today);
+                api.actif =
+                    nonDemissionnaire &&
+                    mandatureEnCours &&
+                    appartenanceNonDemissionnaire;
+                return api;
+            })
+            .filter(f -> !actifOnly || f.actif)
+            .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebut == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebut;
+                    }
+                })
+            )
+            .skip(actifOnly ? Math.max(result.size() - 1, 0) : 0)
+            .collect(Collectors.toList());
+    }
+
+    private List<ApiFonctionExecutive> mapFonctionsExecutives(
+        Elu elu,
+        Mandat it,
+        Boolean actifOnly,
+        LocalDate today,
+        Boolean nonDemissionnaire,
+        Boolean mandatureEnCours
+    ) {
+        List<ApiFonctionExecutive> result = elu
+            .getFonctionsExecutives()
+            .stream()
+            .filter(a -> AppartenancesMatcher.match(it, a))
+            .map(f -> {
+                ApiFonctionExecutive api = new ApiFonctionExecutive();
+                api.id = f.getId();
+                api.fonction = f.getFonction();
+                api.dateDebut = f.getDateDebut();
+                api.dateFin = f.getDateFin();
+                api.motifFin = nullIfBlank(f.getMotifFin());
+                Boolean fonctionNonDemissionnaire =
+                    f.getDateFin() == null || f.getDateFin().isAfter(today);
+                api.actif =
+                    nonDemissionnaire &&
+                    mandatureEnCours &&
+                    fonctionNonDemissionnaire;
+                return api;
+            })
+            .filter(f -> !actifOnly || f.actif)
+            .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebut == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebut;
+                    }
+                })
+            )
+            .skip(actifOnly ? Math.max(result.size() - 1, 0) : 0)
+            .collect(Collectors.toList());
+    }
+
+    private List<ApiFonctionCommissionPermanente> mapFonctions(
+        Elu elu,
+        Mandat it,
+        Boolean actifOnly,
+        LocalDate today,
+        Boolean nonDemissionnaire,
+        Boolean mandatureEnCours
+    ) {
+        List<ApiFonctionCommissionPermanente> result = elu
+            .getFonctionsCommissionPermanente()
+            .stream()
+            .filter(f -> AppartenancesMatcher.match(it, f))
+            .map(f -> {
+                ApiFonctionCommissionPermanente af =
+                    new ApiFonctionCommissionPermanente();
+                af.id = f.getId();
+                af.fonction = f.getFonction();
+                af.dateDebut = f.getDateDebut();
+                af.dateFin = f.getDateFin();
+                af.motifFin = nullIfBlank(f.getMotifFin());
+                Boolean fonctionNonDemissionnaire =
+                    f.getDateFin() == null || f.getDateFin().isAfter(today);
+                af.actif =
+                    nonDemissionnaire &&
+                    mandatureEnCours &&
+                    fonctionNonDemissionnaire;
+                return af;
+            })
+            .collect(Collectors.toList());
+        return result
+            .stream()
+            .sorted(
+                Comparator.comparing(c -> {
+                    if (c.dateDebut == null) {
+                        return LocalDate.MIN;
+                    } else {
+                        return c.dateDebut;
                     }
                 })
             )
