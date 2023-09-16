@@ -6,6 +6,11 @@ import openassemblee.domain.enumeration.Civilite;
 
 public class ApiEluAggregate {
 
+    public enum Civilite {
+        M,
+        MME,
+    }
+
     public Long id;
     public String uid;
     //public Long shortUid;

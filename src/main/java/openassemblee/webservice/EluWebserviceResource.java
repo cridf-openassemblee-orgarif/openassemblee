@@ -11,6 +11,7 @@ import openassemblee.domain.Elu;
 import openassemblee.domain.Mandat;
 import openassemblee.domain.NumeroFax;
 import openassemblee.domain.api.aggregate.*;
+import openassemblee.domain.enumeration.Civilite;
 import openassemblee.domain.enumeration.NatureProPerso;
 import openassemblee.domain.enumeration.NiveauConfidentialite;
 import openassemblee.repository.EluRepository;
@@ -71,7 +72,10 @@ public class EluWebserviceResource {
                 apiElu.id = elu.getId();
                 apiElu.uid = elu.getUid();
                 //apiElu.shortUid = elu.getShortUid();
-                apiElu.civilite = elu.getCivilite();
+                apiElu.civilite =
+                    elu.getCivilite() == Civilite.MONSIEUR
+                        ? ApiEluAggregate.Civilite.M
+                        : ApiEluAggregate.Civilite.MME;
                 apiElu.nom = elu.getNom();
                 apiElu.prenom = elu.getPrenom();
                 apiElu.nomJeuneFille = elu.getNomJeuneFille();
