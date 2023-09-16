@@ -22,5 +22,6 @@ public class ApiMandat {
     public Boolean actif;
     public List<ApiAppartenanceCommissionPermanente> appartenancesCommissionPermanente;
     public List<ApiFonctionExecutive> fonctionsExecutives;
+    public List<ApiFonctionCommissionPermanente> fonctions;
     public List<ApiAutreMandat> autreMandats;
 }

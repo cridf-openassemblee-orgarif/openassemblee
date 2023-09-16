@@ -10,5 +10,4 @@ public class ApiAppartenanceCommissionPermanente {
     public LocalDate dateFin;
     public String motifFin;
     public Boolean actif;
-    public List<ApiFonctionCommissionPermanente> fonctions;
 }

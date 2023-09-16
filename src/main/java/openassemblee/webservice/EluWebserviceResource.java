@@ -170,33 +170,6 @@ public class EluWebserviceResource {
                                 nonDemissionnaire &&
                                 mandatureEnCours &&
                                 appartenanceNonDemissionnaire;
-                            api.fonctions =
-                                elu
-                                    .getFonctionsCommissionPermanente()
-                                    .stream()
-                                    .filter(f ->
-                                        AppartenancesMatcher.match(a, f)
-                                    )
-                                    .map(f -> {
-                                        ApiFonctionCommissionPermanente af =
-                                            new ApiFonctionCommissionPermanente();
-                                        af.id = f.getId();
-                                        af.fonction = f.getFonction();
-                                        af.dateDebut = f.getDateDebut();
-                                        af.dateFin = f.getDateFin();
-                                        af.motifFin =
-                                            nullIfBlank(f.getMotifFin());
-                                        Boolean fonctionNonDemissionnaire =
-                                            f.getDateFin() == null ||
-                                            f.getDateFin().isAfter(today);
-                                        af.actif =
-                                            nonDemissionnaire &&
-                                            mandatureEnCours &&
-                                            appartenanceNonDemissionnaire &&
-                                            fonctionNonDemissionnaire;
-                                        return af;
-                                    })
-                                    .collect(Collectors.toList());
                             return api;
                         })
                         .filter(f -> !actifOnly || f.actif)
@@ -224,6 +197,29 @@ public class EluWebserviceResource {
                             return api;
                         })
                         .filter(f -> !actifOnly || f.actif)
+                        .collect(Collectors.toList());
+                apiMandat.fonctions =
+                    elu
+                        .getFonctionsCommissionPermanente()
+                        .stream()
+                        .filter(f -> AppartenancesMatcher.match(it, f))
+                        .map(f -> {
+                            ApiFonctionCommissionPermanente af =
+                                new ApiFonctionCommissionPermanente();
+                            af.id = f.getId();
+                            af.fonction = f.getFonction();
+                            af.dateDebut = f.getDateDebut();
+                            af.dateFin = f.getDateFin();
+                            af.motifFin = nullIfBlank(f.getMotifFin());
+                            Boolean fonctionNonDemissionnaire =
+                                f.getDateFin() == null ||
+                                f.getDateFin().isAfter(today);
+                            af.actif =
+                                nonDemissionnaire &&
+                                mandatureEnCours &&
+                                fonctionNonDemissionnaire;
+                            return af;
+                        })
                         .collect(Collectors.toList());
                 apiMandat.autreMandats =
                     elu

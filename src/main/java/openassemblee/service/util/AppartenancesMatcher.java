@@ -1,7 +1,6 @@
 package openassemblee.service.util;
 
 import openassemblee.domain.*;
-import openassemblee.domain.api.ApiAutreMandat;
 
 public class AppartenancesMatcher {
 
@@ -144,10 +143,7 @@ public class AppartenancesMatcher {
         return true;
     }
 
-    public static Boolean match(
-        AppartenanceCommissionPermanente a,
-        FonctionCommissionPermanente f
-    ) {
+    public static Boolean match(Mandat a, FonctionCommissionPermanente f) {
         if (a.getMandature() == null || f.getMandature() == null) {
             return false;
         }
@@ -162,9 +158,9 @@ public class AppartenancesMatcher {
             return false;
         }
         if (
-            a.getDateFin() != null &&
+            a.getDateDemission() != null &&
             f.getDateFin() != null &&
-            a.getDateFin().isBefore(f.getDateFin())
+            a.getDateDemission().isBefore(f.getDateFin())
         ) {
             return false;
         }
