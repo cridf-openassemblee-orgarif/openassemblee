@@ -240,6 +240,7 @@ public class Elu implements Serializable {
         this.lieuNaissance = lieuNaissance;
     }
 
+    @Deprecated
     public String getCodeDepartement() {
         return codeDepartement;
     }
@@ -248,6 +249,7 @@ public class Elu implements Serializable {
         this.codeDepartement = codeDepartement;
     }
 
+    @Deprecated
     public String getDepartement() {
         return departement;
     }

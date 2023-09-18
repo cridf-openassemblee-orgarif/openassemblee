@@ -82,8 +82,6 @@ public class EluWebserviceResource {
                 apiElu.profession = nullIfBlank(elu.getProfession());
                 apiElu.dateNaissance = elu.getDateNaissance();
                 apiElu.lieuNaissance = elu.getLieuNaissance();
-                apiElu.codeDepartement = elu.getCodeDepartement();
-                apiElu.departement = elu.getDepartement();
                 apiElu.image = elu.getImage();
                 apiElu.mandats = mapMandats(elu, actifOnly, today, mandatureId);
                 apiElu.actif = apiElu.mandats.stream().anyMatch(it -> it.actif);

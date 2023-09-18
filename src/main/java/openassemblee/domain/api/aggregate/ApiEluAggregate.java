@@ -21,8 +21,6 @@ public class ApiEluAggregate {
     public String profession;
     public LocalDate dateNaissance;
     public String lieuNaissance;
-    public String codeDepartement;
-    public String departement;
     public Long image;
     public Boolean actif;
     // mandats
