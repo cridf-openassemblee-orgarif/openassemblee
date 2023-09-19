@@ -344,6 +344,7 @@ public class EluWebserviceResource {
                     fonctionNonDemissionnaire;
                 return af;
             })
+            .filter(f -> !actifOnly || f.actif)
             .collect(Collectors.toList());
         return result
             .stream()
