@@ -621,7 +621,7 @@ public class EluWebserviceResource {
     }
 
     private String nullIfBlank(String value) {
-        if (value != null && value.trim().equals("")) {
+        if (value == null || value.trim().equals("")) {
             return null;
         } else {
             return value;
