@@ -43,7 +43,7 @@ const convertGroupePolitique = (
     id: gp.id,
     nom: gp.nom,
     nomCourt: gp.nomCourt,
-    couleur: '#' + gp.couleur,
+    couleur: gp.couleur ? '#' + gp.couleur : '#000',
 });
 
 export interface RawElus {

@@ -41,5 +41,5 @@ export const hexToRgbA = (hex: string, opacity: number) => {
             ')'
         );
     }
-    throw new Error('Bad Hex');
+    throw new Error('Bad Hex ' + hex);
 };

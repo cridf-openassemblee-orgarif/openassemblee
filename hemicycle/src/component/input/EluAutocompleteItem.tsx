@@ -20,7 +20,7 @@ export default class EluAutocompleteItem extends React.PureComponent<Props> {
             : undefined;
         const couleurGroupePolitique = groupePolitique
             ? groupePolitique.couleur
-            : '000';
+            : '#000';
         return (
             <div
                 css={css`
