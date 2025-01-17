@@ -263,6 +263,118 @@
       "resolved": "github:NixOS/nixpkgs/3847a2a8595bba68214ac4b7e3da3fc00776989b#nodejs",
       "source": "devbox-search",
       "version": "14.17.0"
+    },
+    "trash-cli@0.24.5.26": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#trash-cli",
+      "source": "devbox-search",
+      "version": "0.24.5.26",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gqy3zibks9kwyvbpfyzqf4drmpi12dw7-trash-cli-0.24.5.26",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/minidxjh5pff7hkdlr7qjn058c15152r-trash-cli-0.24.5.26-dist"
+            }
+          ],
+          "store_path": "/nix/store/gqy3zibks9kwyvbpfyzqf4drmpi12dw7-trash-cli-0.24.5.26"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/7zyfa4jivfb97zrqfnsn2ix6ywq7pjif-trash-cli-0.24.5.26",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/a0i29hsslmpz56wjci9ksk3rp9hpcbq0-trash-cli-0.24.5.26-dist"
+            }
+          ],
+          "store_path": "/nix/store/7zyfa4jivfb97zrqfnsn2ix6ywq7pjif-trash-cli-0.24.5.26"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kimvb7la5fml9f196dxxzkvz54f4gwhi-trash-cli-0.24.5.26",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/as3hjifr8a3akjx8xj84ncxqsm4nx2v7-trash-cli-0.24.5.26-dist"
+            }
+          ],
+          "store_path": "/nix/store/kimvb7la5fml9f196dxxzkvz54f4gwhi-trash-cli-0.24.5.26"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/6gnf5hafd9mj8b4ahpgzb3vcpjj6n5aj-trash-cli-0.24.5.26",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/0c7s3a9l6y3pwnv1y8108wc375fmr6a7-trash-cli-0.24.5.26-dist"
+            }
+          ],
+          "store_path": "/nix/store/6gnf5hafd9mj8b4ahpgzb3vcpjj6n5aj-trash-cli-0.24.5.26"
+        }
+      }
+    },
+    "yarn@1.22.22": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#yarn",
+      "source": "devbox-search",
+      "version": "1.22.22",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jcbyc2k0vkkm862r7f9nwxaa69khfr3h-yarn-1.22.22",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/jcbyc2k0vkkm862r7f9nwxaa69khfr3h-yarn-1.22.22"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/sxxpynsiv8mhq1f0gi1d1rzcj2v0af5w-yarn-1.22.22",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/sxxpynsiv8mhq1f0gi1d1rzcj2v0af5w-yarn-1.22.22"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gw4vlw2qhk94mjwdypqxdzczpml7x1w9-yarn-1.22.22",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gw4vlw2qhk94mjwdypqxdzczpml7x1w9-yarn-1.22.22"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/h705p6lmismdn6ay2pn04rvcb2p6vl6i-yarn-1.22.22",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/h705p6lmismdn6ay2pn04rvcb2p6vl6i-yarn-1.22.22"
+        }
+      }
     }
   }
 }
