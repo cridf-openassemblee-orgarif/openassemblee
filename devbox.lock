@@ -1,0 +1,268 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "jdk@11.0.24": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#jdk11",
+      "source": "devbox-search",
+      "version": "11.0.24",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p9mg2lgjsf0nxgw5k8bkdgjjmhj7x6sf-zulu-ca-jdk-11.0.24",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p9mg2lgjsf0nxgw5k8bkdgjjmhj7x6sf-zulu-ca-jdk-11.0.24"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/pdxkgs7iw2bn82gn3qmnm5a5vjjwx386-zulu-ca-jdk-11.0.24",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/pdxkgs7iw2bn82gn3qmnm5a5vjjwx386-zulu-ca-jdk-11.0.24"
+        }
+      }
+    },
+    "just@1.38.0": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#just",
+      "source": "devbox-search",
+      "version": "1.38.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vsh8l0h4w2s2chhxnq3crggnqgajv8fr-just-1.38.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/4v2f2ilb558wldh4wl5iplhbqbwcs8x7-just-1.38.0-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/ys7i8a3y8x0wpvpgjm1cg32vcmkvghaq-just-1.38.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/vsh8l0h4w2s2chhxnq3crggnqgajv8fr-just-1.38.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/v9c5rvb1f5351vnfqw1dwrqnyr0zmwkl-just-1.38.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/b402yzxcpdldqafh9lh1vz10pifyyrm1-just-1.38.0-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/wdvhp7n1ll2r94bp1wq0nw9d7jsy9h5r-just-1.38.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/v9c5rvb1f5351vnfqw1dwrqnyr0zmwkl-just-1.38.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nrwx6y35zjj83shb7vj6nxl5a7ll7jfq-just-1.38.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/g72x3fkmf25sa8gc3sh17wm2s14vk1zi-just-1.38.0-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/1z00n6g7id3z5x4wgmxnpp0www1r9ah6-just-1.38.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/nrwx6y35zjj83shb7vj6nxl5a7ll7jfq-just-1.38.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8gfn54vq7r96i0jpdgbz4084b4n5if61-just-1.38.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/kh82ps1zp22cv36l4w1r7pzv1rbzpmjz-just-1.38.0-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/lxn266hlm8ngl6r0bkz9bdc2g5iskqby-just-1.38.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/8gfn54vq7r96i0jpdgbz4084b4n5if61-just-1.38.0"
+        }
+      }
+    },
+    "maven@3.9.9": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#maven",
+      "source": "devbox-search",
+      "version": "3.9.9",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/skgavbzs2qnkf4sqr9fzdgpwym6cyz6w-maven-3.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/skgavbzs2qnkf4sqr9fzdgpwym6cyz6w-maven-3.9.9"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d2d8y3d3v0bghv6v59m6ln3m154sp93d-maven-3.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/d2d8y3d3v0bghv6v59m6ln3m154sp93d-maven-3.9.9"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kfg5rnrxx0a6xcfkcsvj4rmangcfg01s-maven-3.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/kfg5rnrxx0a6xcfkcsvj4rmangcfg01s-maven-3.9.9"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dqv2ipvqa1ngydsgv0bcqxfr4xdq6zi6-maven-3.9.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/dqv2ipvqa1ngydsgv0bcqxfr4xdq6zi6-maven-3.9.9"
+        }
+      }
+    },
+    "nodePackages.bower@1.8.14": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#nodePackages.bower",
+      "source": "devbox-search",
+      "version": "1.8.14",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qgigdhpvxpb5ydcrvnsmfda6i44v0nza-bower-1.8.14",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qgigdhpvxpb5ydcrvnsmfda6i44v0nza-bower-1.8.14"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/cqsyicdliiq0zb4xrc61k19riklxl47y-bower-1.8.14",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/cqsyicdliiq0zb4xrc61k19riklxl47y-bower-1.8.14"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/babc3yc9n5sbzj45j6vhr8h29xi8hc3q-bower-1.8.14",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/babc3yc9n5sbzj45j6vhr8h29xi8hc3q-bower-1.8.14"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dz5fw1cnkb0pv1mdsjjzdr3yp6dlmx1p-bower-1.8.14",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/dz5fw1cnkb0pv1mdsjjzdr3yp6dlmx1p-bower-1.8.14"
+        }
+      }
+    },
+    "nodePackages.grunt-cli@1.5.0": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#nodePackages.grunt-cli",
+      "source": "devbox-search",
+      "version": "1.5.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/npkkrdvjp8vikbhs1yhbd7nlnfq0ik68-grunt-cli-1.5.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/npkkrdvjp8vikbhs1yhbd7nlnfq0ik68-grunt-cli-1.5.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4iwzlj8ni6kgd83zrs58j3zg69va02kf-grunt-cli-1.5.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4iwzlj8ni6kgd83zrs58j3zg69va02kf-grunt-cli-1.5.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nl3w7sh50pg03rh9bcbw1cmfgb07h2hs-grunt-cli-1.5.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/nl3w7sh50pg03rh9bcbw1cmfgb07h2hs-grunt-cli-1.5.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/pqwzgfi90sfa3890wfgyivpgpwb3d8v4-grunt-cli-1.5.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/pqwzgfi90sfa3890wfgyivpgpwb3d8v4-grunt-cli-1.5.0"
+        }
+      }
+    },
+    "nodejs@14.17.0": {
+      "last_modified": "2021-05-26T13:44:44Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/3847a2a8595bba68214ac4b7e3da3fc00776989b#nodejs",
+      "source": "devbox-search",
+      "version": "14.17.0"
+    }
+  }
+}
