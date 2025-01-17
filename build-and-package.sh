@@ -11,6 +11,9 @@ cp -R hemicycle/build/static/js src/main/webapp/hemicycle
 npm install
 grunt build
 
+# GIT REVISION
+echo "$(git log -1 --pretty=%h)" > "src/main/webapp/dist/version.txt"
+
 # BACK
 trash target
 mvn install -Pprod
