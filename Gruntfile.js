@@ -43,10 +43,6 @@ module.exports = function (grunt) {
             ngconstant: {
                 files: ['Gruntfile.js', 'pom.xml'],
                 tasks: ['ngconstant:dev']
-            },
-            sass: {
-                files: ['src/main/scss/**/*.{scss,sass}'],
-                tasks: ['sass:server']
             }
         },
         autoprefixer: {
@@ -120,22 +116,6 @@ module.exports = function (grunt) {
                 'src/main/webapp/scripts/app/**/*.js',
                 'src/main/webapp/scripts/components/**/*.js'
             ]
-        },
-        sass: {
-            options: {
-                includePaths: [
-                    'src/main/webapp/bower_components'
-                ]
-            },
-            server: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/scss',
-                    src: ['*.scss'],
-                    dest: 'src/main/webapp/assets/styles',
-                    ext: '.css'
-                }]
-            }
         },
         concat: {
             // src and dest is configured in a subtask called "generated" by usemin
@@ -364,7 +344,6 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep',
         'ngconstant:dev',
-        'sass:server',
         'browserSync',
         'watch'
     ]);
@@ -378,7 +357,6 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep:test',
         'ngconstant:dev',
-        'sass:server',
         'karma'
     ]);
 
@@ -388,7 +366,6 @@ module.exports = function (grunt) {
         'ngconstant:prod',
         'useminPrepare',
         'ngtemplates',
-        'sass:server',
         // 'imagemin',
         // 'svgmin',
         'concat',
