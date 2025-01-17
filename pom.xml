@@ -36,9 +36,7 @@
         <maven-sortpom-plugin.version>2.3.0</maven-sortpom-plugin.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <metrics-spark-reporter.version>1.2</metrics-spark-reporter.version>
         <metrics-spring.version>3.1.2</metrics-spring.version>
         <mysql.connector.version>8.0.18</mysql.connector.version>
