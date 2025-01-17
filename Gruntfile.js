@@ -372,7 +372,7 @@ module.exports = function (grunt) {
         'copy:fonts',
         'copy:dist',
         'ngAnnotate',
-        'cssmin',
+        //'cssmin',
         'autoprefixer',
         'uglify',
         'rev',

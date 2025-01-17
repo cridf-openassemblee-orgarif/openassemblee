@@ -9,7 +9,7 @@ cp -R hemicycle/build/static/js src/main/webapp/hemicycle
 
 # FRONT
 npm install
-grunt build --force
+grunt build
 
 # BACK
 trash target
